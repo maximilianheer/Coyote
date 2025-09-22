@@ -58,7 +58,7 @@ logic axi_rvalid;
 logic aw_en;
 
 // Registers for holding the values read from/to be written to the AXI Lite interface
-// These are synchronous but the outputs are combinatorial
+// These are synchronous but the outputs are combinatorials
 logic [N_REGS-1:0][AXIL_DATA_BITS-1:0] ctrl_reg;
 logic ctrl_reg_rden;
 logic ctrl_reg_wren;
