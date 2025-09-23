@@ -516,6 +516,20 @@ module shell_top (
         .aresetn(aresetn)
     );
 
+    ila_host_networking inst_ila_host_networking_dynamic_top_1(
+        .clk(aclk), 
+        .probe0(axis_dyn_out_int[0].tvalid), 
+        .probe1(axis_dyn_out_int[0].tready), 
+        .probe2(axis_dyn_out_int[0].tlast), 
+        .probe3(axis_dyn_out_int[0].tdata), 
+        .probe4(axis_dyn_out_int[0].tkeep), 
+        .probe5(m_axis_dyn_out[0].tvalid), 
+        .probe6(m_axis_dyn_out[0].tready), 
+        .probe7(m_axis_dyn_out[0].tlast), 
+        .probe8(m_axis_dyn_out[0].tdata), 
+        .probe9(m_axis_dyn_out[0].tkeep)
+    ); 
+
     AXI4S axis_dyn_in [N_CHAN] ();
     AXI4S axis_dyn_out [N_CHAN] ();
     dmaIntf dma_rd_req [N_CHAN] ();

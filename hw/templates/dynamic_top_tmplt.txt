@@ -199,6 +199,20 @@ module design_dynamic_top #(
     axis_mux_host_src  inst_host_mux_in  (.aclk(aclk), .aresetn(aresetn), .s_mux(mux_host_rd_user), .s_axis(axis_host_in_s0),  .m_axis(axis_host_in_s1));
     axis_mux_host_sink inst_host_mux_out (.aclk(aclk), .aresetn(aresetn), .s_mux(mux_host_wr_user), .s_axis(axis_host_out_s1), .m_axis(axis_host_out_s0));
     
+    ila_host_networking inst_ila_host_networking_dynamic_top_1(
+        .clk(aclk), 
+        .probe0(axis_host_out_s1[0].tvalid), 
+        .probe1(axis_host_out_s1[0].tready), 
+        .probe2(axis_host_out_s1[0].tlast), 
+        .probe3(axis_host_out_s1[0].tdata), 
+        .probe4(axis_host_out_s1[0].tkeep), 
+        .probe5(axis_host_out_s0[0].tvalid), 
+        .probe6(axis_host_out_s0[0].tready), 
+        .probe7(axis_host_out_s0[0].tlast), 
+        .probe8(axis_host_out_s0[0].tdata), 
+        .probe9(axis_host_out_s0[0].tkeep)
+    ); 
+
     // Credits 
     // ----------------------------------------------------------------------
     AXI4S axis_host_in_s2 [N_REGIONS] ();
@@ -212,6 +226,20 @@ module design_dynamic_top #(
         data_queue_credits_src  inst_host_dcred_in  (.aclk(aclk), .aresetn(aresetn), .s_axis(axis_host_in_s1[i]),  .m_axis(axis_host_in_s2[i]), .rxfer(rxfer_host[i]));
         data_queue_credits_sink inst_host_dcred_out (.aclk(aclk), .aresetn(aresetn), .s_axis(axis_host_out_s2[i]), .m_axis(axis_host_out_s1[i]), .wxfer(wxfer_host[i]));
     end
+
+    ila_host_networking inst_ila_host_networking_dynamic_top_1(
+        .clk(aclk), 
+        .probe0(axis_host_out_s2[0].tvalid), 
+        .probe1(axis_host_out_s2[0].tready), 
+        .probe2(axis_host_out_s2[0].tlast), 
+        .probe3(axis_host_out_s2[0].tdata), 
+        .probe4(axis_host_out_s2[0].tkeep), 
+        .probe5(axis_host_out_s1[0].tvalid), 
+        .probe6(axis_host_out_s1[0].tready), 
+        .probe7(axis_host_out_s1[0].tlast), 
+        .probe8(axis_host_out_s1[0].tdata), 
+        .probe9(axis_host_out_s1[0].tkeep)
+    ); 
 
 {% else %}
     for(genvar i = 0; i < N_REGIONS; i++) begin
@@ -339,6 +367,20 @@ module design_dynamic_top #(
             data_queue_credits_sink inst_card_dcred_out (.aclk(aclk), .aresetn(aresetn), .s_axis(axis_card_out_s2[i*N_CARD_AXI+j]), .m_axis(axis_card_out_s1[i*N_CARD_AXI+j]), .wxfer(wxfer_card[i*N_CARD_AXI+j]));
         end
     end
+
+    ila_host_networking inst_ila_host_networking_dynamic_top_1(
+        .clk(aclk), 
+        .probe0(axis_host_out_s2[0].tvalid), 
+        .probe1(axis_host_out_s2[0].tready), 
+        .probe2(axis_host_out_s2[0].tlast), 
+        .probe3(axis_host_out_s2[0].tdata), 
+        .probe4(axis_host_out_s2[0].tkeep), 
+        .probe5(axis_host_out_s1[0].tvalid), 
+        .probe6(axis_host_out_s1[0].tready), 
+        .probe7(axis_host_out_s1[0].tlast), 
+        .probe8(axis_host_out_s1[0].tdata), 
+        .probe9(axis_host_out_s1[0].tkeep)
+    ); 
 
 {% else %}
     for(genvar i = 0; i < N_REGIONS; i++) begin
