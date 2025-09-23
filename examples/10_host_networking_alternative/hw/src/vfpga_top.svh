@@ -359,13 +359,6 @@ always_ff @(posedge aclk) begin
 
                     // Trigger the transmission of the DMA command to the XDMA engine 
                     sq_wr.valid <= 1'b1;
-                    
-                    // Count up the current ring position to be able to address the correct buffer 
-                    if(host_networking_ring_tail == (host_networking_ring_size - 1)) begin 
-                        host_networking_ring_tail <= 0;
-                    end else begin 
-                        host_networking_ring_tail <= host_networking_ring_tail + 1;
-                    end
                 end
             end
 
@@ -381,6 +374,13 @@ always_ff @(posedge aclk) begin
 
                     // Go to the state where we can deal with the transmission of the first data chunk to the host 
                     release_state <= TRANSMIT_FIRST_CHUNK; 
+
+                    // Count up the current ring position to be able to address the correct buffer 
+                    if(host_networking_ring_tail == (host_networking_ring_size - 1)) begin 
+                        host_networking_ring_tail <= 0;
+                    end else begin 
+                        host_networking_ring_tail <= host_networking_ring_tail + 1;
+                    end
                 end 
             end
 
