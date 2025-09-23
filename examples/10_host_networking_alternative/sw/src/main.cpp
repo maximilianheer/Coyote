@@ -99,28 +99,30 @@ int main(int argc, char *argv[]) {
     coyote_thread->invoke(coyote::CoyoteOper::LOCAL_READ, &sg); 
 
     // Afterwards: Print the first packet received in the first field of the RX-buffer  
-    while(coyote_thread->getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 2) {
+    while(coyote_thread->getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 20) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
-    // Fetch the first packet received from the buffer and print out all the information 
-    uint32_t meta_raw; 
-    memcpy(&meta_raw, rx_mem, sizeof(uint32_t));
-    meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
+    // Fetch the first 20 packets received from the buffer and print out all the information
+    for(int j = 0; j < 20; j++) {
+        uint32_t meta_raw; 
+        memcpy(&meta_raw, rx_mem+j*BUFFER_STRIDE, sizeof(uint32_t));
+        meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
 
-    std::cout << "Possession Flag: " << meta.possession_flag << std::endl;
-    std::cout << "Packet Length: " << meta.packet_len << std::endl;
-    std::cout << "Rsvd: " << meta.rsvd << std::endl;
-    printf("\n"); 
+        std::cout << "Possession Flag: " << meta.possession_flag << std::endl;
+        std::cout << "Packet Length: " << meta.packet_len << std::endl;
+        std::cout << "Rsvd: " << meta.rsvd << std::endl;
+        printf("\n"); 
 
-    // Now get the actual packet data and print it out:
-    uint8_t* buf = reinterpret_cast<uint8_t*>(rx_mem);
-    for(int i = 0; i < meta.packet_len; i++) {
-        uint8_t byte = buf[4+i]; 
-        std::cout << std::hex << (int) byte << " ";
+        // Now get the actual packet data and print it out:
+        uint8_t* buf = reinterpret_cast<uint8_t*>(rx_mem);
+        for(int i = 0; i < meta.packet_len; i++) {
+            uint8_t byte = buf[4+j*BUFFER_STRIDE+i]; 
+            std::cout << std::hex << (int) byte << " ";
+        }
+
+        printf("\n");
     }
-
-    printf("\n");
 
     // Return value at the end
     return EXIT_SUCCESS;

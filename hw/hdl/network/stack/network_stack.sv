@@ -325,7 +325,7 @@ host_networking_prefilter host_networking_prefilter_inst (
 ); 
 
 // Put an ILA around the host_networking_prefilter to observe its functionality 
-ila_host_networking_3_streams inst_ila_host_networking_prefilter(
+/* ila_host_networking_3_streams inst_ila_host_networking_prefilter(
     .clk(nclk), 
     
     .probe0(axis_slice_to_ibh.tvalid),     // 1
@@ -345,7 +345,7 @@ ila_host_networking_3_streams inst_ila_host_networking_prefilter(
     .probe12(axis_offloaded_networking_filter_to_slice.tlast),      // 1
     .probe13(axis_offloaded_networking_filter_to_slice.tdata),      // 512
     .probe14(axis_offloaded_networking_filter_to_slice.tkeep)       // 64
-); 
+); */ 
 
 axis_reg inst_host_slice_out (.aclk(nclk), .aresetn(nresetn_r), .s_axis(axis_host_networking_filter_to_slice), .m_axis(m_axis_host_rx));
 axis_reg inst_iph_slice_out (.aclk(nclk), .aresetn(nresetn_r), .s_axis(axis_offloaded_networking_filter_to_slice), .m_axis(axis_offloaded_networking_to_iph));
@@ -645,7 +645,7 @@ AXI4S #(.AXI4S_DATA_BITS(AXI_NET_BITS)) axis_host_tx_r();
 axis_reg_array inst_reg_slice_host_tx (.aclk(nclk), .aresetn(nresetn_r), .s_axis(s_axis_host_tx), .m_axis(axis_host_tx_r));
 
 // ILA to observe the host traffic stream
-ila_host_networking inst_ila_host_networking_network_stack (
+/* ila_host_networking inst_ila_host_networking_network_stack (
     .clk(nclk), // input wire clk
 
     .probe0(s_axis_host_tx.tvalid),     // 1 
@@ -659,7 +659,7 @@ ila_host_networking inst_ila_host_networking_network_stack (
     .probe7(m_axis_host_rx.tlast),      // 1
     .probe8(m_axis_host_rx.tdata),      // 512
     .probe9(m_axis_host_rx.tkeep)       // 64
-);
+); */ 
 
 // 2-to-1 MUX for combining FPGA-originated TX-traffic and host-originated TX-traffic
 AXI4S #(.AXI4S_DATA_BITS(AXI_NET_BITS)) axis_mie_to_intercon_merged_r();
