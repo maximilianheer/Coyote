@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
     }
 
     // Fetch the first 20 packets received from the buffer and print out all the information
-    for(int j = 0; j < 20; j++) {
+    for(int j = 0; j < 128; j++) {
         uint32_t meta_raw; 
         memcpy(&meta_raw, rx_mem+j*BUFFER_STRIDE, sizeof(uint32_t));
         meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
