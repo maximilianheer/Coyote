@@ -148,7 +148,7 @@ set(EN_NET_0 1 CACHE STRING "QSFP port 0")
 set(EN_NET_1 0 CACHE STRING "QSFP port 1")
 
 # Network MTU size --- best NOT to change for optimal performance
-set(PMTU_BYTES 4096 CACHE STRING "PMTU size")
+set(PMTU_BYTES 8192 CACHE STRING "PMTU size")
 
 # Enable host networking
 set(EN_HOST_NETWORKING 0 CACHE STRING "Enable host networking")

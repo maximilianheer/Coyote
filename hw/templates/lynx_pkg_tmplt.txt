@@ -360,6 +360,7 @@ package lynxTypes;
     parameter integer N_OUTSTANDING_REGION = {{ 4 * cnfg.n_outs }};
 
     parameter integer PMTU_BYTES = {{ cnfg.pmtu }};
+    parameter integer PMTU_NW_BYTES = PMTU_BYTES / 2; 
     
     parameter integer DDR_CHAN_SIZE = {{ cnfg.ddr_size }};
     parameter integer HBM_CHAN_SIZE = {{ cnfg.hbm_size }};

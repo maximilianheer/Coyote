@@ -128,16 +128,16 @@ end
 always_comb begin
     req_ddr_rd.data = 0;
     req_ddr_rd.data[0+:64] = (64'b0 | 
-                             (s_req_net.data.vfid << PID_BITS + RDMA_OST_BITS + $clog2(PMTU_BYTES)) | 
-                             (s_req_net.data.pid   << RDMA_OST_BITS + $clog2(PMTU_BYTES)) | 
-                             (s_req_net.data.offs  << $clog2(PMTU_BYTES))) << RDMA_MEM_SHIFT;
+                             (s_req_net.data.vfid << PID_BITS + RDMA_OST_BITS + $clog2(PMTU_NW_BYTES)) | 
+                             (s_req_net.data.pid   << RDMA_OST_BITS + $clog2(PMTU_NW_BYTES)) | 
+                             (s_req_net.data.offs  << $clog2(PMTU_NW_BYTES))) << RDMA_MEM_SHIFT;
     req_ddr_rd.data[64+:32] = s_req_net.data.len;
 
     req_ddr_wr.data = 0;
     req_ddr_wr.data[0+:64] = (64'b0 | 
-                             (s_req_net.data.vfid << PID_BITS + RDMA_OST_BITS + $clog2(PMTU_BYTES)) | 
-                             (s_req_net.data.pid   << RDMA_OST_BITS + $clog2(PMTU_BYTES)) | 
-                             (s_req_net.data.offs  << $clog2(PMTU_BYTES))) << RDMA_MEM_SHIFT;
+                             (s_req_net.data.vfid << PID_BITS + RDMA_OST_BITS + $clog2(PMTU_NW_BYTES)) | 
+                             (s_req_net.data.pid   << RDMA_OST_BITS + $clog2(PMTU_NW_BYTES)) | 
+                             (s_req_net.data.offs  << $clog2(PMTU_NW_BYTES))) << RDMA_MEM_SHIFT;
     req_ddr_wr.data[64+:32] = s_req_net.data.len;
 
     req_user.data = s_req_net.data;
