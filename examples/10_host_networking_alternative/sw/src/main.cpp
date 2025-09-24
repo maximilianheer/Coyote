@@ -99,12 +99,12 @@ int main(int argc, char *argv[]) {
     coyote_thread->invoke(coyote::CoyoteOper::LOCAL_READ, &sg); 
 
     // Afterwards: Print the first packet received in the first field of the RX-buffer  
-    while(coyote_thread->getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 20) {
+    while(coyote_thread->getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 8) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     // Fetch the first 20 packets received from the buffer and print out all the information
-    for(int j = 0; j < 128; j++) {
+    for(int j = 0; j < 4; j++) {
         uint32_t meta_raw; 
         memcpy(&meta_raw, rx_mem+j*BUFFER_STRIDE, sizeof(uint32_t));
         meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
