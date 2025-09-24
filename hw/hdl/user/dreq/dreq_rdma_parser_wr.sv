@@ -204,14 +204,14 @@ always_comb begin: DP
             plvaddr_N = req_1_C.vaddr;
             prvaddr_N = req_2_C.vaddr;
             
-            if(req_2_C.len > PMTU_BYTES) begin
-                req_1_N.vaddr = req_1_C.vaddr + PMTU_BYTES;
-                req_2_N.vaddr = req_2_C.vaddr + PMTU_BYTES;
+            if(req_2_C.len > PMTU_NW_BYTES) begin
+                req_1_N.vaddr = req_1_C.vaddr + PMTU_NW_BYTES;
+                req_2_N.vaddr = req_2_C.vaddr + PMTU_NW_BYTES;
                 
-                req_2_N.len = req_2_C.len - PMTU_BYTES;
+                req_2_N.len = req_2_C.len - PMTU_NW_BYTES;
 
                 pop_N = RC_RDMA_WRITE_FIRST;
-                plen_N = PMTU_BYTES;   
+                plen_N = PMTU_NW_BYTES;   
                 plast_N = 1'b0;           
             end
             else begin
@@ -227,14 +227,14 @@ always_comb begin: DP
             plvaddr_N = req_1_C.vaddr;
             prvaddr_N = req_2_C.vaddr;
             
-            if(req_2_C.len > PMTU_BYTES) begin
-                req_1_N.vaddr = req_1_C.vaddr + PMTU_BYTES;
-                req_2_N.vaddr = req_2_C.vaddr + PMTU_BYTES;
+            if(req_2_C.len > PMTU_NW_BYTES) begin
+                req_1_N.vaddr = req_1_C.vaddr + PMTU_NW_BYTES;
+                req_2_N.vaddr = req_2_C.vaddr + PMTU_NW_BYTES;
                 
-                req_2_N.len = req_2_C.len - PMTU_BYTES;
+                req_2_N.len = req_2_C.len - PMTU_NW_BYTES;
 
                 pop_N = RC_RDMA_WRITE_MIDDLE;
-                plen_N = PMTU_BYTES;  
+                plen_N = PMTU_NW_BYTES;  
                 plast_N = 1'b0;            
             end
             else begin
@@ -254,13 +254,13 @@ always_comb begin: DP
             plvaddr_N = req_1_C.vaddr;
             prvaddr_N = 0;
             
-            if(req_2_C.len > PMTU_BYTES) begin
-                req_1_N.vaddr = req_1_C.vaddr + PMTU_BYTES;
+            if(req_2_C.len > PMTU_NW_BYTES) begin
+                req_1_N.vaddr = req_1_C.vaddr + PMTU_NW_BYTES;
                 
-                req_2_N.len = req_2_C.len - PMTU_BYTES;
+                req_2_N.len = req_2_C.len - PMTU_NW_BYTES;
 
                 pop_N = RC_SEND_FIRST;
-                plen_N = PMTU_BYTES;   
+                plen_N = PMTU_NW_BYTES;   
                 plast_N = 1'b0;           
             end
             else begin
@@ -276,13 +276,13 @@ always_comb begin: DP
             plvaddr_N = req_1_C.vaddr;
             prvaddr_N = 0;
             
-            if(req_2_C.len > PMTU_BYTES) begin
-                req_1_N.vaddr = req_1_C.vaddr + PMTU_BYTES;
+            if(req_2_C.len > PMTU_NW_BYTES) begin
+                req_1_N.vaddr = req_1_C.vaddr + PMTU_NW_BYTES;
                 
-                req_2_N.len = req_2_C.len - PMTU_BYTES;
+                req_2_N.len = req_2_C.len - PMTU_NW_BYTES;
 
                 pop_N = RC_SEND_MIDDLE;
-                plen_N = PMTU_BYTES;  
+                plen_N = PMTU_NW_BYTES;  
                 plast_N = 1'b0;            
             end
             else begin

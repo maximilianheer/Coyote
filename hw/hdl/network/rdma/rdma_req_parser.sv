@@ -316,13 +316,13 @@ always_comb begin: DP
             plvaddr_N = lvaddr_C;
             prvaddr_N = rvaddr_C;
             
-            if(len_C > PMTU_BYTES) begin
-                lvaddr_N = lvaddr_C + PMTU_BYTES;
-                rvaddr_N = rvaddr_C + PMTU_BYTES;
-                len_N = len_C - PMTU_BYTES;
+            if(len_C > PMTU_NW_BYTES) begin
+                lvaddr_N = lvaddr_C + PMTU_NW_BYTES;
+                rvaddr_N = rvaddr_C + PMTU_NW_BYTES;
+                len_N = len_C - PMTU_NW_BYTES;
 
                 pop_N = RC_RDMA_WRITE_FIRST;
-                plen_N = PMTU_BYTES;   
+                plen_N = PMTU_NW_BYTES;   
                 plast_N = 1'b0;           
             end
             else begin
@@ -338,13 +338,13 @@ always_comb begin: DP
             plvaddr_N = lvaddr_C;
             prvaddr_N = rvaddr_C;
             
-            if(len_C > PMTU_BYTES) begin
-                lvaddr_N = lvaddr_C + PMTU_BYTES;
-                rvaddr_N = rvaddr_C + PMTU_BYTES;
-                len_N = len_C - PMTU_BYTES;
+            if(len_C > PMTU_NW_BYTES) begin
+                lvaddr_N = lvaddr_C + PMTU_NW_BYTES;
+                rvaddr_N = rvaddr_C + PMTU_NW_BYTES;
+                len_N = len_C - PMTU_NW_BYTES;
 
                 pop_N = RC_RDMA_WRITE_MIDDLE;
-                plen_N = PMTU_BYTES;  
+                plen_N = PMTU_NW_BYTES;  
                 plast_N = 1'b0;            
             end
             else begin
@@ -364,12 +364,12 @@ always_comb begin: DP
             plvaddr_N = lvaddr_C;
             prvaddr_N = 0;
             
-            if(len_C > PMTU_BYTES) begin
-                lvaddr_N = lvaddr_C + PMTU_BYTES;
-                len_N = len_C - PMTU_BYTES;
+            if(len_C > PMTU_NW_BYTES) begin
+                lvaddr_N = lvaddr_C + PMTU_NW_BYTES;
+                len_N = len_C - PMTU_NW_BYTES;
 
                 pop_N = RC_SEND_FIRST;
-                plen_N = PMTU_BYTES;   
+                plen_N = PMTU_NW_BYTES;   
                 plast_N = 1'b0;           
             end
             else begin
@@ -385,12 +385,12 @@ always_comb begin: DP
             plvaddr_N = lvaddr_C;
             prvaddr_N = 0;
             
-            if(len_C > PMTU_BYTES) begin
-                lvaddr_N = lvaddr_C + PMTU_BYTES;
-                len_N = len_C - PMTU_BYTES;
+            if(len_C > PMTU_NW_BYTES) begin
+                lvaddr_N = lvaddr_C + PMTU_NW_BYTES;
+                len_N = len_C - PMTU_NW_BYTES;
 
                 pop_N = RC_SEND_MIDDLE;
-                plen_N = PMTU_BYTES;  
+                plen_N = PMTU_NW_BYTES;  
                 plast_N = 1'b0;            
             end
             else begin

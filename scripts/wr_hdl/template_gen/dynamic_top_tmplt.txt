@@ -207,11 +207,11 @@ module design_dynamic_top #(
         .probe2(axis_host_out_s1[0].tlast), 
         .probe3(axis_host_out_s1[0].tdata), 
         .probe4(axis_host_out_s1[0].tkeep), 
-        .probe5(axis_host_out_s0[0].tvalid), 
-        .probe6(axis_host_out_s0[0].tready), 
-        .probe7(axis_host_out_s0[0].tlast), 
-        .probe8(axis_host_out_s0[0].tdata), 
-        .probe9(axis_host_out_s0[0].tkeep)
+        .probe5(axis_host_out_s0.tvalid), 
+        .probe6(axis_host_out_s0.tready), 
+        .probe7(axis_host_out_s0.tlast), 
+        .probe8(axis_host_out_s0.tdata), 
+        .probe9(axis_host_out_s0.tkeep)
     ); 
 
     // Credits 
