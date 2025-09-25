@@ -402,7 +402,7 @@ always_ff @(posedge aclk) begin
 
                         // Save the remainder for the next (and last) chunk
                         stream_remainder_data <= data_stream_data_out[511:480];
-                        stream_remainder_keep <= ((1 << (64 - $coutones(data_stream_keep_out)))-1); // Shift the keep bits and add the 4 bits for the meta tag
+                        stream_remainder_keep <= ((64'd1 << (64 - $coutones(data_stream_keep_out)))-1); // Shift the keep bits and add the 4 bits for the meta tag
 
                         // Release the data chunk and the meta tag from their respective FIFOs
                         data_stream_ready_in <= 1'b1;
@@ -461,7 +461,7 @@ always_ff @(posedge aclk) begin
 
                             // Save the remainder for the next (and last) chunk
                             stream_remainder_data <= data_stream_data_out[511:480];
-                            stream_remainder_keep <= ((1 << (64 - $coutones(data_stream_keep_out)))-1); // Shift the keep bits and add the 4 bits for the meta tag
+                            stream_remainder_keep <= ((64'd1 << (64 - $coutones(data_stream_keep_out)))-1); // Shift the keep bits and add the 4 bits for the meta tag
 
                             // Release the data chunk and the meta tag from their respective FIFOs
                             data_stream_ready_in <= 1'b1;
