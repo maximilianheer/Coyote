@@ -189,4 +189,33 @@ always_comb begin : DP
   endcase
 end
 
+
+ila_mux_host_sink inst_ila_mux_host_sink(
+  .clk(aclk), 
+
+  .probe0(s_axis[0].tvalid),    // 1 
+  .probe1(s_axis[0].tready),    // 1 
+  .probe2(s_axis[0].tlast),     // 1
+  .probe3(s_axis[0].tdata),     // 512 
+  .probe4(s_axis[0].tkeep),     // 64 
+
+  .probe5(m_axis.tvalid),       // 1 
+  .probe6(m_axis.tready),       // 1 
+  .probe7(m_axis.tlast),        // 1 
+  .probe8(m_axis.tdata),        // 512 
+  .probe9(m_axis.tkeep),        // 64 
+
+  .probe10(s_mux.valid),        // 1 
+  .probe11(s_mux.ready),        // 1
+  .probe12(s_mux.data),         // 32
+
+  .probe13(cnt_C),              // 28
+  .probe14(cnt_N),              // 28 
+
+  .probe15(tr_done),            // 1 
+
+  .probe16(state_C),            // 1 
+  .probe17(state_N)             // 1 
+); 
+
 endmodule
