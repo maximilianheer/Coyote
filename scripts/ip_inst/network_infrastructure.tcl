@@ -127,6 +127,10 @@ set_property -dict [list CONFIG.TDATA_NUM_BYTES {64} CONFIG.HAS_TKEEP {1} CONFIG
 create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_host_networking
 set_property -dict [list CONFIG.C_PROBE3_WIDTH {512} CONFIG.C_PROBE4_WIDTH {64} CONFIG.C_PROBE8_WIDTH {512} CONFIG.C_PROBE9_WIDTH {64} CONFIG.C_NUM_OF_PROBES {10} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {8192}] [get_ips ila_host_networking]
 
+create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_mux_host_sink
+set_property -dict [list CONFIG.C_PROBE3_WIDTH {512} CONFIG.C_PROBE4_WIDTH {64} CONFIG.C_PROBE8_WIDTH {512} CONFIG.C_PROBE9_WIDTH {64} CONFIG.C_PROBE12_WIDTH {32} CONFIG.C_PROBE13_WIDTH {28} CONFIG.C_PROBE14_WIDTH {28} CONFIG.C_NUM_OF_PROBES {18} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {8192}] [get_ips ila_mux_host_sink]
+
+
 create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_host_networking_3_streams
 set_property -dict [list CONFIG.C_PROBE3_WIDTH {512} CONFIG.C_PROBE4_WIDTH {64} CONFIG.C_PROBE8_WIDTH {512} CONFIG.C_PROBE9_WIDTH {64} CONFIG.C_PROBE13_WIDTH {512} CONFIG.C_PROBE14_WIDTH {64} CONFIG.C_NUM_OF_PROBES {15} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {8192}] [get_ips ila_host_networking_3_streams]
 
