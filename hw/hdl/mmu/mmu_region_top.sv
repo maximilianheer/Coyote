@@ -289,6 +289,13 @@ tlb_fsm #(
 	.mutex(mutex)
 );
 
+ila_req_trace inst_ila_req_trace_7(
+    .clk(aclk),
+    .probe0(s_bpss_wr_sq.valid), 
+    .probe1(s_bpss_wr_sq.ready), 
+    .probe2(s_bpss_wr_sq.data)
+);
+
 // TLB wr FSM
 tlb_fsm #(
     .ID_REG(ID_REG),

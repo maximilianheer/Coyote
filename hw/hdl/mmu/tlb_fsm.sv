@@ -121,6 +121,26 @@ typedef enum logic[4:0] {ST_IDLE, ST_LOCKED,
                          ST_MISS_SEND, ST_MISS_IDLE, ST_MISS_LUP_IDLE} state_t;
 logic [4:0] state_C, state_N;
 
+
+// ILA for observing what's going on in here 
+ila_tlb_fsm inst_ila_tlb_fsm(
+    .clk(aclk), 
+
+    // Incoming requests 
+    .probe0(s_req.valid),
+    .probe1(s_req.ready), 
+    .probe2(s_req.data),        // 128 
+
+    // Outgoing DMA signals 
+    .probe3(m_HDMA.valid), 
+    .probe4(m_HDMA.ready), 
+    .probe5(m_HDMA.req),        // 96
+    .probe6(m_HDMA.rsp),        // 96
+
+    // State 
+    .probe7(state_C)            // 5
+); 
+
 // -- Internal registers ------------------------------------------------------------------------------------
 // Request
 logic [LEN_BITS-1:0] len_C, len_N;

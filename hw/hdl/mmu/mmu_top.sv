@@ -158,6 +158,13 @@ metaIntf #(.STYPE(pf_t)) wr_pfault_ctrl [N_REGIONS] ();
 metaIntf #(.STYPE(inv_t)) rd_invldt_ctrl [N_REGIONS] ();
 metaIntf #(.STYPE(inv_t)) wr_invldt_ctrl [N_REGIONS] ();
 
+ila_req_trace inst_ila_req_trace_6(
+    .clk(aclk),
+    .probe0(s_bpss_wr_sq[0].valid), 
+    .probe1(s_bpss_wr_sq[0].ready), 
+    .probe2(s_bpss_wr_sq[0].data)
+);
+
 // Instantiate region MMUs
 for(genvar i = 0; i < N_REGIONS; i++) begin
     
