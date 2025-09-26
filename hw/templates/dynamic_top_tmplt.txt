@@ -992,6 +992,13 @@ module design_dynamic_top #(
     metaIntf #(.STYPE(ack_t)) bpss_rd_cq_s0 [N_REGIONS] ();
     metaIntf #(.STYPE(ack_t)) bpss_wr_cq_s0 [N_REGIONS] ();
 
+    ila_req_trace inst_ila_req_trace_5(
+        .clk(aclk),
+        .probe0(bpss_wr_sq_s0[0].valid), 
+        .probe1(bpss_wr_sq_s0[0].ready), 
+        .probe2(bpss_wr_sq_s0[0].data)
+    );
+
 
 {% if cnfg.en_uclk %}
     for(genvar i = 0; i < N_REGIONS; i++) begin

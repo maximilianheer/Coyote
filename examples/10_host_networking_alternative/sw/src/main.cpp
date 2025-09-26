@@ -98,17 +98,28 @@ int main(int argc, char *argv[]) {
 
     coyote_thread->invoke(coyote::CoyoteOper::LOCAL_READ, &sg); 
 
-    // Afterwards: Print the first packet received in the first field of the RX-buffer  
-    while(coyote_thread->getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 8) {
+    // Afterwards: Wait for tail to move to position 4   
+    while(coyote_thread->getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 4) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
-    // Fetch the first 20 packets received from the buffer and print out all the information
-    for(int j = 0; j < 4; j++) {
-        uint32_t meta_raw; 
-        memcpy(&meta_raw, rx_mem+j*BUFFER_STRIDE, sizeof(uint32_t));
-        meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
+    // If that has happened, go to the fourth position and poll until the possession flag has switched to FPGA 
+    uint32_t meta_raw; 
+    memcpy(&meta_raw, rx_mem+3*BUFFER_STRIDE, sizeof(uint32_t));
+    meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
 
+    while(!meta.possession_flag) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        memcpy(&meta_raw, rx_mem+3*BUFFER_STRIDE, sizeof(uint32_t));
+        meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
+    }
+
+    // Fetch the first 4 packets received from the buffer and print out all the information
+    for(int j = 0; j < 4; j++) {
+        memcpy(&meta_raw, rx_mem+j*BUFFER_STRIDE, sizeof(uint32_t));
+        meta = decode_meta_tag(meta_raw);
+
+        std::cout << "Raw meta flag: " << meta_raw << std::endl; 
         std::cout << "Possession Flag: " << meta.possession_flag << std::endl;
         std::cout << "Packet Length: " << meta.packet_len << std::endl;
         std::cout << "Rsvd: " << meta.rsvd << std::endl;
@@ -121,6 +132,7 @@ int main(int argc, char *argv[]) {
             std::cout << std::hex << (int) byte << " ";
         }
 
+        printf("\n");
         printf("\n");
     }
 
