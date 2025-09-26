@@ -103,6 +103,8 @@ int main(int argc, char *argv[]) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
+    std::cout << "Received the confirmation over the AXI CTRL interface." << std::endl; 
+ 
     // If that has happened, go to the fourth position and poll until the possession flag has switched to FPGA 
     uint32_t meta_raw; 
     memcpy(&meta_raw, rx_mem+3*BUFFER_STRIDE, sizeof(uint32_t));
@@ -110,6 +112,7 @@ int main(int argc, char *argv[]) {
 
     while(!meta.possession_flag) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::cout << "Raw meta flag #4: " << meta_raw << std::endl; 
         memcpy(&meta_raw, rx_mem+3*BUFFER_STRIDE, sizeof(uint32_t));
         meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
     }
