@@ -122,6 +122,32 @@ typedef enum logic[4:0] {ST_IDLE, ST_LOCKED,
                          ST_MISS_SEND, ST_MISS_IDLE, ST_MISS_LUP_IDLE} state_t;
 logic [4:0] state_C, state_N;
 
+/**
+    If only EN_STRM, this is the state mapping: 
+
+    ST_IDLE - 0 
+    ST_LOCKED - 1
+    ST_MUTEX - 2
+    ST_WAIT_1 - 3
+    ST_WAIT_2 - 4 
+    ST_CHECK - 5
+    ST_HIT_LARGE - 6
+    ST_HIT_SMALL - 7
+    ST_CALC_LARGE - 8
+    ST_CALC_SMALL - 9
+    ST_INVLDT_HOST - 10
+    ST_INVLDT_LUP_HOST - 11
+    ST_INVLDT_WAIT_HOST - 12
+    ST_INVLDT_CMP_HOST - 13 
+    ST_HOST_SEND - 14 
+    ST_INVLDT_EVAL - 15 
+    ST_MISS_CACHE - 16
+    ST_MISS_LUP_CACHE - 17 
+    ST_MISS_SEND - 18 
+    ST_MISS_IDLE - 19 
+    ST_MISS_LUP_IDLE - 20
+**/ 
+
 
 // ILA for observing what's going on in here 
 ila_tlb_fsm inst_ila_tlb_fsm(
