@@ -99,14 +99,14 @@ int main(int argc, char *argv[]) {
     coyote_thread->invoke(coyote::CoyoteOper::LOCAL_READ, &sg); 
 
     // Afterwards: Wait for tail to move to position 4   
-    while(coyote_thread->getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 4) {
+    while(coyote_thread->getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 12) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     std::cout << "Received the confirmation over the AXI CTRL interface." << std::endl; 
  
     // If that has happened, go to the fourth position and poll until the possession flag has switched to FPGA 
-    uint32_t meta_raw; 
+    /* uint32_t meta_raw; 
     memcpy(&meta_raw, rx_mem+3*BUFFER_STRIDE, sizeof(uint32_t));
     meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
 
@@ -115,9 +115,11 @@ int main(int argc, char *argv[]) {
         std::cout << "Raw meta flag #4: " << meta_raw << std::endl; 
         memcpy(&meta_raw, rx_mem+3*BUFFER_STRIDE, sizeof(uint32_t));
         meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
-    }
+    }*/ 
 
     // Fetch the first 4 packets received from the buffer and print out all the information
+    uint32_t meta_raw;
+    meta_tag_decoded_t meta; 
     for(int j = 0; j < 4; j++) {
         memcpy(&meta_raw, rx_mem+j*BUFFER_STRIDE, sizeof(uint32_t));
         meta = decode_meta_tag(meta_raw);

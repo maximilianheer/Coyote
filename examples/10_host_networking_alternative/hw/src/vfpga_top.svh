@@ -403,7 +403,7 @@ always_ff @(posedge aclk) begin
                         // Save the remainder for the next (and last) chunk
                         stream_remainder_data <= data_stream_data_out[511:480];
                         if($countones(data_stream_keep_out) < 64) begin 
-                            stream_remainder_keep <= ((64'd1 << (64 - $coutones(data_stream_keep_out)))-1); // Shift the keep bits and add the 4 bits for the meta tag
+                            stream_remainder_keep <= ((64'd1 << (64 - $countones(data_stream_keep_out)))-1); // Shift the keep bits and add the 4 bits for the meta tag
                         end else begin 
                             stream_remainder_keep <= 64'hf; 
                         end  // Shift the keep bits and add the 4 bits for the meta tag
@@ -466,7 +466,7 @@ always_ff @(posedge aclk) begin
                             // Save the remainder for the next (and last) chunk
                             stream_remainder_data <= data_stream_data_out[511:480];
                             if($countones(data_stream_keep_out) < 64) begin 
-                                stream_remainder_keep <= ((64'd1 << (64 - $coutones(data_stream_keep_out)))-1); // Shift the keep bits and add the 4 bits for the meta tag
+                                stream_remainder_keep <= ((64'd1 << (64 - $countones(data_stream_keep_out)))-1); // Shift the keep bits and add the 4 bits for the meta tag
                             end else begin 
                                 stream_remainder_keep <= 64'hf; 
                             end 
