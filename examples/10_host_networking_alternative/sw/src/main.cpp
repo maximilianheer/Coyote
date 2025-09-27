@@ -49,30 +49,30 @@ meta_tag_decoded_t decode_meta_tag(uint32_t raw) {
 int main(int argc, char *argv[]) {
     
     // Obtain a Coyote thread for handling of the buffers 
-    std::unique_ptr<coyote::cThread<std::any>> coyote_thread(new coyote::cThread<std::any>(DEFAULT_VFPGA_ID, getpid(), 0));
+    coyote::cThread coyote_thread(DEFAULT_VFPGA_ID, getpid(), 0);
 
     // Allocate two buffers for RX and TX traffic 
     int *rx_mem, *tx_mem;
-    rx_mem = (int *) coyote_thread->getMem({coyote::CoyoteAlloc::HPF, BUFFER_RING_SIZE * BUFFER_STRIDE});
-    tx_mem = (int *) coyote_thread->getMem({coyote::CoyoteAlloc::HPF, 4*1024*1024});
+    rx_mem = (int *) coyote_thread.getMem({coyote::CoyoteAllocType::HPF, BUFFER_RING_SIZE * BUFFER_STRIDE});
+    tx_mem = (int *) coyote_thread.getMem({coyote::CoyoteAllocType::HPF, 4*1024*1024});
 
     // Exit if memory couldn't be allocated 
     if (!rx_mem || !tx_mem) { throw std::runtime_error("Could not allocate memory; exiting..."); }
 
     // Create a scatter-gather entry for the TX-stream for outgoing traffic 
-    coyote::sgEntry sg; 
-    sg.local = {.src_addr = tx_mem, .src_len=512}; // It should not be required to set the RX-buffer as it is served automatically by the FPGA 
+    coyote::localSg sg; 
+    sg = {.addr = tx_mem, .stream=1}; // It should not be required to set the RX-buffer as it is served automatically by the FPGA 
 
     // Print the buff address for debugging purposes
     std::cout << "RX Buffer Address: " << std::hex << reinterpret_cast<uint64_t>(rx_mem) << std::dec << std::endl;
 
     // Communicate the details of the RX-buffer to the vFPGA via the CTRL register 
-    coyote_thread->setCSR(reinterpret_cast<uint64_t>(rx_mem), static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_BUFF_VADDR_REG)); // Set vaddr 
-    coyote_thread->setCSR(coyote_thread->getCtid(), static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_PID_REG)); // Set PID
-    coyote_thread->setCSR(BUFFER_STRIDE, static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_BUFF_STRIDE_REG)); // Set stride
-    coyote_thread->setCSR(BUFFER_RING_SIZE, static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_SIZE_REG)); // Set ring size
-    coyote_thread->setCSR(0, static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_HEAD_REG)); // Set head pointer to 0
-    coyote_thread->setCSR(IRQ_COALESCE, static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_IRQ_COALESCE_REG)); // Set IRQ coalescing timer
+    coyote_thread.setCSR(reinterpret_cast<uint64_t>(rx_mem), static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_BUFF_VADDR_REG)); // Set vaddr 
+    coyote_thread.setCSR(coyote_thread.getCtid(), static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_PID_REG)); // Set PID
+    coyote_thread.setCSR(BUFFER_STRIDE, static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_BUFF_STRIDE_REG)); // Set stride
+    coyote_thread.setCSR(BUFFER_RING_SIZE, static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_SIZE_REG)); // Set ring size
+    coyote_thread.setCSR(0, static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_HEAD_REG)); // Set head pointer to 0
+    coyote_thread.setCSR(IRQ_COALESCE, static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_IRQ_COALESCE_REG)); // Set IRQ coalescing timer
 
     // Write a potential packet to the TX-buffer and then via a LOCAL_WRITE invoke to the FPGA and onto the Ethernet wire 
     /* for(int i = 0; i < 128; i++) {
@@ -96,10 +96,10 @@ int main(int argc, char *argv[]) {
     tx_mem[14] = 0x04d2ea19; 
     tx_mem[15] = 0x00000000;
 
-    coyote_thread->invoke(coyote::CoyoteOper::LOCAL_READ, &sg); 
+    coyote_thread.invoke(coyote::CoyoteOper::LOCAL_READ, sg); 
 
     // Afterwards: Wait for tail to move to position 4   
-    while(coyote_thread->getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 12) {
+    while(coyote_thread.getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 12) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
