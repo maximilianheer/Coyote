@@ -65,26 +65,38 @@ int mmu_handler_gup(struct fpga_dev *d, uint64_t vaddr, uint64_t len, int32_t cp
     curr_task = pid_task(find_vpid(hpid), PIDTYPE_PID);
     dbg_info("hpid found = %d", hpid);
     curr_mm = curr_task->mm;
+    dbg_info("Get curr_mm \n"); 
 
     // hugepages?
     vma_area_init = find_vma(curr_mm, vaddr);
+    dbg_info("Executed vma_area_init \n"); 
     hugepages = is_vm_hugetlb_page(vma_area_init);
+    dbg_info("Found if system uses hugepages \n"); 
     tlb_order = hugepages ? pd->ltlb_order : pd->stlb_order;
+    dbg_info("Organize hugepages \n"); 
 
     // align and shift (PAGE_SIZE)
     pfa.vaddr = (vaddr & tlb_order->page_mask) >> tlb_order->page_shift;
+    dbg_info("Get vAddr \n"); 
     last = ((vaddr + len - 1) & tlb_order->page_mask) >> tlb_order->page_shift;
+    dbg_info("Get last \n"); 
     pfa.n_pages = last - pfa.vaddr + 1;
+    dbg_info("Get n_pages \n"); 
     
     if (hugepages) {
         pfa.n_pages = pfa.n_pages * pd->n_pages_in_huge;
+        dbg_info("Get n_pages for hugepages \n"); 
         pfa.vaddr = pfa.vaddr << pd->dif_order_page_shift;
+        dbg_info("Get vaddr for hugepages \n"); 
     }
     pfa.cpid = cpid;
+    dbg_info("Get cpid \n"); 
     pfa.hugepages = hugepages;
+    dbg_info("Get hugepages \n"); 
 
     // check user buff map
     user_pg = map_present(d, &pfa);
+    dbg_info("Check user buffer map \n"); 
 
     if(user_pg) {
         if(stream == HOST_ACCESS) {

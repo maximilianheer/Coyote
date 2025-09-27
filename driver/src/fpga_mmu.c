@@ -199,7 +199,9 @@ void fpga_pfault_handler(struct work_struct *work)
         ret_val = mmu_handler_hmm(d, irq_pf->vaddr, irq_pf->len, irq_pf->cpid, irq_pf->stream, hpid);
     else
 #endif    
+        dbg_info("Call the mmu_handler_gup\n"); 
         ret_val = mmu_handler_gup(d, irq_pf->vaddr, irq_pf->len, irq_pf->cpid, irq_pf->stream, hpid);
+        dbg_info("Exited the mmu_handler_gup\n"); 
 
     if (ret_val) {
         fpga_drop_irq_pfault(d, irq_pf->wr, irq_pf->cpid);
