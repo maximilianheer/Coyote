@@ -31,7 +31,12 @@ int mmu_handler_gup(struct vfpga_dev *device, uint64_t vaddr, uint64_t len, int3
 
     // Find context (host process ID)
     struct task_struct *curr_task = pid_task(find_vpid(hpid), PIDTYPE_PID);
-    dbg_info("hpid found = %d", hpid);
+    dbg_info("Now! hpid found = %d", hpid);
+
+    if(!curr_task) {
+        dbg_info("Could not find task_struct for hpid %d\n", hpid); 
+        return ESRCH; 
+    }
     struct mm_struct *curr_mm = curr_task->mm;
 
     // Check if the request area is huge page or not
@@ -86,7 +91,8 @@ int mmu_handler_gup(struct vfpga_dev *device, uint64_t vaddr, uint64_t len, int3
         }
     } else {
         dbg_info("map not present\n");
-        user_pg = tlb_get_user_pages(device, &pf_desc, hpid, curr_task, curr_mm);
+        user_pg = tlb_get_user_pages(device, &pf_desc, hpid, curr_task, curr_mm); 
+        dbg_info("Checked tlb_get_user_pages \n"); 
         if(!user_pg) {
             pr_err("user pages could not be obtained\n");
             return -ENOMEM;
@@ -259,6 +265,8 @@ struct user_pages* tlb_get_user_pages(struct vfpga_dev *device, struct pf_aligne
     int ret_val = 0;
     struct bus_driver_data *bd_data = device->bd_data;
 
+    dbg_info("Called tlb_get_user_pages. \n");
+
     // Error handling
     BUG_ON(!device);
     BUG_ON(!bd_data);
@@ -270,14 +278,17 @@ struct user_pages* tlb_get_user_pages(struct vfpga_dev *device, struct pf_aligne
     // Allocate struct to hold the metadata, the actual pages and an array for the physical addresses
     struct user_pages *user_pg = kzalloc(sizeof(struct user_pages), GFP_KERNEL);
     BUG_ON(!user_pg);
+    dbg_info("Tried to get user_pages metadata\n");
 
     user_pg->pages = vmalloc(pf_desc->n_pages * sizeof(*user_pg->pages));
+    dbg_info("Allocated user pages. \n");
     BUG_ON(!user_pg->pages);
     for (int i = 0; i < pf_desc->n_pages - 1; i++) {
         user_pg->pages[i] = NULL;
     }
 
     user_pg->hpages = vmalloc(pf_desc->n_pages * sizeof(uint64_t));
+    dbg_info("Allocated huge user pages. \n");
     BUG_ON(!user_pg->hpages);
     
     dbg_info(
@@ -312,6 +323,7 @@ struct user_pages* tlb_get_user_pages(struct vfpga_dev *device, struct pf_aligne
     // Allocate memory on the card if available
     if(bd_data->en_mem) {
         user_pg->cpages = vmalloc(pf_desc->n_pages * sizeof(uint64_t));
+        dbg_info("Allocated user pages on the card. \n");
         BUG_ON(!user_pg->cpages);
 
         ret_val = alloc_card_memory(device, user_pg->cpages, pf_desc->n_pages, pf_desc->hugepages);
@@ -328,11 +340,19 @@ struct user_pages* tlb_get_user_pages(struct vfpga_dev *device, struct pf_aligne
     user_pg->ctid = pf_desc->ctid;
     user_pg->host = HOST_ACCESS;
 
+    dbg_info("Populated metadata and stored to hash table. \n");
+
     hash_add(user_buff_map[device->id][pf_desc->ctid], &user_pg->entry, pf_desc->vaddr);
+
+    dbg_info("executed hash add. \n");
+
+    dbg_info("Returned user page %d \n", user_pg);
 
     return user_pg;
 
 fail_host_unmap:
+    dbg_info("Fail host unmap! \n");
+
     // Release the pages
     for(int i = 0; i < ret_val; i++) {
         put_page(user_pg->pages[i]);
@@ -346,6 +366,8 @@ fail_host_unmap:
     return NULL;
 
 fail_card_unmap:
+    dbg_info("Fail card unmap! \n");
+
     // Release the pages
     for(int i = 0; i < user_pg->n_pages; i++) {
         put_page(user_pg->pages[i]);

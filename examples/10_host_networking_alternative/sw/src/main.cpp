@@ -14,7 +14,7 @@
 #define N_LATENCY_REPS 1
 #define N_THROUGHPUT_REPS 64
 
-#define BUFFER_RING_SIZE 64
+#define BUFFER_RING_SIZE 1024
 #define BUFFER_STRIDE 6144
 #define IRQ_COALESCE 128 // In packets
 
@@ -49,23 +49,25 @@ meta_tag_decoded_t decode_meta_tag(uint32_t raw) {
 int main(int argc, char *argv[]) {
     
     // Obtain a Coyote thread for handling of the buffers 
-    coyote::cThread coyote_thread(DEFAULT_VFPGA_ID, getpid(), 0);
+    coyote::cThread coyote_thread(DEFAULT_VFPGA_ID, getpid());
 
     // Allocate two buffers for RX and TX traffic 
     int *rx_mem, *tx_mem;
-    rx_mem = (int *) coyote_thread.getMem({coyote::CoyoteAllocType::HPF, BUFFER_RING_SIZE * BUFFER_STRIDE});
-    tx_mem = (int *) coyote_thread.getMem({coyote::CoyoteAllocType::HPF, 4*1024*1024});
+    uint32_t rx_size = 6144 * 64; 
+    rx_mem = (int *) coyote_thread.getMem({coyote::CoyoteAllocType::HPF, rx_size});
+    // tx_mem = (int *) coyote_thread.getMem({coyote::CoyoteAllocType::HPF, 4*1024*1024});
 
     // Exit if memory couldn't be allocated 
-    if (!rx_mem || !tx_mem) { throw std::runtime_error("Could not allocate memory; exiting..."); }
+    // if (!rx_mem || !tx_mem) { throw std::runtime_error("Could not allocate memory; exiting..."); }
 
     // Create a scatter-gather entry for the TX-stream for outgoing traffic 
-    coyote::localSg sg; 
-    sg = {.addr = tx_mem, .stream=1}; // It should not be required to set the RX-buffer as it is served automatically by the FPGA 
+    // coyote::localSg sg; 
+    // sg = {.addr = tx_mem, .stream=1}; // It should not be required to set the RX-buffer as it is served automatically by the FPGA 
 
     // Print the buff address for debugging purposes
     std::cout << "RX Buffer Address: " << std::hex << reinterpret_cast<uint64_t>(rx_mem) << std::dec << std::endl;
-
+    std::cout << "CTID: " << std::hex << coyote_thread.getCtid() << std::endl; 
+    
     // Communicate the details of the RX-buffer to the vFPGA via the CTRL register 
     coyote_thread.setCSR(reinterpret_cast<uint64_t>(rx_mem), static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_BUFF_VADDR_REG)); // Set vaddr 
     coyote_thread.setCSR(coyote_thread.getCtid(), static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_PID_REG)); // Set PID
@@ -79,7 +81,7 @@ int main(int argc, char *argv[]) {
         tx_mem[i] = i;
     } */ 
 
-    tx_mem[0] = 0x0b350a00; 
+    /* tx_mem[0] = 0x0b350a00; 
     tx_mem[1] = 0x0a009824; 
     tx_mem[2] = 0x28250b35; 
     tx_mem[3] = 0x02450008; 
@@ -94,34 +96,35 @@ int main(int argc, char *argv[]) {
     tx_mem[12] = 0x00000000; 
     tx_mem[13] = 0x001f48cf;
     tx_mem[14] = 0x04d2ea19; 
-    tx_mem[15] = 0x00000000;
+    tx_mem[15] = 0x00000000; */ 
 
-    coyote_thread.invoke(coyote::CoyoteOper::LOCAL_READ, sg); 
+    // coyote_thread.invoke(coyote::CoyoteOper::LOCAL_READ, sg); 
 
     // Afterwards: Wait for tail to move to position 4   
-    while(coyote_thread.getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 12) {
+    while(coyote_thread.getCSR(static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_RING_TAIL_REG)) < 4) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     std::cout << "Received the confirmation over the AXI CTRL interface." << std::endl; 
  
     // If that has happened, go to the fourth position and poll until the possession flag has switched to FPGA 
-    /* uint32_t meta_raw; 
+    uint32_t meta_raw; 
     memcpy(&meta_raw, rx_mem+3*BUFFER_STRIDE, sizeof(uint32_t));
     meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
+    uint32_t iteration_counter = 0;
 
-    while(!meta.possession_flag) {
+    while((meta.possession_flag != 1) && (iteration_counter<150)) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         std::cout << "Raw meta flag #4: " << meta_raw << std::endl; 
         memcpy(&meta_raw, rx_mem+3*BUFFER_STRIDE, sizeof(uint32_t));
-        meta_tag_decoded_t meta = decode_meta_tag(meta_raw);
-    }*/ 
+        meta = decode_meta_tag(meta_raw);
+        std::cout << "Possession Flag: " << meta.possession_flag << std::endl;
+        iteration_counter++;
+    }
 
     // Fetch the first 4 packets received from the buffer and print out all the information
-    uint32_t meta_raw;
-    meta_tag_decoded_t meta; 
     for(int j = 0; j < 4; j++) {
-        memcpy(&meta_raw, rx_mem+j*BUFFER_STRIDE, sizeof(uint32_t));
+        memcpy(&meta_raw, reinterpret_cast<char*>(rx_mem) + j * BUFFER_STRIDE, sizeof(uint32_t));        
         meta = decode_meta_tag(meta_raw);
 
         std::cout << "Raw meta flag: " << meta_raw << std::endl; 
@@ -140,6 +143,13 @@ int main(int argc, char *argv[]) {
         printf("\n");
         printf("\n");
     }
+
+    // Let this thread sleep for 10 secs to allow some packets to pass through 
+    std::this_thread::sleep_for(std::chrono::seconds(10));
+    std::cout << "The end." << std::endl;
+    
+    // Invalidate the buffer vaddr to stop transmissions 
+    coyote_thread.setCSR(0, static_cast<uint32_t>(BenchmarkRegisters::HOST_NETWORKING_BUFF_VADDR_REG)); // Set vaddr 
 
     // Return value at the end
     return EXIT_SUCCESS;

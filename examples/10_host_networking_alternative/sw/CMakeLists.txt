@@ -11,6 +11,8 @@ message("*** Coyote Example 9: Host networking [Software Build] ***")
 # Directory containing the executables to be compiled 
 set(TARGET_DIR "${CMAKE_SOURCE_DIR}/src/")
 
+set(VERBOSE_DEBUG_1 1)
+
 # Create build targets and link against required libraries 
 set(EXEC test)
 add_executable(${EXEC} ${TARGET_DIR}/main.cpp)
