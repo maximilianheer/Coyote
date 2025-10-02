@@ -80,6 +80,18 @@
 #include <linux/dma-buf.h>
 #include <linux/dma-direct.h>
 #include <linux/dma-resv.h>
+#include <linux/netdevice.h>
+#include <linux/etherdevice.h>
+#include <linux/skbuff.h>
+#include <linux/if_ether.h>
+#include <linux/if_vlan.h>
+#include <linux/ip.h>
+#include <linux/tcp.h>
+#include <linux/udp.h>
+#include <linux/inet.h>
+#include <linux/if_arp.h>
+#include <linux/if_packet.h>
+
 
 // Driver arguments; see coyote_driver.c for details
 extern char *ip_addr;
@@ -234,6 +246,17 @@ extern bool en_hmm;
 
 #define VFPGA_CTRL_CNFG_AVX_SIZE 256 * 1024
 #define VFPGA_CTRL_CNFG_AVX_OFFS 0x1000000
+
+/**
+ * Sizing of the RX and TX buffer for the vfpga_net 
+ */
+#define BUFFER_RING_SIZE 512
+#define BUFFER_STRIDE 6144
+#define RX_BUFF_SIZE BUFFER_RING_SIZE*BUFFER_STRIDE
+
+#define TX_BUFF_SIZE 4*1024*1024
+
+
 
 /*
  * Various values that can be written to the above control registers
@@ -901,6 +924,31 @@ struct vfpga_dev {
 
     /// Atomic flag when waiting for sync to complete; cleared once sync is done
     atomic_t wait_sync;
+
+    // Pointer to the Linux network device structure
+    struct net_device *ndev; 
+
+    // NAPI structure for handling packet reception 
+    struct napi_struct napi; 
+    
+    // For network device: Pointer to the config, control and writeback memory mapping 
+    volatile uint64_t *vfpga_net_ctrl;
+    volatile uint64_t *vfpga_net_cnfg;
+    volatile uint64_t *vfpga_net_wb;
+
+    // For network device: Pointer to the RX and TX buffer used for reception and transmission of packets 
+    uint64_t vfpga_net_rx_buf_phys_addr;
+    volatile uint64_t *vfpga_net_rx_buf; 
+    uint64_t vfpga_net_tx_buf_phys_addr; 
+    volatile uint64_t *vfpga_net_tx_buf; 
+
+
+
+    // Spinlock for synchronizing access to the transmit path 
+    spinlock_t tx_lock; 
+
+    // Network statistics
+    struct rtnl_link_stats64 stats; 
 
     #ifdef HMM_KERNEL
         spinlock_t sections_lock;

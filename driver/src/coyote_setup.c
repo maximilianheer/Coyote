@@ -294,6 +294,12 @@ int alloc_vfpga_devices(struct bus_driver_data *data, dev_t dev) {
     memset(data->vfpga_dev, 0, data->n_fpga_reg * sizeof(struct vfpga_dev));
     dbg_info("allocated memory for fpga devices\n");
 
+    // Initialize the net device within only the first vFPGA 
+    dbg_info("Trying to initialize the network device from alloc_vfpga_devices\n");
+    data->vfpga_dev->bd_data = data;
+    vfpga_net_register(data->vfpga_dev, data->net_mac_addr); 
+    dbg_info("Finished initialization of the network device from alloc_vfpga_devices\n");
+
     goto end;
 
 err_fpga_char_mem:
@@ -496,6 +502,11 @@ void teardown_vfpga_devices(struct bus_driver_data *data) {
 }
 
 void free_vfpga_devices(struct bus_driver_data *data) {
+    // Stop the network device in privileged vFPGA #0 
+    dbg_info("Trying to unregister the network device from the free_vfpga_devices \n"); 
+    vfpga_net_unregister(data->vfpga_dev);
+    dbg_info("Successfully unregistered the network device from the free_vfpga_devices \n"); 
+
     kfree(data->vfpga_dev);
     dbg_info("memory for vFPGA device freed\n");
 

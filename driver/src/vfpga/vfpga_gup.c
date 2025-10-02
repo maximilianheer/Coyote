@@ -346,7 +346,7 @@ struct user_pages* tlb_get_user_pages(struct vfpga_dev *device, struct pf_aligne
 
     dbg_info("executed hash add. \n");
 
-    dbg_info("Returned user page %d \n", user_pg);
+    // dbg_info("Returned user page %d \n", user_pg);
 
     return user_pg;
 
