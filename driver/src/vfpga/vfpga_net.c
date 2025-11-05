@@ -33,6 +33,9 @@
 //
 // ======-------------------------------------------------------------------------------
 
+// Global variable for the ctid used by the FPGA-NIC 
+int32_t vfpga_net_ctid = -1;
+
 // Function for opening the new FPGA-NIC
 static int vfpga_net_open(struct net_device *dev)
 {
@@ -46,16 +49,16 @@ static int vfpga_net_open(struct net_device *dev)
     
     // Control-mmap 
     dbg_info("Trying to allocate net ctrl memory at %llx of size %lx.\n", vfpga->vfpga_cnfg_phys_addr+VFPGA_CTRL_USER_OFFS, VFPGA_CTRL_USER_SIZE); 
-    vfpga->vfpga_net_ctrl = ioremap(vfpga->vfpga_cnfg_phys_addr + VFPGA_CTRL_USER_OFFS, VFPGA_CTRL_USER_SIZE); 
+    vfpga->vfpga_net_ctrl = ioremap((vfpga->vfpga_cnfg_phys_addr + VFPGA_CTRL_USER_OFFS), VFPGA_CTRL_USER_SIZE); 
     if(vfpga->vfpga_net_ctrl == NULL) {
         dbg_info("Couldn't allocate control memory.");
         return -ENOMEM; 
     } else {
-        dbg_info("Successfully allocated the net ctrl memory.\n");
+        dbg_info("Successfully allocated the net ctrl memory at %llx.\n", vfpga->vfpga_net_ctrl);
     }
 
     // Config-mmap 
-    dbg_info("Trying to allocate net cnfg memory at %llx of size %lx.\n", vfpga->vfpga_cnfg_avx_phys_addr, VFPGA_CTRL_CNFG_AVX_SIZE); 
+    /* dbg_info("Trying to allocate net cnfg memory at %llx of size %lx.\n", vfpga->vfpga_cnfg_avx_phys_addr, VFPGA_CTRL_CNFG_AVX_SIZE); 
     vfpga->vfpga_net_cnfg = ioremap(vfpga->vfpga_cnfg_avx_phys_addr, VFPGA_CTRL_CNFG_AVX_SIZE); 
     if(vfpga->vfpga_net_cnfg == NULL) {
         dbg_info("Couldn't allocate config memory."); 
@@ -72,7 +75,7 @@ static int vfpga_net_open(struct net_device *dev)
         return -ENOMEM; 
     } else {
         dbg_info("Successfully allocated the net writeback memory. \n"); 
-    }
+    } */ 
 
     // Allocate the RX- and TX-buffer for packet transmission 
     dbg_info("Trying to allocate the RX-buffer for arbitrary packet reception. \n"); 
@@ -103,7 +106,27 @@ static int vfpga_net_open(struct net_device *dev)
     dbg_info("Printing the PCI-dev: %llx \n", vfpga->bd_data->pci_dev->dev); 
     dbg_info("Printing the pointer to the PCI-dev: %llx \n", &vfpga->bd_data->pci_dev->dev); 
     dbg_info("Printing the RX Buf physical address %llx \n", &vfpga->vfpga_net_rx_buf_phys_addr);
-    
+
+    // Call ioctl for registering the ctid. We assume a fixed hpid of 17 for the NIC. 
+    dbg_info("Trying to register a ctid for the FPGA-NIC. \n"); 
+
+    // Pass on the hpid 17 for the NIC as arg to the ioctl call 
+    uint64_t tmp_reg_ctid[32];
+    tmp_reg_ctid[0] = current->pid;
+
+    // Print the current pid 
+    dbg_info("Current process pid is %d \n", current->pid);
+
+    if(vfpga_dev_ioctl_functionality(vfpga, IOCTL_REGISTER_CTID, &tmp_reg_ctid, true) < 0 ) {
+        dbg_info("Couldn't register a ctid for the FPGA-NIC. \n"); 
+        return -ENOMEM; 
+    } else {
+        // On success, read back the allocated ctid from the arg array
+        vfpga_net_ctid = tmp_reg_ctid[1];  
+        dbg_info("Successfully registered ctid %d for the FPGA-NIC. \n", vfpga_net_ctid); 
+    }
+
+    dbg_info("Trying to allocate the RX-buffer for arbitrary packet reception. \n"); 
     vfpga->vfpga_net_rx_buf = dma_alloc_coherent(&vfpga->bd_data->pci_dev->dev, RX_BUFF_SIZE, &vfpga->vfpga_net_rx_buf_phys_addr, GFP_KERNEL);
     if(!vfpga->vfpga_net_rx_buf) {
         dbg_info("Couldn't allocate the RX-buffer for the net-device. \n"); 
@@ -121,33 +144,55 @@ static int vfpga_net_open(struct net_device *dev)
         dbg_info("Successfully allocated the TX-buffer for the net-device at %llx. \n", vfpga->vfpga_net_tx_buf); 
     }
 
+    // Add both the TX- and RX-buffers to the kernel buffer map for the given ctid
+    dbg_info("Adding the RX-buffer to the kernel buffer map for ctid %d. \n", vfpga_net_ctid);
+    tlb_get_kernel_buffers(vfpga, (uint64_t)(((uint64_t)vfpga->vfpga_net_rx_buf & 0xFFFFFFFFFFFFULL) >> 12), vfpga->vfpga_net_rx_buf_phys_addr, vfpga_net_ctid, RX_BUFF_SIZE);
+    dbg_info("Adding the TX-buffer to the kernel buffer map for ctid %d. \n", vfpga_net_ctid);
+    tlb_get_kernel_buffers(vfpga, (uint64_t)(((uint64_t)vfpga->vfpga_net_rx_buf & 0xFFFFFFFFFFFFULL) >> 12), vfpga->vfpga_net_tx_buf_phys_addr, vfpga_net_ctid, TX_BUFF_SIZE);
+    dbg_info("Successfully added both RX- and TX-buffers to the kernel buffer map for ctid %d. \n", vfpga_net_ctid);
+
     // -----------------------
     // AXI-CTRL to the vFPGA 
     // -----------------------
 
-    // Offset 0: RX_BUFF_VADDR
-    dbg_info("Write RX-buffer address %llx to ctrl-reg. \n", vfpga->vfpga_net_rx_buf);
-    writeq(vfpga->vfpga_net_rx_buf, vfpga->vfpga_net_ctrl + 0);
+    // ssleep(1);
 
-    // Offset 1: HOST_NETWORKING_PID
+    // Offset 0: HOST_NETWORKING_PID
     dbg_info("Write host-pid 0 to ctrl-reg. \n");
-    writeq(0, vfpga->vfpga_net_ctrl + 1);
+    writeq(vfpga_net_ctid, vfpga->vfpga_net_ctrl + 0);
+    // iowrite64(0, vfpga->vfpga_net_rx_buf + 1); 
+    // vfpga->vfpga_net_rx_buf[1] = 0; 
+
+    // Offset 1: RX_BUFF_VADDR
+    dbg_info("Write RX-buffer address %llx to ctrl-reg. \n", vfpga->vfpga_net_rx_buf);
+    writeq(vfpga->vfpga_net_rx_buf, vfpga->vfpga_net_ctrl + 1);
+    // iowrite64(vfpga->vfpga_net_rx_buf, vfpga->vfpga_net_rx_buf); 
+    // vfpga->vfpga_net_rx_buf[0] = vfpga->vfpga_net_rx_buf; 
 
     // Offset 2: HOST_NETWORKING_BUFF_STRIDE 
     dbg_info("Write buff_stride 6144 to ctrl-reg. \n");
     writeq(6144, vfpga->vfpga_net_ctrl + 2);
+    // iowrite64(6144, vfpga->vfpga_net_rx_buf + 2); 
+    // vfpga->vfpga_net_rx_buf[2] = 6144; 
 
     // Offset 3: HOST_NETWORKING_RING_SIZE
     dbg_info("Write ring_size 512 to ctrl-reg. \n");
     writeq(512, vfpga->vfpga_net_ctrl + 3);
+    // iowrite64(512, vfpga->vfpga_net_rx_buf + 3); 
+    // vfpga->vfpga_net_rx_buf[3] = 512; 
 
     // Offset 4: HOST_NETWORKING_RING_HEAD 
     dbg_info("Write ring head 0 to ctrl-reg. \n");
     writeq(0, vfpga->vfpga_net_ctrl + 4);
+    // vfpga->vfpga_net_rx_buf[4] = 0; 
+    // iowrite64(0, vfpga->vfpga_net_rx_buf + 4); 
+
 
     // Offset 5: HOST_NETWORKING_IRQ_COALESCE
     dbg_info("Write irq coalesce 16 to ctrl-reg. \n");
-    writeq(16, vfpga->vfpga_net_ctrl + 5);
+    writeq(16, vfpga->vfpga_net_ctrl + 6);
+    // vfpga->vfpga_net_rx_buf[5] = 16; 
+    // iowrite64(16, vfpga->vfpga_net_rx_buf + 5); 
 
 
     pr_info("vfpga_net: device %s opened\n", dev->name);
@@ -170,8 +215,8 @@ static int vfpga_net_stop(struct net_device *dev)
     // Buffer deallocation for the vFPGA, using ioremap for kernelspace mapping 
     dbg_info("Trying to deallocate the buffers held for ctrl, cnfg and wb of the vFPGA. \n"); 
     iounmap(vfpga->vfpga_net_ctrl); 
-    iounmap(vfpga->vfpga_net_cnfg); 
-    iounmap(vfpga->vfpga_net_wb); 
+    // iounmap(vfpga->vfpga_net_cnfg); 
+    // iounmap(vfpga->vfpga_net_wb); 
     dbg_info("Successfully deallocated the buffers held for ctrl, cnfg and wb of the vFPGA. \n"); 
 
     // Deallocating the RX- and TX-buffer for the net-device 
@@ -243,9 +288,11 @@ int vfpga_net_register(struct vfpga_dev *vfpga, uint64_t net_mac_addr)
         mac_bytes[ETH_ALEN - 1 - i] = (net_mac_addr >> (i * 8)) & 0xFF;
     }
 
+    vfpga->ndev->addr_len = ETH_ALEN; 
     if(is_valid_ether_addr(mac_bytes)) {
         dbg_info("Assigned the correct mac_addr for the FPGA. \n");
         ether_addr_copy(vfpga->ndev->dev_addr, mac_bytes); 
+        ether_addr_copy(vfpga->ndev->perm_addr, mac_bytes);
     } else {
         dbg_info("Assigned a random mac_addr for the FPGA. \n");
         eth_hw_addr_random(vfpga->ndev); // Random MAC address for demonstration

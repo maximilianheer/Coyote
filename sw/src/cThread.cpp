@@ -298,7 +298,7 @@ void cThread::mmapFpga() {
 
 	// Control - map the user CSRs into memory 
 	ctrl_reg = (uint64_t*) mmap(NULL, CTRL_REGION_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, MMAP_CTRL);
-	if (ctrl_reg == MAP_FAILED) {
+    if (ctrl_reg == MAP_FAILED) {
 		throw std::runtime_error("ERROR: ctrl_reg mmap failed");
     }
 	

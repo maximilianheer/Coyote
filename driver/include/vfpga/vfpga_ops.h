@@ -39,8 +39,11 @@ int vfpga_dev_open(struct inode *inode, struct file *file);
 /// vfpga_dev release (close) char device
 int vfpga_dev_release(struct inode *inode, struct file *file);
 
-/// vfpga_dev IOCTL calls
+/// vfpga_dev IOCTL calls - wrapper function that works with the file descriptor as main handle
 long vfpga_dev_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+
+/// vfpga_dev IOCTL calls functionality - actual implementation of the IOCTL calls, also accessible for the net driver 
+long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int command, unsigned long arg, bool called_from_kernel_space);
 
 /// vfpga_dev memory map; maps user control region, vFPGA config and writeback regions
 int vfpga_dev_mmap(struct file *file, struct vm_area_struct *vma);
