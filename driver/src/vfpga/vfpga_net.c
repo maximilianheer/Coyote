@@ -148,7 +148,7 @@ static int vfpga_net_open(struct net_device *dev)
     dbg_info("Adding the RX-buffer to the kernel buffer map for ctid %d. \n", vfpga_net_ctid);
     tlb_get_kernel_buffers(vfpga, (uint64_t)(((uint64_t)vfpga->vfpga_net_rx_buf & 0xFFFFFFFFFFFFULL) >> 12), vfpga->vfpga_net_rx_buf_phys_addr, vfpga_net_ctid, RX_BUFF_SIZE);
     dbg_info("Adding the TX-buffer to the kernel buffer map for ctid %d. \n", vfpga_net_ctid);
-    tlb_get_kernel_buffers(vfpga, (uint64_t)(((uint64_t)vfpga->vfpga_net_rx_buf & 0xFFFFFFFFFFFFULL) >> 12), vfpga->vfpga_net_tx_buf_phys_addr, vfpga_net_ctid, TX_BUFF_SIZE);
+    tlb_get_kernel_buffers(vfpga, (uint64_t)(((uint64_t)vfpga->vfpga_net_tx_buf & 0xFFFFFFFFFFFFULL) >> 12), vfpga->vfpga_net_tx_buf_phys_addr, vfpga_net_ctid, TX_BUFF_SIZE);
     dbg_info("Successfully added both RX- and TX-buffers to the kernel buffer map for ctid %d. \n", vfpga_net_ctid);
 
     // -----------------------
@@ -285,7 +285,7 @@ int vfpga_net_register(struct vfpga_dev *vfpga, uint64_t net_mac_addr)
     // Set the MAC address (for simplicity, using a fixed MAC address here)
     uint8_t mac_bytes[ETH_ALEN];
     for (int i = 0; i < ETH_ALEN; i++){
-        mac_bytes[ETH_ALEN - 1 - i] = (net_mac_addr >> (i * 8)) & 0xFF;
+        mac_bytes[i] = (net_mac_addr >> (8 * (ETH_ALEN - 1 - i))) & 0xFF;
     }
 
     vfpga->ndev->addr_len = ETH_ALEN; 

@@ -319,6 +319,7 @@ extern bool en_hmm;
 #define IRQ_PFAULT 3
 #define IRQ_NOTIFY 4
 #define IRQ_RCNFG 5
+#define IRQ_NET_PACKET_COALESCE 6
 
 // Dynamic major numbers for the char devices
 #define VFPGA_DEV_MAJOR 0

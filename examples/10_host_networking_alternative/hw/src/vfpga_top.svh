@@ -306,6 +306,9 @@ logic merge_start;
 logic [31:0] stream_remainder_data; 
 logic [63:0] stream_remainder_keep; 
 
+// Counter for DMA'd packets to the host for managing the IRQ coalescing
+logic [31:0] dma_packet_counter;
+
 // ----------------------------------------------------------------------------
 // FF-logic for the FSM
 // ----------------------------------------------------------------------------
@@ -334,6 +337,12 @@ always_ff @(posedge aclk) begin
         data_stream_ready_in <= 1'b0;
         meta_tag_ready_in <= 1'b0;
 
+        // Reset the packet counter for IRQ coalescing
+        dma_packet_counter <= 32'd0;
+
+        // Reset the interrupt notification signal
+        notify.valid <= 1'b0;
+
     end else begin 
 
         // FSM: Case-conditional for the release_state
@@ -359,11 +368,25 @@ always_ff @(posedge aclk) begin
 
                     // Trigger the transmission of the DMA command to the XDMA engine 
                     sq_wr.valid <= 1'b1;
+
+                    // Increment the DMA packet counter for IRQ coalescing (wrap around at threshold)
+                    if(dma_packet_counter == host_networking_irq_coalesce) begin 
+                        dma_packet_counter <= 32'd0;
+
+                        // Start the interrupt notification 
+                        notify.valid <= 1'b1;
+                    end else begin 
+                        dma_packet_counter <= dma_packet_counter + 1;
+                        notify.valid <= 1'b0;
+                    end 
                 end
             end
 
             // State to wait for acceptance of the DMA command by the XDMA engine
             WAIT_FOR_DMA_CMD_ACCEPTANCE: begin
+                // Anyways: Take back the interrupt notification signal 
+                notify.valid <= 1'b0;
+
                 if(sq_wr.ready) begin 
                     // Reset the DMA command valid signal 
                     sq_wr.valid <= 1'b0;
@@ -587,11 +610,20 @@ assign sq_wr.data.rsrvd = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //
+// SECTION 6: Raising interrupts when irq_coalesce threshold is met  
+//  
+////////////////////////////////////////////////////////////////////////////////
+
+// IRQ valid is already handled in the release FSM based on the dma_packet_counter
+assign notify.data.value = 32'd6;
+assign notify.data.pid = host_networking_pid; 
+
+////////////////////////////////////////////////////////////////////////////////
+//
 // SECTION 7: Tie-off of unused signals 
 //  
 ////////////////////////////////////////////////////////////////////////////////
 
-always_comb notify.tie_off_m();
 always_comb cq_rd.tie_off_s();
 always_comb cq_wr.tie_off_s();
 always_comb sq_rd.tie_off_m();
@@ -666,5 +698,11 @@ ila_host_networking inst_ila_host_networking (
     .probe33(data_stream_valid_out),                    // 1
     .probe34(data_stream_data_out),                     // 512
     .probe35(data_stream_keep_out),                     // 64
-    .probe36(data_stream_last_out)                      // 1    
+    .probe36(data_stream_last_out),                     // 1
+
+    // Packet counting and IRQ notification 
+    .probe37(dma_packet_counter),                        // 32   
+    .probe38(notify.valid),                              // 1
+    .probe39(notify.data.value),                         // 32 
+    .probe40(notify.data.pid)                            // 16 
 ); 
