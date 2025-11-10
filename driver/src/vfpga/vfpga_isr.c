@@ -80,12 +80,21 @@ irqreturn_t vfpga_isr(int irq, void *d) {
             irq_not->device = device;
             read_irq_notify(device, irq_not);
 
-            INIT_WORK(&irq_not->work_notify, vfpga_notify_handler);
+            // Case decision: For NIC interrupts, we call the network driver directly
+            if(irq_not->notification_value == IRQ_NET_PACKET_COALESCE) {
+                // Call the network driver's NAPI handler directly
+                dbg_info("(irq=%d) NIC packet coalescing interrupt, vFPGA %d\n", irq, device->id);
+                vfpga_net_irq_dispatch(device); 
+                kfree(irq_not);
+                break;
+            } else {
+                INIT_WORK(&irq_not->work_notify, vfpga_notify_handler);
 
-            if(!queue_work(device->wqueue_notify, &irq_not->work_notify)) {
-                pr_err("could not enqueue a workqueue, notify ISR");
+                if(!queue_work(device->wqueue_notify, &irq_not->work_notify)) {
+                    pr_err("could not enqueue a workqueue, notify ISR");
+                }
+                break;
             }
-            break;
 
         default:
             dbg_info("(irq=%d) unknown ISR entry, dropping...\n", irq);

@@ -322,7 +322,7 @@ int setup_vfpga_devices(struct bus_driver_data *data) {
         data->vfpga_dev[i].vfpga_cnfg_phys_addr = data->bar_phys_addr[BAR_SHELL_CONFIG] + VFPGA_CTRL_OFFS + i * VFPGA_CTRL_SIZE;
         data->vfpga_dev[i].vfpga_cnfg_avx_phys_addr = data->bar_phys_addr[BAR_SHELL_CONFIG] + VFPGA_CTRL_CNFG_AVX_OFFS + i * VFPGA_CTRL_CNFG_AVX_SIZE;
         dbg_info("Got the physical address of the control memory at %llx \n", data->vfpga_dev[i].vfpga_cnfg_phys_addr); 
-        dbg_info("the VFPGA user control offset is %llx \n", VFPGA_CTRL_USER_OFFS); 
+        dbg_info("the VFPGA user control offset is %d \n", VFPGA_CTRL_USER_OFFS); 
 
         // Memory map the control registers for MMU and shell configuration
         data->vfpga_dev[i].fpga_lTlb = ioremap(data->vfpga_dev[i].vfpga_cnfg_phys_addr + VFPGA_CTRL_LTLB_OFFS, VFPGA_CTRL_LTLB_SIZE);
@@ -434,6 +434,13 @@ int setup_vfpga_devices(struct bus_driver_data *data) {
             // Initialize the net device within only the first vFPGA 
             dbg_info("Trying to initialize the network device from alloc_vfpga_devices\n");
             data->vfpga_dev->bd_data = data;
+            dbg_info("Allocating the etherdev structure for the network device\n");
+            data->vfpga_dev->ndev = alloc_etherdev(sizeof(struct vfpga_dev *));
+            if(!data->vfpga_dev->ndev) {
+                pr_err("could not allocate etherdev structure for the network device\n");
+                return -ENOMEM;
+            }
+            dbg_info("Successfully allocated the etherdev structure for the network device\n");
             vfpga_net_register(data->vfpga_dev, data->net_mac_addr); 
             dbg_info("Finished initialization of the network device from alloc_vfpga_devices\n");
         }

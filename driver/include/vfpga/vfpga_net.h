@@ -52,6 +52,13 @@ int vfpga_net_register(struct vfpga_dev *vfpga, uint64_t net_mac_addr);
 void vfpga_net_unregister(struct vfpga_dev *vfpga);
 
 /**
+ * fpga_net_irq_dispatch - Dispatch network-related IRQs
+ * @vfpga: pointer to the FPGA device structure (for a vFPGA)
+ */
+void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga);
+
+
+/**
  * Definition of all the registers required for talking to the HW 
  */
 typedef enum {
@@ -68,9 +75,9 @@ typedef enum {
  * Definition of the datatype for metatags in the descriptor ring 
  */
 typedef struct {
-    uint32_t possession_flag; // 1 Bit 
-    uint32_t packet_len;      // 28 Bits
-    uint32_t rsvd;            // 3 Bits, not relevant   
+    uint32_t possession_flag : 1; // 1 Bit 
+    uint32_t packet_len : 28;      // 28 Bits
+    uint32_t rsvd : 3;            // 3 Bits, not relevant   
 } meta_tag_decoded_t; 
 
 /**

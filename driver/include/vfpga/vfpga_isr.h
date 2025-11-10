@@ -30,6 +30,7 @@
 #include "coyote_defs.h"
 #include "vfpga_hw.h"
 #include "vfpga_gup.h"
+#include "vfpga_net.h"
 
 #ifdef HMM_KERNEL
 #include "fpga_hmm.h"

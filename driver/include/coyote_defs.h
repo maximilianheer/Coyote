@@ -939,11 +939,12 @@ struct vfpga_dev {
 
     // For network device: Pointer to the RX and TX buffer used for reception and transmission of packets 
     uint64_t vfpga_net_rx_buf_phys_addr;
-    volatile uint64_t *vfpga_net_rx_buf; 
+    uint64_t *vfpga_net_rx_buf; 
     uint64_t vfpga_net_tx_buf_phys_addr; 
-    volatile uint64_t *vfpga_net_tx_buf; 
+    uint64_t *vfpga_net_tx_buf; 
 
-
+    // Global RX buffer index for state-keeping on the RX-polling path 
+    uint32_t rx_buf_head; 
 
     // Spinlock for synchronizing access to the transmit path 
     spinlock_t tx_lock; 
