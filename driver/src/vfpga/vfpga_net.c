@@ -73,8 +73,8 @@ static int vfpga_net_open(struct net_device *dev)
     }
 
     // Config-mmap -> Used for giving commands to the FPGA 
-    dbg_info("Trying to allocate net cnfg memory at %llx of size %d.\n", vfpga->vfpga_cnfg_phys_addr+VFPGA_CTRL_CNFG_OFFS, VFPGA_CTRL_CNFG_SIZE); 
-    vfpga->vfpga_net_cnfg = ioremap(vfpga->vfpga_cnfg_phys_addr+VFPGA_CTRL_CNFG_OFFS, VFPGA_CTRL_CNFG_SIZE); 
+    dbg_info("Trying to allocate net cnfg memory at %llx of size %d.\n", vfpga->vfpga_cnfg_avx_phys_addr, VFPGA_CTRL_CNFG_AVX_SIZE); 
+    vfpga->vfpga_net_cnfg = ioremap(vfpga->vfpga_cnfg_avx_phys_addr, VFPGA_CTRL_CNFG_AVX_SIZE); 
     if(vfpga->vfpga_net_cnfg == NULL) {
         dbg_info("Couldn't allocate config memory."); 
         return -ENOMEM; 

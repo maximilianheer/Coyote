@@ -58,7 +58,7 @@ always_ff @(posedge aclk) begin
     if(!aresetn) begin 
         reset_timer <= 32'd0;
     end else begin 
-        if(reset_time < 300000000) begin 
+        if(reset_timer < 300000000) begin 
             reset_timer <= reset_timer + 1;
         end 
     end 
