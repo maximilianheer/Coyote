@@ -254,7 +254,7 @@ extern bool en_hmm;
 #define BUFFER_STRIDE 6144
 #define RX_BUFF_SIZE BUFFER_RING_SIZE*BUFFER_STRIDE
 
-#define TX_BUFF_SIZE 4*1024*1024
+#define TX_BUFF_SIZE 6144
 
 
 

@@ -48,6 +48,23 @@ host_networking_axi_ctrl_parser inst_axi_ctrl_parser (
 );
 
 
+// ---------------------------------------------------------------------------
+// For testing purposes: A timer that blocks the reception of packets for 60 seconds after reset
+// ---------------------------------------------------------------------------
+
+logic [31:0] reset_timer;
+
+always_ff @(posedge aclk) begin 
+    if(!aresetn) begin 
+        reset_timer <= 32'd0;
+    end else begin 
+        if(reset_time < 300000000) begin 
+            reset_timer <= reset_timer + 1;
+        end 
+    end 
+end 
+
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // SECTION 2: Definition of the FIFOs for the data stream and meta tags 
@@ -99,7 +116,9 @@ axis_data_fifo_512_dma_cmd inst_axis_data_fifo_512_dma_cmd(
 
 // Connect the ready signal of the incoming host networking to the control setup and the FIFO reception
 assign axis_host_networking_rx.tready = data_stream_fifo_reception_ready && reception_fsm_ready;
-assign data_stream_fifo_reception_valid = axis_host_networking_rx.tvalid && (host_networking_buff_vaddr != 0);
+assign data_stream_fifo_reception_valid = axis_host_networking_rx.tvalid && (host_networking_buff_vaddr != 0) && (reset_timer >= 250000000);
+
+// For debugging purposes: For the first 60 seconds after reset, it will appear as if no packets are arriving. Gives us time to set up the ILA and compare incoming packets on HW-level and in the driver. 
 
 
 // ----------------------------------------------------------------------------

@@ -51,7 +51,7 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga);
 // Function for opening the new FPGA-NIC
 static int vfpga_net_open(struct net_device *dev)
 {
-    struct vfpga_dev *vfpga = netdev_priv(dev);
+    struct vfpga_dev *vfpga = *(struct vfpga_dev **)netdev_priv(dev);
 
     // Initialize the TX lock and start the queue 
     spin_lock_init(&vfpga->tx_lock);
@@ -70,6 +70,16 @@ static int vfpga_net_open(struct net_device *dev)
         return -ENOMEM; 
     } else {
         dbg_info("Successfully allocated the net ctrl memory at %llx.\n", *vfpga->vfpga_net_ctrl);
+    }
+
+    // Config-mmap -> Used for giving commands to the FPGA 
+    dbg_info("Trying to allocate net cnfg memory at %llx of size %d.\n", vfpga->vfpga_cnfg_phys_addr+VFPGA_CTRL_CNFG_OFFS, VFPGA_CTRL_CNFG_SIZE); 
+    vfpga->vfpga_net_cnfg = ioremap(vfpga->vfpga_cnfg_phys_addr+VFPGA_CTRL_CNFG_OFFS, VFPGA_CTRL_CNFG_SIZE); 
+    if(vfpga->vfpga_net_cnfg == NULL) {
+        dbg_info("Couldn't allocate config memory."); 
+        return -ENOMEM; 
+    } else {
+        dbg_info("Successfully allocated the net cnfg memory at %llx. \n", *vfpga->vfpga_net_cnfg);
     }
 
     // Config-mmap 
@@ -236,7 +246,7 @@ static int vfpga_net_open(struct net_device *dev)
 // Function for stopping the FPGA-NIC 
 static int vfpga_net_stop(struct net_device *dev)
 {
-    struct vfpga_dev *vfpga = netdev_priv(dev);
+    struct vfpga_dev *vfpga = *(struct vfpga_dev **)netdev_priv(dev);
 
     // Stop the queue 
     netif_stop_queue(dev);
@@ -274,7 +284,7 @@ void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga)
     dbg_info("vfpga_net_irq_dispatch: NAPI struct address: %p\n", &vfpga->napi);
     dbg_info("napi.dev=%p, ndev=%p\n", vfpga->napi.dev, vfpga->ndev);
     dbg_info("napi.poll=%p\n", vfpga->napi.poll);
-    napi_enable(&vfpga->napi);
+    // napi_enable(&vfpga->napi);
     napi_schedule(&vfpga->napi);
 }
 
@@ -282,7 +292,7 @@ void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga)
 static int vfpga_net_poll(struct napi_struct *napi, int budget)
 {
     dbg_info("vfpga_net_poll: Polling the RX-ring buffer for new packets from the FPGA-NIC. \n");
-    return 0; 
+    // return 0; 
 
     // Get the vfpga device structure from the napi struct
     struct vfpga_dev *vfpga = container_of(napi, struct vfpga_dev, napi);
@@ -308,7 +318,7 @@ static int vfpga_net_poll(struct napi_struct *napi, int budget)
         // Pass the packet to the network stack
         dbg_info("vfpga_net_poll: Passing the packet to the network stack. \n");
         skb->protocol = eth_type_trans(skb, vfpga->ndev);
-        netif_receive_skb(skb);
+        napi_gro_receive(napi, skb);
         dbg_info("vfpga_net_poll: Packet successfully passed to the network stack. \n");
 
         // Increment the processed packets counter
@@ -337,10 +347,14 @@ static int vfpga_net_poll(struct napi_struct *napi, int budget)
 static bool vfpga_rx_has_packet(struct vfpga_dev *vfpga)
 {
     // Calculate pointer to the meta word of the current RX slot
-    uint32_t *meta_word_ptr = (uint32_t *)(vfpga->vfpga_net_rx_buf + 
-                                           vfpga->rx_buf_head * 6144);
+    uint8_t *base_ptr = (uint8_t *)vfpga->vfpga_net_rx_buf;
+    uint8_t *pkt_ptr = base_ptr + vfpga->rx_buf_head * 6144;
+    uint32_t *meta_word_ptr = (uint32_t *)(pkt_ptr);
 
-    dbg_info("vfpga_rx_has_packet: Calculated packet address in RX-buffer at %d. \n", *meta_word_ptr);
+    dbg_info("vfpga_rx_has_packet: Base Pointer is %px\n", base_ptr);
+    dbg_info("vfpga_rx_has_packet: Packet Pointer is %px\n", pkt_ptr);
+    dbg_info("vfpga_rx_has_packet: Meta Word Pointer is %px\n", meta_word_ptr);
+
 
     // Read raw meta word from DMA buffer
     uint32_t raw_meta = *meta_word_ptr;
@@ -351,6 +365,8 @@ static bool vfpga_rx_has_packet(struct vfpga_dev *vfpga)
     meta.packet_len      = (raw_meta >> 3)  & 0x0FFFFFFF;
     meta.rsvd            = raw_meta & 0x7;
 
+    dbg_info("vfpga_rx_has_packet: Raw meta word is %08x\n", raw_meta);
+    dbg_info("vfpga_rx_has_packet: Decoded packet length: %u\n", meta.packet_len);
     dbg_info("vfpga_rx_has_packet: Checking RX slot %d, possession_flag=%u\n",
              vfpga->rx_buf_head, meta.possession_flag);
 
@@ -361,16 +377,19 @@ static bool vfpga_rx_has_packet(struct vfpga_dev *vfpga)
 // Function to fetch the packet from the RX-ring buffer at the current position and hand it over to the network stack 
 static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
 {
-    // Get the netdev 
-    struct net_device *dev = vfpga->ndev;
     dbg_info("vfpga_rx_fetch_packet: Retrieved net_device structure. \n");
 
-    // Get the pointer to the packet in the RX-buffer 
-    void *pkt_addr = vfpga->vfpga_net_rx_buf + vfpga->rx_buf_head * 6144; 
-    dbg_info("vfpga_rx_fetch_packet: Calculated packet address in RX-buffer at %p. \n", pkt_addr);
+    // Calculate pointer to the packet of the current RX slot
+    uint8_t *base_ptr = (uint8_t *)vfpga->vfpga_net_rx_buf;
+    uint8_t *pkt_ptr = base_ptr + vfpga->rx_buf_head * 6144;
+    uint32_t *meta_word_ptr = (uint32_t *)(pkt_ptr);
+
+    dbg_info("vfpga_rx_fetch_packet: Base Pointer is %px\n", base_ptr);
+    dbg_info("vfpga_rx_fetch_packet: Packet Pointer is %px\n", pkt_ptr);
+    dbg_info("vfpga_rx_fetch_packet: Meta Pointer is %px\n", meta_word_ptr);
 
     // Read raw meta word from DMA buffer
-    uint32_t raw_meta = *(uint32_t *)pkt_addr;
+    uint32_t raw_meta = *meta_word_ptr;
 
     // Decode the meta word
     meta_tag_decoded_t meta;
@@ -385,29 +404,45 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
 
     // For fetching the actual packet: Read out the packet length from the meta-tag and calculate the packet start address
     size_t pkt_len = meta.packet_len;
-    void *actual_pkt_addr = pkt_addr + sizeof(meta_tag_decoded_t);
-    dbg_info("vfpga_rx_fetch_packet: Actual packet length is %zu, starting at address %p. \n", pkt_len, actual_pkt_addr);
+    dbg_info("vfpga_rx_fetch_packet: Packet length from meta-tag is %zu. \n", pkt_len);
+    void *actual_pkt_addr = (void *)(meta_word_ptr + 1);
+    dbg_info("vfpga_rx_fetch_packet: Actual packet length is %zu, starting at address %px\n", pkt_len, actual_pkt_addr);
+
 
     // Allocate a new skb for the packet
-    struct sk_buff *skb = netdev_alloc_skb(dev, pkt_len); 
+    struct sk_buff *skb = netdev_alloc_skb(vfpga->ndev, pkt_len); 
     if(!skb) {
         dbg_info("vfpga_rx_fetch_packet: Failed to allocate skb for incoming packet. \n");
         return NULL; 
     }
-    dbg_info("vfpga_rx_fetch_packet: Successfully allocated skb at %p. \n", skb);
+    dbg_info("vfpga_rx_fetch_packet: Successfully allocated skb at %px \n", skb);
+    dbg_info("vfpga_rx_fetch_packet: alloc_skb -> skb=%p skb->data=%p skb->truesize=%u users=%d skb->dev=%p\n",
+        skb, skb->data, skb->truesize, refcount_read(&skb->users), skb->dev);
+
+    if (skb->dev) {
+        dbg_info("skb->dev: name=%s registered=%d\n", skb->dev->name,
+                skb->dev->reg_state == NETREG_REGISTERED);
+    }
+
 
     // Copy the packet data into the skb
     memcpy(skb_put(skb, pkt_len), actual_pkt_addr, pkt_len);
-    dbg_info("vfpga_rx_fetch_packet: Copied packet data into skb. \n");
-    skb->protocol = eth_type_trans(skb, dev);
+    // memcpy(skb_put(skb, sizeof(test_data)), test_data, sizeof(test_data));
+    dbg_info("vfpga_rx_fetch_packet: Copied skb=%px and data=%px of length %zu. \n", skb, skb->data, pkt_len);
+    skb->protocol = eth_type_trans(skb, vfpga->ndev);
     dbg_info("vfpga_rx_fetch_packet: Set skb protocol to %x. \n", skb->protocol);
+
+    // Hand over the packet to the stack 
+    // napi_gro_receive(&vfpga->napi, skb);
+    // dev_kfree_skb_any(skb); // For testing purposes, we just free the skb here
+    dbg_info("vfpga_rx_fetch_packet: Handed over skb to the network stack. \n");
 
     // Clear the possession flag in the meta-tag to indicate the packet has been processed
     meta.possession_flag = 0;
     raw_meta = (meta.possession_flag << 31) |
                     ((meta.packet_len & 0x0FFFFFFF) << 3) |
                     (meta.rsvd & 0x7);
-    *(uint32_t *)pkt_addr = raw_meta;
+    *(uint32_t *)meta_word_ptr = raw_meta;
     wmb(); 
     dbg_info("vfpga_rx_fetch_packet: Cleared possession flag in meta-tag. \n");
 
@@ -422,7 +457,32 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
 // Function for transmitting packets
 static netdev_tx_t vfpga_net_xmit(struct sk_buff *skb, struct net_device *dev)
 {
-    // struct vfpga_dev *fpga = netdev_priv(dev);
+    // Get the vfpga device structure from the net_device
+    struct vfpga_dev *vfpga = *(struct vfpga_dev **)netdev_priv(dev);
+
+    // Read the packet length from the skb
+    size_t pkt_len = skb->len;
+    dbg_info("vfpga_net_xmit: Transmitting packet of length %zu. \n", pkt_len);
+
+    // Sanity check for packet length whether it fits into the TX buffer
+    if (pkt_len == 0 || pkt_len > TX_BUFF_SIZE) {
+        dev_kfree_skb_any(skb);
+        dev->stats.tx_dropped++;
+        dbg_info("vfpga_net_xmit: Packet length %zu is invalid, dropping packet. \n", pkt_len);
+        return NETDEV_TX_OK;
+    }
+
+    // Copy the packet data into the TX buffer  
+    spin_lock_irqsave(&vfpga->tx_lock);
+    memcpy(vfpga->vfpga_net_tx_buf, skb->data, pkt_len);
+    dbg_info("vfpga_net_xmit: Copied packet data to TX buffer at %px. \n", vfpga->vfpga_net_tx_buf);
+    wmb(); 
+
+    // Trigger the LOCAL READ to push the packet out through the FPGA
+
+    // 
+
+
 
     // Increment the counter for outgoing packets and bytes for pushed out packets 
     dev->stats.tx_packets++;
@@ -454,17 +514,13 @@ int vfpga_net_register(struct vfpga_dev *vfpga, uint64_t net_mac_addr)
 
     // Allocate the net device structure
     dbg_info("Trying to allocate the ethernet device\n");
-    vfpga->ndev = alloc_netdev(sizeof(struct vfpga_dev), "slash_%d",
+    vfpga->ndev = alloc_netdev(sizeof(struct vfpga_dev *), "scenic_%d",
                           NET_NAME_UNKNOWN, ether_setup);
     if (!vfpga->ndev) {
         pr_err("fpga_net: could not allocate net device\n");
         return -ENOMEM;
     }
     dbg_info("Finished allocating the ethernet device\n");
-
-    struct vfpga_dev *priv = netdev_priv(vfpga->ndev);
-    *priv = *vfpga;        // copy existing FPGA struct
-    priv->ndev = vfpga->ndev; // ensure back-pointer to net_device
 
     // Set the device operations
     vfpga->ndev->netdev_ops = &vfpga_netdev_ops;
@@ -473,13 +529,15 @@ int vfpga_net_register(struct vfpga_dev *vfpga, uint64_t net_mac_addr)
     uint8_t mac_bytes[ETH_ALEN];
     for (int i = 0; i < ETH_ALEN; i++){
         mac_bytes[i] = (net_mac_addr >> (8 * (ETH_ALEN - 1 - i))) & 0xFF;
+        dbg_info("MAC byte %d: %02x\n", i, mac_bytes[i]);
     }
 
     vfpga->ndev->addr_len = ETH_ALEN; 
     if(is_valid_ether_addr(mac_bytes)) {
         dbg_info("Assigned the correct mac_addr for the FPGA. \n");
-        ether_addr_copy((uint8_t *)vfpga->ndev->dev_addr, mac_bytes); 
-        ether_addr_copy(vfpga->ndev->perm_addr, mac_bytes);
+        // ether_addr_copy(vfpga->ndev->dev_addr, mac_bytes); 
+        // ether_addr_copy(vfpga->ndev->perm_addr, mac_bytes);
+        eth_hw_addr_set(vfpga->ndev, mac_bytes);
     } else {
         dbg_info("Assigned a random mac_addr for the FPGA. \n");
         eth_hw_addr_random(vfpga->ndev); // Random MAC address for demonstration
@@ -515,8 +573,18 @@ int vfpga_net_register(struct vfpga_dev *vfpga, uint64_t net_mac_addr)
     pr_info("fpga_net: device %s registered with MAC %pM\n", vfpga->ndev->name, vfpga->ndev->dev_addr);
 
     // struct vfpga_dev *priv = netdev_priv(vfpga->ndev);
-    *priv = *vfpga;        // copy existing FPGA struct
-    priv->ndev = vfpga->ndev; // ensure back-pointer to net_device
+    struct vfpga_dev **priv_ptr = netdev_priv(vfpga->ndev);
+    *priv_ptr = vfpga;
+
+    dbg_info("vfpga_net_register after putting rebound pointer: NAPI struct address: %p\n", &vfpga->napi);
+    dbg_info("napi.dev=%p, ndev=%p\n", vfpga->napi.dev, vfpga->ndev);
+    dbg_info("napi.poll=%p\n", vfpga->napi.poll);
+
+    // Printing the napi stored in priv of ndev
+    struct vfpga_dev *check_priv = *(struct vfpga_dev **)netdev_priv(vfpga->ndev);
+    dbg_info("vfpga_net_register check_priv: NAPI struct address: %p\n", &check_priv->napi);
+    dbg_info("napi.dev=%p, ndev=%p\n", check_priv->napi.dev, check_priv->ndev);
+    dbg_info("napi.poll=%p\n", check_priv->napi.poll);
 
     return 0;
 }
