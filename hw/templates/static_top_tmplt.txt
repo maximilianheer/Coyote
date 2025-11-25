@@ -326,7 +326,7 @@ module static_top (
         .m_dma_wb_req(dma_wr_req_int[N_SCHAN])
     );
 
-    ila_host_networking inst_ila_host_networking_dynamic_top_1(
+    /* ila_host_networking inst_ila_host_networking_dynamic_top_1(
         .clk(aclk), 
         .probe0(s_axis_dyn_in[0].tvalid), 
         .probe1(s_axis_dyn_in[0].tready), 
@@ -338,7 +338,7 @@ module static_top (
         .probe7(axis_dyn_in_int[0].tlast), 
         .probe8(axis_dyn_in_int[0].tdata), 
         .probe9(axis_dyn_in_int[0].tkeep)
-    ); 
+    ); */ 
 
 
     // ================-----------------------------------------------------------------

@@ -36,6 +36,16 @@
 // Global variable for the ctid used by the FPGA-NIC 
 int32_t vfpga_net_ctid = -1;
 
+// Constant definitions for variables declared in coyote_defs.h
+const unsigned long STRM_CARD = 0;
+const unsigned long STRM_HOST = 1;
+const unsigned long STRM_RDMA = 2;
+const unsigned long STRM_TCP = 3;
+const int CMD_FIFO_DEPTH = 32;
+const int CMD_FIFO_THR = 10;
+const unsigned long MAX_TRANSFER_SIZE = 128 * 1024 * 1024;
+const long SLEEP_TIME = 100L;
+
 /**
  * fpga_rx_has_packet - Check if there is a new packet in the RX ring buffer
  * @vfpga: pointer to the FPGA device structure (for a vFPGA)
@@ -47,6 +57,97 @@ static bool vfpga_rx_has_packet(struct vfpga_dev *vfpga);
  * @vfpga: pointer to the FPGA device structure (for a vFPGA)
  */
 static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga);
+
+// Helper function to post an operation for the vFPGA handling the arbitrary traffic 
+static void vfpga_net_post_command(struct vfpga_dev *vfpga, uint64_t offs_3, uint64_t offs_2, uint64_t offs_1, uint64_t offs_0) {
+
+    // Step 1: Check the outstanding commands to not oversaturate the FPGA queues 
+    dbg_info("vfpga_net_post_command: Current command count before posting new command: %llu\n", vfpga->cmd_cnt);
+    while(vfpga->cmd_cnt > CMD_FIFO_DEPTH - CMD_FIFO_THR) {
+        dbg_info("vfpga_net_post_command: Command count %llu exceeds threshold %d, rechecking...\n", vfpga->cmd_cnt, CMD_FIFO_DEPTH - CMD_FIFO_THR);
+        // Recheck the command count by reading back the FPGA register
+        vfpga->cmd_cnt = (uint32_t)(vfpga->vfpga_net_cnfg[CTRL_REG] & 0xFFFFFFFF); 
+        dbg_info("vfpga_net_post_command: Updated command count after rechecking: %llu\n", vfpga->cmd_cnt);
+
+        // If the command count is still too high, sleep for a short time to avoid busy-waiting
+        if(vfpga->cmd_cnt > (CMD_FIFO_DEPTH - CMD_FIFO_THR)) {
+            dbg_info("vfpga_net_post_command: Command count %llu still exceeds threshold %d, sleeping briefly...\n", vfpga->cmd_cnt, CMD_FIFO_DEPTH - CMD_FIFO_THR);
+            // std::this_thread::sleep_for(std::chrono::nanoseconds(SLEEP_TIME));
+            udelay(1); 
+        }
+    }
+
+    // Step 2: Post the command to the FPGA
+    dbg_info("vfpga_net_post_command: Posting command with offsets: %llx, %llx, %llx, %llx\n", offs_3, offs_2, offs_1, offs_0);
+    vfpga->vfpga_net_cnfg[CTRL_REG] = offs_0;
+    vfpga->vfpga_net_cnfg[ISR_REG] = offs_1;
+    vfpga->vfpga_net_cnfg[STAT_REG_0] = offs_2;
+    vfpga->vfpga_net_cnfg[STAT_REG_1] = offs_3;
+
+    // Step 3: Increment the command count to keep track of outstanding commands 
+    dbg_info("vfpga_net_post_command: Command posted successfully. Incrementing command count.\n");
+    vfpga->cmd_cnt++;
+}
+
+// Helper function for local operations to the vFPGA handling the arbitrary traffic 
+static int vfpga_net_invoke_local_op(struct vfpga_dev *vfpga, CoyoteOper oper, struct localSg sg, bool last) {
+    dbg_info("vfpga_net_invoke_local_op: Invoking local operation of type %d\n", (int)(oper));
+
+    // Step 1: Check if the specified operation is supported in the current setting and if the buffer is not too long 
+    if (!isLocalRead(oper) && !isLocalWrite(oper)) {
+        dbg_info("vfpga_net_invoke_local_op: Unsupported operation type %d for local operation\n", (int)(oper));
+        return -EINVAL;
+    }
+
+    if (sg.len > MAX_TRANSFER_SIZE) {
+        dbg_info("vfpga_net_invoke_local_op: Transfer size %u exceeds maximum supported size %lu\n", sg.len, MAX_TRANSFER_SIZE);
+        return -EINVAL;
+    }
+
+    // Step 2: Dissect the meta-information to create the required arguments for calling the post_command function
+    uint64_t ctrl_cmd_src = 0;
+    uint64_t ctrl_cmd_dst = 0;
+    uint64_t addr_cmd_src = 0;
+    uint64_t addr_cmd_dst = 0;
+
+    dbg_info("vfpga_net_invoke_local_op: Preparing command parameters \n");
+
+    if(oper == LOCAL_READ) {
+        ctrl_cmd_src = ((vfpga_net_ctid & CTRL_PID_MASK) << CTRL_PID_OFFS) |
+                ((sg.dest & CTRL_DEST_MASK) << CTRL_DEST_OFFS) |
+                (last ? CTRL_LAST : 0x0) |
+                ((sg.stream & CTRL_STRM_MASK) << CTRL_STRM_OFFS) | 
+                (CTRL_START) | 
+                (0x0) | 
+                ((uint64_t)(sg.len) << CTRL_LEN_OFFS);
+
+        addr_cmd_src = (uint64_t)(sg.addr);
+
+        // Post the command to the FPGA
+        vfpga_net_post_command(vfpga, addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
+        dbg_info("vfpga_net_invoke_local_op: LOCAL_READ command posted successfully\n");
+
+    } else if(oper == LOCAL_WRITE) {
+        ctrl_cmd_dst = ((vfpga_net_ctid & CTRL_PID_MASK) << CTRL_PID_OFFS) |
+            ((sg.dest & CTRL_DEST_MASK) << CTRL_DEST_OFFS) |
+            (last ? CTRL_LAST : 0x0) |
+            ((sg.stream & CTRL_STRM_MASK) << CTRL_STRM_OFFS) | 
+            (CTRL_START) | 
+            (0x0) | 
+            ((uint64_t)(sg.len) << CTRL_LEN_OFFS);
+
+        addr_cmd_dst = (uint64_t)(sg.addr);
+
+        // Post the command to the FPGA 
+        vfpga_net_post_command(vfpga, addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
+        dbg_info("vfpga_net_invoke_local_op: LOCAL_WRITE command posted successfully\n");
+    } else {
+        dbg_info("vfpga_net_invoke_local_op: Unsupported operation type %d for local operation\n", (int)(oper));
+        return -EINVAL;
+    }
+
+    return 0; 
+}
 
 // Function for opening the new FPGA-NIC
 static int vfpga_net_open(struct net_device *dev)
@@ -81,6 +182,9 @@ static int vfpga_net_open(struct net_device *dev)
     } else {
         dbg_info("Successfully allocated the net cnfg memory at %llx. \n", *vfpga->vfpga_net_cnfg);
     }
+
+    // Also, reset the current counter of outstanding commands to the FPGA to later be able to work efficiently with this command pipeline 
+    vfpga->cmd_cnt = 0;
 
     // Config-mmap 
     /* dbg_info("Trying to allocate net cnfg memory at %llx of size %lx.\n", vfpga->vfpga_cnfg_avx_phys_addr, VFPGA_CTRL_CNFG_AVX_SIZE); 
@@ -427,8 +531,16 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
 
     // Copy the packet data into the skb
     memcpy(skb_put(skb, pkt_len), actual_pkt_addr, pkt_len);
-    // memcpy(skb_put(skb, sizeof(test_data)), test_data, sizeof(test_data));
-    dbg_info("vfpga_rx_fetch_packet: Copied skb=%px and data=%px of length %zu. \n", skb, skb->data, pkt_len);
+    char dump[512];
+    char *p = dump;
+    p += scnprintf(p, sizeof(dump) - (p - dump),
+                "vfpga_rx_fetch_packet: Packet data (%zu bytes): ", pkt_len);
+
+    for (size_t i = 0; i < pkt_len && (p - dump) < sizeof(dump) - 5; i++) {
+        p += scnprintf(p, sizeof(dump) - (p - dump), "%02x ", ((uint8_t*)actual_pkt_addr)[i]);
+    }
+    dbg_info("%s\n", dump);
+    dbg_info("\n");
     skb->protocol = eth_type_trans(skb, vfpga->ndev);
     dbg_info("vfpga_rx_fetch_packet: Set skb protocol to %x. \n", skb->protocol);
 
@@ -473,16 +585,18 @@ static netdev_tx_t vfpga_net_xmit(struct sk_buff *skb, struct net_device *dev)
     }
 
     // Copy the packet data into the TX buffer  
-    spin_lock_irqsave(&vfpga->tx_lock);
+    // spin_lock_irqsave(&vfpga->tx_lock);
     memcpy(vfpga->vfpga_net_tx_buf, skb->data, pkt_len);
     dbg_info("vfpga_net_xmit: Copied packet data to TX buffer at %px. \n", vfpga->vfpga_net_tx_buf);
     wmb(); 
 
     // Trigger the LOCAL READ to push the packet out through the FPGA
-
-    // 
-
-
+    struct localSg sg = LOCAL_SG_INIT;
+    sg.addr = vfpga->vfpga_net_tx_buf;
+    sg.stream = 1;
+    // vfpga_net_invoke_local_op(vfpga, LOCAL_READ, sg, true);
+    dbg_info("vfpga_net_xmit: Triggered LOCAL READ to push packet out through FPGA. \n");
+    // spin_unlock_irqrestore(&vfpga->tx_lock);
 
     // Increment the counter for outgoing packets and bytes for pushed out packets 
     dev->stats.tx_packets++;

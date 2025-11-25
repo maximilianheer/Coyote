@@ -189,7 +189,7 @@ always_comb begin : DP
 end
 
 
-ila_mux_host_sink inst_ila_mux_host_sink(
+/* ila_mux_host_sink inst_ila_mux_host_sink(
   .clk(aclk), 
 
   .probe0(s_axis[0].tvalid),    // 1 
@@ -215,6 +215,6 @@ ila_mux_host_sink inst_ila_mux_host_sink(
 
   .probe16(state_C),            // 1 
   .probe17(state_N)             // 1 
-); 
+); */ 
 
 endmodule

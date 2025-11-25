@@ -150,7 +150,7 @@ logic [4:0] state_C, state_N;
 
 
 // ILA for observing what's going on in here 
-ila_tlb_fsm inst_ila_tlb_fsm(
+/* ila_tlb_fsm inst_ila_tlb_fsm(
     .clk(aclk), 
 
     // Incoming requests 
@@ -166,7 +166,7 @@ ila_tlb_fsm inst_ila_tlb_fsm(
 
     // State 
     .probe7(state_C)            // 5
-); 
+); */ 
 
 // -- Internal registers ------------------------------------------------------------------------------------
 // Request

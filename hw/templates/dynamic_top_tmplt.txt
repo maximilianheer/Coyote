@@ -199,7 +199,7 @@ module design_dynamic_top #(
     axis_mux_host_src  inst_host_mux_in  (.aclk(aclk), .aresetn(aresetn), .s_mux(mux_host_rd_user), .s_axis(axis_host_in_s0),  .m_axis(axis_host_in_s1));
     axis_mux_host_sink inst_host_mux_out (.aclk(aclk), .aresetn(aresetn), .s_mux(mux_host_wr_user), .s_axis(axis_host_out_s1), .m_axis(axis_host_out_s0));
     
-    ila_host_networking inst_ila_host_networking_dynamic_top_1(
+    /* ila_host_networking inst_ila_host_networking_dynamic_top_1(
         .clk(aclk), 
         .probe0(axis_host_out_s1[0].tvalid), 
         .probe1(axis_host_out_s1[0].tready), 
@@ -211,7 +211,7 @@ module design_dynamic_top #(
         .probe7(axis_host_out_s0.tlast), 
         .probe8(axis_host_out_s0.tdata), 
         .probe9(axis_host_out_s0.tkeep)
-    ); 
+    ); */ 
 
     // Credits 
     // ----------------------------------------------------------------------
@@ -227,7 +227,7 @@ module design_dynamic_top #(
         data_queue_credits_sink inst_host_dcred_out (.aclk(aclk), .aresetn(aresetn), .s_axis(axis_host_out_s2[i]), .m_axis(axis_host_out_s1[i]), .wxfer(wxfer_host[i]));
     end
 
-    ila_host_networking inst_ila_host_networking_dynamic_top_1(
+    /* ila_host_networking inst_ila_host_networking_dynamic_top_1(
         .clk(aclk), 
         .probe0(axis_host_out_s2[0].tvalid), 
         .probe1(axis_host_out_s2[0].tready), 
@@ -239,7 +239,7 @@ module design_dynamic_top #(
         .probe7(axis_host_out_s1[0].tlast), 
         .probe8(axis_host_out_s1[0].tdata), 
         .probe9(axis_host_out_s1[0].tkeep)
-    ); 
+    ); */ 
 
 {% else %}
     for(genvar i = 0; i < N_REGIONS; i++) begin
@@ -368,7 +368,7 @@ module design_dynamic_top #(
         end
     end
 
-    ila_host_networking inst_ila_host_networking_dynamic_top_1(
+    /* ila_host_networking inst_ila_host_networking_dynamic_top_1(
         .clk(aclk), 
         .probe0(axis_host_out_s2[0].tvalid), 
         .probe1(axis_host_out_s2[0].tready), 
@@ -380,7 +380,7 @@ module design_dynamic_top #(
         .probe7(axis_host_out_s1[0].tlast), 
         .probe8(axis_host_out_s1[0].tdata), 
         .probe9(axis_host_out_s1[0].tkeep)
-    ); 
+    ); */ 
 
 {% else %}
     for(genvar i = 0; i < N_REGIONS; i++) begin
@@ -992,12 +992,12 @@ module design_dynamic_top #(
     metaIntf #(.STYPE(ack_t)) bpss_rd_cq_s0 [N_REGIONS] ();
     metaIntf #(.STYPE(ack_t)) bpss_wr_cq_s0 [N_REGIONS] ();
 
-    ila_req_trace inst_ila_req_trace_5(
+    /* ila_req_trace inst_ila_req_trace_5(
         .clk(aclk),
         .probe0(bpss_wr_sq_s0[0].valid), 
         .probe1(bpss_wr_sq_s0[0].ready), 
         .probe2(bpss_wr_sq_s0[0].data)
-    );
+    ); */ 
 
 
 {% if cnfg.en_uclk %}

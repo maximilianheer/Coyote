@@ -181,7 +181,7 @@ queue_stream #(
 //`define DBG_TLB_ARBITER
 `ifdef DBG_TLB_ARBITER
 
-ila_arbiter inst_ila_arbiter (
+/* ila_arbiter inst_ila_arbiter (
     .clk(aclk),
     .probe0(user_seq_in.valid),
     .probe1(user_seq_in.ready),
@@ -200,7 +200,7 @@ ila_arbiter inst_ila_arbiter (
     .probe14(m_req.valid),
     .probe15(m_req.ready),
     .probe16(m_req.rsp.done)
-);
+); */ 
 
 `endif
 

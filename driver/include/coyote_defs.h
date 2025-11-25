@@ -256,7 +256,192 @@ extern bool en_hmm;
 
 #define TX_BUFF_SIZE 6144
 
+/** 
+ * Copy over some constants from sw/include/cDefs.hpp for consistency while reimplementing parts of the controller logic for READ / WRITE ops 
+*/
 
+// Data source/destination stream in the vFPGA; e.g., axis_host_(recv|send). axis_card_(recv|send)
+extern const unsigned long STRM_CARD;
+extern const unsigned long STRM_HOST;
+extern const unsigned long STRM_RDMA;
+extern const unsigned long STRM_TCP;
+
+// DMA and command constants
+extern const int CMD_FIFO_DEPTH;
+extern const int CMD_FIFO_THR;
+extern const unsigned long MAX_TRANSFER_SIZE;
+
+// AVX config registers, for more details see the HW implementation in cnfg_slave_avx.sv and struct vfpga_cnfg_regs
+typedef enum {
+    CTRL_REG = 0,
+    ISR_REG = 1,
+    STAT_REG_0 = 2,
+    STAT_REG_1 = 3,
+    WBACK_REG = 4,
+    OFFLOAD_CTRL_REG = 5,
+    OFFLOAD_STAT_REG = 6,
+    SYNC_CTRL_REG = 7,
+    SYNC_STAT_REG = 8,
+    NET_ARP_REG = 9,
+    RDMA_CTX_REG = 10,
+    RDMA_CONN_REG = 11,
+    TCP_OPEN_PORT_REG = 12,
+    TCP_OPEN_PORT_STAT_REG = 13,
+    TCP_OPEN_CONN_REG = 14,
+    TCP_OPEN_CONN_STAT_REG = 15,
+    STAT_DMA_REG = 64
+} CnfgAvxRegs;
+
+// Sleep time in nanoseconds for buszy wait loops; used while waiting for hardware to complete
+extern const long SLEEP_TIME;
+
+// Various Coyote operations that allow users to move data from/to host memory, FPGA memory and remote nodes
+typedef enum {
+    /// No operation
+    NOOP = 0,
+
+    /// Transfers data from CPU or FPGA memory to the vFPGA stream (axis_(host|card)_recv[i]), depending on sgEntry.local.src_stream
+    LOCAL_READ = 1, 
+    
+    /// Transfers data from a vFPGA stream (axis_(host|card)_send[i]) to CPU or FPGA memory, depending on sgEntry.local.src_stream
+    LOCAL_WRITE = 2,      
+    
+    /// LOCAL_READ and LOCAL_WRITE in parallel; dataflow is (CPU or FPGA) memory => vFPGA => (CPU or FPGA) memory
+    LOCAL_TRANSFER = 3,   
+
+    /// Migrates data from CPU memory to FPGA memory (HBM/DDR)
+    LOCAL_OFFLOAD = 4,  
+
+    /// Migrates data from FPGA memory (HBM/DDR) to CPU memory
+    LOCAL_SYNC = 5,      
+    
+    /// One-side RDMA read operation
+    REMOTE_RDMA_READ = 6, 
+    
+    /// One-sided RDMA write operation
+    REMOTE_RDMA_WRITE = 7, 
+    
+    /// Two-sided RDMA send operation
+    REMOTE_RDMA_SEND = 8, 
+    
+    /// TCP send operation; NOTE: Currently unsupported due to bugs; to be brought back in future releases of Coyote
+    REMOTE_TCP_SEND = 9  
+} CoyoteOper;
+
+
+// Various helper function to check the type of operation
+static inline bool isLocalRead(CoyoteOper oper) { return oper == LOCAL_READ || oper == LOCAL_TRANSFER; }
+
+static inline bool isLocalWrite(CoyoteOper oper) { return oper == LOCAL_WRITE || oper == LOCAL_TRANSFER; }
+
+static inline bool isLocalSync(CoyoteOper oper) { return oper == LOCAL_OFFLOAD || oper == LOCAL_SYNC; }
+
+static inline bool isRemoteRdma(CoyoteOper oper) { return oper == REMOTE_RDMA_WRITE || oper == REMOTE_RDMA_READ || oper == REMOTE_RDMA_SEND; }
+
+static inline bool isRemoteRead(CoyoteOper oper) { return oper == REMOTE_RDMA_READ; }
+
+static inline bool isRemoteWrite(CoyoteOper oper) { return oper == REMOTE_RDMA_WRITE; }
+
+static inline bool isRemoteSend(CoyoteOper oper) { return oper == REMOTE_RDMA_SEND || oper == REMOTE_TCP_SEND; }
+
+static inline bool isRemoteWriteOrSend(CoyoteOper oper) { return oper == REMOTE_RDMA_SEND || oper == REMOTE_RDMA_WRITE; }
+
+static inline bool isRemoteTcp(CoyoteOper oper) { return oper == REMOTE_TCP_SEND; }
+
+
+// Scatter-gather entry for sync and offload operations
+struct syncSg {
+    /// Buffer address to be synced/offloaded
+    void* addr;
+
+    /// Size of the buffer in bytes
+    uint64_t len;
+};
+#define SYNC_SG_INIT ((struct syncSg){ .addr = NULL, .len = 0 })
+
+// Scatter-gather entry for local operations (LOCAL_READ, LOCAL_WRITE, LOCAL_TRANSFER)
+struct localSg {
+    /// Buffer address
+    void* addr;
+
+    /// Buffer length in bytes
+    uint32_t len;
+
+    /// Buffer stream: HOST or CARD
+    uint32_t stream;
+
+    /// Target destination stream in the vFPGA; a value of i will use the to axis_(host|card)_(recv|send)[i] in the vFPGA
+    uint32_t dest;
+};
+#define LOCAL_SG_INIT ((struct localSg){ .addr = NULL, .len = 0, .stream = STRM_HOST, .dest = 0 })
+
+/** 
+ * Scatter-gather entry for RDMA operations (REMOTE_READ, REMOTE_WRITE)
+ * NOTE: No field for source/dest address, since these are defined when exchanging queue pair information
+ * And, each cThread holds exactly one queue pair, so the source and destination addresses are always the same
+ */
+struct rdmaSg {
+    /// Offset from the local buffer address; in case the buffer to be sent doesn't need to start from the exchanged virtual address
+    uint64_t local_offs;
+
+    /// Source buffer stream: HOST or CARD
+    uint32_t local_stream;
+
+    /// Target source stream in the vFPGA; a value of i will write pull data for the RDMA operation from axis_(host|card)_recv[i] in the vFPGA
+    uint32_t local_dest;
+
+    // Offset for the remote buffer to which the data is sent; in case the buffer to be sent doesn't need to start from the exchanged virtual address
+    uint64_t remote_offs;
+    
+    /// Target destination stream; a value of i will write write data to axis_(host|card)_send[i] in the remote vFPGA
+    uint32_t remote_dest;
+
+    /// Lenght of the RDMA transfer, in bytes
+    uint32_t len;
+};
+#define RDMA_SG_INIT ((struct rdmaSg){ .local_offs = 0, .local_stream = STRM_HOST, .local_dest = 0, .remote_offs = 0, .remote_dest = 0, .len = 0 })
+
+// Scatter-gather entry for TCP operations (REMOTE_TCP_SEND)
+struct tcpSg {
+    // Session
+    uint32_t stream;
+    uint32_t dest;
+    uint32_t len;
+};
+#define TCP_SG_INIT ((struct tcpSg){ .stream = STRM_TCP, .dest = 0, .len = 0 })
+
+// Definitions for control register fields; used when posting commands to the vFPGA
+// Masks, shifts & offsets for ensuring the correct value is written to/read from memory mapped registers 
+#define CTRL_OPCODE_OFFS                    (0)
+#define CTRL_STRM_OFFS                      (8)
+#define CTRL_PID_OFFS                       (10)
+#define CTRL_DEST_OFFS                      (16)
+#define CTRL_LAST                           (1UL << 20)
+#define CTRL_START                          (1UL << 21)
+#define CTRL_CLR_STAT                       (1UL << 22)
+#define CTRL_LEN_OFFS                       (32)
+
+#define CTRL_OPCODE_MASK                    (0x1f)
+#define CTRL_STRM_MASK                      (0x3)
+#define CTRL_PID_MASK                       (0x3f)
+#define CTRL_DEST_MASK                      (0xf)
+#define CTRL_VFID_MASK                      (0xf)
+#define CTRL_LEN_MASK                       (0xffffffff)
+
+#define PID_BITS                            (6)
+#define PID_MASK                            (0x3f)
+#define N_REG_MASK                          (0xf)
+
+#define REMOTE_OFFS_OPS                     (6)
+#define QP_CONTEXT_QPN_OFFS                 (0)
+#define QP_CONTEXT_RKEY_OFFS                (32)
+#define QP_CONTEXT_LPSN_OFFS                (0)
+#define QP_CONTEXT_RPSN_OFFS                (24)
+#define QP_CONTEXT_VADDR_OFFS               (0)
+
+#define CONN_CONTEXT_LQPN_OFFS              (0)
+#define CONN_CONTEXT_RQPN_OFFS              (16)
+#define CONN_CONTEXT_PORT_OFFS              (40)
 
 /*
  * Various values that can be written to the above control registers
@@ -936,6 +1121,9 @@ struct vfpga_dev {
     volatile uint64_t *vfpga_net_ctrl;
     volatile uint64_t *vfpga_net_cnfg;
     volatile uint64_t *vfpga_net_wb;
+
+    // For network device: Counter of outstanding commands to not overflow the RX and TX queues in hardware
+    uint64_t cmd_cnt; 
 
     // For network device: Pointer to the RX and TX buffer used for reception and transmission of packets 
     uint64_t vfpga_net_rx_buf_phys_addr;

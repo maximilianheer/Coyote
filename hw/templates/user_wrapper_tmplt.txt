@@ -263,12 +263,12 @@ module design_user_wrapper_{{ c_reg }} (
     metaIntf #(.STYPE(req_t)) bpss_rd_req_int ();
     metaIntf #(.STYPE(req_t)) bpss_wr_req_int ();
 
-    ila_req_trace inst_ila_req_trace_4(
+    /* ila_req_trace inst_ila_req_trace_4(
         .clk(aclk), 
         .probe0(bpss_wr_req.valid), 
         .probe1(bpss_wr_req.ready), 
         .probe2(bpss_wr_req.data)
-    );
+    ); */ 
     
     assign bpss_rd_sq_valid                     = bpss_rd_req.valid;
     assign bpss_rd_req.ready                    = bpss_rd_sq_ready; 
@@ -655,7 +655,7 @@ module design_user_wrapper_{{ c_reg }} (
         .m_req(local_sq_rd)
     );
 
-    ila_req_trace inst_ila_req_trace_1(
+    /* ila_req_trace inst_ila_req_trace_1(
         .clk(aclk), 
         .probe0(user_local_sq_wr.valid), 
         .probe1(user_local_sq_wr.ready), 
@@ -667,7 +667,7 @@ module design_user_wrapper_{{ c_reg }} (
         .probe0(local_sq_wr.valid), 
         .probe1(local_sq_wr.ready), 
         .probe2(local_sq_wr.data)
-    );
+    ); */ 
 
     req_arb_2_1 inst_arb_local_wr (
         .aclk(aclk),
@@ -703,12 +703,12 @@ module design_user_wrapper_{{ c_reg }} (
     metaIntf #(.STYPE(req_t)) local_sq_wr_host ();
     metaIntf #(.STYPE(req_t)) local_sq_wr_card ();
 
-    ila_req_trace inst_ila_req_trace_3 (
+    /* req_trace inst_ila_req_trace_3 (
         .clk(aclk), 
         .probe0(local_sq_wr_host.valid),
         .probe1(local_sq_wr_host.ready), 
         .probe2(local_sq_wr_host.data)
-    );
+    ); */ 
 
     metaIntf #(.STYPE(req_t)) local_cred_rd_host ();
     metaIntf #(.STYPE(req_t)) local_cred_rd_card ();
