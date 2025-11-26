@@ -1072,6 +1072,16 @@ assign host_req.data.req_2.rsrvd        = 0;
 
 assign host_req.valid = local_post || remote_post;
 
+ila_host_req inst_ila_host_req(
+    .clk(aclk), 
+    .probe0(host_req.valid),        // 1
+    .probe1(host_req.data),         // 256
+    .probe2(host_req.ready),        // 1
+    .probe3(slv_reg[CTRL_REG]),     // 256
+    .probe4(local_post),            // 1
+    .probe5(remote_post)            // 1
+); 
+
 // Command queues
 axis_data_fifo_req_256_used inst_cmd_queue (
   .s_axis_aresetn(aresetn),

@@ -26,6 +26,8 @@
   */
 
 #include "vfpga_net.h"
+#include <linux/swab.h>
+#include <asm/unaligned.h>
 
 // ======-------------------------------------------------------------------------------
 //
@@ -421,7 +423,7 @@ static int vfpga_net_poll(struct napi_struct *napi, int budget)
 
         // Pass the packet to the network stack
         dbg_info("vfpga_net_poll: Passing the packet to the network stack. \n");
-        skb->protocol = eth_type_trans(skb, vfpga->ndev);
+        // skb->protocol = eth_type_trans(skb, vfpga->ndev);
         napi_gro_receive(napi, skb);
         dbg_info("vfpga_net_poll: Packet successfully passed to the network stack. \n");
 
@@ -530,8 +532,13 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
 
 
     // Copy the packet data into the skb
+    dma_sync_single_for_cpu(&vfpga->bd_data->pci_dev->dev,
+                        vfpga->vfpga_net_rx_buf_phys_addr +
+                        (vfpga->rx_buf_head * 6144) + sizeof(uint32_t),
+                        pkt_len, DMA_FROM_DEVICE);
     memcpy(skb_put(skb, pkt_len), actual_pkt_addr, pkt_len);
-    char dump[512];
+    
+    /* char dump[512];
     char *p = dump;
     p += scnprintf(p, sizeof(dump) - (p - dump),
                 "vfpga_rx_fetch_packet: Packet data (%zu bytes): ", pkt_len);
@@ -540,8 +547,10 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
         p += scnprintf(p, sizeof(dump) - (p - dump), "%02x ", ((uint8_t*)actual_pkt_addr)[i]);
     }
     dbg_info("%s\n", dump);
-    dbg_info("\n");
+    dbg_info("\n"); */ 
+
     skb->protocol = eth_type_trans(skb, vfpga->ndev);
+    skb->ip_summed = CHECKSUM_NONE; // Hand over checksum checking to the network stack
     dbg_info("vfpga_rx_fetch_packet: Set skb protocol to %x. \n", skb->protocol);
 
     // Hand over the packet to the stack 
@@ -555,6 +564,7 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
                     ((meta.packet_len & 0x0FFFFFFF) << 3) |
                     (meta.rsvd & 0x7);
     *(uint32_t *)meta_word_ptr = raw_meta;
+
     wmb(); 
     dbg_info("vfpga_rx_fetch_packet: Cleared possession flag in meta-tag. \n");
 
@@ -594,7 +604,7 @@ static netdev_tx_t vfpga_net_xmit(struct sk_buff *skb, struct net_device *dev)
     struct localSg sg = LOCAL_SG_INIT;
     sg.addr = vfpga->vfpga_net_tx_buf;
     sg.stream = 1;
-    // vfpga_net_invoke_local_op(vfpga, LOCAL_READ, sg, true);
+    vfpga_net_invoke_local_op(vfpga, LOCAL_READ, sg, true);
     dbg_info("vfpga_net_xmit: Triggered LOCAL READ to push packet out through FPGA. \n");
     // spin_unlock_irqrestore(&vfpga->tx_lock);
 
