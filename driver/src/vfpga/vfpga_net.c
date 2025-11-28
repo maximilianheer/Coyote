@@ -64,7 +64,7 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga);
 static void vfpga_net_post_command(struct vfpga_dev *vfpga, uint64_t offs_3, uint64_t offs_2, uint64_t offs_1, uint64_t offs_0) {
 
     // Step 1: Check the outstanding commands to not oversaturate the FPGA queues 
-    dbg_info("vfpga_net_post_command: Current command count before posting new command: %llu\n", vfpga->cmd_cnt);
+    /* dbg_info("vfpga_net_post_command: Current command count before posting new command: %llu\n", vfpga->cmd_cnt);
     while(vfpga->cmd_cnt > CMD_FIFO_DEPTH - CMD_FIFO_THR) {
         dbg_info("vfpga_net_post_command: Command count %llu exceeds threshold %d, rechecking...\n", vfpga->cmd_cnt, CMD_FIFO_DEPTH - CMD_FIFO_THR);
         // Recheck the command count by reading back the FPGA register
@@ -77,18 +77,30 @@ static void vfpga_net_post_command(struct vfpga_dev *vfpga, uint64_t offs_3, uin
             // std::this_thread::sleep_for(std::chrono::nanoseconds(SLEEP_TIME));
             udelay(1); 
         }
-    }
+    } */ 
 
-    // Step 2: Post the command to the FPGA
+    // Step 1: Post the command to the FPGA
     dbg_info("vfpga_net_post_command: Posting command with offsets: %llx, %llx, %llx, %llx\n", offs_3, offs_2, offs_1, offs_0);
-    vfpga->vfpga_net_cnfg[CTRL_REG] = offs_0;
-    vfpga->vfpga_net_cnfg[ISR_REG] = offs_1;
-    vfpga->vfpga_net_cnfg[STAT_REG_0] = offs_2;
-    vfpga->vfpga_net_cnfg[STAT_REG_1] = offs_3;
+    // Base index for the control registers for the FPGA-NIC
+    vfpga->vfpga_net_cnfg[CTRL_REG + 0] = offs_0;
+    vfpga->vfpga_net_cnfg[CTRL_REG + 1] = offs_1;
+    vfpga->vfpga_net_cnfg[CTRL_REG + 2] = offs_2;
+    vfpga->vfpga_net_cnfg[CTRL_REG + 3] = offs_3;
 
-    // Step 3: Increment the command count to keep track of outstanding commands 
-    dbg_info("vfpga_net_post_command: Command posted successfully. Incrementing command count.\n");
-    vfpga->cmd_cnt++;
+    // Step 2: Check if the command has been processed by the FPGA 
+    dbg_info("vfpga_net_post_command: Verifying command posting...\n");
+    vfpga->cmd_cnt = (uint32_t)(vfpga->vfpga_net_cnfg[CTRL_REG] & 0xFFFFFFFFUL);
+    dbg_info("vfpga_net_post_command: Command count after posting command: %llu\n", vfpga->cmd_cnt);
+    if(vfpga->cmd_cnt > 0) {
+        dbg_info("That's not great, but what should we do now anyways? Packet's lost, another one will come in the future... \n");
+    }
+    /* while(vfpga->cmd_cnt > 0) {
+        dbg_info("vfpga_net_post_command: Command count is non zero, waiting for FPGA to process command...\n");
+        // Recheck the command count by reading back the FPGA register
+        vfpga->cmd_cnt = (uint32_t)(vfpga->vfpga_net_cnfg[CTRL_REG] & 0xFFFFFFFF);
+        // std::this_thread::sleep_for(std::chrono::nanoseconds(SLEEP_TIME));
+        udelay(10); 
+    } */ 
 }
 
 // Helper function for local operations to the vFPGA handling the arbitrary traffic 
@@ -115,6 +127,9 @@ static int vfpga_net_invoke_local_op(struct vfpga_dev *vfpga, CoyoteOper oper, s
     dbg_info("vfpga_net_invoke_local_op: Preparing command parameters \n");
 
     if(oper == LOCAL_READ) {
+        // Print the ingredient values for ctrl_cmd_src for debugging
+        dbg_info("vfpga_net_invoke_local_op: Preparing LOCAL_READ command with parameters: ctid %d, dest %u, last %d, stream %u, len %u \n", 
+            vfpga_net_ctid, sg.dest, last ? 1 : 0, sg.stream, sg.len);      
         ctrl_cmd_src = ((vfpga_net_ctid & CTRL_PID_MASK) << CTRL_PID_OFFS) |
                 ((sg.dest & CTRL_DEST_MASK) << CTRL_DEST_OFFS) |
                 (last ? CTRL_LAST : 0x0) |
@@ -122,10 +137,15 @@ static int vfpga_net_invoke_local_op(struct vfpga_dev *vfpga, CoyoteOper oper, s
                 (CTRL_START) | 
                 (0x0) | 
                 ((uint64_t)(sg.len) << CTRL_LEN_OFFS);
+        // Print the final ctrl_cmd_src value for debugging
+        dbg_info("vfpga_net_invoke_local_op: Computed ctrl_cmd_src: %llx \n", ctrl_cmd_src);
 
         addr_cmd_src = (uint64_t)(sg.addr);
 
         // Post the command to the FPGA
+        // Printout of the command parameters for debugging
+        dbg_info("vfpga_net_invoke_local_op: Posting LOCAL_READ command with parameters: addr_cmd_dst %llx, ctrl_cmd_dst %llx, addr_cmd_src %llx, ctrl_cmd_src %llx \n", addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
+         // Post the command to the FPGA
         vfpga_net_post_command(vfpga, addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
         dbg_info("vfpga_net_invoke_local_op: LOCAL_READ command posted successfully\n");
 
@@ -604,6 +624,8 @@ static netdev_tx_t vfpga_net_xmit(struct sk_buff *skb, struct net_device *dev)
     struct localSg sg = LOCAL_SG_INIT;
     sg.addr = vfpga->vfpga_net_tx_buf;
     sg.stream = 1;
+    sg.dest = 0; 
+    sg.len = pkt_len;
     vfpga_net_invoke_local_op(vfpga, LOCAL_READ, sg, true);
     dbg_info("vfpga_net_xmit: Triggered LOCAL READ to push packet out through FPGA. \n");
     // spin_unlock_irqrestore(&vfpga->tx_lock);

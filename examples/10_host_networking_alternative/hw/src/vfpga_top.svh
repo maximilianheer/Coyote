@@ -627,6 +627,26 @@ assign sq_wr.data.rsrvd = 0;
 `AXISR_ASSIGN(axis_host_recv[0], axis_host_networking_tx)
 
 
+// For debugging purposes: Check if axis_host_networking_tx is ever firing 
+logic [31:0] tx_fire_counter;
+logic [31:0] tx_valid_counter; 
+
+always_ff @(posedge aclk) begin 
+    if(!aresetn) begin 
+        tx_fire_counter <= 32'd0;
+        tx_valid_counter <= 32'd0;
+    end else begin 
+        if(axis_host_networking_tx.tvalid && axis_host_networking_tx.tready) begin 
+            tx_fire_counter <= tx_fire_counter + 1;
+        end 
+
+        if(axis_host_networking_tx.tvalid) begin 
+            tx_valid_counter <= tx_valid_counter + 1;
+        end
+    end 
+end
+
+
 ////////////////////////////////////////////////////////////////////////////////
 //
 // SECTION 6: Raising interrupts when irq_coalesce threshold is met  
@@ -723,5 +743,9 @@ ila_host_networking inst_ila_host_networking (
     .probe37(dma_packet_counter),                        // 32   
     .probe38(notify.valid),                              // 1
     .probe39(notify.data.value),                         // 32 
-    .probe40(notify.data.pid)                            // 16 
+    .probe40(notify.data.pid),                           // 16
+
+    // Checking the valid and fire-counters
+    .probe41(tx_fire_counter),                           // 32
+    .probe42(tx_valid_counter                            // 32 
 ); 
