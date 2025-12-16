@@ -82,10 +82,11 @@ static void vfpga_net_post_command(struct vfpga_dev *vfpga, uint64_t offs_3, uin
     // Step 1: Post the command to the FPGA
     dbg_info("vfpga_net_post_command: Posting command with offsets: %llx, %llx, %llx, %llx\n", offs_3, offs_2, offs_1, offs_0);
     // Base index for the control registers for the FPGA-NIC
-    vfpga->vfpga_net_cnfg[CTRL_REG + 0] = offs_0;
     vfpga->vfpga_net_cnfg[CTRL_REG + 1] = offs_1;
     vfpga->vfpga_net_cnfg[CTRL_REG + 2] = offs_2;
     vfpga->vfpga_net_cnfg[CTRL_REG + 3] = offs_3;
+    vfpga->vfpga_net_cnfg[CTRL_REG + 0] = offs_0;
+
 
     // Step 2: Check if the command has been processed by the FPGA 
     dbg_info("vfpga_net_post_command: Verifying command posting...\n");
@@ -168,7 +169,42 @@ static int vfpga_net_invoke_local_op(struct vfpga_dev *vfpga, CoyoteOper oper, s
         return -EINVAL;
     }
 
+    // Check for the completion of the operation by polling the writeback region
+    dbg_info("vfpga_net_invoke_local_op: Polling for operation completion...\n");
+    uint32_t wb_num_op = vfpga_net_check_completed(vfpga, oper);
+    dbg_info("vfpga_net_invoke_local_op: Initial writeback entry value: %u\n", wb_num_op);
+    /* while(wb_num_op == 0) {
+        // Sleep briefly to avoid busy-waiting
+        udelay(1); 
+        wb_num_op = vfpga_net_check_completed(vfpga, oper);
+        dbg_info("vfpga_net_invoke_local_op: Still waiting for operation completion, writeback entry is zero...\n");
+    } */ 
+    dbg_info("vfpga_net_invoke_local_op: Operation completed, now clear the writeback entry\n");
+    // Clear the writeback entry
+    vfpga_net_clear_completed(vfpga); 
     return 0; 
+}
+
+// Function for polling the writeback region to check for operation completion 
+uint32_t vfpga_net_check_completed(struct vfpga_dev *vfpga, CoyoteOper oper) {
+    // Based on operation type, check the corresponding writeback entry
+    if(isLocalWrite(oper)) {
+        dbg_info("vfpga_net_check_completed: Checking completion for LOCAL_WRITE operation\n");
+        return vfpga->vfpga_net_wb[vfpga_net_ctid + WR_WBACK * N_CTID_MAX]; 
+    } else if(isLocalRead(oper)) {
+        dbg_info("vfpga_net_check_completed: Checking completion for LOCAL_READ operation\n");
+        return vfpga->vfpga_net_wb[vfpga_net_ctid + RD_WBACK * N_CTID_MAX]; 
+    } else {
+        dbg_info("vfpga_net_check_completed: Unsupported operation type %d for checking completion\n", (int)(oper));
+        return 0; 
+    }
+}
+
+// Function for clearing the writeback entry after operation completion 
+void vfpga_net_clear_completed(struct vfpga_dev *vfpga) {
+    dbg_info("vfpga_net_clear_completed: Clearing writeback entry for ctid %d\n", vfpga_net_ctid);
+    vfpga->vfpga_net_wb[vfpga_net_ctid + RD_WBACK * N_CTID_MAX] = 0; 
+    vfpga->vfpga_net_wb[vfpga_net_ctid + WR_WBACK * N_CTID_MAX] = 0; 
 }
 
 // Function for opening the new FPGA-NIC
@@ -203,6 +239,16 @@ static int vfpga_net_open(struct net_device *dev)
         return -ENOMEM; 
     } else {
         dbg_info("Successfully allocated the net cnfg memory at %llx. \n", *vfpga->vfpga_net_cnfg);
+    }
+
+    // Writeback-mmap -> Used for checking the status of DMA-commands
+    dbg_info("Trying to allocate writeback memory at %llx. \n", vfpga->wb_phys_addr);
+    vfpga->vfpga_net_wb = ioremap(vfpga->wb_phys_addr, WB_SIZE); 
+    if(vfpga->vfpga_net_wb == NULL) {
+        dbg_info("Couldn't allocate writeback memory."); 
+        return -ENOMEM; 
+    } else {
+        dbg_info("Successfully allocated the net writeback memory at %llx. \n", *vfpga->vfpga_net_wb);
     }
 
     // Also, reset the current counter of outstanding commands to the FPGA to later be able to work efficiently with this command pipeline 
@@ -364,7 +410,18 @@ static int vfpga_net_open(struct net_device *dev)
     // struct napi_struct *napi = &vfpga->napi;
     napi_enable(&vfpga->napi);
     netif_start_queue(dev);
+
+    // Tell the kernel the physical link is up
+    netif_carrier_on(dev);
+    dbg_info("vfpga_net_open: Set the network carrier on for the FPGA-NIC. \n");
     dbg_info("Successfully started the netif queue for the FPGA-NIC. \n");
+
+    // Poll the status of the interface in the driver 
+    if(netif_carrier_ok(dev)) {
+        dbg_info("vfpga_net_open: Network carrier is OK for device %s. \n", dev->name);
+    } else {
+        dbg_info("vfpga_net_open: Network carrier is NOT OK for device %s. \n", dev->name);
+    }
 
     return 0;
 }
@@ -633,8 +690,6 @@ static netdev_tx_t vfpga_net_xmit(struct sk_buff *skb, struct net_device *dev)
     // Increment the counter for outgoing packets and bytes for pushed out packets 
     dev->stats.tx_packets++;
     dev->stats.tx_bytes += skb->len;
-
-    // TO BE IMPLEMENTED: PUSH PACKET TO FPGA FOR TRANSMISSION
 
     // Free the socket buffer
     dev_kfree_skb(skb);

@@ -118,7 +118,7 @@
 #if (COYOTE_DEBUG == 0)
 #define dbg_info(...)
 #else
-#define dbg_info(fmt, ...) pr_info("%s():" fmt, \
+#define dbg_info(fmt, ...) pr_debug("%s():" fmt, \
                                    __func__, ##__VA_ARGS__)
 #endif
 

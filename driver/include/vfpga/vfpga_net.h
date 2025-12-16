@@ -57,6 +57,19 @@ void vfpga_net_unregister(struct vfpga_dev *vfpga);
  */
 void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga);
 
+/**
+ * fpga_net_check_completed - Check if a local operation has completed
+ * @vfpga: pointer to the FPGA device structure (for a vFPGA)
+ * @oper: Coyote operation type
+ */
+uint32_t vfpga_net_check_completed(struct vfpga_dev *vfpga, CoyoteOper oper);
+
+/**
+ * fpga_net_clear_completed - Clear the writeback entry after operation completion
+ * @vfpga: pointer to the FPGA device structure (for a vFPGA)
+ */
+void vfpga_net_clear_completed(struct vfpga_dev *vfpga);
+
 
 /**
  * Definition of all the registers required for talking to the HW 

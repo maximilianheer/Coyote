@@ -560,6 +560,8 @@ struct tcpSg {
 #define WB_BLOCKS 4
 #define WB_SIZE (WB_BLOCKS * N_CTID_MAX * sizeof(uint32_t))
 #define N_WB_PAGES ((WB_SIZE + PAGE_SIZE - 1) / PAGE_SIZE)
+#define RD_WBACK 0
+#define WR_WBACK 1
 
 // Network statistics registers; can be queried for debugging using sysfs
 #define N_NET_STAT_REGS 10

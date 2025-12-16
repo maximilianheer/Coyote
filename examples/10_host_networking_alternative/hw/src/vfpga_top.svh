@@ -682,7 +682,28 @@ always_comb axis_rrsp_recv[0].tie_off_s();
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-ila_host_networking inst_ila_host_networking (
+// ILA for debugging the host networking interface on the RX-direction 
+ila_host_networking_axis inst_ila_host_networking_rx(
+    .clk(aclk), 
+
+    .probe0(axis_host_networking_rx.tvalid),    // 1
+    .probe1(axis_host_networking_rx.tready),    // 1
+    .probe2(axis_host_networking_rx.tlast),     // 1
+    .probe3(axis_host_networking_rx.tdata),     // 512
+    .probe4(axis_host_networking_rx.tkeep)      // 64
+); 
+
+// ILA for debugging the host networking interface on the TX-direction
+ila_host_networking_axis inst_ila_host_networking_tx(
+    .clk(aclk),
+    .probe0(axis_host_networking_tx.tvalid),    // 1
+    .probe1(axis_host_networking_tx.tready),    // 1
+    .probe2(axis_host_networking_tx.tlast),     // 1
+    .probe3(axis_host_networking_tx.tdata),     // 512
+    .probe4(axis_host_networking_tx.tkeep)      // 64
+);
+
+/* ila_host_networking inst_ila_host_networking (
     // Clock signal
     .clk(aclk), 
 
@@ -748,4 +769,4 @@ ila_host_networking inst_ila_host_networking (
     // Checking the valid and fire-counters
     .probe41(tx_fire_counter),                           // 32
     .probe42(tx_valid_counter                            // 32 
-); 
+); */ 
