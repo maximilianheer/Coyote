@@ -48,23 +48,6 @@ host_networking_axi_ctrl_parser inst_axi_ctrl_parser (
 );
 
 
-// ---------------------------------------------------------------------------
-// For testing purposes: A timer that blocks the reception of packets for 60 seconds after reset
-// ---------------------------------------------------------------------------
-
-logic [31:0] reset_timer;
-
-always_ff @(posedge aclk) begin 
-    if(!aresetn) begin 
-        reset_timer <= 32'd0;
-    end else begin 
-        if(reset_timer < 300000000) begin 
-            reset_timer <= reset_timer + 1;
-        end 
-    end 
-end 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 //
 // SECTION 2: Definition of the FIFOs for the data stream and meta tags 
@@ -116,10 +99,7 @@ axis_data_fifo_512_dma_cmd inst_axis_data_fifo_512_dma_cmd(
 
 // Connect the ready signal of the incoming host networking to the control setup and the FIFO reception
 assign axis_host_networking_rx.tready = data_stream_fifo_reception_ready && reception_fsm_ready;
-assign data_stream_fifo_reception_valid = axis_host_networking_rx.tvalid && (host_networking_buff_vaddr != 0) && (reset_timer >= 250000000);
-
-// For debugging purposes: For the first 60 seconds after reset, it will appear as if no packets are arriving. Gives us time to set up the ILA and compare incoming packets on HW-level and in the driver. 
-
+assign data_stream_fifo_reception_valid = axis_host_networking_rx.tvalid && (host_networking_buff_vaddr != 0);
 
 // ----------------------------------------------------------------------------
 // FIFO for the meta tags
@@ -328,6 +308,66 @@ logic [63:0] stream_remainder_keep;
 // Counter for DMA'd packets to the host for managing the IRQ coalescing
 logic [31:0] dma_packet_counter;
 
+// Clock counter for time-based IRQs if no packets are being received
+logic [31:0] dma_time_counter;
+
+// Localparam for the timing threshold that should trigger an IRQ if no packets are being received otherwise 
+localparam integer DMA_TIME_IRQ_THRESHOLD = 32'd25000; // Approx. 1ms at 250MHz clock
+
+// Signal for dma_packet_counter-based IRQ notification
+logic dma_packet_counter_irq_trigger; 
+logic dma_time_counter_irq_trigger;
+logic dma_time_threshold_crossed; 
+
+
+// ----------------------------------------------------------------------------
+// Clock counter logic for time-based IRQs
+// ----------------------------------------------------------------------------
+always_ff @(posedge aclk) begin 
+    if(!aresetn) begin 
+        dma_time_counter <= 32'd0;
+        dma_time_counter_irq_trigger <= 1'b0;
+    end else begin 
+        // Reset the timer if we see a valid tlast of a forwarded packet. Otherwise count up. 
+        if(axis_host_send[0].tvalid && axis_host_send[0].tlast && axis_host_send[0].tready) begin 
+            dma_time_counter <= 32'd0;
+        end else begin 
+            dma_time_counter <= dma_time_counter + 1;
+        end
+    end 
+end 
+
+
+always_ff @(posedge aclk) begin 
+    if(!aresetn) begin 
+        dma_time_counter_irq_trigger <= 1'b0;
+        dma_time_threshold_crossed <= 1'b0;
+    end else begin 
+        if(!dma_time_threshold_crossed) begin 
+            // Generally: Trigger not raised 
+            dma_time_counter_irq_trigger <= 1'b0;
+
+            // Check if we have crossed the threshold now 
+            if(dma_time_counter >= DMA_TIME_IRQ_THRESHOLD) begin 
+                dma_time_threshold_crossed <= 1'b1;
+                dma_time_counter_irq_trigger <= 1'b1;
+            end
+        end else begin 
+            // Reset the trigger 
+            dma_time_counter_irq_trigger <= 1'b0;
+
+            // Wait until a packet has been sent to reset the threshold crossing flag
+            if(dma_time_counter == 0) begin 
+                dma_time_threshold_crossed <= 1'b0;
+            end 
+        end 
+    end 
+end 
+
+// Assign the final IRQ notification signal based on both triggers
+assign notify.valid = dma_packet_counter_irq_trigger || dma_time_counter_irq_trigger;
+
+
 // ----------------------------------------------------------------------------
 // FF-logic for the FSM
 // ----------------------------------------------------------------------------
@@ -360,7 +400,7 @@ always_ff @(posedge aclk) begin
         dma_packet_counter <= 32'd0;
 
         // Reset the interrupt notification signal
-        notify.valid <= 1'b0;
+        dma_packet_counter_irq_trigger <= 1'b0; 
 
     end else begin 
 
@@ -393,10 +433,10 @@ always_ff @(posedge aclk) begin
                         dma_packet_counter <= 32'd0;
 
                         // Start the interrupt notification 
-                        notify.valid <= 1'b1;
+                        dma_packet_counter_irq_trigger <= 1'b1;
                     end else begin 
                         dma_packet_counter <= dma_packet_counter + 1;
-                        notify.valid <= 1'b0;
+                        dma_packet_counter_irq_trigger <= 1'b0; 
                     end 
                 end
             end
@@ -404,7 +444,7 @@ always_ff @(posedge aclk) begin
             // State to wait for acceptance of the DMA command by the XDMA engine
             WAIT_FOR_DMA_CMD_ACCEPTANCE: begin
                 // Anyways: Take back the interrupt notification signal 
-                notify.valid <= 1'b0;
+                dma_packet_counter_irq_trigger <= 1'b0;
 
                 if(sq_wr.ready) begin 
                     // Reset the DMA command valid signal 
@@ -683,7 +723,7 @@ always_comb axis_rrsp_recv[0].tie_off_s();
 ////////////////////////////////////////////////////////////////////////////////
 
 // ILA for debugging the host networking interface on the RX-direction 
-ila_host_networking_axis inst_ila_host_networking_rx(
+/* ila_host_networking_axis inst_ila_host_networking_rx(
     .clk(aclk), 
 
     .probe0(axis_host_networking_rx.tvalid),    // 1
@@ -701,9 +741,9 @@ ila_host_networking_axis inst_ila_host_networking_tx(
     .probe2(axis_host_networking_tx.tlast),     // 1
     .probe3(axis_host_networking_tx.tdata),     // 512
     .probe4(axis_host_networking_tx.tkeep)      // 64
-);
+); */ 
 
-/* ila_host_networking inst_ila_host_networking (
+ila_host_networking inst_ila_host_networking (
     // Clock signal
     .clk(aclk), 
 
@@ -768,5 +808,9 @@ ila_host_networking_axis inst_ila_host_networking_tx(
 
     // Checking the valid and fire-counters
     .probe41(tx_fire_counter),                           // 32
-    .probe42(tx_valid_counter                            // 32 
-); */ 
+    .probe42(tx_valid_counter,                           // 32
+
+    // Register the two interrupt triggers 
+    .probe43(dma_packet_counter_irq_trigger),            // 1
+    .probe44(dma_time_counter_irq_trigger)               // 1
+);
