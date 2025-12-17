@@ -808,7 +808,7 @@ ila_host_networking inst_ila_host_networking (
 
     // Checking the valid and fire-counters
     .probe41(tx_fire_counter),                           // 32
-    .probe42(tx_valid_counter,                           // 32
+    .probe42(tx_valid_counter),                           // 32
 
     // Register the two interrupt triggers 
     .probe43(dma_packet_counter_irq_trigger),            // 1

@@ -434,6 +434,10 @@ static int vfpga_net_stop(struct net_device *dev)
     // Stop the queue 
     netif_stop_queue(dev);
 
+    // Set the link state to OFF 
+    netif_carrier_off(dev);
+    dbg_info("vfpga_net_stop: Set the network carrier off for the FPGA-NIC. \n");
+
     // Set the RX-Buf addr in the hardware to 0 to stop HW-functionality 
     dbg_info("Write RX-buffer address 0 to ctrl-reg. \n");
     writeq(0, vfpga->vfpga_net_ctrl + 0);
@@ -614,6 +618,10 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
                         (vfpga->rx_buf_head * 6144) + sizeof(uint32_t),
                         pkt_len, DMA_FROM_DEVICE);
     memcpy(skb_put(skb, pkt_len), actual_pkt_addr, pkt_len);
+
+    // Update the stats for incoming packets and bytes
+    vfpga->ndev->stats.rx_packets++;
+    vfpga->ndev->stats.rx_bytes += pkt_len;
     
     /* char dump[512];
     char *p = dump;
@@ -696,12 +704,71 @@ static netdev_tx_t vfpga_net_xmit(struct sk_buff *skb, struct net_device *dev)
     return NETDEV_TX_OK; // Return that everything is ok
 }
 
+// Function for passing over the statistics of the FPGA-NIC 
+static void vfpga_net_get_stats64(struct net_device *dev,
+                           struct rtnl_link_stats64 *stats)
+{
+    // Copy the stats from the net_device structure to the provided stats structure
+    stats->rx_packets = dev->stats.rx_packets;
+    stats->tx_packets = dev->stats.tx_packets;
+    stats->rx_bytes   = dev->stats.rx_bytes;
+    stats->tx_bytes   = dev->stats.tx_bytes;
+    stats->rx_errors  = dev->stats.rx_errors;
+    stats->tx_errors  = dev->stats.tx_errors;
+    stats->rx_dropped = dev->stats.rx_dropped;
+    stats->tx_dropped = dev->stats.tx_dropped;
+
+    dbg_info("vfpga_net_get_stats64: Retrieved statistics for FPGA-NIC. \n");
+}
+
+// Function to get driver info for ethtool
+static void vfpga_net_get_drvinfo(struct net_device *dev,
+                          struct ethtool_drvinfo *info)
+{
+    strscpy(info->driver, "scenic_driver", sizeof(info->driver));
+    strscpy(info->version, "0.1", sizeof(info->version));
+    strscpy(info->bus_info, "PCIe", sizeof(info->bus_info));
+    dbg_info("vfpga_net_get_drvinfo: Retrieved driver info for FPGA-NIC. \n");
+}
+
+// Function to get link status for ethtool 
+static u32 vfpga_net_get_link(struct net_device *dev)
+{
+    return netif_carrier_ok(dev); 
+    dbg_info("vfpga_net_get_link: Retrieved link status for FPGA-NIC. \n");
+}
+
+// Function to get link ksettings for ethtool
+// These are obviously all faked for demonstration purposes
+static int vfpga_net_get_link_ksettings(struct net_device *dev,
+                               struct ethtool_link_ksettings *cmd)
+{
+    ethtool_link_ksettings_add_link_mode(cmd, supported, 1000baseT_Full);
+    ethtool_link_ksettings_add_link_mode(cmd, supported, Autoneg);
+
+    cmd->base.speed = SPEED_1000;
+    cmd->base.duplex = DUPLEX_FULL;
+    cmd->base.autoneg = AUTONEG_ENABLE;
+    cmd->base.port = PORT_TP;
+    dbg_info("vfpga_net_get_link_ksettings: Retrieved link ksettings for FPGA-NIC. \n");
+    return 0;
+}
+
+
 // Struct that points to all the functions of the FPGA-NIC in the driver 
 static const struct net_device_ops vfpga_netdev_ops = {
     .ndo_open = vfpga_net_open,
     .ndo_stop = vfpga_net_stop,
     .ndo_start_xmit = vfpga_net_xmit,
+    .ndo_get_stats64 = vfpga_net_get_stats64
 }; 
+
+// Struct that points to all the ethtool functions of the FPGA-NIC in the driver 
+static const struct ethtool_ops vfpga_ethtool_ops = {
+    .get_drvinfo = vfpga_net_get_drvinfo, 
+    .get_link = vfpga_net_get_link, 
+    .get_link_ksettings = vfpga_net_get_link_ksettings
+};
 
 // --------------------------------------------
 // Public API for registering the new FPGA-NIC
@@ -725,6 +792,9 @@ int vfpga_net_register(struct vfpga_dev *vfpga, uint64_t net_mac_addr)
 
     // Set the device operations
     vfpga->ndev->netdev_ops = &vfpga_netdev_ops;
+
+    // Set the ethtool operations 
+    vfpga->ndev->ethtool_ops = &vfpga_ethtool_ops;
 
     // Set the MAC address (for simplicity, using a fixed MAC address here)
     uint8_t mac_bytes[ETH_ALEN];
@@ -762,6 +832,8 @@ int vfpga_net_register(struct vfpga_dev *vfpga, uint64_t net_mac_addr)
     dbg_info("Finished binding NAPI poll function\n");
 
     // Register the network device
+    dbg_info("Actively setting the state to OFF first before turning it on later on. \n");
+    netif_carrier_off(vfpga->ndev);
     dbg_info("Trying to register the network device\n");
     ret_val = register_netdev(vfpga->ndev);
     if (ret_val) {

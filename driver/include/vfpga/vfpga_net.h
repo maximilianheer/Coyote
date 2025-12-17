@@ -34,6 +34,7 @@
 #include "vfpga_isr.h"
 #include "vfpga_uisr.h"
 #include "vfpga_ops.h"
+#include <linux/ethtool.h>
 
 // Only declare the public interfaces for registering and unregistering the FPGA network device
 
