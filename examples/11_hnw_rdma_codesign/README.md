@@ -1,0 +1,1 @@
+Coyote-setup with vFGPA #0 for arbitrary packet processing and vFPGA #1 for RDMA. Used for developing a full RDMA-ibv-driver. 
