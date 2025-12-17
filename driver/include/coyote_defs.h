@@ -91,6 +91,7 @@
 #include <linux/inet.h>
 #include <linux/if_arp.h>
 #include <linux/if_packet.h>
+#include <rdma/ib_verbs.h>
 
 
 // Driver arguments; see coyote_driver.c for details
@@ -1022,6 +1023,32 @@ struct vfpga_irq_notify {
     struct work_struct work_notify;
 };
 
+
+/**
+ * @brief Wrapper around the ib_device struct that allows to point back to the vFPGA device struct 
+ * 
+ * Wrapper class for the ib_device struct that allows to point back to the vFPGA device struct
+ * This is useful when handling RDMA operations, as the ib_device struct is used extensively in
+ * the RDMA verbs API
+ */
+struct vfpga_ib_device {
+    // Actual ib_device struct 
+    struct ib_device ib_dev;
+
+    // Pointer back to the vFPGA device struct
+    struct vfpga_dev *vfpga_dev;
+}; 
+
+
+/**
+ * @brief Helper function that retrieves the vFPGA device struct from the ib_device struct
+ */
+static inline struct vfpga_dev *ibdev_to_vfpga_dev(struct ib_device *ib_dev) {
+    struct vfpga_ib_device *vfpga_ib_dev = container_of(ib_dev, struct vfpga_ib_device, ib_dev);
+    return vfpga_ib_dev->vfpga_dev;
+}
+
+
 /**
  * @brief Virtual FPGA (vFPGA) char device structure
  *
@@ -1148,6 +1175,13 @@ struct vfpga_dev {
         spinlock_t page_lock;
         struct page *free_pages;
     #endif 
+
+    // Struct for the wrapper around the ib_device struct with the pointer to the vFPGA device 
+    struct vfpga_ib_dev *vfpga_ib_dev; 
+
+    // Store the GUIDs in the vfpga device struct
+    uint64_t rdma_node_guid;
+    uint64_t rdma_sys_image_guid;
 };
 
 /**
