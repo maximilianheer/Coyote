@@ -79,6 +79,40 @@ static int vfpga_rdma_query_device(struct ib_device *ibdev, struct ib_device_att
     return 0; 
 }
 
+// Function to query the RDMA port attributes
+static int vfpga_rdma_query_port(struct ib_device *ibdev, u32 port_num, struct ib_port_attr *props)
+{
+    dbg_info("vfpga_rdma_query_port: Querying RDMA port attributes - START\n");
+
+    // Get the vfpga_dev structure from the ib_device
+    struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibdev); 
+
+    // Reserve enough memory for the props 
+    memset(props, 0, sizeof(*props));
+
+    // Port attributes #1: Identity 
+    props->lid = 0; // No LID in RoCE
+    props->state = IB_PORT_ACTIVE;
+    props->phys_state = IB_PORT_PHYS_STATE_LINK_UP;
+    props->port_cap_flags = IB_PORT_CM_SUP | IB_PORT_REINIT_SUP | IB_PORT_DEVICE_MGMT_SUP | IB_PORT_VENDOR_CLASS_SUP | IB_PORT_DR_NOTICE_SUP;
+    props->gid_tbl_len = 1; // Only one GID supported
+    props->max_mtu = IB_MTU_4096;
+    props->active_mtu = IB_MTU_4096;
+    props->pkey_tbl_len = 1; // Only one PKey supported
+    props->bad_pkey_cntr = 0;
+    props->qkey_viol_cntr = 0;
+    props->sm_lid = 0;
+    props->subnet_timeout = 0;
+    props->init_type_reply = 0;
+    props->active_width = IB_WIDTH_4X;
+    props->active_speed = IB_SPEED_100G;
+
+    // Further required attributes according to gemini
+    props->max_msg_sz = 0x80000000; 
+    props->pkey_tbl_len = 1;
+    return 0; 
+}
+
 // Struct that points to all the ib_device functions of the FPGA-RDMA in the driver 
 static const struct ib_device_ops vfpga_ibdev_ops = {
     .owner = THIS_MODULE,
