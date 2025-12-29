@@ -80,7 +80,7 @@ static int vfpga_rdma_query_device(struct ib_device *ibdev, struct ib_device_att
 }
 
 // Function to query the RDMA port attributes
-static int vfpga_rdma_query_port(struct ib_device *ibdev, u32 port_num, struct ib_port_attr *props)
+static int vfpga_rdma_query_port(struct ib_device *ibdev, uint32_t port_num, struct ib_port_attr *props)
 {
     dbg_info("vfpga_rdma_query_port: Querying RDMA port attributes - START\n");
 
@@ -112,6 +112,108 @@ static int vfpga_rdma_query_port(struct ib_device *ibdev, u32 port_num, struct i
     props->pkey_tbl_len = 1;
     return 0; 
 }
+
+// Function query the RDMA GID 
+static int vfpga_rdma_query_gid(struct ib_device *ibdev, uint32_t port_num, int index, union ib_gid *gid)
+{
+    dbg_info("vfpga_rdma_query_gid: Querying RDMA GID - START\n");
+
+    // Get the vfpga_dev structure from the ib_device
+    struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibdev); 
+
+    // Construct the GID from the MAC address and IP address
+    memset(gid, 0, sizeof(*gid));
+
+    gid->raw = vfpga->rdma_sys_image_guid; // For simplicity, use the sys_image_guid as GID
+
+    return 0; 
+}
+
+// Function to query the link layer
+static enum ib_link_layer vfpga_rdma_get_link_layer(struct ib_device *ibdev, uint32_t port_num)
+{
+    dbg_info("vfpga_rdma_get_link_layer: Querying RDMA link layer - START\n");
+
+    // Always return Ethernet as link layer - we're doing RoCE, not InfiniBand
+    return IB_LINK_LAYER_ETHERNET;
+}
+
+// ======-------------------------------------------------------------------------------
+//
+// FPGA RDMA Resource Management Functions 
+//
+// ======-------------------------------------------------------------------------------
+
+// Function to allocate a protection domain
+static int vfpga_rdma_alloc_pd(struct ib_pd *pd, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_alloc_pd: Allocating protection domain - START\n");
+
+    // Empty function: PDs are not enforced in the HW-implementation 
+    return 0; 
+}
+
+// Function to deallocate a protection domain
+static int vfpga_rdma_dealloc_pd(struct ib_pd *pd, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_dealloc_pd: Deallocating protection domain - START\n");
+
+    // Empty function: PDs are not enforced in the HW-implementation (see above)
+    return 0; 
+}
+
+// Function to create a completion queue for RDMA 
+static int vfpga_rdma_create_cq(struct ib_cq *cq, const struct ib_cq_init_attr *attr, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_create_cq: Creating completion queue - START\n");
+
+    // Step 1: Get a pointer to the already allocated vfpga_cq structure
+    struct vfpga_cq *vfpga_cq = ibcq_to_vfpga_cq(cq);
+
+    // Step 2: Initialize the vfpga_cq structure
+    spin_lock_init(&vfpga_cq->lock);
+    INIT_LIST_HEAD(&vfpga_cq->cq_list);
+
+    // Step 3: Userspace handshake (if any)
+    if(udata) {
+        struct cyt_rdma_create_cq_resp resp = {
+            .cqn = 0, // For simplicity, always return CQ number 0
+            .entries = attr->cqe
+        }; 
+
+        // Check successful return of copy_to_user
+        if (ib_copy_to_udata(udata, &resp, sizeof(resp))) {
+            dbg_info("vfpga_rdma_create_cq: Failed to copy create_cq response to userspace\n");
+            return -EFAULT;
+        }
+    }
+
+    // Return success at the end of this routine 
+    return 0; 
+}
+
+// Function to destroy a completion queue for RDMA 
+static int vfpga_rdma_destroy_cq(struct ib_cq *cq, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_destroy_cq: Destroying completion queue - START\n");
+
+    // Step 1: Get a pointer to the vfpga_cq structure
+    struct vfpga_cq *vfpga_cq = ibcq_to_vfpga_cq(cq);
+    unsigned long flags;
+
+    // Step 2: Safety check: There should be no QPs attached to this CQ anymore 
+    spin_lock_irqsave(&vfpga_cq->lock, flags);
+    if (!list_empty(&vfpga_cq->cq_list)) {
+        pr_warn("vfpga_rdma_destroy_cq: WARNING - Destroying CQ that still has QPs attached to it.\n");
+    }
+    spin_unlock_irqrestore(&vfpga_cq->lock, flags);
+
+    // That's all -> memory handling is done automatically for us 
+
+    // Return success at the end of this routine 
+    return 0; 
+}
+
 
 // Struct that points to all the ib_device functions of the FPGA-RDMA in the driver 
 static const struct ib_device_ops vfpga_ibdev_ops = {
@@ -167,8 +269,13 @@ int vfpga_rdma_register(struct vfpga_dev *vfpga)
     vfpga_ib_dev->vfpga_dev = vfpga;
     vfpga->vfpga_ib_dev = ib_dev;
 
+    // Step 4: Set important fields in the ib_device structure to inform the RDMA core about our driver
+    vfpga->vfpga_ib_dev->ops = &vfpga_ibdev_ops;
+    vfpga->vfpga_ib_dev->node_type = RDMA_NODE_RNIC;
+    vfpga->vfpga_ib_dev->phys_port_cnt = 1; 
+    vfpga->vfpga_ib_dev->driver_cq_len = sizeof(struct vfpga_cq); // Size of our custom CQ structure
 
-    // Step 4: Initialize the ib_device structure
+    // Step 5: Initialize the ib_device structure
     return 0; 
 }
 

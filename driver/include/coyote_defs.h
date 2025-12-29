@@ -1048,6 +1048,24 @@ static inline struct vfpga_dev *ibdev_to_vfpga_dev(struct ib_device *ib_dev) {
     return vfpga_ib_dev->vfpga_dev;
 }
 
+/**
+ * @brief Struct for a custom implementation of the RDMA completion queue (CQ). 
+ */
+struct vfpga_cq {
+    // Underlying standard RDMA completion queue 
+    struct ib_cq ibcq; 
+
+    /* Virtual CQ Management */
+    spinlock_t lock;              // Spinlock for synchronizing access to the CQ
+    struct list_head cq_list;     // List of pending completions
+}
+
+/**
+ * @brief Helper function to cast between vfpga_cq and ib_cq structs
+ */
+static inline struct vfpga_cq *ibcq_to_vfpga_cq(struct ib_cq *ibcq) {
+    return container_of(ibcq, struct vfpga_cq, ibcq);
+}
 
 /**
  * @brief Virtual FPGA (vFPGA) char device structure
@@ -1182,6 +1200,10 @@ struct vfpga_dev {
     // Store the GUIDs in the vfpga device struct
     uint64_t rdma_node_guid;
     uint64_t rdma_sys_image_guid;
+
+    // Global tools for CQ management 
+    struct ida cq_ida;  // Allocator for CQ Numbers
+    spinlock_t global_cq_lock; // Global lock for CQ management
 };
 
 /**
