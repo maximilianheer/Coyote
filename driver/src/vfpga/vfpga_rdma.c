@@ -41,7 +41,7 @@ static void vfpga_rdma_calculate_guid(struct vfpga_dev *vfpga)
     dbg_info("vfpga_rdma_calculate_guid: Calculating GUID from MAC address - START\n");
 
     // GUID is formed by inserting 0xFFFE in the middle of the MAC address
-    uint8_t *mac = vfpga->ndev->dev_addr;
+    const uint8_t *mac = vfpga->ndev->dev_addr;
 
     // Construct EUI-64 Node GUID 
     uint64_t guid = 0; 
@@ -75,7 +75,6 @@ static int vfpga_rdma_query_device(struct ib_device *ibdev, struct ib_device_att
 
     // Device attributes #1: Identity 
     props->sys_image_guid = vfpga->rdma_sys_image_guid;
-    props->node_guid = vfpga->rdma_node_guid;
     return 0; 
 }
 
@@ -84,9 +83,6 @@ static int vfpga_rdma_query_port(struct ib_device *ibdev, uint32_t port_num, str
 {
     dbg_info("vfpga_rdma_query_port: Querying RDMA port attributes - START\n");
 
-    // Get the vfpga_dev structure from the ib_device
-    struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibdev); 
-
     // Reserve enough memory for the props 
     memset(props, 0, sizeof(*props));
 
@@ -94,7 +90,11 @@ static int vfpga_rdma_query_port(struct ib_device *ibdev, uint32_t port_num, str
     props->lid = 0; // No LID in RoCE
     props->state = IB_PORT_ACTIVE;
     props->phys_state = IB_PORT_PHYS_STATE_LINK_UP;
-    props->port_cap_flags = IB_PORT_CM_SUP | IB_PORT_REINIT_SUP | IB_PORT_DEVICE_MGMT_SUP | IB_PORT_VENDOR_CLASS_SUP | IB_PORT_DR_NOTICE_SUP;
+    props->port_cap_flags = IB_UVERBS_PCF_CM_SUP | 
+                            IB_UVERBS_PCF_REINIT_SUP | 
+                            IB_UVERBS_PCF_DEVICE_MGMT_SUP | 
+                            IB_UVERBS_PCF_VENDOR_CLASS_SUP | 
+                            IB_UVERBS_PCF_NOTICE_SUP;    
     props->gid_tbl_len = 1; // Only one GID supported
     props->max_mtu = IB_MTU_4096;
     props->active_mtu = IB_MTU_4096;
@@ -105,7 +105,7 @@ static int vfpga_rdma_query_port(struct ib_device *ibdev, uint32_t port_num, str
     props->subnet_timeout = 0;
     props->init_type_reply = 0;
     props->active_width = IB_WIDTH_4X;
-    props->active_speed = IB_SPEED_100G;
+    props->active_speed = IB_SPEED_EDR;
 
     // Further required attributes according to gemini
     props->max_msg_sz = 0x80000000; 
@@ -124,7 +124,8 @@ static int vfpga_rdma_query_gid(struct ib_device *ibdev, uint32_t port_num, int 
     // Construct the GID from the MAC address and IP address
     memset(gid, 0, sizeof(*gid));
 
-    gid->raw = vfpga->rdma_sys_image_guid; // For simplicity, use the sys_image_guid as GID
+    gid->global.subnet_prefix = cpu_to_be64(0xfe80000000000000LL);
+    gid->global.interface_id = vfpga->rdma_sys_image_guid;
 
     return 0; 
 }
@@ -455,15 +456,24 @@ int vfpga_rdma_register(struct vfpga_dev *vfpga)
     vfpga->vfpga_ib_dev->phys_port_cnt = 1; 
     vfpga->vfpga_ib_dev->driver_cq_len = sizeof(struct vfpga_cq); // Size of our custom CQ structure
     vfpga->vfpga_ib_dev->driver_qp_len = sizeof(struct vfpga_qp); // Size of our custom QP structure
+    vfpga->node_guid = vfpga->rdma_node_guid;
 
     // Step 5: MMAP the control registers that are needed for setting up RDMA QPs 
+
+    // Register the ib_device with the RDMA core
+    int ret = ib_register_device(vfpga->vfpga_ib_dev, "scenic_ib%d");
+    if (ret) {
+        dbg_info("vfpga_rdma_register: Failed to register ib_device with RDMA core\n");
+        ib_dealloc_device(ib_dev);
+        return ret;
+    }
 
     // Step 5: Initialize the ib_device structure
     return 0; 
 }
 
 // Unregister the FPGA-RDMA 
-int vfpga_rdma_unregister(struct vfpga_dev *vfpga)
+int vfpga_rdma_deregister(struct vfpga_dev *vfpga)
 {
     dbg_info("vfpga_rdma_unregister: Unregistering FPGA-RDMA - START\n");
     return 0;

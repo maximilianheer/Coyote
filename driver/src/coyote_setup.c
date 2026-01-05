@@ -441,7 +441,7 @@ int setup_vfpga_devices(struct bus_driver_data *data) {
                 return -ENOMEM;
             }
             dbg_info("Successfully allocated the etherdev structure for the network device\n");
-            vfpga_net_register(data->vfpga_dev, data->net_mac_addr); 
+            // vfpga_net_register(data->vfpga_dev, data->net_mac_addr); 
             dbg_info("Finished initialization of the network device from alloc_vfpga_devices\n");
         }
 
@@ -528,7 +528,7 @@ void teardown_vfpga_devices(struct bus_driver_data *data) {
 void free_vfpga_devices(struct bus_driver_data *data) {
     // Stop the network device in privileged vFPGA #0 
     dbg_info("Trying to unregister the network device from the free_vfpga_devices \n"); 
-    vfpga_net_unregister(data->vfpga_dev);
+    // vfpga_net_unregister(data->vfpga_dev);
     dbg_info("Successfully unregistered the network device from the free_vfpga_devices \n"); 
 
     kfree(data->vfpga_dev);

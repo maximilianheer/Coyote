@@ -32,6 +32,7 @@
 #include "vfpga_isr.h"
 #include "vfpga_uisr.h"
 #include "vfpga_net.h"
+#include "vfpga_rdma.h"
 
 /// vfpga_dev open char device
 int vfpga_dev_open(struct inode *inode, struct file *file);

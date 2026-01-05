@@ -1063,7 +1063,7 @@ struct vfpga_cq {
     /* Virtual CQ Management */
     spinlock_t lock;              // Spinlock for synchronizing access to the CQ
     struct list_head cq_list;     // List of pending completions
-}
+}; 
 
 /**
  * @brief Helper function to cast between vfpga_cq and ib_cq structs
@@ -1087,7 +1087,7 @@ struct vfpga_qp {
 
     // Lock for protecting QP operations
     spinlock_t lock;
-}
+}; 
 
 /**
  * @brief Helper function to cast between vfpga_qp and ib_qp structs

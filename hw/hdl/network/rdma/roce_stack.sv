@@ -95,7 +95,7 @@ ila_rdma_ctrl inst_ila_rdma_ctrl (
   // Connection interface
   .probe3(s_rdma_conn_interface.valid),
   .probe4(s_rdma_conn_interface.ready),
-  .probe5(s_rdma_conn_interface.data)    // 184
+  .probe5(s_rdma_conn_interface.data),    // 184
 
   // Network interface (valid, ready, last)
   .probe6(s_axis_rx.tvalid),

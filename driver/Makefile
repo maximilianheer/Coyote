@@ -41,6 +41,7 @@ coyote_driver-objs += src/vfpga/vfpga_isr.o
 coyote_driver-objs += src/vfpga/vfpga_ops.o 
 coyote_driver-objs += src/vfpga/vfpga_uisr.o 
 coyote_driver-objs += src/vfpga/vfpga_net.o
+coyote_driver-objs += src/vfpga/vfpga_rdma.o
 
 # Location of the Linux kernel header files, we will be building within the context of the kernel's Makefile (the flag -C sets the context)
 # This gives us access to all the Linux kernel functionality, typically implemented in <linux/*.h> and <asm/*.h>
