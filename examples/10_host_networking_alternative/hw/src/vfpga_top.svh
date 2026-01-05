@@ -334,8 +334,8 @@ always_ff @(posedge aclk) begin
         if(axis_host_send[0].tvalid && axis_host_send[0].tlast && axis_host_send[0].tready) begin 
             dma_time_counter <= 32'd0;
         end else begin 
-            // Only continue counting if we haven't yet crossed the threshold
-            if(!dma_time_threshold_crossed) begin 
+            // Only continue counting if we haven't yet crossed the threshold and if the FPGA is actually ready to receive packets 
+            if(!dma_time_threshold_crossed && (host_networking_buff_vaddr != 0)) begin 
                 dma_time_counter <= dma_time_counter + 1;
             end 
         end
@@ -835,5 +835,10 @@ ila_host_networking_irq inst_ila_host_networking_irq(
     
     // Interrupt signals 
     .probe2(dma_packet_counter_irq_trigger),            // 1
-    .probe3(dma_time_counter_irq_trigger)               // 1
+    .probe3(dma_time_counter_irq_trigger),              // 1
+
+    // Signals for the axis_send interface to check reset of the time-based IRQ 
+    .probe4(axis_host_send[0].tvalid),                 // 1
+    .probe5(axis_host_send[0].tready),                 // 1
+    .probe6(axis_host_send[0].tlast)                   // 1
 ); 

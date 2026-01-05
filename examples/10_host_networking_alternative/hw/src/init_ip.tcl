@@ -16,4 +16,4 @@ set_property -dict [list CONFIG.C_PROBE3_WIDTH {512} CONFIG.C_PROBE4_WIDTH {64} 
 
 # New ILA for checking the interrupt mechanism 
 create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_host_networking_irq
-set_property -dict [list CONFIG.C_PROBE0_WIDTH {32} CONFIG.C_NUM_OF_PROBES {4} CONFIG.C_DATA_DEPTH {32768} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2}] [get_ips ila_host_networking_irq]
+set_property -dict [list CONFIG.C_PROBE0_WIDTH {32} CONFIG.C_NUM_OF_PROBES {7} CONFIG.C_DATA_DEPTH {32768} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2}] [get_ips ila_host_networking_irq]
