@@ -82,6 +82,49 @@ module roce_stack (
     output logic [31:0]         retrans_count_data
 );
 
+// Small ILA to see control interaction with the RDMA stack for driver integration debugging
+ila_rdma_ctrl inst_ila_rdma_ctrl (
+  // Clock 
+  .clk(nclk),
+
+  // QP interface
+  .probe0(s_rdma_qp_interface.valid),
+  .probe1(s_rdma_qp_interface.ready),
+  .probe2(s_rdma_qp_interface.data),     // 168
+
+  // Connection interface
+  .probe3(s_rdma_conn_interface.valid),
+  .probe4(s_rdma_conn_interface.ready),
+  .probe5(s_rdma_conn_interface.data)    // 184
+
+  // Network interface (valid, ready, last)
+  .probe6(s_axis_rx.tvalid),
+  .probe7(s_axis_rx.tready),
+  .probe8(s_axis_rx.tlast),
+  .probe9(m_axis_tx.tvalid),
+  .probe10(m_axis_tx.tready),
+  .probe11(m_axis_tx.tlast), 
+
+  // User command interface (valid, ready, data)
+  .probe12(s_rdma_sq.valid),
+  .probe13(s_rdma_sq.ready), 
+  .probe14(s_rdma_sq.data),   // 256
+  .probe15(m_rdma_ack.valid),
+  .probe16(m_rdma_ack.ready),
+  .probe17(m_rdma_ack.data),  // 32
+
+  // Data delivery interface (valid, ready, last)
+  .probe18(s_axis_rdma_rd_req.tvalid),
+  .probe19(s_axis_rdma_rd_req.tready),
+  .probe20(s_axis_rdma_rd_req.tlast),
+  .probe21(m_axis_rdma_wr.tvalid),
+  .probe22(m_axis_rdma_wr.tready),
+  .probe23(m_axis_rdma_wr.tlast),
+  .probe24(s_axis_rdma_rd_rsp.tvalid),
+  .probe25(s_axis_rdma_rd_rsp.tready),
+  .probe26(s_axis_rdma_rd_rsp.tlast)
+); 
+
 //
 // SQ
 //

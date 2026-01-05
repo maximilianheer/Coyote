@@ -215,6 +215,186 @@ static int vfpga_rdma_destroy_cq(struct ib_cq *cq, struct ib_udata *udata)
 }
 
 
+// Function to create a queue pair for RDMA 
+static int vfpga_rdma_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_create_qp: Creating queue pair - START\n");
+
+    // STEP 1: Get the context right 
+    struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibqp->device);
+    struct vfpga_qp *vfpga_qp = ibqp_to_vfpga_qp(ibqp);
+    struct cyt_create_qp_resp resp = {}; 
+    struct cyt_create_qp_req req; 
+    int ret; 
+
+    // STEP 2: Initialize the helper structures 
+    spin_lock_init(&vfpga_qp->lock);
+    INIT_LIST_HEAD(&vfpga_qp->cq_node);
+
+    // STEP 3: Assign a hardware QP Number (QPN) -> QUESTION: Can we use random QPNs or do we need to construct them ourselves? 
+    ret = ida_alloc_max(&vfpga->qp_ida, VFPGA_MAX_NUM_QPS - 1, GFP_KERNEL);
+    if (ret < 0) {
+        dbg_info("vfpga_rdma_create_qp: Failed to allocate QP number\n");
+        return ret; 
+    }
+
+    // Store the new QPN in the vfpga_qp structure and the generic ib_qp structure
+    vfpga_qp->qpn = ret; 
+    ibqp->qp_num = ret;
+
+    // STEP 4: Userspace handshake (if any)
+    if (udata) {
+        // Do something -> to be implemented later on 
+        // IDEA: We transmit the entire memory layout at once, including the doorbells and buffer addresses. Seems to make more sense tbh. 
+    }
+
+    // STEP 5: Link to the Virtual Completion Queue 
+    if(ibqp->send_cq){
+        // Obtain the vfpga_cq from the Queue Pair's send_cq
+        struct vfpga_cq *vfpga_cq = ibcq_to_vfpga_cq(ibqp->send_cq);
+        unsigned long flags;
+
+        // Use the lock and append the QP to the CQ's list
+        spin_lock_irqsave(&vfpga_cq->lock, flags);
+        list_add_tail(&vfpga_qp->cq_node, &vfpga_cq->cq_list);
+        spin_unlock_irqrestore(&vfpga_cq->lock, flags);
+    }
+
+    // STEP 6: Return Data to userspace 
+    if(udata) {
+        if(ib_copy_to_udata(udata, &resp, sizeof(resp))) {
+            dbg_info("vfpga_rdma_create_qp: Failed to copy create_qp response to userspace\n");
+            ret = - EFAULT;
+            goto err_unlink;
+        }
+    }
+
+    // Return success at the end of this routine  
+    return 0; 
+
+    // Error handling path 
+    err_unlink: 
+        // Unlink from the CQ if linked 
+        if(ibqp->send_cq){
+            struct vfpga_cq *vfpga_cq = ibcq_to_vfpga_cq(ibqp->send_cq);
+            unsigned long flags;
+
+            spin_lock_irqsave(&vfpga_cq->lock, flags);
+            list_del(&vfpga_qp->cq_node);
+            spin_unlock_irqrestore(&vfpga_cq->lock, flags);
+        }
+
+    err_qp: 
+        ida_free(&vfpga->qp_ida, vfpga_qp->qpn);
+        return ret;
+}
+
+// Function to modify the state of the queue pair from the driver function 
+static int vfpga_rdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int attr_mask, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_modify_qp: Modifying queue pair - START\n");
+
+    // STEP 1: Get the context right based on the given arguments 
+    struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibqp->device);
+    struct vfpga_qp *vfpga_qp = ibqp_to_vfpga_qp(ibqp);
+    enum ib_qp_state cur_state, next_state; 
+    int ret = 0; 
+    unsigned long flags; 
+
+    // STEP 2: Spin up the lock for this QP
+    spin_lock_irqsave(&vfpga_qp->lock, flags);
+
+    // STEP 3: Resolve the states (current and next)
+    cur_state = (attr_mask & IB_QP_STATE) ? attr->cur_qp_state : vfpga_qp->ibqp.qp_state;
+    next_state = (attr_mask & IB_QP_STATE) ? attr->qp_state : cur_state;
+
+    // STEP 4: Validate the state transition with helper functions 
+    if(!ib_modify_qp_is_ok(cur_state, next_state, attr_mask)) {
+        ret = -EINVAL;
+        goto out; 
+    }
+
+    // STEP 5: Hardware Interaction -> This function is moved to the userspace library to stay consistent
+
+    // STEP 6: Update the kernel software state so that we can query the current state of the QP later on 
+    if(attr_mask & IB_QP_STATE) {
+        vfpga_qp->ibqp.qp_state = next_state;
+    }
+
+    if(attr_mask & IB_QP_ACCESS_FLAGS) {
+        vfpga_qp->ibqp.qp_access_flags = attr->qp_access_flags;
+    }
+
+    // Store the port number if provided 
+    if(attr_mask & IB_QP_PORT) {
+        vfpga_qp->ibqp.port_num = attr->port_num;
+    }
+
+    // STEP 7: Store MTU if provided for later querying
+    if(attr_mask & IB_QP_PATH_MTU) {
+        vfpga_qp->ibqp.path_mtu = attr->path_mtu;
+    }
+
+    // STEP 8: Clean up and return success
+    out:
+
+    spin_unlock_irqrestore(&vfpga_qp->lock, flags);
+    return ret;
+}
+
+// Function to destroy a queue pair for RDMA 
+static int vfpga_rdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_destroy_qp: Destroying queue pair - START\n");
+
+    // STEP 1: Get the context right
+    struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibqp->device);
+    struct vfpga_qp *vfpga_qp = ibqp_to_vfpga_qp(ibqp);
+    unsigned long flags;
+    int ret = 0;    
+
+    // STEP 2: Unlink from the CQ if linked
+    if(ibqp->send_cq){
+        struct vfpga_cq *vfpga_cq = ibcq_to_vfpga_cq(ibqp->send_cq);
+
+        spin_lock_irqsave(&vfpga_cq->lock, flags);
+        // Check if we are actually in the list before deleting 
+        if(!list_empty(&vfpga_qp->cq_node)) {
+            list_del(&vfpga_qp->cq_node);
+        }
+        spin_unlock_irqrestore(&vfpga_cq->lock, flags);
+    }
+
+    // STEP 3: Tell the FPGA to stop DMA'ing -> Will still put this to userspace for consistency. 
+
+    // STEP 4: Release the QPN 
+    ida_free(&vfpga->qp_ida, vfpga_qp->qpn);
+
+    // STEP 5: Free the QP structure 
+    kfree(vfpga_qp);
+
+    // Step 6: Return success at the end of this routine
+    return ret; 
+}
+
+// Function to register a user memory region for RDMA 
+static struct ib_mr *vfpga_rdma_reg_user_mr(struct ib_pd *pd, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_reg_user_mr: Registering user memory region - START\n");
+
+    // To be implemented later on 
+    return 0;
+}
+
+// Functio to deregister a memory region for RDMA 
+static int vfpga_rdma_dereg_mr(struct ib_mr *mr, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_dereg_mr: Deregistering memory region - START\n");
+
+    // To be implemented later on 
+    return 0;
+}
+
 // Struct that points to all the ib_device functions of the FPGA-RDMA in the driver 
 static const struct ib_device_ops vfpga_ibdev_ops = {
     .owner = THIS_MODULE,
@@ -274,6 +454,9 @@ int vfpga_rdma_register(struct vfpga_dev *vfpga)
     vfpga->vfpga_ib_dev->node_type = RDMA_NODE_RNIC;
     vfpga->vfpga_ib_dev->phys_port_cnt = 1; 
     vfpga->vfpga_ib_dev->driver_cq_len = sizeof(struct vfpga_cq); // Size of our custom CQ structure
+    vfpga->vfpga_ib_dev->driver_qp_len = sizeof(struct vfpga_qp); // Size of our custom QP structure
+
+    // Step 5: MMAP the control registers that are needed for setting up RDMA QPs 
 
     // Step 5: Initialize the ib_device structure
     return 0; 

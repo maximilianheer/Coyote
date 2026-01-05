@@ -143,6 +143,8 @@ set_property -dict [list CONFIG.C_PROBE3_WIDTH {512} CONFIG.C_PROBE4_WIDTH {64} 
 create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_prefilter
 set_property -dict [list CONFIG.C_PROBE3_WIDTH {512} CONFIG.C_PROBE4_WIDTH {64} CONFIG.C_PROBE8_WIDTH {512} CONFIG.C_PROBE9_WIDTH {64} CONFIG.C_PROBE13_WIDTH {512} CONFIG.C_PROBE14_WIDTH {64} CONFIG.C_NUM_OF_PROBES {23} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {4096}] [get_ips ila_prefilter]
 
+create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_rdma_ctrl
+set_property -dict [list CONFIG.C_PROBE2_WIDTH {168} CONFIG.C_PROBE5_WIDTH {184} CONFIG.C_PROBE14_WIDTH {256} CONFIG.C_PROBE17_WIDTH {32} CONFIG.C_NUM_OF_PROBES {27} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {4096}] [get_ips ila_req_trace]
 
 ##
 ## Host Networking

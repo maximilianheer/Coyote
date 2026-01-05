@@ -257,6 +257,11 @@ extern bool en_hmm;
 
 #define TX_BUFF_SIZE 6144
 
+/**
+ * Coyote RDMA definitions
+ */
+#define VFPGA_MAX_NUM_QPS 500
+
 /** 
  * Copy over some constants from sw/include/cDefs.hpp for consistency while reimplementing parts of the controller logic for READ / WRITE ops 
 */
@@ -1065,6 +1070,30 @@ struct vfpga_cq {
  */
 static inline struct vfpga_cq *ibcq_to_vfpga_cq(struct ib_cq *ibcq) {
     return container_of(ibcq, struct vfpga_cq, ibcq);
+}
+
+/**
+ * @brief Struct for a custom implementation of the RDMA queue pair (QP). 
+ */
+struct vfpga_qp {
+    // Underlying standard RDMA queue pair 
+    struct ib_qp ibqp;
+
+    // Coyote thread ID associated with this QP
+    uint32_t qpn;
+
+    // Pointer to the virtual CQ associated with this QP
+    struct list_head cq_node; 
+
+    // Lock for protecting QP operations
+    spinlock_t lock;
+}
+
+/**
+ * @brief Helper function to cast between vfpga_qp and ib_qp structs
+ */
+static inline struct vfpga_qp *ibqp_to_vfpga_qp(struct ib_qp *ibqp) {
+    return container_of(ibqp, struct vfpga_qp, ibqp);
 }
 
 /**

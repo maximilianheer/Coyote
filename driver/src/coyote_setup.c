@@ -444,6 +444,18 @@ int setup_vfpga_devices(struct bus_driver_data *data) {
             vfpga_net_register(data->vfpga_dev, data->net_mac_addr); 
             dbg_info("Finished initialization of the network device from alloc_vfpga_devices\n");
         }
+
+        // For vFPGA #1 -> Call the RDMA device initialization function
+        // Note: This is a momentary bugfix. In the future we should allow RDMA to be initialized on any vFPGA (except for #0)
+        if(i == 1 && data->en_rdma) {
+            // Initialize the RDMA device within vFPGA #1 
+            dbg_info("Trying to initialize the RDMA device from alloc_vfpga_devices\n");
+            data->vfpga_dev->bd_data = data;
+
+            // Calling the RDMA initialization function
+            ret_val = vfpga_rdma_register(data->vfpga_dev); 
+            dbg_info("Finished initialization of the RDMA device from alloc_vfpga_devices with return value %d \n", ret_val);
+        }
     }
 
     dbg_info("all virtual FPGA devices added\n");
