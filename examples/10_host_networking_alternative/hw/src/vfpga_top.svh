@@ -312,12 +312,15 @@ logic [31:0] dma_packet_counter;
 logic [31:0] dma_time_counter;
 
 // Localparam for the timing threshold that should trigger an IRQ if no packets are being received otherwise 
-localparam integer DMA_TIME_IRQ_THRESHOLD = 32'd25000; // Approx. 1ms at 250MHz clock
+// localparam integer DMA_TIME_IRQ_THRESHOLD = 32'd25000; // Approx. 1ms at 250MHz clock
+localparam integer DMA_TIME_IRQ_THRESHOLD_NS = 100; // Approx. 1ms at 250MHz clock
 
 // Signal for dma_packet_counter-based IRQ notification
 logic dma_packet_counter_irq_trigger; 
 logic dma_time_counter_irq_trigger;
 logic dma_time_threshold_crossed; 
+
+// Additional 
 
 
 // ----------------------------------------------------------------------------
@@ -331,7 +334,10 @@ always_ff @(posedge aclk) begin
         if(axis_host_send[0].tvalid && axis_host_send[0].tlast && axis_host_send[0].tready) begin 
             dma_time_counter <= 32'd0;
         end else begin 
-            dma_time_counter <= dma_time_counter + 1;
+            // Only continue counting if we haven't yet crossed the threshold
+            if(!dma_time_threshold_crossed) begin 
+                dma_time_counter <= dma_time_counter + 1;
+            end 
         end
     end 
 end 
@@ -742,7 +748,7 @@ ila_host_networking_axis inst_ila_host_networking_tx(
     .probe4(axis_host_networking_tx.tkeep)      // 64
 ); */ 
 
-ila_host_networking inst_ila_host_networking (
+/* ila_host_networking inst_ila_host_networking (
     // Clock signal
     .clk(aclk), 
 
@@ -814,4 +820,20 @@ ila_host_networking inst_ila_host_networking (
     .probe44(dma_time_counter_irq_trigger),              // 1
     .probe45(dma_time_threshold_crossed),                // 1
     .probe46(dma_time_counter)                           // 32
-);
+); */ 
+
+// New ILA specifically for checking the IRQ-mechanism
+ila_host_networking_irq inst_ila_host_networking_irq(
+    // Clock signal 
+    .clk(aclk),
+
+    // DMA packet counter 
+    .probe0(dma_packet_counter),                        // 32
+
+    // IRQ Notification interface 
+    .probe1(notify.valid),                              // 1
+    
+    // Interrupt signals 
+    .probe2(dma_packet_counter_irq_trigger),            // 1
+    .probe3(dma_time_counter_irq_trigger)               // 1
+); 
