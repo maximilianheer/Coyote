@@ -1085,6 +1085,16 @@ struct vfpga_qp {
     // Pointer to the virtual CQ associated with this QP
     struct list_head cq_node; 
 
+    // Store the state of the QP 
+    enum ib_qp_state qp_state;
+
+    // Store the path MTU of the QP
+    enum ib_mtu path_mtu;
+
+    // Storing the port number and the qp_access_flags 
+    int port_num;
+    int qp_access_flags;
+
     // Lock for protecting QP operations
     spinlock_t lock;
 }; 
@@ -1095,6 +1105,29 @@ struct vfpga_qp {
 static inline struct vfpga_qp *ibqp_to_vfpga_qp(struct ib_qp *ibqp) {
     return container_of(ibqp, struct vfpga_qp, ibqp);
 }
+
+/**
+ * @brief Struct for a custom implementation of the RDMA protection domain (PD). 
+ */
+struct vfpga_pd {
+    // Underlying standard RDMA protection domain 
+    struct ib_pd ibpd;
+
+    // Pointer to the vFPGA device associated with this PD
+    uint32_t priv; 
+};
+
+/**
+ * @brief Struct for a custom implementation of the RDMA memory region (MR). 
+ */
+struct vfpga_mr {
+    // Underlying standard RDMA memory region 
+    struct ib_mr ibmr;
+
+    // Pointer to the vFPGA device associated with this MR
+    uint32_t priv; 
+};
+
 
 /**
  * @brief Virtual FPGA (vFPGA) char device structure
@@ -1224,7 +1257,7 @@ struct vfpga_dev {
     #endif 
 
     // Struct for the wrapper around the ib_device struct with the pointer to the vFPGA device 
-    struct vfpga_ib_dev *vfpga_ib_dev; 
+    struct vfpga_ib_device *vfpga_ib_dev; 
 
     // Store the GUIDs in the vfpga device struct
     uint64_t rdma_node_guid;
@@ -1233,6 +1266,10 @@ struct vfpga_dev {
     // Global tools for CQ management 
     struct ida cq_ida;  // Allocator for CQ Numbers
     spinlock_t global_cq_lock; // Global lock for CQ management
+
+    // Global tools for QP management 
+    struct ida qp_ida; // Allocator for QP Numbers
+    spinlock_t global_qp_lock; // Global lock for QP management
 };
 
 /**

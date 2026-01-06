@@ -25,32 +25,18 @@
   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   */
 
+#ifndef COYOTE_RDMA_ABI_H   // <--- Add this at the very top
+#define COYOTE_RDMA_ABI_H   // <--- Add this
+#include <linux/types.h>
 
-// Include the FPGA device header for device-specific structures and definitions
-#ifndef _VFPGA_RDMA_H_
-#define _VFPGA_RDMA_H_
-#include "coyote_defs.h"
-#include "coyote_setup.h"
-#include "vfpga_isr.h"
-#include "vfpga_uisr.h"
-#include "vfpga_ops.h"
-#include <linux/ethtool.h>
-#include "coyote_rdma_abi.h"
+// ==============
+// Structures used for communication between the RDMA core and the userspace library
+// ==============
 
-// Only declare the public interfaces for registering and unregistering the FPGA ib_dev
+// Response structure for for ibv_create_cq
+struct cyt_rdma_create_cq_resp {
+    uint32_t cqn; 
+    uint32_t entries; 
+}; 
 
-/**
- * vfpga_rdma_register - Register the FPGA RDMA device
- * @vfpga: pointer to the FPGA device structure (for a vFPGA)
- * 
- * Returns 0 on success, negative error code on failure
- */
-int vfpga_rdma_register(struct vfpga_dev *vfpga);
-
-/**
- * vfpga_rdma_deregister - Deregister the FPGA RDMA device
- * @vfpga: pointer to the FPGA device structure (for a vFPGA)
- */
-void vfpga_rdma_deregister(struct vfpga_dev *vfpga);
-
-#endif // _VFPGA_RDMA_H_
+#endif // COYOTE_RDMA_ABI_H 

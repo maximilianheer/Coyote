@@ -131,13 +131,13 @@ static int vfpga_rdma_query_gid(struct ib_device *ibdev, uint32_t port_num, int 
 }
 
 // Function to query the link layer
-static enum ib_link_layer vfpga_rdma_get_link_layer(struct ib_device *ibdev, uint32_t port_num)
+/* static enum ib_link_layer vfpga_rdma_get_link_layer(struct ib_device *ibdev, uint32_t port_num)
 {
     dbg_info("vfpga_rdma_get_link_layer: Querying RDMA link layer - START\n");
 
     // Always return Ethernet as link layer - we're doing RoCE, not InfiniBand
     return IB_LINK_LAYER_ETHERNET;
-}
+} */ 
 
 // ======-------------------------------------------------------------------------------
 //
@@ -224,8 +224,8 @@ static int vfpga_rdma_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr
     // STEP 1: Get the context right 
     struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibqp->device);
     struct vfpga_qp *vfpga_qp = ibqp_to_vfpga_qp(ibqp);
-    struct cyt_create_qp_resp resp = {}; 
-    struct cyt_create_qp_req req; 
+    // struct cyt_create_qp_resp resp = {}; 
+    // struct cyt_create_qp_req req; 
     int ret; 
 
     // STEP 2: Initialize the helper structures 
@@ -262,32 +262,16 @@ static int vfpga_rdma_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *attr
     }
 
     // STEP 6: Return Data to userspace 
-    if(udata) {
+    /* if(udata) {
         if(ib_copy_to_udata(udata, &resp, sizeof(resp))) {
             dbg_info("vfpga_rdma_create_qp: Failed to copy create_qp response to userspace\n");
             ret = - EFAULT;
             goto err_unlink;
         }
-    }
+    } */ 
 
     // Return success at the end of this routine  
     return 0; 
-
-    // Error handling path 
-    err_unlink: 
-        // Unlink from the CQ if linked 
-        if(ibqp->send_cq){
-            struct vfpga_cq *vfpga_cq = ibcq_to_vfpga_cq(ibqp->send_cq);
-            unsigned long flags;
-
-            spin_lock_irqsave(&vfpga_cq->lock, flags);
-            list_del(&vfpga_qp->cq_node);
-            spin_unlock_irqrestore(&vfpga_cq->lock, flags);
-        }
-
-    err_qp: 
-        ida_free(&vfpga->qp_ida, vfpga_qp->qpn);
-        return ret;
 }
 
 // Function to modify the state of the queue pair from the driver function 
@@ -296,7 +280,7 @@ static int vfpga_rdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int
     dbg_info("vfpga_rdma_modify_qp: Modifying queue pair - START\n");
 
     // STEP 1: Get the context right based on the given arguments 
-    struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibqp->device);
+    // struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibqp->device);
     struct vfpga_qp *vfpga_qp = ibqp_to_vfpga_qp(ibqp);
     enum ib_qp_state cur_state, next_state; 
     int ret = 0; 
@@ -306,11 +290,11 @@ static int vfpga_rdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int
     spin_lock_irqsave(&vfpga_qp->lock, flags);
 
     // STEP 3: Resolve the states (current and next)
-    cur_state = (attr_mask & IB_QP_STATE) ? attr->cur_qp_state : vfpga_qp->ibqp.qp_state;
+    cur_state = (attr_mask & IB_QP_STATE) ? attr->cur_qp_state : vfpga_qp->qp_state;
     next_state = (attr_mask & IB_QP_STATE) ? attr->qp_state : cur_state;
 
     // STEP 4: Validate the state transition with helper functions 
-    if(!ib_modify_qp_is_ok(cur_state, next_state, attr_mask)) {
+    if(!ib_modify_qp_is_ok(cur_state, next_state, vfpga_qp->ibqp.qp_type, attr_mask)) {
         ret = -EINVAL;
         goto out; 
     }
@@ -319,21 +303,21 @@ static int vfpga_rdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int
 
     // STEP 6: Update the kernel software state so that we can query the current state of the QP later on 
     if(attr_mask & IB_QP_STATE) {
-        vfpga_qp->ibqp.qp_state = next_state;
+        vfpga_qp->qp_state = next_state;
     }
 
     if(attr_mask & IB_QP_ACCESS_FLAGS) {
-        vfpga_qp->ibqp.qp_access_flags = attr->qp_access_flags;
+        vfpga_qp->qp_access_flags = attr->qp_access_flags;
     }
 
     // Store the port number if provided 
     if(attr_mask & IB_QP_PORT) {
-        vfpga_qp->ibqp.port_num = attr->port_num;
+        vfpga_qp->port_num = attr->port_num;
     }
 
     // STEP 7: Store MTU if provided for later querying
     if(attr_mask & IB_QP_PATH_MTU) {
-        vfpga_qp->ibqp.path_mtu = attr->path_mtu;
+        vfpga_qp->path_mtu = attr->path_mtu;
     }
 
     // STEP 8: Clean up and return success
@@ -379,7 +363,7 @@ static int vfpga_rdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
 }
 
 // Function to register a user memory region for RDMA 
-static struct ib_mr *vfpga_rdma_reg_user_mr(struct ib_pd *pd, struct ib_udata *udata)
+static struct ib_mr *vfpga_rdma_reg_user_mr(struct ib_pd *pd, uint64_t start, uint64_t length, uint64_t virt_addr, int access_flags, struct ib_udata *udata)
 {
     dbg_info("vfpga_rdma_reg_user_mr: Registering user memory region - START\n");
 
@@ -399,13 +383,13 @@ static int vfpga_rdma_dereg_mr(struct ib_mr *mr, struct ib_udata *udata)
 // Struct that points to all the ib_device functions of the FPGA-RDMA in the driver 
 static const struct ib_device_ops vfpga_ibdev_ops = {
     .owner = THIS_MODULE,
-    .driver_id = RDMA_DRIVER_ID_UNKNOWN,
+    .driver_id = RDMA_DRIVER_UNKNOWN,
 
     // Device / Port functions 
     .query_device = vfpga_rdma_query_device, 
     .query_port = vfpga_rdma_query_port, 
     .query_gid = vfpga_rdma_query_gid,
-    .get_link_layer = vfpga_rdma_get_link_layer,
+    // .get_link_layer = vfpga_rdma_get_link_layer,
 
     // Ressources management functions
     .alloc_pd = vfpga_rdma_alloc_pd,
@@ -421,7 +405,14 @@ static const struct ib_device_ops vfpga_ibdev_ops = {
     // Userspace Glue 
     .alloc_ucontext = vfpga_rdma_alloc_ucontext,
     .dealloc_ucontext = vfpga_rdma_dealloc_ucontext,
-    .mmap = vfpga_rdma_mmap
+    .mmap = vfpga_rdma_mmap, 
+
+    /** 
+    .size_cq = sizeof(struct vfpga_cq),
+    .size_qp = sizeof(struct vfpga_qp),
+    .size_mr = sizeof(struct vfpga_mr),
+    .size_pd = sizeof(struct vfpga_pd)
+    */ 
 }; 
 
 // --------------------------------------------
@@ -439,7 +430,7 @@ int vfpga_rdma_register(struct vfpga_dev *vfpga)
     // Step 2: Allocate the ib_device structure 
     struct vfpga_ib_device *vfpga_ib_dev;
     struct ib_device *ib_dev;
-    vfpga_ib_dev = ib_alloc_device(struct vfpga_ib_device, ib_dev);
+    vfpga_ib_dev = ib_alloc_device(vfpga_ib_device, ib_dev);
     if (!vfpga_ib_dev) {
         dbg_info("vfpga_rdma_register: Failed to allocate ib_device structure\n");
         return -ENOMEM;
@@ -448,20 +439,21 @@ int vfpga_rdma_register(struct vfpga_dev *vfpga)
     // Step 3: Set reverse pointers from ib_device to vfpga_dev
     ib_dev = &vfpga_ib_dev->ib_dev;
     vfpga_ib_dev->vfpga_dev = vfpga;
-    vfpga->vfpga_ib_dev = ib_dev;
+    vfpga->vfpga_ib_dev = vfpga_ib_dev;
 
     // Step 4: Set important fields in the ib_device structure to inform the RDMA core about our driver
-    vfpga->vfpga_ib_dev->ops = &vfpga_ibdev_ops;
-    vfpga->vfpga_ib_dev->node_type = RDMA_NODE_RNIC;
-    vfpga->vfpga_ib_dev->phys_port_cnt = 1; 
-    vfpga->vfpga_ib_dev->driver_cq_len = sizeof(struct vfpga_cq); // Size of our custom CQ structure
-    vfpga->vfpga_ib_dev->driver_qp_len = sizeof(struct vfpga_qp); // Size of our custom QP structure
-    vfpga->node_guid = vfpga->rdma_node_guid;
+    ib_set_device_ops(ib_dev, &vfpga_ibdev_ops);
+    ib_dev->node_type = RDMA_NODE_RNIC;
+    ib_dev->phys_port_cnt = 1; 
+    /* ib_dev->driver_cq_len = sizeof(struct vfpga_cq); // Size of our custom CQ structure
+    ib_dev->driver_qp_len = sizeof(struct vfpga_qp); // Size of our custom QP structure */ 
+    ib_dev->node_guid = vfpga->rdma_node_guid;
+    memcpy(ib_dev->node_desc, "SCENIC", sizeof("SCENIC")); // Optional: Name your device
 
     // Step 5: MMAP the control registers that are needed for setting up RDMA QPs 
 
     // Register the ib_device with the RDMA core
-    int ret = ib_register_device(vfpga->vfpga_ib_dev, "scenic_ib%d");
+    int ret = ib_register_device(ib_dev, "scenic_ib%d", NULL);
     if (ret) {
         dbg_info("vfpga_rdma_register: Failed to register ib_device with RDMA core\n");
         ib_dealloc_device(ib_dev);
@@ -473,8 +465,7 @@ int vfpga_rdma_register(struct vfpga_dev *vfpga)
 }
 
 // Unregister the FPGA-RDMA 
-int vfpga_rdma_deregister(struct vfpga_dev *vfpga)
+void vfpga_rdma_deregister(struct vfpga_dev *vfpga)
 {
     dbg_info("vfpga_rdma_unregister: Unregistering FPGA-RDMA - START\n");
-    return 0;
 }

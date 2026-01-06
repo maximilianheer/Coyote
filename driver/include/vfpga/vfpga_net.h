@@ -25,8 +25,8 @@
   * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   */
 
-#ifndef __FPGA_NET_H__
-#define __FPGA_NET_H__
+#ifndef _VFPGA_NET_H_
+#define _VFPGA_NET_H_
 
 // Include the FPGA device header for device-specific structures and definitions
 #include "coyote_defs.h"
