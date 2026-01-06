@@ -313,7 +313,7 @@ logic [31:0] dma_time_counter;
 
 // Localparam for the timing threshold that should trigger an IRQ if no packets are being received otherwise 
 // localparam integer DMA_TIME_IRQ_THRESHOLD = 32'd25000; // Approx. 1ms at 250MHz clock
-localparam integer DMA_TIME_IRQ_THRESHOLD_NS = 100; // Approx. 1ms at 250MHz clock
+localparam integer DMA_TIME_IRQ_THRESHOLD = 100; // Approx. 1ms at 250MHz clock
 
 // Signal for dma_packet_counter-based IRQ notification
 logic dma_packet_counter_irq_trigger; 
