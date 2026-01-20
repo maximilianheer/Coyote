@@ -531,6 +531,13 @@ void free_vfpga_devices(struct bus_driver_data *data) {
     // vfpga_net_unregister(data->vfpga_dev);
     dbg_info("Successfully unregistered the network device from the free_vfpga_devices \n"); 
 
+    dbg_info("Trying to unregister the RDMA device from the free_vfpga_devices \n");
+    // Stopping the RDMA device in privileged vFPGA #1
+    if(data->en_rdma) {
+        vfpga_rdma_deregister(data->vfpga_dev);
+    }
+    dbg_info("Successfully unregistered the RDMA device from the free_vfpga_devices \n");
+
     kfree(data->vfpga_dev);
     dbg_info("memory for vFPGA device freed\n");
 

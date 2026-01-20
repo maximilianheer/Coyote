@@ -261,6 +261,7 @@ extern bool en_hmm;
  * Coyote RDMA definitions
  */
 #define VFPGA_MAX_NUM_QPS 500
+#define VFPGA_MAX_NUM_CQS 8
 
 /** 
  * Copy over some constants from sw/include/cDefs.hpp for consistency while reimplementing parts of the controller logic for READ / WRITE ops 
@@ -1114,8 +1115,13 @@ struct vfpga_pd {
     struct ib_pd ibpd;
 
     // Pointer to the vFPGA device associated with this PD
-    uint32_t priv; 
+    uint32_t pdn; 
 };
+
+// Helper function to cast between vfpga_pd and ib_pd structs
+static inline struct vfpga_pd *ibpd_to_vfpga_pd(struct ib_pd *ibpd) {
+    return container_of(ibpd, struct vfpga_pd, ibpd);
+}
 
 /**
  * @brief Struct for a custom implementation of the RDMA memory region (MR). 
@@ -1127,6 +1133,28 @@ struct vfpga_mr {
     // Pointer to the vFPGA device associated with this MR
     uint32_t priv; 
 };
+
+/**
+ * @brief Struct for ib_ucontext 
+ */
+struct vfpga_ucontext {
+    // Underlying standard RDMA user context 
+    struct ib_ucontext ibucontext;
+
+    // Pointer to the vFPGA device associated with this user context
+    struct list_head qp_list; 
+    spinlock_t ctx_lock; 
+
+    // FPGA virtualization hook 
+    uint32_t hw_vmid; 
+}; 
+
+/**
+ * @brief Helper function to cast between vfpga_ucontext and ib_ucontext structs
+ */
+static inline struct vfpga_ucontext *ibucxt_to_vfpga_ucontext(struct ib_ucontext *ibucontext) {
+    return container_of(ibucontext, struct vfpga_ucontext, ibucontext);
+}
 
 
 /**

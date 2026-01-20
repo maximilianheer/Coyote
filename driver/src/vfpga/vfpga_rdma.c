@@ -41,7 +41,11 @@ static void vfpga_rdma_calculate_guid(struct vfpga_dev *vfpga)
     dbg_info("vfpga_rdma_calculate_guid: Calculating GUID from MAC address - START\n");
 
     // GUID is formed by inserting 0xFFFE in the middle of the MAC address
-    const uint8_t *mac = vfpga->ndev->dev_addr;
+    uint8_t mac[ETH_ALEN]; 
+    for(int i = 0; i < ETH_ALEN; i++){
+        mac[i] = (vfpga->bd_data->net_mac_addr >> (8 * (ETH_ALEN - 1 - i))) & 0xFF;
+    }
+    dbg_info("vfpga_rdma_calculate_guid: Using MAC address %pM for GUID calculation\n", mac);
 
     // Construct EUI-64 Node GUID 
     uint64_t guid = 0; 
@@ -73,8 +77,29 @@ static int vfpga_rdma_query_device(struct ib_device *ibdev, struct ib_device_att
     // Reserve enough memory for the props 
     memset(props, 0, sizeof(*props));
 
-    // Device attributes #1: Identity 
+    // Basic Identity Information 
+    props->fw_ver = 0x01000000;
     props->sys_image_guid = vfpga->rdma_sys_image_guid;
+    props->max_mr_size = ~0ull;
+    props->page_size_cap = PAGE_SIZE;
+    props->vendor_id = 0x02c9; // Xilinx
+    props->vendor_part_id = 0x0001; // Custom part ID for C
+    props->hw_ver = 0x1;
+
+    // Capabilities
+    props->device_cap_flags = IB_DEVICE_MEM_WINDOW | 
+                              IB_DEVICE_PORT_ACTIVE_EVENT |
+                              IB_DEVICE_RC_RNR_NAK_GEN;
+
+    // Limits 
+    props->max_qp = VFPGA_MAX_NUM_QPS;
+    props->max_cq = VFPGA_MAX_NUM_CQS;
+    props->max_qp_wr = VFPGA_MAX_NUM_QPS / 2; 
+    // props->max_sge = 32;
+    props->max_cqe = VFPGA_MAX_NUM_CQS / 2; 
+    props->max_mr = 1024;
+    props->max_pd = 256;
+
     return 0; 
 }
 
@@ -130,14 +155,45 @@ static int vfpga_rdma_query_gid(struct ib_device *ibdev, uint32_t port_num, int 
     return 0; 
 }
 
+// Stub for querying the pkey - always return the default pkey 0xFFFF
+static int vfpga_rdma_query_pkey(struct ib_device *ibdev, uint32_t port_num, uint16_t index, uint16_t *pkey)
+{
+    dbg_info("vfpga_rdma_query_pkey: Querying RDMA PKey - START\n");
+    if(index != 0) {
+        return -EINVAL; 
+    }
+
+    *pkey = 0xFFFF;
+    return 0;
+}
+
+// Function to get port immutable properties
+static int vfpga_get_port_immutable(struct ib_device *ibdev, uint32_t port_num, struct ib_port_immutable *immutable)
+{
+    dbg_info("vfpga_get_port_immutable: Getting port immutable properties - START\n");      
+    immutable->gid_tbl_len = 32;
+    immutable->pkey_tbl_len = 1;
+
+    // 1. RDMA_CORE_PORT_IB_GRH: 
+    //    Mandatory. Tells kernel we support Global Routing Headers (IP routing).
+    immutable->core_cap_flags = RDMA_CORE_PORT_IBA_IB;
+
+    // 2. Max MAD Size:
+    //    RoCE uses IB Management Datagrams (MADs) for some CM operations.
+    //    Standard size is 256 bytes (IB_MGMT_MAD_SIZE).
+    immutable->max_mad_size = 256;
+
+    return 0; 
+}
+
 // Function to query the link layer
-/* static enum ib_link_layer vfpga_rdma_get_link_layer(struct ib_device *ibdev, uint32_t port_num)
+static enum rdma_link_layer vfpga_rdma_get_link_layer(struct ib_device *ibdev, uint32_t port_num)
 {
     dbg_info("vfpga_rdma_get_link_layer: Querying RDMA link layer - START\n");
 
     // Always return Ethernet as link layer - we're doing RoCE, not InfiniBand
     return IB_LINK_LAYER_ETHERNET;
-} */ 
+}
 
 // ======-------------------------------------------------------------------------------
 //
@@ -149,8 +205,26 @@ static int vfpga_rdma_query_gid(struct ib_device *ibdev, uint32_t port_num, int 
 static int vfpga_rdma_alloc_pd(struct ib_pd *pd, struct ib_udata *udata)
 {
     dbg_info("vfpga_rdma_alloc_pd: Allocating protection domain - START\n");
+    struct vfpga_pd *vfpga_pd = ibpd_to_vfpga_pd(pd);
+    struct cyt_rdma_alloc_pd_resp resp = {}; 
+    static uint32_t next_pdn = 1; // Start PD numbers from 1
 
     // Empty function: PDs are not enforced in the HW-implementation 
+    vfpga_pd->pdn = next_pdn++;
+
+    // If userspace asked for it, send the PD number back as response 
+    if(udata) {
+        dbg_info("vfpga_rdma_alloc_pd: Sending PD number %d back to userspace\n", vfpga_pd->pdn);
+        resp.pdn = vfpga_pd->pdn; 
+
+        // Check successful return of copy_to_user
+        if (ib_copy_to_udata(udata, &resp, sizeof(resp))) {
+            dbg_info("vfpga_rdma_alloc_pd: Failed to copy alloc_pd response to userspace\n");
+            return -EFAULT;
+        }
+    } else {
+        dbg_info("vfpga_rdma_alloc_pd: No userspace data provided, skipping response\n");
+    }
     return 0; 
 }
 
@@ -380,16 +454,179 @@ static int vfpga_rdma_dereg_mr(struct ib_mr *mr, struct ib_udata *udata)
     return 0;
 }
 
+// Function to allocate a user context for RDMA: This is where we pass the mem regs and stuff from kernel space to user space 
+static int vfpga_rdma_alloc_ucontext(struct ib_ucontext *ucontext, struct ib_udata *udata)
+{
+    dbg_info("vfpga_rdma_alloc_ucontext: Allocating user context - START\n");
+
+    // Get the context right: 
+    struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ucontext->device);
+    dbg_info("vfpga_rdma_alloc_ucontext: vFPGA device ID is %d\n", vfpga->id);
+    struct vfpga_ucontext *vfpga_ucontext = ibucxt_to_vfpga_ucontext(ucontext);
+    dbg_info("vfpga_rdma_alloc_ucontext: vFPGA ucontext structure located at %p\n", vfpga_ucontext);
+    struct cyt_rdma_alloc_ucontext_resp resp = {};
+    dbg_info("vfpga_rdma_alloc_ucontext: Preparing alloc_ucontext response structure at %p\n", &resp);
+
+    // STEP 1: Validation -> Making sure we're talking to the userspace app anyway
+    if(!udata) {
+        dbg_info("vfpga_rdma_alloc_ucontext: No userspace data provided!\n");
+        return -EINVAL;
+    }
+    dbg_info("vfpga_rdma_alloc_ucontext: Userspace data provided at %p\n", udata);
+
+    // STEP 2: Initialize the driver context 
+    INIT_LIST_HEAD(&vfpga_ucontext->qp_list);
+    dbg_info("vfpga_rdma_alloc_ucontext: Initialized QP list head at %p\n", &vfpga_ucontext->qp_list);
+    spin_lock_init(&vfpga_ucontext->ctx_lock);
+    dbg_info("vfpga_rdma_alloc_ucontext: Initialized context lock\n");
+    vfpga_ucontext->hw_vmid = 0; // To be implemented later
+
+    // STEP 3: Prepare the response structure
+    resp.max_qp = VFPGA_MAX_NUM_QPS;
+    resp.max_cq = VFPGA_MAX_NUM_CQS;
+    resp.vfpga_ctrl_reg = vfpga->vfpga_cnfg_phys_addr + VFPGA_CTRL_USER_OFFS;
+    resp.vfpga_cnfg_reg = vfpga->vfpga_cnfg_avx_phys_addr;
+    resp.vfpga_wb_reg = vfpga->wb_phys_addr;
+
+    dbg_info("vfpga_rdma_alloc_ucontext: Prepared alloc_ucontext response structure:\n");
+
+    // STEP 4: Copy the response structure to userspace
+    if(ib_copy_to_udata(udata, &resp, sizeof(resp))) {
+        dbg_info("vfpga_rdma_alloc_ucontext: Failed to copy alloc_ucontext response to userspace\n");
+        return -EFAULT;
+    }
+
+    dbg_info("vfpga_rdma_alloc_ucontext: Successfully copied alloc_ucontext response to userspace\n");
+
+    // To be implemented later on 
+    return 0; 
+}
+
+// Function to deallocate a user context for RDMA 
+static void vfpga_rdma_dealloc_ucontext(struct ib_ucontext *ucontext)
+{
+    dbg_info("vfpga_rdma_dealloc_ucontext: Deallocating user context - START\n");
+}
+
+// Function to handle mmap calls from userspace for RDMA
+static int vfpga_rdma_mmap(struct ib_ucontext *ucontext, struct vm_area_struct *vma)
+{
+    dbg_info("vfpga_rdma_mmap: Handling mmap call from userspace - START\n");
+
+    // Reimplement the mmap-function fro vfpga_ops.c here, for which we need the vfpga_dev structure 
+    struct vfpga_dev *device = ibdev_to_vfpga_dev(ucontext->device);
+
+    // Now copy the functionality from vfpga_dev_mmap here
+    vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+    
+        // Memory map user registers (CSR) in vFPGAs; the ones parsed from axi_ctrl interface in the vFPGA
+    if (vma->vm_pgoff == MMAP_CTRL) {
+        dbg_info(
+            "fpga dev. %d, memory mapping user ctrl region at %llx of size %x\n",
+            device->id, device->vfpga_cnfg_phys_addr + VFPGA_CTRL_USER_OFFS, VFPGA_CTRL_USER_SIZE
+        );
+        int ret_val = remap_pfn_range(
+            vma, 
+            vma->vm_start, 
+            (device->vfpga_cnfg_phys_addr + VFPGA_CTRL_USER_OFFS) >> PAGE_SHIFT,
+            VFPGA_CTRL_USER_SIZE, 
+            vma->vm_page_prot
+        );
+        if (ret_val) {
+            pr_warn("remap_pfn_range failed for user ctrl region, ret_val: %d\n", ret_val);
+            return -EIO;
+        } else {
+            return 0;
+        }
+    }
+
+    // Memory map vFPGA config (non-AVX) region (cnfg_slave)
+    if (vma->vm_pgoff == MMAP_CNFG) {
+        dbg_info(
+            "fpga dev. %d, memory mapping config region at %llx of size %x\n",
+            device->id, device->vfpga_cnfg_phys_addr + VFPGA_CTRL_CNFG_OFFS, VFPGA_CTRL_CNFG_SIZE
+        );
+        int ret_val = remap_pfn_range(
+            vma, 
+            vma->vm_start, 
+            (device->vfpga_cnfg_phys_addr + VFPGA_CTRL_CNFG_OFFS) >> PAGE_SHIFT,
+            VFPGA_CTRL_CNFG_SIZE, 
+            vma->vm_page_prot
+        );
+        if (ret_val) {
+            pr_warn("remap_pfn_range failed for shell config region, ret_val: %d\n", ret_val);
+            return -EIO;
+        } else {
+            return 0;
+        }
+    }
+
+    // Memory map shell config (AVX) region (cnfg_slave_avx)
+    if (vma->vm_pgoff == MMAP_CNFG_AVX) {
+        dbg_info(
+            "fpga dev. %d, memory mapping config AVX region at %llx of size %x\n",
+            device->id, device->vfpga_cnfg_avx_phys_addr, VFPGA_CTRL_CNFG_AVX_SIZE
+        );
+        int ret_val = remap_pfn_range(
+            vma, 
+            vma->vm_start, 
+            device->vfpga_cnfg_avx_phys_addr >> PAGE_SHIFT,
+            VFPGA_CTRL_CNFG_AVX_SIZE, 
+            vma->vm_page_prot
+        );
+        if (ret_val) {
+            pr_warn("remap_pfn_range failed for shell config AVX region, ret_val: %d\n", ret_val);
+            return -EIO;
+        } else {
+            return 0;
+        }
+    }
+
+    // Memory map writeback region
+    if (vma->vm_pgoff == MMAP_WB) {
+        set_memory_uc((uint64_t) device->wb_addr_virt, N_WB_PAGES);
+        dbg_info(
+            "fpga dev. %d, memory mapping writeback regions at %llx of size %lx\n",
+            device->id, device->wb_phys_addr, WB_SIZE
+        );
+        int ret_val = remap_pfn_range(
+            vma, 
+            vma->vm_start, 
+            (device->wb_phys_addr) >> PAGE_SHIFT,
+            WB_SIZE, 
+            vma->vm_page_prot
+        );
+        if (ret_val) {
+            pr_warn("remap_pfn_range failed for writeback region, ret_val: %d\n", ret_val);
+            return -EIO;
+        } else {
+            return 0;
+        }
+    }
+
+    pr_warn("requested unknown memory mapping for vFPGA device\n");
+    return -EINVAL;
+}
+
+
 // Struct that points to all the ib_device functions of the FPGA-RDMA in the driver 
 static const struct ib_device_ops vfpga_ibdev_ops = {
     .owner = THIS_MODULE,
     .driver_id = RDMA_DRIVER_UNKNOWN,
 
+    INIT_RDMA_OBJ_SIZE(ib_ucontext, vfpga_ucontext, ibucontext),
+    INIT_RDMA_OBJ_SIZE(ib_pd, vfpga_pd, ibpd),
+    INIT_RDMA_OBJ_SIZE(ib_cq, vfpga_cq, ibcq),
+    INIT_RDMA_OBJ_SIZE(ib_qp, vfpga_qp, ibqp),
+    // INIT_RDMA_OBJ_SIZE(ib_mr, vfpga_mr, ib
+
     // Device / Port functions 
     .query_device = vfpga_rdma_query_device, 
     .query_port = vfpga_rdma_query_port, 
     .query_gid = vfpga_rdma_query_gid,
-    // .get_link_layer = vfpga_rdma_get_link_layer,
+    .query_pkey = vfpga_rdma_query_pkey,
+    .get_port_immutable = vfpga_get_port_immutable,
+    .get_link_layer = vfpga_rdma_get_link_layer,
 
     // Ressources management functions
     .alloc_pd = vfpga_rdma_alloc_pd,
@@ -406,6 +643,14 @@ static const struct ib_device_ops vfpga_ibdev_ops = {
     .alloc_ucontext = vfpga_rdma_alloc_ucontext,
     .dealloc_ucontext = vfpga_rdma_dealloc_ucontext,
     .mmap = vfpga_rdma_mmap, 
+
+    // Userspace function, kept NULL for our use case 
+    .post_send = NULL,
+    .poll_cq = NULL, 
+
+    // Advanced features, kept NULL for now 
+    .create_srq = NULL,
+    .resize_cq = NULL
 
     /** 
     .size_cq = sizeof(struct vfpga_cq),
@@ -425,11 +670,13 @@ int vfpga_rdma_register(struct vfpga_dev *vfpga)
     dbg_info("vfpga_rdma_register: Registering FPGA-RDMA - START\n");
 
     // Step 1: Call the function to calculate the GUIDs from the MAC address
+    dbg_info("vfpga_rdma_register: Calculate GUID\n");
     vfpga_rdma_calculate_guid(vfpga);
 
     // Step 2: Allocate the ib_device structure 
     struct vfpga_ib_device *vfpga_ib_dev;
     struct ib_device *ib_dev;
+    dbg_info("vfpga_rdma_register: Allocate ib_device\n");
     vfpga_ib_dev = ib_alloc_device(vfpga_ib_device, ib_dev);
     if (!vfpga_ib_dev) {
         dbg_info("vfpga_rdma_register: Failed to allocate ib_device structure\n");
@@ -437,29 +684,41 @@ int vfpga_rdma_register(struct vfpga_dev *vfpga)
     }
 
     // Step 3: Set reverse pointers from ib_device to vfpga_dev
+    dbg_info("vfpga_rdma_register: Exchanging all the pointers\n");
     ib_dev = &vfpga_ib_dev->ib_dev;
     vfpga_ib_dev->vfpga_dev = vfpga;
     vfpga->vfpga_ib_dev = vfpga_ib_dev;
 
     // Step 4: Set important fields in the ib_device structure to inform the RDMA core about our driver
-    ib_set_device_ops(ib_dev, &vfpga_ibdev_ops);
-    ib_dev->node_type = RDMA_NODE_RNIC;
+    ib_dev->node_type = RDMA_NODE_IB_CA;
     ib_dev->phys_port_cnt = 1; 
     /* ib_dev->driver_cq_len = sizeof(struct vfpga_cq); // Size of our custom CQ structure
     ib_dev->driver_qp_len = sizeof(struct vfpga_qp); // Size of our custom QP structure */ 
+    dbg_info("vfpga_rdma_register: Set GUID \n");
     ib_dev->node_guid = vfpga->rdma_node_guid;
+    dbg_info("vfpga_rdma_register: Set name \n");
     memcpy(ib_dev->node_desc, "SCENIC", sizeof("SCENIC")); // Optional: Name your device
 
-    // Step 5: MMAP the control registers that are needed for setting up RDMA QPs 
+    // Set the PCI-Dev for the ib_device to avoid the kernel nullpointer 
+    dbg_info("vfpga_rdma_register: Set PCI device \n");
+    ib_dev->dev.parent = &vfpga->bd_data->pci_dev->dev;
+
+    // Set the ABI-version 
+    ib_dev->uverbs_cmd_mask |= (1ull << IB_USER_VERBS_CMD_GET_CONTEXT);
+
+    // Set the dev_ops
+    ib_set_device_ops(ib_dev, &vfpga_ibdev_ops);
+    dbg_info("vfpga_rdma_register: Register node type and port count \n");
 
     // Register the ib_device with the RDMA core
+    dbg_info("vfpga_rdma_register: Calling ib_register_device \n");
     int ret = ib_register_device(ib_dev, "scenic_ib%d", NULL);
     if (ret) {
         dbg_info("vfpga_rdma_register: Failed to register ib_device with RDMA core\n");
         ib_dealloc_device(ib_dev);
         return ret;
     }
-
+    dbg_info("vfpga_rdma_register: Returning successfully \n");
     // Step 5: Initialize the ib_device structure
     return 0; 
 }
@@ -468,4 +727,10 @@ int vfpga_rdma_register(struct vfpga_dev *vfpga)
 void vfpga_rdma_deregister(struct vfpga_dev *vfpga)
 {
     dbg_info("vfpga_rdma_unregister: Unregistering FPGA-RDMA - START\n");
+
+    dbg_info("vfpga_rdma_unregister: Calling ib_unregister_device \n");
+    ib_unregister_device(&vfpga->vfpga_ib_dev->ib_dev);
+    dbg_info("vfpga_rdma_unregister: Deallocating ib_device \n");
+    ib_dealloc_device(&vfpga->vfpga_ib_dev->ib_dev);
+    dbg_info("vfpga_rdma_unregister: Returning successfully \n");
 }

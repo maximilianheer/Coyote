@@ -39,4 +39,22 @@ struct cyt_rdma_create_cq_resp {
     uint32_t entries; 
 }; 
 
+// Response structure for allocating user context 
+struct cyt_rdma_alloc_ucontext_resp {
+    // Maximum number of QPs supported by the FPGA-RDMA device
+    uint32_t max_qp;
+
+    // Maximum number of CQs supported by the FPGA-RDMA device 
+    uint32_t max_cq;
+
+    // Needs to communicate all the memory regions that we need for RDMA operations 
+    uint64_t vfpga_ctrl_reg; 
+    uint64_t vfpga_cnfg_reg;
+    uint64_t vfpga_wb_reg;
+}; 
+
+struct cyt_rdma_alloc_pd_resp {
+    uint32_t pdn; 
+};
+
 #endif // COYOTE_RDMA_ABI_H 
