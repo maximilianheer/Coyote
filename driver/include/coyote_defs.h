@@ -260,8 +260,8 @@ extern bool en_hmm;
 /**
  * Coyote RDMA definitions
  */
-#define VFPGA_MAX_NUM_QPS 500
-#define VFPGA_MAX_NUM_CQS 8
+#define SCENIC_MAX_NUM_QPS 500
+#define SCENIC_MAX_NUM_CQS 8
 
 /** 
  * Copy over some constants from sw/include/cDefs.hpp for consistency while reimplementing parts of the controller logic for READ / WRITE ops 
@@ -1054,74 +1054,7 @@ static inline struct vfpga_dev *ibdev_to_vfpga_dev(struct ib_device *ib_dev) {
     return vfpga_ib_dev->vfpga_dev;
 }
 
-/**
- * @brief Struct for a custom implementation of the RDMA completion queue (CQ). 
- */
-struct vfpga_cq {
-    // Underlying standard RDMA completion queue 
-    struct ib_cq ibcq; 
 
-    /* Virtual CQ Management */
-    spinlock_t lock;              // Spinlock for synchronizing access to the CQ
-    struct list_head cq_list;     // List of pending completions
-}; 
-
-/**
- * @brief Helper function to cast between vfpga_cq and ib_cq structs
- */
-static inline struct vfpga_cq *ibcq_to_vfpga_cq(struct ib_cq *ibcq) {
-    return container_of(ibcq, struct vfpga_cq, ibcq);
-}
-
-/**
- * @brief Struct for a custom implementation of the RDMA queue pair (QP). 
- */
-struct vfpga_qp {
-    // Underlying standard RDMA queue pair 
-    struct ib_qp ibqp;
-
-    // Coyote thread ID associated with this QP
-    uint32_t qpn;
-
-    // Pointer to the virtual CQ associated with this QP
-    struct list_head cq_node; 
-
-    // Store the state of the QP 
-    enum ib_qp_state qp_state;
-
-    // Store the path MTU of the QP
-    enum ib_mtu path_mtu;
-
-    // Storing the port number and the qp_access_flags 
-    int port_num;
-    int qp_access_flags;
-
-    // Lock for protecting QP operations
-    spinlock_t lock;
-}; 
-
-/**
- * @brief Helper function to cast between vfpga_qp and ib_qp structs
- */
-static inline struct vfpga_qp *ibqp_to_vfpga_qp(struct ib_qp *ibqp) {
-    return container_of(ibqp, struct vfpga_qp, ibqp);
-}
-
-/**
- * @brief Struct for a custom implementation of the RDMA protection domain (PD). 
- */
-struct vfpga_pd {
-    // Underlying standard RDMA protection domain 
-    struct ib_pd ibpd;
-
-    // Pointer to the vFPGA device associated with this PD
-    uint32_t pdn; 
-};
-
-// Helper function to cast between vfpga_pd and ib_pd structs
-static inline struct vfpga_pd *ibpd_to_vfpga_pd(struct ib_pd *ibpd) {
-    return container_of(ibpd, struct vfpga_pd, ibpd);
-}
 
 /**
  * @brief Struct for a custom implementation of the RDMA memory region (MR). 
@@ -1133,28 +1066,6 @@ struct vfpga_mr {
     // Pointer to the vFPGA device associated with this MR
     uint32_t priv; 
 };
-
-/**
- * @brief Struct for ib_ucontext 
- */
-struct vfpga_ucontext {
-    // Underlying standard RDMA user context 
-    struct ib_ucontext ibucontext;
-
-    // Pointer to the vFPGA device associated with this user context
-    struct list_head qp_list; 
-    spinlock_t ctx_lock; 
-
-    // FPGA virtualization hook 
-    uint32_t hw_vmid; 
-}; 
-
-/**
- * @brief Helper function to cast between vfpga_ucontext and ib_ucontext structs
- */
-static inline struct vfpga_ucontext *ibucxt_to_vfpga_ucontext(struct ib_ucontext *ibucontext) {
-    return container_of(ibucontext, struct vfpga_ucontext, ibucontext);
-}
 
 
 /**
@@ -1284,10 +1195,27 @@ struct vfpga_dev {
         struct page *free_pages;
     #endif 
 
-    // Struct for the wrapper around the ib_device struct with the pointer to the vFPGA device 
-    struct vfpga_ib_device *vfpga_ib_dev; 
+    // Pointer to the one global scenic_rdma_device struct for RDMA operations
+    struct scenic_rdma_device *scenic_rdma_dev;
+};
 
-    // Store the GUIDs in the vfpga device struct
+// Struct that wraps around the ib_device struct for the RDMA driver
+struct scenic_ib_device {
+    // Actual ib_device struct
+    struct ib_device ib_dev;
+    // Pointer back to the scenic_rdma_device struct
+    struct scenic_rdma_device *rdma_dev;
+};
+
+// New struct for the IB device (RDMA driver)
+struct scenic_rdma_device {
+    // Key: Contains the global ib_device struct (wrapper with return pointer to scenic_rdma_device)
+    struct scenic_ib_device *scenic_ib_dev; 
+
+    // Reference to the busdata struct
+    struct bus_driver_data *bd_data;
+
+    // Store the GUIDs in the scenic_rdma_device struct 
     uint64_t rdma_node_guid;
     uint64_t rdma_sys_image_guid;
 
@@ -1298,7 +1226,134 @@ struct vfpga_dev {
     // Global tools for QP management 
     struct ida qp_ida; // Allocator for QP Numbers
     spinlock_t global_qp_lock; // Global lock for QP management
+
+    // List of all MRs created under this RDMA device, available to all QPs
+    struct list_head mr_list;
+}; 
+
+// Helper function to get scenic_rdma_device from ib_device
+static inline struct scenic_rdma_device *ibdev_to_scenic_rdma_dev(struct ib_device *ib_dev) {
+    struct scenic_ib_device *scenic_ib_dev = container_of(ib_dev, struct scenic_ib_device, ib_dev);
+    return scenic_ib_dev->rdma_dev;
+}
+
+// Struct that wraps around ib_qp struct for the RDMA driver
+struct scenic_ib_qp {
+    // Actual ib_qp struct
+    struct ib_qp ibqp;
+    // Pointer back to the scenic_rdma_device struct
+    struct scenic_rdma_device *rdma_dev;
 };
+
+// Helper function to get scenic_rdma_device from ib_qp
+static inline struct scenic_rdma_device *ibqp_to_scenic_rdma_dev(struct ib_qp *ibqp) {
+    struct scenic_ib_qp *scenic_ib_qp = container_of(ibqp, struct scenic_ib_qp, ibqp);
+    return scenic_ib_qp->rdma_dev;
+}   
+
+
+/**
+ * @brief Struct for ib_ucontext 
+ */
+struct scenic_ucontext {
+    // Underlying standard RDMA user context 
+    struct ib_ucontext ibucontext;
+
+    // Pointer to the vFPGA device associated with this user context
+    struct list_head qp_list; 
+    spinlock_t ctx_lock; 
+
+    // FPGA virtualization hook 
+    uint32_t hw_vmid; 
+}; 
+
+/**
+ * @brief Helper function to cast between vfpga_ucontext and ib_ucontext structs
+ */
+static inline struct scenic_ucontext *ibucxt_to_scenic_ucontext(struct ib_ucontext *ibucontext) {
+    return container_of(ibucontext, struct scenic_ucontext, ibucontext);
+}
+
+
+/**
+ * @brief Struct for a custom implementation of the RDMA protection domain (PD). 
+ */
+struct scenic_pd {
+    // Underlying standard RDMA protection domain 
+    struct ib_pd ibpd;
+
+    // Pointer to the vFPGA device associated with this PD
+    uint32_t pdn; 
+};
+
+// Helper function to cast between scenic_pd and ib_pd structs
+static inline struct scenic_pd *ibpd_to_scenic_pd(struct ib_pd *ibpd) {
+    return container_of(ibpd, struct scenic_pd, ibpd);
+}
+
+/**
+ * @brief Struct for a custom implementation of the RDMA completion queue (CQ). 
+ */
+struct scenic_cq {
+    // Underlying standard RDMA completion queue 
+    struct ib_cq ibcq; 
+
+    // Just store the CQ number for easy access
+    uint32_t cqn;
+}; 
+
+/**
+ * @brief Helper function to cast between scenic_cq and ib_cq structs
+ */
+static inline struct scenic_cq *ibcq_to_scenic_cq(struct ib_cq *ibcq) {
+    return container_of(ibcq, struct scenic_cq, ibcq);
+}
+
+/**
+ * @brief Struct for a custom implementation of the RDMA queue pair (QP). 
+ */
+struct scenic_qp {
+    // Underlying standard RDMA queue pair 
+    struct ib_qp ibqp;
+
+    // Coyote thread ID associated with this QP
+    uint32_t qpn;
+
+    // Pointer to the virtual CQ associated with this QP
+    struct list_head cq_node; 
+
+    // Store the state of the QP 
+    enum ib_qp_state qp_state;
+
+    // Store the path MTU of the QP
+    enum ib_mtu path_mtu;
+
+    // Storing the port number and the qp_access_flags 
+    int port_num;
+    int qp_access_flags;
+
+    // Lock for protecting QP operations
+    spinlock_t lock;
+}; 
+
+/**
+ * @brief Helper function to cast between vfpga_qp and ib_qp structs
+ */
+static inline struct scenic_qp *ibqp_to_scenic_qp(struct ib_qp *ibqp) {
+    return container_of(ibqp, struct scenic_qp, ibqp);
+}
+
+// Struct for a custom implementation of the RDMA memory region (MR).
+struct scenic_mr {
+    struct ib_mr ibmr;
+    struct ib_umem *umem;
+}; 
+
+// Helper function to cast between scenic_mr and ib_mr structs
+static inline struct scenic_mr *ibmr_to_scenic_mr(struct ib_mr *ibmr) {
+    return container_of(ibmr, struct scenic_mr, ibmr);
+}
+
 
 /**
  * @brief Reconfig char device structure
@@ -1355,7 +1410,7 @@ struct bus_driver_data {
     /// PCI device
     int dev_id;                             /* PCI device ID */
     struct pci_dev *pci_dev;                /* Associated PCI device structure */
-    
+
     // Char devices metadata
     char vfpga_dev_name[MAX_CHAR_FDEV];     /* Template for vFPGA device names; each vFPGA device will have a unique name based on this template */
     char reconfig_dev_name[MAX_CHAR_FDEV];  /* Reconfiguration device name; used to create the reconfiguration character device */
@@ -1451,6 +1506,15 @@ struct bus_driver_data {
     // ENZIAN --- DEPRECATED 
     unsigned long io_phys_addr;
     unsigned long io_len;
+
+    // RDMA device
+    struct scenic_rdma_device *scenic_rdma_dev;
 };
+
+// Helper function to get scenic_rdma_device from bus_driver_data
+static inline struct scenic_rdma_device *bddata_to_scenic_rdma_dev(struct bus_driver_data *bd_data) {
+    // Assuming scenic_rdma_device is stored in bd_data
+    return bd_data->scenic_rdma_dev;
+}
 
 #endif // _COYOTE_DEFS_H_

@@ -304,7 +304,7 @@ end:
     return ret_val;
 }
 
-int setup_vfpga_devices(struct bus_driver_data *data) {
+int setup_vfpga_devices(struct bus_driver_data *data, struct scenic_rdma_device *scenic_rdma_dev) {
     int ret_val = 0;
     char vf_dev_name_tmp[MAX_CHAR_FDEV];
 
@@ -317,6 +317,9 @@ int setup_vfpga_devices(struct bus_driver_data *data) {
 
         // Assign PCI device to data struct
         data->vfpga_dev[i].bd_data = data;
+
+        // Assign scenic RDMA device to data struct
+        data->vfpga_dev[i].scenic_rdma_dev = scenic_rdma_dev; 
 
         // Set physical address of control registers (AVX + non-AVX)
         data->vfpga_dev[i].vfpga_cnfg_phys_addr = data->bar_phys_addr[BAR_SHELL_CONFIG] + VFPGA_CTRL_OFFS + i * VFPGA_CTRL_SIZE;
@@ -444,18 +447,6 @@ int setup_vfpga_devices(struct bus_driver_data *data) {
             // vfpga_net_register(data->vfpga_dev, data->net_mac_addr); 
             dbg_info("Finished initialization of the network device from alloc_vfpga_devices\n");
         }
-
-        // For vFPGA #1 -> Call the RDMA device initialization function
-        // Note: This is a momentary bugfix. In the future we should allow RDMA to be initialized on any vFPGA (except for #0)
-        if(i == 1 && data->en_rdma) {
-            // Initialize the RDMA device within vFPGA #1 
-            dbg_info("Trying to initialize the RDMA device from alloc_vfpga_devices\n");
-            data->vfpga_dev->bd_data = data;
-
-            // Calling the RDMA initialization function
-            ret_val = vfpga_rdma_register(data->vfpga_dev); 
-            dbg_info("Finished initialization of the RDMA device from alloc_vfpga_devices with return value %d \n", ret_val);
-        }
     }
 
     dbg_info("all virtual FPGA devices added\n");
@@ -531,13 +522,6 @@ void free_vfpga_devices(struct bus_driver_data *data) {
     // vfpga_net_unregister(data->vfpga_dev);
     dbg_info("Successfully unregistered the network device from the free_vfpga_devices \n"); 
 
-    dbg_info("Trying to unregister the RDMA device from the free_vfpga_devices \n");
-    // Stopping the RDMA device in privileged vFPGA #1
-    if(data->en_rdma) {
-        vfpga_rdma_deregister(data->vfpga_dev);
-    }
-    dbg_info("Successfully unregistered the RDMA device from the free_vfpga_devices \n");
-
     kfree(data->vfpga_dev);
     dbg_info("memory for vFPGA device freed\n");
 
@@ -547,6 +531,7 @@ void free_vfpga_devices(struct bus_driver_data *data) {
     unregister_chrdev_region(MKDEV(data->vfpga_major, 0), data->n_fpga_reg);
     dbg_info("unregistered char vFPGA devices\n");
 }
+
 
 ////////////////////////////////////////////////
 //          RECONFIGURATION DEVICE            //  

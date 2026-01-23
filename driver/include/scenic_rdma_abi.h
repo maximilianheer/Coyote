@@ -57,4 +57,13 @@ struct cyt_rdma_alloc_pd_resp {
     uint32_t pdn; 
 };
 
+struct cyt_rdma_reg_mr_resp {
+    uint32_t lkey; 
+    uint32_t rkey; 
+};
+
+struct cyt_rdma_create_cq_req {
+    uint32_t cqn; 
+};
+
 #endif // COYOTE_RDMA_ABI_H 

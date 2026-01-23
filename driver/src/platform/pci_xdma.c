@@ -500,7 +500,7 @@ int shell_pci_init(struct bus_driver_data *bd_data) {
     }
 
     // Set-up the above-created vFPGAs 
-    ret_val = setup_vfpga_devices(bd_data);
+    ret_val = setup_vfpga_devices(bd_data, bd_data->scenic_rdma_dev);
     if (ret_val) {
         goto err_init_fpga_dev;
     }
@@ -683,15 +683,38 @@ int pci_probe(struct pci_dev *pdev, const struct pci_device_id *id) {
         goto err_init_reconfig_dev;
     }
 
-    // Create vFPGA devices and register major
+    // Allocate the global scenic RDMA device structure 
+    struct scenic_rdma_device *scenic_rdma_dev = devm_kzalloc(&pdev->dev, sizeof(struct scenic_rdma_device), GFP_KERNEL);
+
+    if (!scenic_rdma_dev) {
+        dev_err(&pdev->dev, "could not allocate scenic rdma device\n");
+        ret_val = -ENOMEM;
+        goto err_create_scenic_rdma_dev;
+    }
+
+    // Save the bdata pointer in the scenic RDMA device structure
+    scenic_rdma_dev->bd_data = bd_data;
+
+    // Save the scenic RDMA device pointer in the bus driver bd_data structure
+    bd_data->scenic_rdma_dev = scenic_rdma_dev;
+
+    // Register the scenic RDMA device 
+    ret_val = scenic_rdma_register(scenic_rdma_dev); 
+
+    if (ret_val) {
+        dev_err(&pdev->dev, "could not create scenic rdma device\n");
+        goto err_register_scenic_rdma_dev;
+    }
+
+    // Create vFPGA devices and register major number
     ret_val = alloc_vfpga_devices(bd_data, dev_vfpga);
     if (ret_val) {
         dev_err(&pdev->dev, "could not allocate vfpga devices\n");
         goto err_create_fpga_dev; 
     }
-
+    
     // Set-up vFPGA devices
-    ret_val = setup_vfpga_devices(bd_data);
+    ret_val = setup_vfpga_devices(bd_data, scenic_rdma_dev);
     if (ret_val) {
         dev_err(&pdev->dev, "could not set-up vfpga devices\n");
         goto err_init_fpga_dev;
@@ -716,6 +739,9 @@ err_init_fpga_dev:
     free_vfpga_devices(bd_data);
 err_create_fpga_dev:
     teardown_reconfig_device(bd_data);
+err_register_scenic_rdma_dev:
+    // free_scenic_rdma_device(bd_data);
+err_create_scenic_rdma_dev:
 err_init_reconfig_dev:
     free_reconfig_device(bd_data);
 err_create_reconfig_dev:
@@ -766,6 +792,10 @@ void pci_remove(struct pci_dev *pdev) {
     teardown_reconfig_device(bd_data);
     free_reconfig_device(bd_data);
     dbg_info("reconfig device released\n");
+
+    // Deregister scenic RDMA device
+    scenic_rdma_deregister(bd_data->scenic_rdma_dev);
+    dbg_info("scenic rdma device deregistered\n");
 
     // Deallocate card resources
     free_card_resources(bd_data);

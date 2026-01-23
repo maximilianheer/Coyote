@@ -58,7 +58,7 @@ void remove_sysfs_entry(struct bus_driver_data *data);
 int alloc_vfpga_devices(struct bus_driver_data *data, dev_t device);
 
 /// Sets up the previously allocated vFPGA char devices (above); memory mapping registers, initializing work queues, mutexes etc.
-int setup_vfpga_devices(struct bus_driver_data *data);
+int setup_vfpga_devices(struct bus_driver_data *data, struct scenic_rdma_device *rdma_dev);
 
 /// Releases resources used by vFPGA char devices; destroys work queues etc., opposite of setup_vfpga_devices
 void teardown_vfpga_devices(struct bus_driver_data *data);

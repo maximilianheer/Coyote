@@ -30,6 +30,7 @@
 #include "pci_util.h"
 #include "coyote_defs.h"
 #include "coyote_setup.h"
+#include "scenic_rdma.h"
 
 /// Assign a unique ID to each Coyote-enabled FPGA card and set the unique device name
 void assign_device_id(struct bus_driver_data *data);
