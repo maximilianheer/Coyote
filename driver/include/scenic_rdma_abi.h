@@ -66,4 +66,8 @@ struct cyt_rdma_create_cq_req {
     uint32_t cqn; 
 };
 
+struct cyt_rdma_create_qp_cmd {
+    uint32_t qpn; 
+};
+
 #endif // COYOTE_RDMA_ABI_H 

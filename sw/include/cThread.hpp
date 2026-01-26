@@ -157,6 +157,7 @@ protected:
 	 */
 	void postCmd(uint64_t offs_3, uint64_t offs_2, uint64_t offs_1, uint64_t offs_0);
 
+
 	/**
 	 * @brief Sends an ack to the connected remote node via the out-of-band channel
 	 *
@@ -173,18 +174,6 @@ protected:
 	 * This function works in conjunction with sendAck() to synchronize operations between the client and server.
 	 */
     uint32_t readAck();
-
-	/**
-	 * @brief Writes an IP address to a config register so it can be used for ARP lookup
-	 * @param ip_addr IP address to be looked up
-	 */
-    void doArpLookup(uint32_t ip_addr);
-	
-	/**
-	 * @brief Writes the exchanged QP information to the vFPGA config registers
-	 * @param ip_addr IP address to be looked up
-	 */
-	void writeQpContext(uint32_t port);
 	
 public:
 	/**
@@ -202,6 +191,52 @@ public:
 	 * Cleans up the resources used by the cThread, including memory and file descriptors.
 	 */
 	~cThread();
+
+	/**
+	 * @brief Public query for the local QP-information. 
+	 */
+	ibvQ getLocalQpInfo() const {
+		return qpair->local;
+	}
+
+	/**
+	 * @brief Public query for the remote QP-information. 
+	 */
+	ibvQ getRemoteQpInfo() const {
+		return qpair->remote;
+	}
+
+	/**
+	 * @brief Allows to externally set the local QP
+	 */
+	void setLocalQp(uint32_t qpn, uint32_t rkey, uint32_t psn, uint32_t ip_addr); 
+
+	/**
+	 * @brief Allows to externally set the remote QP
+	 */
+	void setRemoteQp(uint32_t qpn, uint32_t rkey, uint32_t psn, uint32_t ip_addr); 
+
+	/**
+	 * @brief Function to only set the remote rkey again 
+	 */
+	void setRemoteRkey(uint32_t rkey);
+
+	/**
+	 * @brief Function to only set the local PSN again 
+	 */
+	void setLocalPSN(uint32_t psn);
+
+	/**
+	 * @brief Writes an IP address to a config register so it can be used for ARP lookup
+	 * @param ip_addr IP address to be looked up
+	 */
+    void doArpLookup(uint32_t ip_addr);
+	
+	/**
+	 * @brief Writes the exchanged QP information to the vFPGA config registers
+	 * @param ip_addr IP address to be looked up
+	 */
+	void writeQpContext(uint32_t port);
 
 	/**
 	 * @brief Maps a buffer to the vFPGAs TLB

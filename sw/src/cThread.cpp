@@ -901,6 +901,49 @@ void cThread::doArpLookup(uint32_t ip_addr) {
 	usleep(SLEEP_TIME);
 }
 
+void cThread::setLocalQp(uint32_t qpn, uint32_t rkey, uint32_t psn, uint32_t ip_addr) {
+    DBG3("cThread: Called setLocalQP with QPN " << qpn << ", RKey " << rkey << ", PSN " << psn << ", and IP address " << ip_addr); 
+    if(fcnfg.en_rdma){
+        qpair->local.qpn = qpn;
+        qpair->local.psn = psn;
+        qpair->local.ip_addr = ip_addr;
+        qpair->local.rkey = rkey; 
+        qpair->local.uintToGid(0, ip_addr);
+        qpair->local.uintToGid(8, ip_addr);
+        qpair->local.uintToGid(16, ip_addr);
+        qpair->local.uintToGid(24, ip_addr);
+    }
+}
+
+void cThread::setRemoteQp(uint32_t qpn, uint32_t rkey, uint32_t psn, uint32_t ip_addr) {
+    DBG3("cThread: Called setRemoteQP with QPN " << qpn << ", RKey " << rkey << ", PSN " << psn << ", vaddr " << vaddr << ", size " << size << " and IP address " << ip_addr); 
+    if(fcnfg.en_rdma){
+        qpair->remote.qpn = qpn;
+        qpair->remote.rkey = rkey;
+        qpair->remote.psn = psn;
+        qpair->remote.ip_addr = ip_addr;
+        qpair->remote.uintToGid(0, ip_addr);
+        qpair->remote.uintToGid(8, ip_addr);
+        qpair->remote.uintToGid(16, ip_addr);
+        qpair->remote.uintToGid(24, ip_addr);
+    }
+}
+
+void cThread::setRemoteRkey(uint32_t rkey) {
+    DBG3("cThread: Called setRemoteRkey with RKey " << rkey); 
+    if(fcnfg.en_rdma){
+        qpair->remote.rkey = rkey;
+    }
+}
+
+void cThread::setLocalPSN(uint32_t psn) {
+    DBG3("cThread: Called setLocalPSN with PSN " << psn); 
+    if(fcnfg.en_rdma){
+        qpair->local.psn = psn;
+    }
+}
+        
+
 void cThread::writeQpContext(uint32_t port) {
     DBG3("cThread: Called writeQpContext"); 
 

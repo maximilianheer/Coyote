@@ -262,6 +262,8 @@ extern bool en_hmm;
  */
 #define SCENIC_MAX_NUM_QPS 500
 #define SCENIC_MAX_NUM_CQS 8
+#define SCENIC_MAX_NUM_WRS 16384
+#define SCENIC_MAX_NUM_SGES 32
 
 /** 
  * Copy over some constants from sw/include/cDefs.hpp for consistency while reimplementing parts of the controller logic for READ / WRITE ops 
@@ -1316,21 +1318,11 @@ struct scenic_qp {
     // Underlying standard RDMA queue pair 
     struct ib_qp ibqp;
 
+    // State of the QP
+    enum ib_qp_state state;
+
     // Coyote thread ID associated with this QP
     uint32_t qpn;
-
-    // Pointer to the virtual CQ associated with this QP
-    struct list_head cq_node; 
-
-    // Store the state of the QP 
-    enum ib_qp_state qp_state;
-
-    // Store the path MTU of the QP
-    enum ib_mtu path_mtu;
-
-    // Storing the port number and the qp_access_flags 
-    int port_num;
-    int qp_access_flags;
 
     // Lock for protecting QP operations
     spinlock_t lock;

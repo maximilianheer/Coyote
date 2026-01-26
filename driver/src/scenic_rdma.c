@@ -284,51 +284,72 @@ static int scenic_rdma_create_qp(struct ib_qp *ibqp, struct ib_qp_init_attr *att
 {
     dbg_info("scenic_rdma_create_qp: Creating queue pair - START\n");
 
-    // STEP 1: Get the context right 
+    // STEP 1: Get the context right and allocate all necessary structures
     struct scenic_rdma_device *scenic_rdma = ibdev_to_scenic_rdma_dev(ibqp->device);
     struct scenic_qp *scenic_qp = ibqp_to_scenic_qp(ibqp);
-    // struct cyt_create_qp_resp resp = {}; 
-    // struct cyt_create_qp_req req; 
+    struct cyt_rdma_create_qp_cmd cmd; 
     int ret; 
 
-    // STEP 2: Initialize the helper structures 
-    spin_lock_init(&scenic_qp->lock);
-    INIT_LIST_HEAD(&scenic_qp->cq_node);
-
-    // STEP 3: Assign a hardware QP Number (QPN) -> QUESTION: Can we use random QPNs or do we need to construct them ourselves? 
-    ret = ida_alloc_max(&scenic_rdma->qp_ida, SCENIC_MAX_NUM_QPS - 1, GFP_KERNEL);
-    if (ret < 0) {
-        dbg_info("scenic_rdma_create_qp: Failed to allocate QP number\n");
-        return ret; 
+    // STEP 2: Validate the requested QP attributes
+    if(attr->qp_type != IB_QPT_RC) {
+        dbg_info("scenic_rdma_create_qp: Unsupported QP type %d\n", attr->qp_type);
+        return -EINVAL;
+    }
+    if(attr->cap.max_send_wr > SCENIC_MAX_NUM_WRS || attr->cap.max_recv_wr > SCENIC_MAX_NUM_WRS) {
+        dbg_info("scenic_rdma_create_qp: Requested WRs exceed maximum (%d)\n", SCENIC_MAX_NUM_WRS);
+        return -EINVAL;
+    }
+    if(attr->cap.max_send_sge > SCENIC_MAX_NUM_SGES || attr->cap.max_recv_sge > SCENIC_MAX_NUM_SGES) {
+        dbg_info("scenic_rdma_create_qp: Requested SGEs exceed maximum (%d)\n", SCENIC_MAX_NUM_SGES);
+        return -EINVAL;
     }
 
-    // Store the new QPN in the vfpga_qp structure and the generic ib_qp structure
-    scenic_qp->qpn = ret; 
-    ibqp->qp_num = ret;
-
-    // STEP 4: Userspace handshake (if any)
-    if (udata) {
-        // Do something -> to be implemented later on 
-        // IDEA: We transmit the entire memory layout at once, including the doorbells and buffer addresses. Seems to make more sense tbh. 
-    }
-
-    // STEP 5: Link to the Virtual Completion Queue 
-    if(ibqp->send_cq){
-        // Obtain the vfpga_cq from the Queue Pair's send_cq
-        struct scenic_cq *scenic_cq = ibcq_to_scenic_cq(ibqp->send_cq);
-        unsigned long flags;
-    }
-
-    // STEP 6: Return Data to userspace 
-    /* if(udata) {
-        if(ib_copy_to_udata(udata, &resp, sizeof(resp))) {
-            dbg_info("scenic_rdma_create_qp: Failed to copy create_qp response to userspace\n");
-            ret = - EFAULT;
-            goto err_unlink;
+    // STEP 3: Unpack the QP creation command from userspace (if any)
+    if(udata) {
+        if(udata->inlen < sizeof(cmd)) {
+            dbg_info("scenic_rdma_create_qp: Insufficient userspace data length %zu\n", udata->inlen);
+            return -EINVAL;
+        }  
+        if(ib_copy_from_udata(&cmd, udata, sizeof(cmd))) {
+            dbg_info("scenic_rdma_create_qp: Failed to copy create_qp command from userspace\n");
+            return -EFAULT;
         }
-    } */ 
+
+        // Get the QPN from the incoming command 
+        uint32_t user_qpn = cmd.qpn;
+        dbg_info("scenic_rdma_create_qp: Received QP creation command with user QPN %u\n", user_qpn);
+
+        // Double-check for potential QPN-collisions 
+        if(xa_load(&scenic_rdma->qp_ida.xa, user_qpn)) {
+            dbg_info("scenic_rdma_create_qp: QPN %u already in use, cannot create QP\n", user_qpn);
+            return -EEXIST;
+        }
+
+        // If we passed that test, we're good to go 
+        scenic_qp->qpn = user_qpn;
+        scenic_qp->state = IB_QPS_RESET;
+        ibqp->qp_num = user_qpn;
+    }
+
+    // Init the lock of the QP structure
+    spin_lock_init(&scenic_qp->lock);
+
+    // Hopefully, this should be it: The kernel should automatically store the QP attributes in the ib_qp structure
+    dbg_info("scenic_rdma_create_qp: Created QP with QPN %u\n", scenic_qp->qpn);    
 
     // Return success at the end of this routine  
+    return 0; 
+}
+
+// Function to destroy a queue pair for RDMA
+static int scenic_rdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
+{
+    dbg_info("scenic_rdma_destroy_qp: Destroying queue pair - START\n");
+
+    // Step 1: Get a pointer to the scenic_qp structure
+    struct scenic_qp *scenic_qp = ibqp_to_scenic_qp(ibqp);
+
+    // Step 3: Return success at the end of this routine
     return 0; 
 }
 
@@ -337,82 +358,56 @@ static int scenic_rdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, in
 {
     dbg_info("scenic_rdma_modify_qp: Modifying queue pair - START\n");
 
-    // STEP 1: Get the context right based on the given arguments 
-    // struct vfpga_dev *vfpga = ibdev_to_vfpga_dev(ibqp->device);
-    struct scenic_qp *scenic_qp = ibqp_to_scenic_qp(ibqp);
-    enum ib_qp_state cur_state, next_state; 
-    int ret = 0; 
-    unsigned long flags; 
+    // Step 1: Get a pointer to the scenic_qp structure
+    struct scenic_qp *scenic_qp = ibqp_to_scenic_qp(ibqp); 
+    enum ib_qp_state old_state, new_state; 
 
-    // STEP 2: Spin up the lock for this QP
-    spin_lock_irqsave(&scenic_qp->lock, flags);
+    // Activate the QP lock for safety 
+    spin_lock(&scenic_qp->lock);
+    old_state = scenic_qp->state;
+    new_state = (attr_mask & IB_QP_STATE) ? attr->qp_state : old_state;
 
-    // STEP 3: Resolve the states (current and next)
-    cur_state = (attr_mask & IB_QP_STATE) ? attr->cur_qp_state : scenic_qp->qp_state;
-    next_state = (attr_mask & IB_QP_STATE) ? attr->qp_state : cur_state;
-
-    // STEP 4: Validate the state transition with helper functions 
-    if(!ib_modify_qp_is_ok(cur_state, next_state, scenic_qp->ibqp.qp_type, attr_mask)) {
-        ret = -EINVAL;
-        goto out; 
+    // Use the core helper function to see whether the transition is valid
+    if(!ib_modify_qp_is_ok(old_state, new_state, IB_QPT_RC, attr_mask)) {
+        dbg_info("scenic_rdma_modify_qp: Invalid QP state transition from %d to %d\n", old_state, new_state);
+        goto out;
     }
 
-    // STEP 5: Hardware Interaction -> This function is moved to the userspace library to stay consistent
-
-    // STEP 6: Update the kernel software state so that we can query the current state of the QP later on 
-    if(attr_mask & IB_QP_STATE) {
-        scenic_qp->qp_state = next_state;
+    // Dependent on the new state, check for compliance of the requested attributes
+    switch(new_state) {
+        case IB_QPS_INIT:
+            if(attr_mask & IB_QP_PORT) {
+                dbg_info("scenic_rdma_modify_qp: Moving QP %u to INIT on port %u\n", scenic_qp->qpn, attr->port_num);
+                if(attr->port_num < 1 || attr->port_num > ibqp->device->phys_port_cnt) {
+                    dbg_info("scenic_rdma_modify_qp: Invalid port number %u for QP %u\n", attr->port_num, scenic_qp->qpn);
+                    goto out;
+                }
+            } else {
+                dbg_info("scenic_rdma_modify_qp: Missing port number for moving QP %u to INIT\n", scenic_qp->qpn);
+                goto out;
+            }  
+            break;
+        case IB_QPS_RTR:
+            if(attr_mask & IB_QP_PATH_MTU) {
+                if(attr->path_mtu != IB_MTU_4096) {
+                    dbg_info("scenic_rdma_modify_qp: Invalid MTU %d for moving QP %u to RTR\n", attr->path_mtu, scenic_qp->qpn);
+                    goto out;
+                }
+            }
+            break; 
+        default:
+            break;
     }
-
-    if(attr_mask & IB_QP_ACCESS_FLAGS) {
-        scenic_qp->qp_access_flags = attr->qp_access_flags;
-    }
-
-    // Store the port number if provided 
-    if(attr_mask & IB_QP_PORT) {
-        scenic_qp->port_num = attr->port_num;
-    }
-
-    // STEP 7: Store MTU if provided for later querying
-    if(attr_mask & IB_QP_PATH_MTU) {
-        scenic_qp->path_mtu = attr->path_mtu;
-    }
-
-    // STEP 8: Clean up and return success
     out:
+    // Store the new state if everything went well
+    scenic_qp->state = new_state;
+    dbg_info("scenic_rdma_modify_qp: QP %u state changed from %d to %d\n", scenic_qp->qpn, old_state, new_state);
 
-    spin_unlock_irqrestore(&scenic_qp->lock, flags);
-    return ret;
-}
-
-// Function to destroy a queue pair for RDMA 
-static int scenic_rdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
-{
-    dbg_info("scenic_rdma_destroy_qp: Destroying queue pair - START\n");
-
-    // STEP 1: Get the context right
-    struct scenic_rdma_device *scenic_rdma = ibdev_to_scenic_rdma_dev(ibqp->device);
-    struct scenic_qp *scenic_qp = ibqp_to_scenic_qp(ibqp);
-    unsigned long flags;
-    int ret = 0;    
-
-    // STEP 2: Unlink from the CQ if linked
-    if(ibqp->send_cq){
-        struct scenic_cq *scenic_cq = ibcq_to_scenic_cq(ibqp->send_cq);
-
-        
-    }
-
-    // STEP 3: Tell the FPGA to stop DMA'ing -> Will still put this to userspace for consistency. 
-
-    // STEP 4: Release the QPN 
-    ida_free(&scenic_rdma->qp_ida, scenic_qp->qpn);
-
-    // STEP 5: Free the QP structure 
-    kfree(scenic_qp);
+    // Release the QP lock before returning
+    spin_unlock(&scenic_qp->lock);
 
     // Step 6: Return success at the end of this routine
-    return ret; 
+    return 0; 
 }
 
 // Function to register a user memory region for RDMA 
