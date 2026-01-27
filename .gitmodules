@@ -1,7 +1,7 @@
 [submodule "hw/services/network"]
 	path = hw/services/network
 	url = https://github.com/fpgasystems/fpga-network-stack.git
-	branch = coyote-TCP-RDMA
+	branch = features/rdma-driver
 [submodule "sw/rdma-core"]
 	path = sw/rdma-core
 	url = https://github.com/maximilianheer/rdma-core.git
