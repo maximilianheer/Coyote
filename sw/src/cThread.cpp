@@ -1031,7 +1031,7 @@ void cThread::writeQpCtx(uint32_t port, bool write_rpsn, bool write_rkey) {
         offs[1] = ((static_cast<uint64_t>(qpair->local.psn) & 0xffffff) << QP_CONTEXT_LPSN_OFFS) | 
                   ((static_cast<uint64_t>(qpair->remote.psn) & 0xffffff) << QP_CONTEXT_RPSN_OFFS);
 
-        offs[2] = ((static_cast<uint64_t>(fake_vaddr & 0xffffffffffff) << QP_CONTEXT_VADDR_OFFS);
+        offs[2] = (static_cast<uint64_t>(fake_vaddr & 0xffffffffffff) << QP_CONTEXT_VADDR_OFFS);
 
     	
         // Write this information to the vFPGA configuration registers
