@@ -227,6 +227,11 @@ public:
 	void setLocalPSN(uint32_t psn);
 
 	/**
+	 * @brief Function to only set the remote PSN again 
+	 */
+	void setRemotePSN(uint32_t psn);
+
+	/**
 	 * @brief Writes an IP address to a config register so it can be used for ARP lookup
 	 * @param ip_addr IP address to be looked up
 	 */
@@ -237,6 +242,20 @@ public:
 	 * @param ip_addr IP address to be looked up
 	 */
 	void writeQpContext(uint32_t port);
+
+	/**
+	 * @brief Write only the QP Ctx to the RDMA stack, allows to selectively write only RKey and Remote PSN 
+	 * @param port RDMA port number
+	 * @param write_rpsn If true, only the remote PSN is written
+	 * @param write_rkey If true, only the remote RKey is written
+	 * If both are false or true, the full QP context is written
+	 */
+	void writeQpCtx(uint32_t port, bool write_rpsn, bool write_rkey);
+
+	/**
+	 * @brief Writes only the QP connection context to the RDMA stack 
+	 */
+	void writeQpConnection(uint32_t port);
 
 	/**
 	 * @brief Maps a buffer to the vFPGAs TLB
