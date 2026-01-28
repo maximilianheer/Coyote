@@ -192,6 +192,7 @@ cThread::cThread(int32_t vfid, pid_t hpid, uint32_t device, void (*uisr)(int)):
 
 cThread::~cThread() {
 	DBG1("cThread: destructor, ctid: " << ctid << ", vfid: " << vfid << ", hpid: " << hpid);
+    printf("cThread: destructor, ctid: %lu, vfid: %d, hpid: %d\n", ctid, vfid, hpid);
 
     // Release the lock, if acquired
     if (lock_acquired) {
@@ -231,6 +232,7 @@ cThread::~cThread() {
         closeConn();
     }
 
+    printf("cThread: closing fd: %d\n", fd);
 	close(fd);
 }
 
