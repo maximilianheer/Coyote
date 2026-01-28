@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
 
 	// Communication context 
 	struct ibv_context *context; 
-	context = ibv_open_device(dev_list[2]);
+	context = ibv_open_device(dev_list[1]);
 	if(!context) {
 		throw std::runtime_error("2 - Context not created, device couldn't be opened!");
 		return -1; 

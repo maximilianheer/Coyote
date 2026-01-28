@@ -122,6 +122,7 @@ cThread::cThread(int32_t vfid, pid_t hpid, uint32_t device, void (*uisr)(int)):
         throw std::runtime_error("ERROR: IOCTL_REGISTER_CTID failed"); 
     }
     this->ctid = tmp[1];  
+    printf("cThread: registered ctid %lu\n", ctid);
 	DBG1("cThread: registered ctid " << ctid);
 	
     // Read shell configuration from the driver
@@ -145,6 +146,7 @@ cThread::cThread(int32_t vfid, pid_t hpid, uint32_t device, void (*uisr)(int)):
         }
 
         event_thread = std::thread(eventHandler, fd, efd, terminate_efd, uisr, ctid);
+        printf("cThread: started user interrupt thread\n");
 
         tmp[0] = ctid; 
 		tmp[1] = efd;
@@ -196,6 +198,7 @@ cThread::~cThread() {
 
     // Release the lock, if acquired
     if (lock_acquired) {
+        printf("cThread: releasing acquired vFPGA lock in destructor\n");
         vlock.unlock();
         lock_acquired = false;
     }
@@ -204,31 +207,45 @@ cThread::~cThread() {
 	uint64_t tmp[MAX_USER_ARGS];
     tmp[0] = ctid;
 
+    printf("cThread: freeing mapped pages\n");
 	for(auto& it: mapped_pages) {
+        printf("cThread: freeing page at %p of size %u\n", it.first, it.second.size);
 		freeMem(it.first);
 	}
+    printf("cThread: clearing mapped pages\n");
 	mapped_pages.clear();
+    printf("cThread: cleared mapped pages\n");
 	munmapFpga();
+    printf("cThread: unmapped FPGA regions\n");
 
     // Unregister Coyote thread ID
 	ioctl(fd, IOCTL_UNREGISTER_CTID, &tmp);
+    printf("cThread: unregistered ctid %lu\n", ctid);
 
     // Terminate user interrupt thread and release the variables
     if (efd != -1) {
+        printf("cThread: terminating user interrupt thread\n");
 		ioctl(fd, IOCTL_UNREGISTER_EVENTFD, &tmp);
+        printf("cThread: unregistered eventfd for ctid %lu\n", ctid);
 
 		eventfd_write(terminate_efd, 1);
+        printf("cThread: sent termination event to event thread\n");
 
 		event_thread.join();
+        printf("cThread: user interrupt thread joined\n");
 
 		close(efd);
+        printf("cThread: closed efd %d\n", efd);
 		close(terminate_efd);
+        printf("cThread: closed terminate_efd %d\n", terminate_efd);
 
         ioctl(fd, IOCTL_SET_NOTIFICATION_PROCESSED, &tmp);
+        printf("cThread: set notification processed for ctid %lu\n", ctid);
 	}
 
     // Disable RDMA, if enabled and set-up
     if (fcnfg.en_rdma && is_connected) {
+        printf("cThread: closing RDMA connection\n");
         closeConn();
     }
 

@@ -201,20 +201,30 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
         // In essence, performing the opposite of the IOCTL_REGISTER_CTID call
         // Args: Coyote thread ID (ctid)
         case IOCTL_UNREGISTER_CTID:
+            dbg_info("unregister ctid called\n");
+            ssleep(2); 
             if(called_from_kernel_space) {
                 memcpy(&tmp, (unsigned long *)arg, sizeof(unsigned long));
                 ret_val = 0;
             } else {
+                dbg_info("copy from user called\n");
+                ssleep(2);
                 ret_val = copy_from_user(&tmp, (unsigned long *)arg, sizeof(unsigned long));
             }
             if (ret_val != 0) {
+                dbg_info("copy from user failed\n");
+                ssleep(2);
                 pr_warn("user data could not be coppied, return %d\n", ret_val);
             } else {
+                dbg_info("proceeding with unregistration\n");
+                ssleep(2);
                 mutex_lock(&device->pid_lock);
                 
                 int32_t ctid = (int32_t) tmp[0];
                 pid_t hpid = device->pid_array[ctid];
                 pid_t spid = current->pid;
+                dbg_info("unregistering ctid %d, hpid %d, spid %d\n", ctid, hpid, spid);
+                ssleep(2);
             
                 struct hpid_ctid_pages *tmp_h_entry;
                 struct list_head *l_p, *l_n;
@@ -222,11 +232,20 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
 
                 // Traverse all Coyote thread IDs until a match is found
                 hash_for_each_possible(hpid_ctid_map[device->id], tmp_h_entry, entry, hpid) {
+                    dbg_info("checking hpid entry %d\n", tmp_h_entry->hpid);
+                    ssleep(2);
                     if(tmp_h_entry->hpid == hpid) {
+                        dbg_info("hpid entry found %d\n", tmp_h_entry->hpid);
+                        ssleep(2);
                         list_for_each_safe(l_p, l_n, &tmp_h_entry->ctid_list) {
+                            dbg_info("checking ctid entry\n");
+                            ssleep(2);
                             l_entry = list_entry(l_p, struct ctid_entry, list);
 
                             if(l_entry->ctid == ctid) {
+                                dbg_info("ctid entry found %d\n", l_entry->ctid);
+                                ssleep(2);
+
                                 // Unmap any leftover user pages for this Coyot thread
                                 #ifdef HMM_KERNEL
                                     if(en_hmm)
@@ -235,6 +254,9 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
                                 #endif                            
                                     tlb_put_user_pages_ctid(device, ctid, hpid, 1);
 
+                                dbg_info("freed user pages for ctid %d\n", ctid);
+                                ssleep(2);
+
                                 // Unregister Coyote thread and delete entry from list
                                 device->ctid_chunks[l_entry->ctid].next = device->pid_alloc;
                                 device->pid_alloc = &device->ctid_chunks[l_entry->ctid];
@@ -242,8 +264,14 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
                             }
                         }
 
+                        dbg_info("deleted ctid entry from list for ctid %d\n", ctid);
+                        ssleep(2);
+
                         // If there are no more Coyote threads registered for this host process ID (hpid), remove the hpid entry
                         if(list_empty(&tmp_h_entry->ctid_list)) {
+                            dbg_info("no more ctid entries for hpid %d, removing hpid entry\n", hpid);
+                            ssleep(2);
+
                             #ifdef HMM_KERNEL                        
                                 if(en_hmm) {
                                     dbg_info("releasing notifier for hpid %d\n", hpid);
@@ -251,11 +279,14 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
                                 }
                             #endif 
                             hash_del(&tmp_h_entry->entry);
+                            dbg_info("removed hpid entry for hpid %d\n", hpid);
+                            ssleep(2);
                         }
                     }
                 }
 
                 dbg_info("unregistration succeeded, ctid %d, hpid %d, spid %d\n", ctid, hpid, spid);
+                ssleep(2);
                 mutex_unlock(&device->pid_lock);
                 
             }
