@@ -1166,6 +1166,23 @@ assign invldt_wr_ctrl.data.vaddr = slv_reg[ISR_VADDR_MISS_REG][0+:VADDR_BITS];
 assign invldt_wr_ctrl.data.len = slv_reg[ISR_VAL_LEN_MISS_REG][ISR_LEN_OFFS+:LEN_BITS];
 assign invldt_wr_ctrl.data.last = slv_reg[ISR_REG][ISR_INVLDT_LAST];
 
+// ILA for observing the invalidate control signals
+ila_invldt_ctrl ila_invldt_ctrl_inst (
+    .clk(aclk),
+    .probe0(invldt_rd_ctrl.valid),      // 1 
+    .probe1(invldt_rd_ctrl.data.lock),  // 1 
+    .probe2(invldt_rd_ctrl.data.hpid),  // 32
+    .probe3(invldt_rd_ctrl.data.vaddr), // 64
+    .probe4(invldt_rd_ctrl.data.len),   // 28
+    .probe5(invldt_rd_ctrl.data.last),  // 1 
+    .probe6(invldt_wr_ctrl.valid),      // 1
+    .probe7(invldt_wr_ctrl.data.lock),  // 1
+    .probe8(invldt_wr_ctrl.data.hpid),  // 32
+    .probe9(invldt_wr_ctrl.data.vaddr), // 64
+    .probe10(invldt_wr_ctrl.data.len),  // 28
+    .probe11(invldt_wr_ctrl.data.last)  // 1
+);  
+
 // Pfault ctrl
 assign pfault_rd_ctrl.valid = slv_reg[ISR_REG][ISR_RESTART_RD];
 assign pfault_rd_ctrl.data = slv_reg[ISR_REG][ISR_SUCCESS]; 

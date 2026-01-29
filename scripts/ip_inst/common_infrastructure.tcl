@@ -139,6 +139,10 @@ set_property -dict [list CONFIG.TDATA_NUM_BYTES {16} CONFIG.FIFO_DEPTH {32} ] [g
 create_ip -name axis_data_fifo -vendor xilinx.com -library ip -version 2.0 -module_name axis_data_fifo_req_256
 set_property -dict [list CONFIG.TDATA_NUM_BYTES {32} CONFIG.FIFO_DEPTH {32} ] [get_ips axis_data_fifo_req_256]
 
+create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_invldt_ctrl
+set_property -dict [list CONFIG.C_PROBE2_WIDTH {32} CONFIG.C_PROBE3_WIDTH {64} CONFIG.C_PROBE4_WIDTH {28} CONFIG.C_PROBE8_WIDTH {32} CONFIG.C_PROBE9_WIDTH {64} CONFIG.C_PROBE10_WIDTH {28} CONFIG.C_NUM_OF_PROBES {12} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {8192}] [get_ips ila_invldt_ctrl]
+
+
 # Meta
 create_ip -name axis_data_fifo -vendor xilinx.com -library ip -version 2.0 -module_name axis_data_fifo_meta_8
 set_property -dict [list CONFIG.TDATA_NUM_BYTES {1} CONFIG.FIFO_DEPTH {32} ] [get_ips axis_data_fifo_meta_8]
