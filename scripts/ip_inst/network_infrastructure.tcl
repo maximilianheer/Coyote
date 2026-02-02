@@ -147,7 +147,7 @@ create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila
 set_property -dict [list CONFIG.C_PROBE2_WIDTH {168} CONFIG.C_PROBE5_WIDTH {184} CONFIG.C_NUM_OF_PROBES {6} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {4096}] [get_ips ila_rdma_ctrl]
 
 create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_rdma_net_flow
-set_property -dict [list CONFIG.C_PROBE2_WIDTH {512} CONFIG.C_PROBE3_WIDTH {64} CONFIG.C_PROBE7_WIDTH {512} CONFIG.C_PROBE8_WIDTH {64} CONFIG.C_NUM_OF_PROBES {9} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {4096}] [get_ips ila_rdma_net_flow]
+set_property -dict [list CONFIG.C_PROBE2_WIDTH {512} CONFIG.C_PROBE3_WIDTH {64} CONFIG.C_PROBE7_WIDTH {512} CONFIG.C_PROBE8_WIDTH {64} CONFIG.C_NUM_OF_PROBES {10} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {4096}] [get_ips ila_rdma_net_flow]
 
 ##
 ## Host Networking
