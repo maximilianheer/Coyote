@@ -6,6 +6,9 @@
 create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_link
 set_property -dict [list CONFIG.C_PROBE1_WIDTH {4} CONFIG.C_NUM_OF_PROBES {2}  CONFIG.C_EN_STRG_QUAL {1} CONFIG.C_ADV_TRIGGER {true} CONFIG.C_PROBE1_MU_CNT {2} CONFIG.C_PROBE0_MU_CNT {2} CONFIG.ALL_PROBE_SAME_MU_CNT {2}] [get_ips ila_link]
 
+create_ip -name ila -vendor xilinx.com -library ip -version 6.2 -module_name ila_stream_check
+set_property -dict [list CONFIG.C_NUM_OF_PROBES {3} CONFIG.C_EN_STRG_QUAL {1} CONFIG.ALL_PROBE_SAME_MU_CNT {2} CONFIG.C_DATA_DEPTH {4096}] [get_ips ila_stream_check]
+
 # VIO link
 create_ip -name vio -vendor xilinx.com -library ip -version 3.0 -module_name vio_link
 set_property -dict [list CONFIG.C_PROBE_IN1_WIDTH {4} CONFIG.C_NUM_PROBE_OUT {0} CONFIG.C_PROBE_IN2_WIDTH {3} CONFIG.C_NUM_PROBE_IN {3} ] [get_ips vio_link]

@@ -124,6 +124,13 @@ always_ff @(posedge nclk) begin
     nresetn_r <= nresetn_r_int;
 end
 
+ila_stream_check inst_ila_stream_check_1 (
+    .clk(nclk),
+    .probe0(m_axis_net.tvalid),     // 1
+    .probe1(m_axis_net.tready),     // 1
+    .probe2(m_axis_net.tlast)      // 1
+); 
+
 
 // Ip handler
 // ---------------------------------------------------------------------------------------------
@@ -569,6 +576,13 @@ axis_interconnect_512_4to1 ip_merger (
     .S03_ARB_REQ_SUPPRESS(1'b0)  // input wire S02_ARB_REQ_SUPPRESS
 );
 
+ila_stream_check inst_ila_stream_check_4(
+    .clk(nclk), 
+    .probe0(axis_roce_slice_to_merge.tvalid),     // 1
+    .probe1(axis_roce_slice_to_merge.tready),     // 1
+    .probe2(axis_roce_slice_to_merge.tlast)      // 1
+); 
+
 /**
  * ARP lookup
  */
@@ -628,6 +642,13 @@ mac_ip_encode_ip mac_ip_encode_inst (
     .ap_rst_n(nresetn_r) // input aresetn
 `endif
 );
+
+ila_stream_check inst_ila_stream_check_3(
+    .clk(nclk), 
+    .probe0(axis_intercon_to_mie_r.tvalid),     // 1
+    .probe1(axis_intercon_to_mie_r.tready),     // 1
+    .probe2(axis_intercon_to_mie_r.tlast)      // 1
+); 
 
 /**
  * Merges IP and ARP 
@@ -787,6 +808,13 @@ axis_interconnect_512_2to1 mac_merger (
 
     `endif
 );
+
+ila_stream_check inst_ila_stream_check_2(
+    .clk(nclk), 
+    .probe0(axis_mie_to_intercon_r.tvalid),
+    .probe1(axis_mie_to_intercon_r.tready),
+    .probe2(axis_mie_to_intercon_r.tlast)
+); 
 
 arp_server_subnet_ip arp_server_inst(
 `ifdef VITIS_HLS

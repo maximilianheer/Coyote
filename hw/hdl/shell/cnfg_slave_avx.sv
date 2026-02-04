@@ -1027,7 +1027,7 @@ assign invldt_wr_ctrl.data.len = slv_reg[ISR_REG][ISR_LEN_OFFS+:LEN_BITS];
 assign invldt_wr_ctrl.data.last = slv_reg[ISR_REG][ISR_INVLDT_LAST];
 
 // ILA for observing the invalidate control signals
-ila_invldt_ctrl ila_invldt_ctrl_inst (
+/* ila_invldt_ctrl ila_invldt_ctrl_inst (
     .clk(aclk),
     .probe0(invldt_rd_ctrl.valid),      // 1 
     .probe1(invldt_rd_ctrl.data.lock),  // 1 
@@ -1041,7 +1041,7 @@ ila_invldt_ctrl ila_invldt_ctrl_inst (
     .probe9(invldt_wr_ctrl.data.vaddr), // 64
     .probe10(invldt_wr_ctrl.data.len),  // 28
     .probe11(invldt_wr_ctrl.data.last)  // 1
-);  
+); */  
 
 
 // Pfault ctrl
