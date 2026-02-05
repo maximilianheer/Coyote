@@ -24,10 +24,12 @@ module host_networking_prefilter (
     logic rx_ipv4_udp; 
     logic rx_ipv4_tcp; 
     logic rx_ipv4_udp_roce; 
+    logic rx_arp; 
 
     // Constant calculation of the flags based on the incoming traffic 
     always_comb begin 
         rx_ipv4 = {s_axis_rx.tdata[12*8+7:12*8], s_axis_rx.tdata[13*8+7:13*8]} == 16'h0800;
+        rx_arp = {s_axis_rx.tdata[12*8+7:12*8], s_axis_rx.tdata[13*8+7:13*8]} == 16'h0806;
         rx_ipv4_udp = rx_ipv4 && s_axis_rx.tdata[23*8+7:23*8] == 8'h11;
         rx_ipv4_tcp = rx_ipv4 & s_axis_rx.tdata[23*8+7:23*8] == 8'h06;
         rx_ipv4_udp_roce = rx_ipv4_udp & {s_axis_rx.tdata[36*8+7:36*8], s_axis_rx.tdata[37*8+7:37*8]} == 16'hb712;
@@ -38,6 +40,8 @@ module host_networking_prefilter (
     logic rx_filter_dropped; 
     logic rx_pkt_first_chunk; 
     logic rx_pkt_further_chunks; 
+
+
 
     // Check signal if the current chunk is the first one within a packet 
     assign rx_pkt_first_chunk = s_axis_rx.tvalid && s_axis_rx.tready && ~rx_pkt_further_chunks; 
@@ -114,7 +118,8 @@ module host_networking_prefilter (
     assign m_axis_rx.tkeep = s_axis_rx.tkeep;
     assign m_axis_rx.tlast = s_axis_rx.tlast;
 
-    assign m_axis_offloaded_rx.tvalid = s_axis_rx.tvalid && (rx_filter_dropping || rx_filter_dropped);
+    // Also ARPs are handed to the offloaded Hardware in this case... 
+    assign m_axis_offloaded_rx.tvalid = s_axis_rx.tvalid && (rx_filter_dropping || rx_filter_dropped || rx_arp);
     assign m_axis_offloaded_rx.tdata = s_axis_rx.tdata;
     assign m_axis_offloaded_rx.tkeep = s_axis_rx.tkeep;
     assign m_axis_offloaded_rx.tlast = s_axis_rx.tlast;

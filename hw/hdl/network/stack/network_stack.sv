@@ -330,6 +330,28 @@ host_networking_prefilter host_networking_prefilter_inst (
     .m_axis_offloaded_rx(axis_offloaded_networking_filter_to_slice) // Filtered Data for offloaded networking
 ); 
 
+ila_stream_check inst_ila_streamc_check_rx_1(
+    .clk(nclk),
+    .probe0(axis_slice_to_ibh.tvalid),     // 1
+    .probe1(axis_slice_to_ibh.tready),     // 1
+    .probe2(axis_slice_to_ibh.tlast)      // 1
+); 
+
+ila_stream_check inst_ila_streamc_check_rx_2(
+    .clk(nclk),
+    .probe0(axis_host_networking_filter_to_slice.tvalid),     // 1
+    .probe1(axis_host_networking_filter_to_slice.tready),     // 1
+    .probe2(axis_host_networking_filter_to_slice.tlast)      // 1
+); 
+
+ila_stream_check inst_ila_streamc_check_rx_3(
+    .clk(nclk),
+    .probe0(axis_offloaded_networking_filter_to_slice.tvalid),     // 1
+    .probe1(axis_offloaded_networking_filter_to_slice.tready),     // 1
+    .probe2(axis_offloaded_networking_filter_to_slice.tlast)      // 1
+); 
+
+
 // Put an ILA around the host_networking_prefilter to observe its functionality 
 /* ila_host_networking_3_streams inst_ila_host_networking_prefilter(
     .clk(nclk), 
@@ -576,12 +598,6 @@ axis_interconnect_512_4to1 ip_merger (
     .S03_ARB_REQ_SUPPRESS(1'b0)  // input wire S02_ARB_REQ_SUPPRESS
 );
 
-ila_stream_check inst_ila_stream_check_4(
-    .clk(nclk), 
-    .probe0(axis_roce_slice_to_merge.tvalid),     // 1
-    .probe1(axis_roce_slice_to_merge.tready),     // 1
-    .probe2(axis_roce_slice_to_merge.tlast)      // 1
-); 
 
 /**
  * ARP lookup
@@ -643,12 +659,6 @@ mac_ip_encode_ip mac_ip_encode_inst (
 `endif
 );
 
-ila_stream_check inst_ila_stream_check_3(
-    .clk(nclk), 
-    .probe0(axis_intercon_to_mie_r.tvalid),     // 1
-    .probe1(axis_intercon_to_mie_r.tready),     // 1
-    .probe2(axis_intercon_to_mie_r.tlast)      // 1
-); 
 
 /**
  * Merges IP and ARP 
