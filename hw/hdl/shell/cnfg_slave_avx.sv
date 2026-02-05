@@ -1185,6 +1185,17 @@ assign rdma_done_wr.data = rdma_done.data;
 assign rdma_done_wr.valid = is_opcode_rd_resp(rdma_done.data.opcode) ? 1'b0 : rdma_done.valid;
 assign rdma_done.ready = is_opcode_rd_resp(rdma_done.data.opcode) ? rdma_done_rd.ready : rdma_done_wr.ready;
 
+/* ila_rdma_done inst_ila_rdma_done (
+    .clk(aclk), 
+    .probe0(rdma_done.valid),        // 1
+    .probe1(rdma_done.data),         // 32
+    .probe2(rdma_done.ready),        // 1
+    .probe3(rdma_done_rd.valid),     // 1
+    .probe4(rdma_done_rd.ready),     // 1
+    .probe5(rdma_done_wr.valid),     // 1
+    .probe6(rdma_done_wr.ready)      // 1
+); */ 
+
 // RD
 assign rdma_clear_rd = post && slv_reg[CTRL_REG][CTRL_CLR_STAT];
 assign rdma_clear_addr_rd = slv_reg[CTRL_REG][CTRL_PID_OFFS+:PID_BITS];
@@ -1239,6 +1250,16 @@ assign a_we_rdma_wr = (rdma_clear_wr || rdma_wr_C) ? ~0 : 0;
 assign a_data_in_rdma_wr = rdma_clear_wr ? 0 : a_data_out_rdma_wr + 1;
 assign a_addr_rdma_wr = rdma_clear_wr ? rdma_clear_addr_wr : rdma_done_wr.data.pid;
 assign b_addr_rdma_wr = axi_araddr[ADDR_LSB+:PID_BITS];
+
+/* ila_rdma_ack_wr inst_ila_rdma_ack_wr (
+    .clk(aclk), 
+    .probe0(a_we_rdma_wr),           // 1
+    .probe1(a_addr_rdma_wr),         // 6
+    .probe2(a_data_in_rdma_wr),      // 32
+    .probe3(a_data_out_rdma_wr),     // 32
+    .probe4(b_addr_rdma_wr),         // 6
+    .probe5(b_data_out_rdma_wr)      // 32
+); */ 
 
 ram_tp_nc #(
     .ADDR_BITS(PID_BITS),
@@ -1329,13 +1350,13 @@ queue_meta #(.QDEPTH(N_OUTSTANDING)) inst_meta_wback_wr (.aclk(aclk), .aresetn(a
 
 `ifdef EN_RDMA
 assign wback[2].valid = rdma_clear_rd || rdma_rd_C;
-assign wback[2].data.paddr = rdma_clear_rd ? (rdma_clear_addr_rd << 2) + slv_reg[WBACK_REG][WBACK_RMT_RD_OFFS+:PADDR_BITS] : (rdma_done_rd.data << 2) + slv_reg[WBACK_REG][WBACK_RMT_RD_OFFS+:PADDR_BITS];
+assign wback[2].data.paddr = rdma_clear_rd ? (rdma_clear_addr_rd << 2) + slv_reg[WBACK_REG][WBACK_RMT_RD_OFFS+:PADDR_BITS] : (rdma_done_rd.data.pid << 2) + slv_reg[WBACK_REG][WBACK_RMT_RD_OFFS+:PADDR_BITS];
 assign wback[2].data.value = rdma_clear_rd ? 0 : a_data_out_rdma_rd + 1'b1;
 assign wback[2].data.rsrvd = 0;
 queue_meta #(.QDEPTH(N_OUTSTANDING)) inst_meta_wback_rdma_rd (.aclk(aclk), .aresetn(aresetn), .s_meta(wback[2]), .m_meta(wback_q[2]));
 
 assign wback[3].valid = rdma_clear_wr || rdma_wr_C;
-assign wback[3].data.paddr = rdma_clear_wr ? (rdma_clear_addr_wr << 2) + slv_reg[WBACK_REG][WBACK_RMT_WR_OFFS+:PADDR_BITS] : (rdma_done_wr.data << 2) + slv_reg[WBACK_REG][WBACK_RMT_WR_OFFS+:PADDR_BITS];
+assign wback[3].data.paddr = rdma_clear_wr ? (rdma_clear_addr_wr << 2) + slv_reg[WBACK_REG][WBACK_RMT_WR_OFFS+:PADDR_BITS] : (rdma_done_wr.data.pid << 2) + slv_reg[WBACK_REG][WBACK_RMT_WR_OFFS+:PADDR_BITS];
 assign wback[3].data.value = rdma_clear_wr ? 0 : a_data_out_rdma_wr + 1'b1;
 assign wback[3].data.rsrvd = 0;
 queue_meta #(.QDEPTH(N_OUTSTANDING)) inst_meta_wback_rdma_wr (.aclk(aclk), .aresetn(aresetn), .s_meta(wback[3]), .m_meta(wback_q[3]));
