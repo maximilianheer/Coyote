@@ -8,7 +8,7 @@ LIB_PATH="/home/hmaximili/cyt_rdma_driver/sw/rdma-core/build/lib"
 echo "Step 1: Compiling $SOURCE..."
 
 # Run the compilation command
-g++ "$SOURCE" -o "$OUTPUT" \
+g++ -g "$SOURCE" -o "$OUTPUT" \
     -libverbs \
     -lrdmacm \
     -lboost_program_options \

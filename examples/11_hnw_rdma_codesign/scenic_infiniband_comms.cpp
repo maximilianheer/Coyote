@@ -40,6 +40,7 @@
 #include <chrono> 
 #include <random>
 #include <cstring>
+#include <sys/mman.h>
 
 
 struct ibvQ {
@@ -120,7 +121,7 @@ const int hugePageSize = (2*1024*1024);
 
 // Default parameters for experimentation 
 constexpr auto const defOper = false; // read
-constexpr auto const defMinSize = 1024; 
+constexpr auto const defMinSize = 64; 
 constexpr auto const defMaxSize = 64 * 1024; 
 constexpr auto const defNRepsThr = 1000;
 constexpr auto const defNRepsLat = 100;
@@ -226,22 +227,23 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("3 - Protection Domain couldn't be allocated!");
 		return -1;
 	} else {
-		printf("Allocated the Protection Domain. \n");
+		// printf("Allocated the Protection Domain. \n");
 	}
 
     // return 0; 
 
 	// Register Memory Region 
 	uint32_t n_pages = (max_size + hugePageSize -1) / hugePageSize;
-	printf("Size of the allocated buffer: %d Bytes. \n", (n_pages*hugePageSize));
 	// uint64_t *buf = (uint64_t *)calloc(1, n_pages*hugePageSize);
-    uint64_t *buf = (uint64_t *)aligned_alloc(64, n_pages*hugePageSize);
+	max_size = 2*1024*1024; 
+	// printf("Allocating buffer of size %d bytes. \n", max_size);
+    uint64_t *buf = (uint64_t *)mmap(NULL, max_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
 	if(buf == NULL) {
 		throw std::runtime_error("3.5 - Couldn't obtain a buffer in the required size!");
 		return -1; 
 	} else {
-        memset(buf, 0, n_pages*hugePageSize);
-		printf("Buffer obtained successfully! \n");
+        memset(buf, 0, max_size);
+		// printf("Buffer obtained successfully! \n");
 	}
 	struct ibv_mr *mr; 
 	mr = ibv_reg_mr(pd,  buf, max_size, IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_READ | IBV_ACCESS_RELAXED_ORDERING);
@@ -249,7 +251,7 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("4 - Memory Region couldn't be allocated!");
 		return -1;
 	} else {
-		printf("Allocated the Memory Region. \n");
+		// printf("Allocated the Memory Region. \n");
 	}
 
     // return 0; 
@@ -261,7 +263,7 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("5 - Completion Channel couldn't be created!");
 		return -1;
 	} else {
-		printf("Created the Completion Channel. \n");
+		// printf("Created the Completion Channel. \n");
 	}
 
     // return 0; 
@@ -273,7 +275,7 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("6 - Completion Queue couldn't be created! ");
 		return -1;
 	} else {
-		printf("Created the Completion Queue. \n");
+		// printf("Created the Completion Queue. \n");
 	}
 
     // return 0; 
@@ -288,22 +290,18 @@ int main(int argc, char *argv[])
 	qp_init_attr.cap.max_recv_wr = 2048; // 128; 
 	qp_init_attr.cap.max_send_sge = 16; // 2; 
 	qp_init_attr.cap.max_recv_sge = 16; // 2; 
-	printf("Created the QP Init Attributes. \n");
+	// printf("Created the QP Init Attributes. \n");
 
 	// Create Queue Pair 
 	struct ibv_qp *qp; 
 	qp = ibv_create_qp(pd, &qp_init_attr);
+
 	if(!qp) {
 		throw std::runtime_error("7 - Queue Pair couldn't be created!");
 		return -1;
 	} else {
-		printf("Created a Queue Pair. \n");
+		// printf("Created a Queue Pair. \n");
 	}
-
-    // Destroy QP test
-    printf("Destroying the created QP for test purposes. \n");
-    ibv_destroy_qp(qp);
-    return 0; 
 
 	// Set Queue Pair to INIT
 	struct ibv_qp_attr attr; 
@@ -314,6 +312,7 @@ int main(int argc, char *argv[])
 	attr.qp_access_flags = IBV_ACCESS_REMOTE_WRITE | IBV_ACCESS_REMOTE_READ; 
 	attr.path_mtu = IBV_MTU_4096; 
 
+	printf("Modifying the Queue Pair to INIT. \n");
 	switch(ibv_modify_qp(qp, &attr, IBV_QP_STATE | IBV_QP_ACCESS_FLAGS | IBV_QP_PKEY_INDEX | IBV_QP_PORT)) {
 		case 0: printf("Set the Queue Pair to INIT. \n"); break;
 		case -1: throw std::runtime_error("8 - Queue Pair couldn't be set to INIT - unspecified!"); return -1; break; 
@@ -340,7 +339,7 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("9 - Socket couldn't be created!");
 		return -1; 
 	} else {
-		printf("Created socket. \n");
+		// printf("Created socket. \n");
 	}
 
 	// Force connect the socket
@@ -349,7 +348,7 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("9.5 - Couldn't set socket option SO_REUSEADDR!");
 		return -1; 
 	} else {
-		printf("Set socket option SO_REUSEADDR. \n");
+		// printf("Set socket option SO_REUSEADDR. \n");
 	}
 
 	// Server connection given by Protocol, Address, Port
@@ -363,7 +362,7 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("10 - Couldn't bind a socket!");
 		return -1;
 	} else {
-		printf("Bind to a socket. \n");
+		// printf("Bind to a socket. \n");
 	}
 
 	// Try to listen to the port
@@ -371,7 +370,7 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("11 - Could not listen to the port!");
 		return -1;
 	} else {
-		printf("Listened to the port. \n");
+		// printf("Listened to the port. \n");
 	}
 
 	// Listen to the port 
@@ -384,7 +383,7 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("12 - Acceptance of incoming connection failed!");
 		return -1;
 	} else {
-		printf("Accepted the incoming connection \n");
+		// printf("Accepted the incoming connection \n");
 	}
 
 
@@ -399,18 +398,18 @@ int main(int argc, char *argv[])
 
 	// Read a queue from the socket connection 
 	// printf("Size of the read content: %d \n", read(connfd, recv_buf, sizeof(struct ibvQ)));
-	printf("Size of ibvQ-structur: %ld \n", sizeof(struct ibvQ));
-	printf("Received size: %ld \n", read(connfd, recv_buf, sizeof(struct ibvQ)));
+	// printf("Size of ibvQ-structur: %ld \n", sizeof(struct ibvQ));
+	// printf("Received size: %ld \n", read(connfd, recv_buf, sizeof(struct ibvQ)));
 	for (size_t i = 0; i < sizeof(struct ibvQ); ++i) {
     	printf("%02x ", (unsigned char)recv_buf[i]);
 	}
 	printf("\n");
-	/* if(read(connfd, recv_buf, sizeof(struct ibvQ)) != sizeof(struct ibvQ)) {
+	if(read(connfd, recv_buf, sizeof(struct ibvQ)) != sizeof(struct ibvQ)) {
 		close(connfd);
 		throw std::runtime_error("15 - Could not read a remote queue!");
 	} else {
 		printf("Remote queue was read. \n");
-	} */ 
+	}
 
 	struct ibvQ *remote_ibvQ;
 	remote_ibvQ = (struct ibvQ*)malloc(sizeof(struct ibvQ));
@@ -426,7 +425,7 @@ int main(int argc, char *argv[])
 	// printf("Transformed remote GID: %ld \n", remote_gid);
 
 	// Printout of the received information 
-    remote_ibvQ->print("Remote"); 
+    // remote_ibvQ->print("Remote"); 
 
     // Negotiate the Balboa-features based on the requirements received in the remote QP and the local arguments 
     
@@ -455,7 +454,7 @@ int main(int argc, char *argv[])
 		throw std::runtime_error("16 - Could not send my local Queue to the remote side!");
 		return -1; 
 	} else {
-		printf("Local Queue was sent to the remote side. \n");
+		// printf("Local Queue was sent to the remote side. \n");
 	}
 
 	// Print the QPs 
@@ -524,31 +523,33 @@ int main(int argc, char *argv[])
 	}
 
 	// Printout of data sent to the remote side
-	printf("IBV_QP_STATE: %d \n", attr.qp_state);
-	printf("IBV_QP_PATH_MTU: %d \n", attr.path_mtu);
-	printf("IBV_QP_DEST_QPN: %d \n", attr.dest_qp_num);
-	printf("IBV_QP_RQ_PSN: %d \n", attr.rq_psn);
-	printf("IBV_QP_MAX_DEST_RD_ATOMIC: %d \n", attr.max_dest_rd_atomic);
-	printf("IBV_QP_MIN_RNR_TIMER: %d \n", attr.min_rnr_timer);
-	printf("IBV AH ATTR: \n");
-	printf(" - DLID: %d \n", attr.ah_attr.dlid);
-	printf(" - Service Level: %d \n", attr.ah_attr.sl);
-	printf(" - Static Rate: %d \n", attr.ah_attr.static_rate);
-	printf(" - Is Global: %d \n", attr.ah_attr.is_global);
-	printf(" - src_path_bits: %d \n", attr.ah_attr.src_path_bits);
-	printf(" - port number: %d \n", attr.ah_attr.port_num);
-	printf(" - Global Routing Header: \n");
-	printf(" - - flow_label: %d \n", attr.ah_attr.grh.flow_label);
-	printf(" - - sgid_index: %d \n", attr.ah_attr.grh.sgid_index);
-	printf(" - - hop_limit: %d \n", attr.ah_attr.grh.hop_limit);
-	printf(" - - traffic class: %d \n", attr.ah_attr.grh.traffic_class);
-	printf(" - - Global ID: \n");
-	printf(" - - - - Subnet Prefix: %lld \n", attr.ah_attr.grh.dgid.global.subnet_prefix);
-	printf(" - - - - Interface ID: %lld \n", attr.ah_attr.grh.dgid.global.interface_id);
+	// printf("IBV_QP_STATE: %d \n", attr.qp_state);
+	// printf("IBV_QP_PATH_MTU: %d \n", attr.path_mtu);
+	// printf("IBV_QP_DEST_QPN: %d \n", attr.dest_qp_num);
+	// printf("IBV_QP_RQ_PSN: %d \n", attr.rq_psn);
+	// printf("IBV_QP_MAX_DEST_RD_ATOMIC: %d \n", attr.max_dest_rd_atomic);
+	// printf("IBV_QP_MIN_RNR_TIMER: %d \n", attr.min_rnr_timer);
+	// printf("IBV AH ATTR: \n");
+	// printf(" - DLID: %d \n", attr.ah_attr.dlid);
+	// printf(" - Service Level: %d \n", attr.ah_attr.sl);
+	// printf(" - Static Rate: %d \n", attr.ah_attr.static_rate);
+	// printf(" - Is Global: %d \n", attr.ah_attr.is_global);
+	// printf(" - src_path_bits: %d \n", attr.ah_attr.src_path_bits);
+	// printf(" - port number: %d \n", attr.ah_attr.port_num);
+	// printf(" - Global Routing Header: \n");
+	// // printf(" - - flow_label: %d \n", attr.ah_attr.grh.flow_label);
+	// printf(" - - sgid_index: %d \n", attr.ah_attr.grh.sgid_index);
+	// printf(" - - hop_limit: %d \n", attr.ah_attr.grh.hop_limit);
+	// printf(" - - traffic class: %d \n", attr.ah_attr.grh.traffic_class);
+	// printf(" - - Global ID: \n");
+	// printf(" - - - - Subnet Prefix: %lld \n", attr.ah_attr.grh.dgid.global.subnet_prefix);
+	// printf(" - - - - Interface ID: %lld \n", attr.ah_attr.grh.dgid.global.interface_id);
 
+	printf("Modifying the Queue Pair to RTR. \n");
 	errno = ibv_modify_qp(qp, &attr, IBV_QP_STATE | IBV_QP_AV | IBV_QP_PATH_MTU | IBV_QP_DEST_QPN | IBV_QP_RQ_PSN | IBV_QP_MAX_DEST_RD_ATOMIC | IBV_QP_MIN_RNR_TIMER);
 	switch(errno) {
 		case 0: printf("Set the Queue Pair to RTR. \n"); break;
+		case 61: printf("Returned 61. Not ideal, but for now we continue. \n"); break;
 		default: printf("%s \n", strerror(errno)); throw std::runtime_error("17 - IBV QP modification went wrong!\n"); sleep(5); return -1; break;
 	}
 
@@ -562,6 +563,7 @@ int main(int argc, char *argv[])
 	attr.max_rd_atomic = 16; 
 	attr.path_mig_state = IBV_MIG_REARM;
 	
+	printf("Modifying the Queue Pair to RTS. \n");
 	errno = ibv_modify_qp(qp, &attr, IBV_QP_STATE | IBV_QP_SQ_PSN | IBV_QP_TIMEOUT | IBV_QP_RETRY_CNT | IBV_QP_RNR_RETRY | IBV_QP_MAX_QP_RD_ATOMIC | IBV_QP_PATH_MIG_STATE);
 	if(errno == 0) {
 		printf("Set the Queue Pair to RTS. \n");
@@ -569,8 +571,6 @@ int main(int argc, char *argv[])
 		printf("%s \n", strerror(errno)); 
 		throw std::runtime_error("18 - Setting the QP to RTS didn't work properly.");
 	}
-
-	usleep(500000);
 
 	// Cast the RDMA-buffer as array of 64-bit integers for further processing 
 	uint32_t *hMem = (uint32_t*)local_ibvQ->vaddr; 
@@ -582,7 +582,7 @@ int main(int argc, char *argv[])
 	sg.length = min_size; //local_ibvQ->size;
 	// sg.length = 64; 
 	sg.lkey = mr->lkey;
-	printf("Local Key of the memory region: %d \n", mr->lkey);
+	// printf("Local Key of the memory region: %d \n", mr->lkey);
 
 	// Create Work Request
 	struct ibv_send_wr wr; 
@@ -590,10 +590,14 @@ int main(int argc, char *argv[])
 	wr.wr_id = 0; 
 	wr.sg_list = &sg; 
 	wr.num_sge = 1;
-	wr.opcode = IBV_WR_RDMA_READ; 
+	wr.opcode = IBV_WR_RDMA_WRITE; 
 	wr.send_flags = IBV_SEND_SIGNALED;
 	wr.wr.rdma.remote_addr = (uintptr_t)remote_ibvQ->vaddr;
 	wr.wr.rdma.rkey = remote_ibvQ->rkey; 
+
+	// Print the source and target addresses 
+	printf("Local RDMA address: %016lx \n", (uintptr_t)hMem);
+	printf("Remote RDMA address: %016lx \n", (uintptr_t)remote_ibvQ->vaddr);
 
 	// Create "Bad Work Request" for failed WRITE operations 
 	struct ibv_send_wr *bad_wr; 
@@ -618,16 +622,17 @@ int main(int argc, char *argv[])
 	// Creation of the clock for the time measurement 
 	clock_t t; 
 
-	printf("Reached the RDMA-loop! \n");
-	printf("Length of the SG-Element: %d \n", sg.length);
-	printf("Max-size: %d \n", max_size);
+	// printf("Reached the RDMA-loop! \n");
+	// printf("Length of the SG-Element: %d \n", sg.length);
+	// printf("Max-size: %d \n", max_size);
 
 	while(sg.length <= max_size) {
 
         // Generate the elements required for latency and throughput calculation
         std::vector<double> measured_times; 
 
-		printf("Beginning \n"); 
+		// printf("Beginning \n"); 
+		printf("Handshake before RDMA ops... \n");
 		handshake(connfd); 
 
 		for(int n_runs = 1; n_runs <= n_reps_lat; n_runs++) {
@@ -637,12 +642,18 @@ int main(int argc, char *argv[])
             auto begin_time = std::chrono::high_resolution_clock::now();
 
 			for(int n_transmission = 1; n_transmission <= n_transactions; n_transmission++) {
+				printf("Posting RDMA READ Work Request, transmission %d / %d ... \n", n_transmission, n_transactions);
 				ibv_post_send(qp, &wr, &bad_wr); 
 			} 
+			printf("All RDMA Work Requests posted. \n");
+			printf("This is it - time to say goodbye!\n"); 
+			// sleep(600); 
 
 			num_comp = 0; 
 			do{
 				num_comp += ibv_poll_cq(comp_queue, 1, wc_batch.data());
+				printf("Polled the Completion Queue, current number of completions: %d / %d \n", num_comp, n_transactions);
+				sleep(2); 
 			} while(num_comp < n_transactions);
 
 			if(num_comp < 0) {

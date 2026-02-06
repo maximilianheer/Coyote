@@ -128,7 +128,7 @@ module host_networking_prefilter (
     assign s_axis_rx.tready = m_axis_rx.tready && m_axis_offloaded_rx.tready;
 
     // Add an ILA to observe the filtering process
-    /* ila_prefilter inst_ila_prefilter(
+    ila_prefilter inst_ila_prefilter(
         .clk(nclk),
 
         // Input stream
@@ -160,7 +160,8 @@ module host_networking_prefilter (
         .probe19(rx_filter_dropping),    // 1
         .probe20(rx_filter_dropped),     // 1
         .probe21(rx_pkt_first_chunk),    // 1
-        .probe22(rx_pkt_further_chunks)  // 1
-    );*/ 
+        .probe22(rx_pkt_further_chunks), // 1
+        .probe23(rx_arp)                 // 1   
+    );
 
 endmodule 

@@ -330,7 +330,7 @@ host_networking_prefilter host_networking_prefilter_inst (
     .m_axis_offloaded_rx(axis_offloaded_networking_filter_to_slice) // Filtered Data for offloaded networking
 ); 
 
-ila_stream_check inst_ila_streamc_check_rx_1(
+/*ila_stream_check inst_ila_streamc_check_rx_1(
     .clk(nclk),
     .probe0(axis_slice_to_ibh.tvalid),     // 1
     .probe1(axis_slice_to_ibh.tready),     // 1
@@ -349,7 +349,7 @@ ila_stream_check inst_ila_streamc_check_rx_3(
     .probe0(axis_offloaded_networking_filter_to_slice.tvalid),     // 1
     .probe1(axis_offloaded_networking_filter_to_slice.tready),     // 1
     .probe2(axis_offloaded_networking_filter_to_slice.tlast)      // 1
-); 
+); */  
 
 
 // Put an ILA around the host_networking_prefilter to observe its functionality 
