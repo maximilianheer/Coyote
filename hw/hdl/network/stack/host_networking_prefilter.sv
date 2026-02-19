@@ -28,11 +28,11 @@ module host_networking_prefilter (
 
     // Constant calculation of the flags based on the incoming traffic 
     always_comb begin 
-        rx_ipv4 = {s_axis_rx.tdata[12*8+7:12*8], s_axis_rx.tdata[13*8+7:13*8]} == 16'h0800;
+        rx_ipv4 = {s_axis_rx.tdata[(12*8+7):(12*8)], s_axis_rx.tdata[13*8+7:13*8]} == 16'h0800;
         rx_arp = {s_axis_rx.tdata[12*8+7:12*8], s_axis_rx.tdata[13*8+7:13*8]} == 16'h0806;
-        rx_ipv4_udp = rx_ipv4 && s_axis_rx.tdata[23*8+7:23*8] == 8'h11;
-        rx_ipv4_tcp = rx_ipv4 & s_axis_rx.tdata[23*8+7:23*8] == 8'h06;
-        rx_ipv4_udp_roce = rx_ipv4_udp & {s_axis_rx.tdata[36*8+7:36*8], s_axis_rx.tdata[37*8+7:37*8]} == 16'hb712;
+        rx_ipv4_udp = rx_ipv4 && (s_axis_rx.tdata[23*8+7:23*8] == 8'h11);
+        rx_ipv4_tcp = rx_ipv4 && (s_axis_rx.tdata[23*8+7:23*8] == 8'h06);
+        rx_ipv4_udp_roce = rx_ipv4_udp && ({s_axis_rx.tdata[36*8+7:36*8], s_axis_rx.tdata[37*8+7:37*8]} == 16'h12b7);
     end 
 
     // Signals for dropping packets 
