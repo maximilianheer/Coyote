@@ -36,14 +36,14 @@
 // ======-------------------------------------------------------------------------------
 
 // Function to calculate the GUID from the MAC once and for all and store it in the vfpga struct
-static void scenic_rdma_calculate_guid(struct scenic_rdma_device *scenic_rdma)
+/* static void scenic_rdma_calculate_guid(struct scenic_rdma_device *scenic_rdma)
 {
     dbg_info("scenic_rdma_calculate_guid: Calculating GUID from MAC address - START\n");
 
     // GUID is formed by inserting 0xFFFE in the middle of the MAC address
     uint8_t mac[ETH_ALEN]; 
     for(int i = 0; i < ETH_ALEN; i++){
-        mac[i] = (scenic_rdma->bd_data->net_mac_addr >> (8 * (ETH_ALEN - 1 - i))) & 0xFF;
+        mac[i] = (scenic_rdma->bd_data->net_ip_addr >> (8 * (ETH_ALEN - 1 - i))) & 0xFF;
     }
     dbg_info("scenic_rdma_calculate_guid: Using MAC address %pM for GUID calculation\n", mac);
 
@@ -64,6 +64,24 @@ static void scenic_rdma_calculate_guid(struct scenic_rdma_device *scenic_rdma)
 
     // Construct EUI-64 System Image GUID 
     scenic_rdma->rdma_sys_image_guid = scenic_rdma->rdma_node_guid; 
+} */ 
+
+static void scenic_rdma_calculate_guid(struct scenic_rdma_device *scenic_rdma)
+{
+    dbg_info("scenic_rdma_calculate_guid: Generating IPv4-Mapped GUID from IP - START\n");
+
+    // Grab the 32-bit IP address
+    uint32_t ip_addr = scenic_rdma->bd_data->net_ip_addr;
+
+    // Construct an IPv4-Mapped GUID: 00 00 FF FF [IP Address]
+    uint64_t guid = 0x0000FFFF00000000ULL | (uint64_t)ip_addr;
+
+    // Convert to Big-Endian for the RDMA stack
+    scenic_rdma->rdma_node_guid = cpu_to_be64(guid);
+
+    dbg_info("scenic_rdma_calculate_guid: Calculated IPv4-Mapped GUID: %016llx\n", scenic_rdma->rdma_node_guid);
+
+    scenic_rdma->rdma_sys_image_guid = scenic_rdma->rdma_node_guid; 
 }
 
 // Function to query the RDMA device attributes 
@@ -82,7 +100,7 @@ static int scenic_rdma_query_device(struct ib_device *ibdev, struct ib_device_at
     props->sys_image_guid = scenic_rdma->rdma_sys_image_guid;
     props->max_mr_size = ~0ull;
     props->page_size_cap = PAGE_SIZE;
-    props->vendor_id = 0x02c9; // Xilinx
+    props->vendor_id = 0x000A35; // Xilinx
     props->vendor_part_id = 0x0001; // Custom part ID for C
     props->hw_ver = 0x1;
 
@@ -95,7 +113,8 @@ static int scenic_rdma_query_device(struct ib_device *ibdev, struct ib_device_at
     props->max_qp = SCENIC_MAX_NUM_QPS;
     props->max_cq = SCENIC_MAX_NUM_CQS;
     props->max_qp_wr = SCENIC_MAX_NUM_QPS / 2; 
-    // props->max_sge = 32;
+    props->max_send_sge = 32;
+    props->max_recv_sge = 32;
     props->max_cqe = 1024; 
     props->max_mr = 1024;
     props->max_pd = 256;
@@ -152,6 +171,10 @@ static int scenic_rdma_query_gid(struct ib_device *ibdev, uint32_t port_num, int
     gid->global.subnet_prefix = cpu_to_be64(0xfe80000000000000LL);
     gid->global.interface_id = scenic_rdma->rdma_sys_image_guid;
 
+    dbg_info("scenic_rdma_query_gid: Returning GID - Subnet Prefix: %016llx, Interface ID: %016llx\n",
+             be64_to_cpu(gid->global.subnet_prefix),
+             be64_to_cpu(gid->global.interface_id));
+
     return 0; 
 }
 
@@ -192,7 +215,8 @@ static enum rdma_link_layer scenic_rdma_get_link_layer(struct ib_device *ibdev, 
     dbg_info("scenic_rdma_get_link_layer: Querying RDMA link layer - START\n");
 
     // Always return Ethernet as link layer - we're doing RoCE, not InfiniBand
-    return IB_LINK_LAYER_ETHERNET;
+    // return IB_LINK_LAYER_ETHERNET;
+    return IB_LINK_LAYER_INFINIBAND;
 }
 
 // ======-------------------------------------------------------------------------------
@@ -357,6 +381,7 @@ static int scenic_rdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
 static int scenic_rdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, int attr_mask, struct ib_udata *udata)
 {
     dbg_info("scenic_rdma_modify_qp: Modifying queue pair - START\n");
+    dbg_info("scenic_rdma_modify_qp: Requested new QP state %d with attr_mask 0x%x\n", attr->qp_state, attr_mask);
 
     // Step 1: Get a pointer to the scenic_qp structure
     struct scenic_qp *scenic_qp = ibqp_to_scenic_qp(ibqp); 
@@ -407,6 +432,7 @@ static int scenic_rdma_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr, in
     spin_unlock(&scenic_qp->lock);
 
     // Step 6: Return success at the end of this routine
+    dbg_info("scenic_rdma_modify_qp: QP %u modification complete, return 0! \n", scenic_qp->qpn);
     return 0; 
 }
 

@@ -122,7 +122,6 @@ cThread::cThread(int32_t vfid, pid_t hpid, uint32_t device, void (*uisr)(int)):
         throw std::runtime_error("ERROR: IOCTL_REGISTER_CTID failed"); 
     }
     this->ctid = tmp[1];  
-    printf("cThread: registered ctid %lu\n", ctid);
 	DBG1("cThread: registered ctid " << ctid);
 	
     // Read shell configuration from the driver
@@ -146,7 +145,6 @@ cThread::cThread(int32_t vfid, pid_t hpid, uint32_t device, void (*uisr)(int)):
         }
 
         event_thread = std::thread(eventHandler, fd, efd, terminate_efd, uisr, ctid);
-        printf("cThread: started user interrupt thread\n");
 
         tmp[0] = ctid; 
 		tmp[1] = efd;
@@ -194,11 +192,9 @@ cThread::cThread(int32_t vfid, pid_t hpid, uint32_t device, void (*uisr)(int)):
 
 cThread::~cThread() {
 	DBG1("cThread: destructor, ctid: " << ctid << ", vfid: " << vfid << ", hpid: " << hpid);
-    printf("cThread: destructor, ctid: %lu, vfid: %d, hpid: %d\n", ctid, vfid, hpid);
 
     // Release the lock, if acquired
     if (lock_acquired) {
-        printf("cThread: releasing acquired vFPGA lock in destructor\n");
         vlock.unlock();
         lock_acquired = false;
     }
@@ -207,50 +203,40 @@ cThread::~cThread() {
 	uint64_t tmp[MAX_USER_ARGS];
     tmp[0] = ctid;
 
-    printf("cThread: freeing mapped pages\n");
 	for(auto& it: mapped_pages) {
-        printf("cThread: freeing page at %p of size %u\n", it.first, it.second.size);
 		freeMem(it.first);
 	}
-    printf("cThread: clearing mapped pages\n");
 	mapped_pages.clear();
-    printf("cThread: cleared mapped pages\n");
 	munmapFpga();
-    printf("cThread: unmapped FPGA regions\n");
 
     // Unregister Coyote thread ID
 	ioctl(fd, IOCTL_UNREGISTER_CTID, &tmp);
-    printf("cThread: unregistered ctid %lu\n", ctid);
 
     // Terminate user interrupt thread and release the variables
     if (efd != -1) {
-        printf("cThread: terminating user interrupt thread\n");
 		ioctl(fd, IOCTL_UNREGISTER_EVENTFD, &tmp);
-        printf("cThread: unregistered eventfd for ctid %lu\n", ctid);
 
 		eventfd_write(terminate_efd, 1);
-        printf("cThread: sent termination event to event thread\n");
 
 		event_thread.join();
-        printf("cThread: user interrupt thread joined\n");
 
 		close(efd);
-        printf("cThread: closed efd %d\n", efd);
 		close(terminate_efd);
-        printf("cThread: closed terminate_efd %d\n", terminate_efd);
 
         ioctl(fd, IOCTL_SET_NOTIFICATION_PROCESSED, &tmp);
-        printf("cThread: set notification processed for ctid %lu\n", ctid);
 	}
 
     // Disable RDMA, if enabled and set-up
     if (fcnfg.en_rdma && is_connected) {
-        printf("cThread: closing RDMA connection\n");
         closeConn();
     }
 
-    printf("cThread: closing fd: %d\n", fd);
 	close(fd);
+}
+
+void cThread::destructor() {
+    DBG1("cThread: called destructor");
+    this->~cThread();
 }
 
 void cThread::postCmd(uint64_t offs_3, uint64_t offs_2, uint64_t offs_1, uint64_t offs_0) {
@@ -387,7 +373,6 @@ void cThread::userMap(void *vaddr, uint32_t len) {
 
 void cThread::userUnmap(void *vaddr) {
     DBG1("cThread: Called userUnmap to unmap user buffers");
-
 	uint64_t tmp[MAX_USER_ARGS];
 	tmp[0] = reinterpret_cast<uint64_t>(vaddr);
 	tmp[1] = static_cast<uint64_t>(ctid);
@@ -534,7 +519,7 @@ void cThread::freeMem(void* vaddr) {
                 free(vaddr);
                 break;
             }
-            case CoyoteAllocType::THP : { 
+            case CoyoteAllocType::THP : {
                 userUnmap(vaddr);
                 free(vaddr);
                 break;
@@ -611,17 +596,17 @@ void cThread::invoke(CoyoteOper oper, syncSg sg) {
         tmp[0] = reinterpret_cast<uint64_t>(sg.addr);
         tmp[1] = reinterpret_cast<uint64_t>(sg.len);
         tmp[2] = ctid;
-        if (ioctl(fd, IOCTL_OFFLOAD_REQ, &tmp)) {
+        /* if (ioctl(fd, IOCTL_OFFLOAD_REQ, &tmp)) {
             throw std::runtime_error("ERROR: IOCTL_OFFLOAD_REQ failed");
-        }  
+        } */   
     } else if (oper == CoyoteOper::LOCAL_SYNC) {
         uint64_t tmp[MAX_USER_ARGS];
         tmp[0] = reinterpret_cast<uint64_t>(sg.addr);
         tmp[1] = reinterpret_cast<uint64_t>(sg.len);
         tmp[2] = ctid;
-        if (ioctl(fd, IOCTL_SYNC_REQ, &tmp)) {
+        /* if (ioctl(fd, IOCTL_SYNC_REQ, &tmp)) {
             throw std::runtime_error("ERROR: IOCTL_SYNC_REQ failed");
-        }
+        } */
     } else {
         std::cerr << "ERROR: cThread::invoke() called with an unsupported operation type; returning..." << std::endl;
         return;
@@ -659,7 +644,7 @@ void cThread::invoke(CoyoteOper oper, localSg sg, bool last) {
         
         addr_cmd_src = reinterpret_cast<uint64_t>(sg.addr);
 
-        postCmd(addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
+        // postCmd(addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
 
     } else if (oper == CoyoteOper::LOCAL_WRITE) {
         ctrl_cmd_dst =
@@ -673,7 +658,7 @@ void cThread::invoke(CoyoteOper oper, localSg sg, bool last) {
 
         addr_cmd_dst = reinterpret_cast<uint64_t>(sg.addr);
 
-        postCmd(addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
+        // postCmd(addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
 
     } else {
         std::cerr << "ERROR: cThread::invoke() called with an unsupported operation type; returning..." << std::endl;
@@ -688,7 +673,6 @@ void cThread::invoke(CoyoteOper oper, localSg src_sg, localSg dst_sg, bool last)
         << src_sg.addr << ", source length " << src_sg.len << "destination address "
         << dst_sg.addr << ", destination length " << dst_sg.len
     );
-
     if (!(isLocalRead(oper) && isLocalWrite(oper))) {
         throw std::runtime_error("ERROR: cThread::invoke() called with two localSg flags, but the operation is not a LOCAL_TRANSFER; exiting...");
     }
@@ -724,7 +708,7 @@ void cThread::invoke(CoyoteOper oper, localSg src_sg, localSg dst_sg, bool last)
         uint64_t addr_cmd_src = reinterpret_cast<uint64_t>(src_sg.addr);
         uint64_t addr_cmd_dst = reinterpret_cast<uint64_t>(dst_sg.addr);
 
-        postCmd(addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
+        // postCmd(addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
 
     } else {
         std::cerr << "ERROR: cThread::invoke() called with an unsupported operation type; returning..." << std::endl;
@@ -766,7 +750,7 @@ void cThread::invoke(CoyoteOper oper, rdmaSg sg, bool last) {
             ((sg.local_stream & CTRL_STRM_MASK) << CTRL_STRM_OFFS) | 
             (0x0) | 
             (static_cast<uint64_t>(sg.len) << CTRL_LEN_OFFS);
-        
+
         uint64_t addr_cmd_l = static_cast<uint64_t>((uint64_t) qpair->local.vaddr + sg.local_offs);
 
         // Remote command and address
@@ -780,7 +764,7 @@ void cThread::invoke(CoyoteOper oper, rdmaSg sg, bool last) {
             (0x0) | 
             (static_cast<uint64_t>(sg.len) << CTRL_LEN_OFFS);
 
-        uint64_t addr_cmd_r = static_cast<uint64_t>((uint64_t) qpair->remote.vaddr + sg.remote_offs); 
+        uint64_t addr_cmd_r = static_cast<uint64_t>((uint64_t) qpair->remote.vaddr + sg.remote_offs);
 
         // Order - based on the distinction between Read and Write, determine what is source and what is destination 
         uint64_t ctrl_cmd_src = isRemoteRead(oper) ? ctrl_cmd_r : ctrl_cmd_l;
@@ -788,6 +772,7 @@ void cThread::invoke(CoyoteOper oper, rdmaSg sg, bool last) {
         uint64_t ctrl_cmd_dst = isRemoteRead(oper) ? ctrl_cmd_l : ctrl_cmd_r;
         uint64_t addr_cmd_dst = isRemoteRead(oper) ? addr_cmd_l : addr_cmd_r;
 
+        // printf("Coyote barebone postCmd \n"); 
         postCmd(addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
     }
 }
@@ -821,7 +806,7 @@ void cThread::invoke(CoyoteOper oper, tcpSg sg, bool last) {
     uint64_t addr_cmd_src = 0;
     uint64_t addr_cmd_dst = 0;
 
-    postCmd(addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
+    // postCmd(addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
 }
 
 uint32_t cThread::checkCompleted(CoyoteOper coper) const {
@@ -834,6 +819,7 @@ uint32_t cThread::checkCompleted(CoyoteOper coper) const {
      * it may return true before the write is actually completed. So here, we must check 
      * for writes first, then reads, and finally remote operations.
      */
+
 	if (isLocalWrite(coper)) {
 		if (fcnfg.en_wb) {
             return wback[ctid + WR_WBACK * N_CTID_MAX];
@@ -861,9 +847,9 @@ uint32_t cThread::checkCompleted(CoyoteOper coper) const {
 			return wback[ctid + RD_RDMA_WBACK*N_CTID_MAX];
 		} else {
             #ifdef EN_AVX
-			if (fcnfg.en_avx) 
+			if (fcnfg.en_avx)
 				return _mm256_extract_epi32(cnfg_reg_avx[static_cast<uint32_t>(CnfgAvxRegs::STAT_DMA_REG) + ctid], 2);
-			else 
+			else
             #endif
 				return (LOW_32(cnfg_reg[static_cast<uint32_t>(CnfgLegRegs::STAT_RDMA_REG) + ctid]));
 		}
@@ -872,7 +858,7 @@ uint32_t cThread::checkCompleted(CoyoteOper coper) const {
             return wback[ctid + WR_RDMA_WBACK*N_CTID_MAX];
         } else {
             #ifdef EN_AVX
-            if (fcnfg.en_avx) 
+            if (fcnfg.en_avx)
                 return _mm256_extract_epi32(cnfg_reg_avx[static_cast<uint32_t>(CnfgAvxRegs::STAT_DMA_REG) + ctid], 3);
             else
             #endif
@@ -966,6 +952,20 @@ void cThread::setRemotePSN(uint32_t psn) {
     DBG3("cThread: Called setRemotePSN with PSN " << psn); 
     if(fcnfg.en_rdma){
         qpair->remote.psn = psn;
+    }
+}
+
+void cThread::setLocalVaddr(void* vaddr) {
+    DBG3("cThread: Called setLocalVaddr with vaddr " << vaddr); 
+    if(fcnfg.en_rdma){
+        qpair->local.vaddr = vaddr;
+    }
+}
+
+void cThread::setRemoteVaddr(void* vaddr) {
+    DBG3("cThread: Called setRemoteVaddr with vaddr " << vaddr); 
+    if(fcnfg.en_rdma){
+        qpair->remote.vaddr = vaddr;
     }
 }
         

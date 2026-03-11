@@ -55,6 +55,7 @@ int mmu_handler_gup(struct vfpga_dev *device, uint64_t vaddr, uint64_t len, int3
         } else {
             dbg_info("Found VMA for vaddr %llx\n", vaddr);
             hugepages = is_vm_hugetlb_page(vma_area_init);
+            dbg_info("is_vm_hugetlb_page returned %d for vaddr %llx\n", hugepages, vaddr);
         }
         
         tlb_meta = hugepages ? bd_data->ltlb_meta : bd_data->stlb_meta;
@@ -69,22 +70,31 @@ int mmu_handler_gup(struct vfpga_dev *device, uint64_t vaddr, uint64_t len, int3
     // Align to a page boundary and calculate the number of pages bust on the buffer lenght (in bytes)
     struct pf_aligned_desc pf_desc;
     pf_desc.vaddr = (vaddr & tlb_meta->page_mask) >> tlb_meta->page_shift;
+    dbg_info("Aligned vaddr: %llx \n", pf_desc.vaddr);
     uint64_t last = ((vaddr + len - 1) & tlb_meta->page_mask) >> tlb_meta->page_shift;
+    dbg_info("Last vaddr: %llx \n", last);
     pf_desc.n_pages = last - pf_desc.vaddr + 1;
+    dbg_info("Number of pages: %llx \n", pf_desc.n_pages);
     if (hugepages) {
+        dbg_info("Buffer uses huge pages, adjusting page count and address...\n");
         pf_desc.n_pages = pf_desc.n_pages * bd_data->n_pages_in_huge;
+        dbg_info("Adjusted number of pages: %llx \n", pf_desc.n_pages);
         pf_desc.vaddr = pf_desc.vaddr << bd_data->dif_order_page_shift;
+        dbg_info("Adjusted aligned vaddr: %llx \n", pf_desc.vaddr);
     }
 
     // Populate rest of the page fault descriptor
     pf_desc.ctid = ctid;
     pf_desc.hugepages = hugepages;
+    dbg_info("PF Descriptor - vaddr: %llx, n_pages: %llx, ctid: %d, hugepages: %d \n", pf_desc.vaddr, pf_desc.n_pages, pf_desc.ctid, pf_desc.hugepages);
 
     // Check if mapping is already present
     user_pg = map_present(device, &pf_desc);
+    dbg_info("Checked map_present with result %p\n", user_pg);
 
     // Handle the different cases, based on if the mapping is alread present or not, and if its HOST or CARD access
     if(user_pg) {
+        dbg_info("map present\n");
         if(stream == HOST_ACCESS) {
             if(user_pg->host == HOST_ACCESS) {
                 dbg_info("host access, map present, updating TLB\n");
@@ -119,12 +129,16 @@ int mmu_handler_gup(struct vfpga_dev *device, uint64_t vaddr, uint64_t len, int3
             pr_err("user pages could not be obtained\n");
             return -ENOMEM;
         }
-
+        dbg_info("Obtained user pages %p\n", user_pg);
         if(stream) {  
+            dbg_info("stream-path\n");
            tlb_map_gup(device, &pf_desc, user_pg, hpid);           
         } else {
+            dbg_info("normal-path\n");
            user_pg->host = CARD_ACCESS;
+           dbg_info("migrating to card\n");
            migrate_to_card(device, user_pg);
+            dbg_info("mapping to TLB\n");
            tlb_map_gup(device, &pf_desc, user_pg, hpid);
         }
     }
@@ -160,6 +174,7 @@ void tlb_map_gup(struct vfpga_dev *device, struct pf_aligned_desc *pf_desc, stru
     BUG_ON(!device);
     struct bus_driver_data *bd_data = device->bd_data;
     BUG_ON(!bd_data);
+    dbg_info("Entered tlb_map_gup for vaddr %llx with n_pages %u \n", pf_desc->vaddr, pf_desc->n_pages);
 
     // Find the first page that's in the page fault and then the first page that has already been mapped; calculate offset
     uint64_t pg_offs = pf_desc->vaddr - user_pg->vaddr;
@@ -232,14 +247,25 @@ void tlb_unmap_gup(struct vfpga_dev *device, struct user_pages *user_pg, pid_t h
     int32_t pg_inc = user_pg->huge ? bd_data->n_pages_in_huge : 1;
     uint64_t vaddr_tmp = user_pg->vaddr;
 
+    dbg_info("Entered tlb_unmap_gup for vaddr %llx with n_pages %u \n", user_pg->vaddr, n_pages);
+    // ssleep(2); ;
+
     if(user_pg->huge) {
+        dbg_info("Unmapping huge pages \n");
+        // ssleep(2); ;
         // Unmap - huge pages
         for (int i = 0; i < n_pages; i += bd_data->n_pages_in_huge) {
+            dbg_info("Unmapping huge page at vaddr %llx \n", vaddr_tmp);
+            // ssleep(2); ;
             create_tlb_unmapping(device, bd_data->ltlb_meta, vaddr_tmp, hpid);
+            dbg_info("Unmapped huge page at vaddr %llx \n", vaddr_tmp);
+            // ssleep(2); ;
             vaddr_tmp += bd_data->n_pages_in_huge;
         }
     } else {
         // Unmap - regular and coalesced
+        dbg_info("Unmapping regular/coalesced pages \n");
+        // ssleep(2); ;
         int i = 0;
         uint64_t paddr_tmp, paddr_curr;
         while((i < n_pages)) {
@@ -266,8 +292,12 @@ void tlb_unmap_gup(struct vfpga_dev *device, struct user_pages *user_pg, pid_t h
             }
 
             // Unmap
+            dbg_info("Unmapping %s page at vaddr %llx \n", is_huge ? "huge" : "regular", vaddr_tmp);
+            // ssleep(2); ;
             create_tlb_unmapping(device, is_huge ? bd_data->ltlb_meta : bd_data->stlb_meta, vaddr_tmp, hpid);
-            
+            dbg_info("Unmapped %s page at vaddr %llx \n", is_huge ? "huge" : "regular", vaddr_tmp);
+            // ssleep(2); ;
+
             // Proceed to next page
             vaddr_tmp += is_huge ? bd_data->n_pages_in_huge : 1;
             i += is_huge ? bd_data->n_pages_in_huge : 1;
@@ -275,14 +305,25 @@ void tlb_unmap_gup(struct vfpga_dev *device, struct user_pages *user_pg, pid_t h
     }
     
     // Invalidate TLB entry
+    dbg_info("Invalidating TLB entries for vaddr %llx with n_pages %u \n", user_pg->vaddr, n_pages);
+    // ssleep(2); ;
     vaddr_tmp = user_pg->vaddr;
     for (int i = 0; i < n_pages; i += pg_inc) {
+        dbg_info("Current loop condition i %d compared to upper limit %d\n", i, n_pages);
+        dbg_info("Invalidating TLB entry at vaddr %llx with pg_inc %d and i %d\n", vaddr_tmp, pg_inc, i);
+        // ssleep(2); ;
         invalidate_tlb_entry(device, vaddr_tmp, pg_inc, hpid, i == (n_pages - pg_inc));
+        dbg_info("Invalidated TLB entry at vaddr %llx \n", vaddr_tmp);
+        // ssleep(2); ;
         vaddr_tmp += pg_inc;
     }
 
     // Wait for completion
+    dbg_info("Waiting for TLB invalidation to complete \n");
+    // ssleep(2); ;
     wait_event_interruptible(device->waitqueue_invldt, atomic_read(&device->wait_invldt) == FLAG_SET);
+    dbg_info("TLB invalidation completed \n");
+    // ssleep(2); ;
     atomic_set(&device->wait_invldt, FLAG_CLR);
 }
 
@@ -528,12 +569,24 @@ int tlb_put_user_pages_ctid(struct vfpga_dev *device, int32_t ctid, pid_t hpid, 
     struct bus_driver_data *bd_data = device->bd_data;
     BUG_ON(!bd_data);
 
+    dbg_info("Entering tlb_put_user_pages_ctid for ctid %d\n", ctid); 
+    // ssleep(2); ;
+
     hash_for_each(user_buff_map[device->id][ctid], bkt, tmp_entry, entry) {
+        dbg_info("Releasing user pages for vaddr %llx\n", tmp_entry->vaddr);
+        // ssleep(2); ; 
+
         // Unmap from TLB
         tlb_unmap_gup(device, tmp_entry, hpid);
+
+        dbg_info("Unmapped from TLB for vaddr %llx\n", tmp_entry->vaddr);
+        // ssleep(2); ;
         
         // Release card memory
         if(bd_data->en_mem) {
+            dbg_info("Releasing card memory for vaddr %llx\n", tmp_entry->vaddr);
+            // ssleep(2); ;
+
             free_card_memory(device, tmp_entry->cpages, tmp_entry->n_pages, tmp_entry->huge);
             vfree(tmp_entry->cpages);
         }

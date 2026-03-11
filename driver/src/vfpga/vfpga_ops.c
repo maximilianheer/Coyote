@@ -202,29 +202,29 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
         // Args: Coyote thread ID (ctid)
         case IOCTL_UNREGISTER_CTID:
             dbg_info("unregister ctid called\n");
-            ssleep(2); 
+            // ssleep(2); ; 
             if(called_from_kernel_space) {
                 memcpy(&tmp, (unsigned long *)arg, sizeof(unsigned long));
                 ret_val = 0;
             } else {
                 dbg_info("copy from user called\n");
-                ssleep(2);
+                // ssleep(2); ;
                 ret_val = copy_from_user(&tmp, (unsigned long *)arg, sizeof(unsigned long));
             }
             if (ret_val != 0) {
                 dbg_info("copy from user failed\n");
-                ssleep(2);
+                // ssleep(2); ;
                 pr_warn("user data could not be coppied, return %d\n", ret_val);
             } else {
                 dbg_info("proceeding with unregistration\n");
-                ssleep(2);
+                // ssleep(2); ;
                 mutex_lock(&device->pid_lock);
                 
                 int32_t ctid = (int32_t) tmp[0];
                 pid_t hpid = device->pid_array[ctid];
                 pid_t spid = current->pid;
                 dbg_info("unregistering ctid %d, hpid %d, spid %d\n", ctid, hpid, spid);
-                ssleep(2);
+                // ssleep(2); ;
             
                 struct hpid_ctid_pages *tmp_h_entry;
                 struct list_head *l_p, *l_n;
@@ -233,29 +233,37 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
                 // Traverse all Coyote thread IDs until a match is found
                 hash_for_each_possible(hpid_ctid_map[device->id], tmp_h_entry, entry, hpid) {
                     dbg_info("checking hpid entry %d\n", tmp_h_entry->hpid);
-                    ssleep(2);
+                    // ssleep(2); ;
                     if(tmp_h_entry->hpid == hpid) {
                         dbg_info("hpid entry found %d\n", tmp_h_entry->hpid);
-                        ssleep(2);
+                        // ssleep(2); ;
                         list_for_each_safe(l_p, l_n, &tmp_h_entry->ctid_list) {
                             dbg_info("checking ctid entry\n");
-                            ssleep(2);
+                            // ssleep(2); ;
                             l_entry = list_entry(l_p, struct ctid_entry, list);
 
                             if(l_entry->ctid == ctid) {
                                 dbg_info("ctid entry found %d\n", l_entry->ctid);
-                                ssleep(2);
+                                // ssleep(2); ;
 
                                 // Unmap any leftover user pages for this Coyot thread
                                 #ifdef HMM_KERNEL
+                                    dbg_info("We do have HMM kernel module\n");
+                                    // ssleep(2); ;
                                     if(en_hmm)
+                                        dbg_infog("freeing card mem for ctid %d\n", ctid);
+                                        // ssleep(2); ;
                                         free_card_mem(device, ctid);
+                                        dbg_info("freed card mem for ctid %d\n", ctid);
+                                        // ssleep(2); ;
                                     else 
-                                #endif                            
+                                #endif  
+                                    dbg_info("freeing user pages for ctid %d\n", ctid);
+                                    // ssleep(2); ;              
                                     tlb_put_user_pages_ctid(device, ctid, hpid, 1);
 
                                 dbg_info("freed user pages for ctid %d\n", ctid);
-                                ssleep(2);
+                                // ssleep(2); ;
 
                                 // Unregister Coyote thread and delete entry from list
                                 device->ctid_chunks[l_entry->ctid].next = device->pid_alloc;
@@ -265,12 +273,12 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
                         }
 
                         dbg_info("deleted ctid entry from list for ctid %d\n", ctid);
-                        ssleep(2);
+                        // ssleep(2); ;
 
                         // If there are no more Coyote threads registered for this host process ID (hpid), remove the hpid entry
                         if(list_empty(&tmp_h_entry->ctid_list)) {
                             dbg_info("no more ctid entries for hpid %d, removing hpid entry\n", hpid);
-                            ssleep(2);
+                            // ssleep(2); ;
 
                             #ifdef HMM_KERNEL                        
                                 if(en_hmm) {
@@ -280,13 +288,13 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
                             #endif 
                             hash_del(&tmp_h_entry->entry);
                             dbg_info("removed hpid entry for hpid %d\n", hpid);
-                            ssleep(2);
+                            // ssleep(2); ;
                         }
                     }
                 }
 
                 dbg_info("unregistration succeeded, ctid %d, hpid %d, spid %d\n", ctid, hpid, spid);
-                ssleep(2);
+                // ssleep(2); ;
                 mutex_unlock(&device->pid_lock);
                 
             }
@@ -331,10 +339,12 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
         // Explicit mapping of user pages; will map the user pages into the vFPGA's TLB and set-up corresponding card buffers, if enabled
         // Args: Virtual address, length, Coyote thread ID (ctid)
         case IOCTL_MAP_USER_MEM:
+            dbg_info("ioctl map user mem called\n");
             if(called_from_kernel_space) {
                 memcpy(&tmp, (unsigned long *)arg, 3 * sizeof(unsigned long));
                 ret_val = 0;
             } else {
+                dbg_info("ioctl map user mem copy from user called\n");
                 ret_val = copy_from_user(&tmp, (unsigned long *)arg, 3 * sizeof(unsigned long));
             }
             if (ret_val != 0) {
@@ -350,8 +360,10 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
                     if(en_hmm) 
                         ret_val = mmu_handler_hmm(device, tmp[0], tmp[1], ctid, true, hpid);
                     else
-                #endif            
+                #endif 
+                    dbg_info("calling gup handler from ioctl\n");           
                     ret_val = mmu_handler_gup(device, tmp[0], tmp[1], ctid, true, hpid);
+                    dbg_info("returned from gup handler from ioctl, ret_val %d\n", ret_val);
                 
                 if (ret_val) {
                     dbg_info("buffer could not be mapped, ret_val: %d\n", ret_val);
@@ -367,22 +379,30 @@ long vfpga_dev_ioctl_functionality(struct vfpga_dev *device, unsigned int comman
         // Explictily unmap (release) user pages 
         // Args: Virtual address, Coyote thread ID (ctid)
         case IOCTL_UNMAP_USER_MEM:
+            dbg_info("ioctl unmap user mem called\n");
             if(called_from_kernel_space) {
+                dbg_info("ioctl unmap user mem called from kernel space\n");
                 memcpy(&tmp, (unsigned long *)arg, 2 * sizeof(unsigned long));
                 ret_val = 0; 
             } else {
+                dbg_info("ioctl unmap user mem copy from user called\n");
                 ret_val = copy_from_user(&tmp, (unsigned long *)arg, 2 * sizeof(unsigned long));
             }
             if (ret_val != 0) {
+                dbg_info("ioctl unmap user mem copy from user failed\n");
                 pr_warn("user data could not be coppied, return %d\n", ret_val);
             } else {
+                dbg_info("ioctl unmap user mem proceeding with unmap for vFPGA %d\n", device->id);
                 if(!en_hmm) {
+                    dbg_info("ioctl unmap user mem proceeding with unmap for vFPGA %d, ctid %d\n", device->id, (int32_t) tmp[1]);
                     int32_t ctid = (int32_t) tmp[1];
                     pid_t hpid = device->pid_array[ctid];
 
                     mutex_lock(&device->mmu_lock);
                     change_tlb_lock(device);
+                    dbg_info("calling unmap handler from ioctl\n");
                     tlb_put_user_pages(device, tmp[0], ctid, hpid, 1);
+                    dbg_info("returned from unmap handler from ioctl\n");
                     change_tlb_lock(device);
                     mutex_unlock(&device->mmu_lock);
 

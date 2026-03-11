@@ -107,7 +107,7 @@ int main(int argc, char *argv[])  {
     while(curr_size <= max_size) {
         coyote::rdmaSg sg = { .len = curr_size };
         run_bench(coyote_thread, sg, mem, N_THROUGHPUT_REPS, n_runs, operation);
-        run_bench(coyote_thread, sg, mem, N_LATENCY_REPS, n_runs, operation);
+        // run_bench(coyote_thread, sg, mem, N_LATENCY_REPS, n_runs, operation);
         curr_size *= 2;
     }
 

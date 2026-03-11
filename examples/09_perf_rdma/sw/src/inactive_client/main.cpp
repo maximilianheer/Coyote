@@ -115,7 +115,7 @@ int main(int argc, char *argv[])  {
      * One can use the function initRDMA, which will allocate the buffer and 
      * Exchange the necessary information with the server; the server calls the equivalent function but without the IP address
      */
-    coyote::cThread coyote_thread(1, getpid(), 0);
+    coyote::cThread coyote_thread(0, getpid(), 0);
     int *mem = (int *) coyote_thread.initRDMA(max_size, coyote::DEF_PORT, server_ip.c_str());
     if (!mem) { throw std::runtime_error("Could not allocate memory; exiting..."); }
     coyote_thread.connSync(IS_CLIENT);

@@ -193,6 +193,11 @@ public:
 	~cThread();
 
 	/**
+	 * @brief Wrapper arounds the destructor to be called from C interface 
+	 */
+	void destructor();
+
+	/**
 	 * @brief Public query for the local QP-information. 
 	 */
 	ibvQ getLocalQpInfo() const {
@@ -230,6 +235,16 @@ public:
 	 * @brief Function to only set the remote PSN again 
 	 */
 	void setRemotePSN(uint32_t psn);
+
+	/**
+	 * @brief Function to only set the local vaddr again 
+	 */
+	void setLocalVaddr(void* vaddr);
+
+	/**
+	 * @brief Function to only set the remote vaddr again 
+	 */
+	void setRemoteVaddr(void* vaddr);
 
 	/**
 	 * @brief Writes an IP address to a config register so it can be used for ARP lookup

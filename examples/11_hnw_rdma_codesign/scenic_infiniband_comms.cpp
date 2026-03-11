@@ -212,7 +212,7 @@ int main(int argc, char *argv[])
 
 	// Communication context 
 	struct ibv_context *context; 
-	context = ibv_open_device(dev_list[1]);
+	context = ibv_open_device(dev_list[2]);
 	if(!context) {
 		throw std::runtime_error("2 - Context not created, device couldn't be opened!");
 		return -1; 
@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
 	// Register Memory Region 
 	uint32_t n_pages = (max_size + hugePageSize -1) / hugePageSize;
 	// uint64_t *buf = (uint64_t *)calloc(1, n_pages*hugePageSize);
-	max_size = 2*1024*1024; 
+	// max_size = 2*1024*1024; 
 	// printf("Allocating buffer of size %d bytes. \n", max_size);
     uint64_t *buf = (uint64_t *)mmap(NULL, max_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
 	if(buf == NULL) {
@@ -627,12 +627,13 @@ int main(int argc, char *argv[])
 	// printf("Max-size: %d \n", max_size);
 
 	while(sg.length <= max_size) {
+		printf("Current length is %d bytes, max_size is %d \n", sg.length, max_size);
 
         // Generate the elements required for latency and throughput calculation
         std::vector<double> measured_times; 
 
 		// printf("Beginning \n"); 
-		printf("Handshake before RDMA ops... \n");
+		// printf("Handshake before RDMA ops... \n");
 		handshake(connfd); 
 
 		for(int n_runs = 1; n_runs <= n_reps_lat; n_runs++) {
@@ -674,6 +675,10 @@ int main(int argc, char *argv[])
 					return -1;
 				}
 			}
+
+			printf("################################################################ \n");
+			printf("# ENDED ONE RUN! \n");
+			printf("################################################################ \n");
 
             // End the clock 
             auto end_time = std::chrono::high_resolution_clock::now();
@@ -780,8 +785,8 @@ int main(int argc, char *argv[])
 		sg.length = sg.length * 2;
 	}
 
-	printf("End");
-	handshake(connfd); 
+	printf("End \n");
+	// handshake(connfd); 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//

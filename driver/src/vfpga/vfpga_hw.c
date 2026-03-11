@@ -66,6 +66,7 @@ void restart_mmu(struct vfpga_dev *device, bool write, int32_t ctid) {
 void invalidate_tlb_entry(struct vfpga_dev *device, uint64_t vaddr, uint32_t n_pages, int32_t hpid, bool last) {
     // Set the hardware registers related to invalidation; the last one triggers the actual invalidation
     BUG_ON(!device);
+    dbg_info("Invalidating TLB entry for vaddr %llx, n_pages %u, hpid %d, last %d\n", vaddr, n_pages, hpid, last);
     device->cnfg_regs->isr_pid = (uint64_t) hpid << 32;
     device->cnfg_regs->isr_vaddr = vaddr << PAGE_SHIFT;
     device->cnfg_regs->isr_len = ((uint64_t) n_pages) << PAGE_SHIFT;

@@ -44,6 +44,11 @@ if(INSTANCE STREQUAL "client")
     message("*** Coyote Example 9: RDMA Client [Software] ***")
     include_directories("${CMAKE_SOURCE_DIR}/src/include")
 endif()
+if(INSTANCE STREQUAL "inactive_client")
+    set(TARGET_DIR "${CMAKE_SOURCE_DIR}/src/inactive_client")
+    message("*** Coyote Example 9: RDMA Inactive Client [Software] ***")
+    include_directories("${CMAKE_SOURCE_DIR}/src/include")
+endif()
 
 # Create build targets and link against required libraries
 set(EXEC test)
