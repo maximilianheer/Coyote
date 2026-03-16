@@ -444,7 +444,7 @@ int setup_vfpga_devices(struct bus_driver_data *data, struct scenic_rdma_device 
                 return -ENOMEM;
             }
             dbg_info("Successfully allocated the etherdev structure for the network device\n");
-            // vfpga_net_register(data->vfpga_dev, data->net_mac_addr); 
+            vfpga_net_register(data->vfpga_dev, data->net_mac_addr); 
             dbg_info("Finished initialization of the network device from alloc_vfpga_devices\n");
         }
     }

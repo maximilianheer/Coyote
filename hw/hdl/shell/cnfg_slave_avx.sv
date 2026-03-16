@@ -1212,7 +1212,7 @@ end
 assign rdma_done_rd.ready = (rdma_rd_C && rdma_done_rd.valid);
 
 assign a_we_rdma_rd = (rdma_clear_rd || rdma_rd_C) ? ~0 : 0;
-assign a_data_in_rdma_rd = rdma_clear_rd ? 0 : a_data_out_rdma_wr + 1;
+assign a_data_in_rdma_rd = rdma_clear_rd ? 0 : a_data_out_rdma_rd + 1;
 assign a_addr_rdma_rd = rdma_clear_rd ? rdma_clear_addr_rd : rdma_done_rd.data.pid;
 assign b_addr_rdma_rd = axi_araddr[ADDR_LSB+:PID_BITS];
 
