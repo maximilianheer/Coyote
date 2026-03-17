@@ -80,7 +80,7 @@ static void vfpga_net_post_command(struct vfpga_dev *vfpga, uint64_t offs_3, uin
     } */ 
 
     // Step 1: Post the command to the FPGA
-    dbg_info("vfpga_net_post_command: Posting command with offsets: %llx, %llx, %llx, %llx\n", offs_3, offs_2, offs_1, offs_0);
+    //dbg_info("vfpga_net_post_command: Posting command with offsets: %llx, %llx, %llx, %llx\n", offs_3, offs_2, offs_1, offs_0);
     // Base index for the control registers for the FPGA-NIC
     vfpga->vfpga_net_cnfg[CTRL_REG + 1] = offs_1;
     vfpga->vfpga_net_cnfg[CTRL_REG + 2] = offs_2;
@@ -88,12 +88,12 @@ static void vfpga_net_post_command(struct vfpga_dev *vfpga, uint64_t offs_3, uin
     vfpga->vfpga_net_cnfg[CTRL_REG + 0] = offs_0;
 
 
-    // Step 2: Check if the command has been processed by the FPGA 
-    dbg_info("vfpga_net_post_command: Verifying command posting...\n");
+    // Step 2: Check if the command has been processed by the FPGA
+    //dbg_info("vfpga_net_post_command: Verifying command posting...\n");
     vfpga->cmd_cnt = (uint32_t)(vfpga->vfpga_net_cnfg[CTRL_REG] & 0xFFFFFFFFUL);
-    dbg_info("vfpga_net_post_command: Command count after posting command: %llu\n", vfpga->cmd_cnt);
+    //dbg_info("vfpga_net_post_command: Command count after posting command: %llu\n", vfpga->cmd_cnt);
     if(vfpga->cmd_cnt > 0) {
-        dbg_info("That's not great, but what should we do now anyways? Packet's lost, another one will come in the future... \n");
+        //dbg_info("That's not great, but what should we do now anyways? Packet's lost, another one will come in the future... \n");
     }
     /* while(vfpga->cmd_cnt > 0) {
         dbg_info("vfpga_net_post_command: Command count is non zero, waiting for FPGA to process command...\n");
@@ -106,16 +106,16 @@ static void vfpga_net_post_command(struct vfpga_dev *vfpga, uint64_t offs_3, uin
 
 // Helper function for local operations to the vFPGA handling the arbitrary traffic 
 static int vfpga_net_invoke_local_op(struct vfpga_dev *vfpga, CoyoteOper oper, struct localSg sg, bool last) {
-    dbg_info("vfpga_net_invoke_local_op: Invoking local operation of type %d\n", (int)(oper));
+    //dbg_info("vfpga_net_invoke_local_op: Invoking local operation of type %d\n", (int)(oper));
 
-    // Step 1: Check if the specified operation is supported in the current setting and if the buffer is not too long 
+    // Step 1: Check if the specified operation is supported in the current setting and if the buffer is not too long
     if (!isLocalRead(oper) && !isLocalWrite(oper)) {
-        dbg_info("vfpga_net_invoke_local_op: Unsupported operation type %d for local operation\n", (int)(oper));
+        //dbg_info("vfpga_net_invoke_local_op: Unsupported operation type %d for local operation\n", (int)(oper));
         return -EINVAL;
     }
 
     if (sg.len > MAX_TRANSFER_SIZE) {
-        dbg_info("vfpga_net_invoke_local_op: Transfer size %u exceeds maximum supported size %lu\n", sg.len, MAX_TRANSFER_SIZE);
+        //dbg_info("vfpga_net_invoke_local_op: Transfer size %u exceeds maximum supported size %lu\n", sg.len, MAX_TRANSFER_SIZE);
         return -EINVAL;
     }
 
@@ -125,86 +125,69 @@ static int vfpga_net_invoke_local_op(struct vfpga_dev *vfpga, CoyoteOper oper, s
     uint64_t addr_cmd_src = 0;
     uint64_t addr_cmd_dst = 0;
 
-    dbg_info("vfpga_net_invoke_local_op: Preparing command parameters \n");
+    //dbg_info("vfpga_net_invoke_local_op: Preparing command parameters \n");
 
     if(oper == LOCAL_READ) {
-        // Print the ingredient values for ctrl_cmd_src for debugging
-        dbg_info("vfpga_net_invoke_local_op: Preparing LOCAL_READ command with parameters: ctid %d, dest %u, last %d, stream %u, len %u \n", 
-            vfpga_net_ctid, sg.dest, last ? 1 : 0, sg.stream, sg.len);      
+        //dbg_info("vfpga_net_invoke_local_op: Preparing LOCAL_READ command with parameters: ctid %d, dest %u, last %d, stream %u, len %u \n",
+        //    vfpga_net_ctid, sg.dest, last ? 1 : 0, sg.stream, sg.len);
         ctrl_cmd_src = ((vfpga_net_ctid & CTRL_PID_MASK) << CTRL_PID_OFFS) |
                 ((sg.dest & CTRL_DEST_MASK) << CTRL_DEST_OFFS) |
                 (last ? CTRL_LAST : 0x0) |
-                ((sg.stream & CTRL_STRM_MASK) << CTRL_STRM_OFFS) | 
-                (CTRL_START) | 
-                (0x0) | 
+                ((sg.stream & CTRL_STRM_MASK) << CTRL_STRM_OFFS) |
+                (CTRL_START) |
+                (0x0) |
                 ((uint64_t)(sg.len) << CTRL_LEN_OFFS);
-        // Print the final ctrl_cmd_src value for debugging
-        dbg_info("vfpga_net_invoke_local_op: Computed ctrl_cmd_src: %llx \n", ctrl_cmd_src);
+        //dbg_info("vfpga_net_invoke_local_op: Computed ctrl_cmd_src: %llx \n", ctrl_cmd_src);
 
         addr_cmd_src = (uint64_t)(sg.addr);
 
-        // Post the command to the FPGA
-        // Printout of the command parameters for debugging
-        dbg_info("vfpga_net_invoke_local_op: Posting LOCAL_READ command with parameters: addr_cmd_dst %llx, ctrl_cmd_dst %llx, addr_cmd_src %llx, ctrl_cmd_src %llx \n", addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
-         // Post the command to the FPGA
+        //dbg_info("vfpga_net_invoke_local_op: Posting LOCAL_READ command with parameters: addr_cmd_dst %llx, ctrl_cmd_dst %llx, addr_cmd_src %llx, ctrl_cmd_src %llx \n", addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
         vfpga_net_post_command(vfpga, addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
-        dbg_info("vfpga_net_invoke_local_op: LOCAL_READ command posted successfully\n");
+        //dbg_info("vfpga_net_invoke_local_op: LOCAL_READ command posted successfully\n");
 
     } else if(oper == LOCAL_WRITE) {
         ctrl_cmd_dst = ((vfpga_net_ctid & CTRL_PID_MASK) << CTRL_PID_OFFS) |
             ((sg.dest & CTRL_DEST_MASK) << CTRL_DEST_OFFS) |
             (last ? CTRL_LAST : 0x0) |
-            ((sg.stream & CTRL_STRM_MASK) << CTRL_STRM_OFFS) | 
-            (CTRL_START) | 
-            (0x0) | 
+            ((sg.stream & CTRL_STRM_MASK) << CTRL_STRM_OFFS) |
+            (CTRL_START) |
+            (0x0) |
             ((uint64_t)(sg.len) << CTRL_LEN_OFFS);
 
         addr_cmd_dst = (uint64_t)(sg.addr);
 
-        // Post the command to the FPGA 
         vfpga_net_post_command(vfpga, addr_cmd_dst, ctrl_cmd_dst, addr_cmd_src, ctrl_cmd_src);
-        dbg_info("vfpga_net_invoke_local_op: LOCAL_WRITE command posted successfully\n");
+        //dbg_info("vfpga_net_invoke_local_op: LOCAL_WRITE command posted successfully\n");
     } else {
-        dbg_info("vfpga_net_invoke_local_op: Unsupported operation type %d for local operation\n", (int)(oper));
+        //dbg_info("vfpga_net_invoke_local_op: Unsupported operation type %d for local operation\n", (int)(oper));
         return -EINVAL;
     }
 
-    // Check for the completion of the operation by polling the writeback region
-    dbg_info("vfpga_net_invoke_local_op: Polling for operation completion...\n");
-    uint32_t wb_num_op = vfpga_net_check_completed(vfpga, oper);
-    dbg_info("vfpga_net_invoke_local_op: Initial writeback entry value: %u\n", wb_num_op);
-    /* while(wb_num_op == 0) {
-        // Sleep briefly to avoid busy-waiting
-        udelay(1); 
-        wb_num_op = vfpga_net_check_completed(vfpga, oper);
-        dbg_info("vfpga_net_invoke_local_op: Still waiting for operation completion, writeback entry is zero...\n");
-    } */ 
-    dbg_info("vfpga_net_invoke_local_op: Operation completed, now clear the writeback entry\n");
-    // Clear the writeback entry
-    vfpga_net_clear_completed(vfpga); 
-    return 0; 
+    // Writeback reclaim is handled exclusively by the caller (vfpga_net_xmit /
+    // vfpga_net_poll) so that completions are never lost to a double-clear.
+    return 0;
 }
 
 // Function for polling the writeback region to check for operation completion 
 uint32_t vfpga_net_check_completed(struct vfpga_dev *vfpga, CoyoteOper oper) {
     // Based on operation type, check the corresponding writeback entry
     if(isLocalWrite(oper)) {
-        dbg_info("vfpga_net_check_completed: Checking completion for LOCAL_WRITE operation\n");
-        return vfpga->vfpga_net_wb[vfpga_net_ctid + WR_WBACK * N_CTID_MAX]; 
+        //dbg_info("vfpga_net_check_completed: Checking completion for LOCAL_WRITE operation\n");
+        return vfpga->vfpga_net_wb[vfpga_net_ctid + WR_WBACK * N_CTID_MAX];
     } else if(isLocalRead(oper)) {
-        dbg_info("vfpga_net_check_completed: Checking completion for LOCAL_READ operation\n");
-        return vfpga->vfpga_net_wb[vfpga_net_ctid + RD_WBACK * N_CTID_MAX]; 
+        //dbg_info("vfpga_net_check_completed: Checking completion for LOCAL_READ operation\n");
+        return vfpga->vfpga_net_wb[vfpga_net_ctid + RD_WBACK * N_CTID_MAX];
     } else {
-        dbg_info("vfpga_net_check_completed: Unsupported operation type %d for checking completion\n", (int)(oper));
-        return 0; 
+        //dbg_info("vfpga_net_check_completed: Unsupported operation type %d for checking completion\n", (int)(oper));
+        return 0;
     }
 }
 
-// Function for clearing the writeback entry after operation completion 
+// Function for clearing the writeback entry after operation completion
 void vfpga_net_clear_completed(struct vfpga_dev *vfpga) {
-    dbg_info("vfpga_net_clear_completed: Clearing writeback entry for ctid %d\n", vfpga_net_ctid);
-    vfpga->vfpga_net_wb[vfpga_net_ctid + RD_WBACK * N_CTID_MAX] = 0; 
-    vfpga->vfpga_net_wb[vfpga_net_ctid + WR_WBACK * N_CTID_MAX] = 0; 
+    //dbg_info("vfpga_net_clear_completed: Clearing writeback entry for ctid %d\n", vfpga_net_ctid);
+    vfpga->vfpga_net_wb[vfpga_net_ctid + RD_WBACK * N_CTID_MAX] = 0;
+    vfpga->vfpga_net_wb[vfpga_net_ctid + WR_WBACK * N_CTID_MAX] = 0;
 }
 
 // Function for opening the new FPGA-NIC
@@ -333,11 +316,15 @@ static int vfpga_net_open(struct net_device *dev)
     dbg_info("Trying to allocate the TX-buffer for arbitrary packet reception. \n"); 
     vfpga->vfpga_net_tx_buf = dma_alloc_coherent(&vfpga->bd_data->pci_dev->dev, TX_BUFF_SIZE, &vfpga->vfpga_net_tx_buf_phys_addr, GFP_KERNEL);
     if(!vfpga->vfpga_net_tx_buf) {
-        dbg_info("Couldn't allocate the TX-buffer for the net-device. \n"); 
-        return -ENOMEM; 
+        dbg_info("Couldn't allocate the TX-buffer for the net-device. \n");
+        return -ENOMEM;
     } else {
-        dbg_info("Successfully allocated the TX-buffer for the net-device at %llx. \n", *vfpga->vfpga_net_tx_buf); 
+        dbg_info("Successfully allocated the TX-buffer for the net-device at %llx. \n", *vfpga->vfpga_net_tx_buf);
     }
+
+    // Initialise TX ring indices
+    vfpga->tx_head      = 0;
+    vfpga->tx_completed = 0;
 
     // Add both the TX- and RX-buffers to the kernel buffer map for the given ctid
     dbg_info("Adding the RX-buffer to the kernel buffer map for ctid %d. \n", vfpga_net_ctid);
@@ -385,7 +372,7 @@ static int vfpga_net_open(struct net_device *dev)
 
     // Offset 5: HOST_NETWORKING_IRQ_COALESCE
     dbg_info("Write irq coalesce 16 to ctrl-reg. \n");
-    writeq(16, vfpga->vfpga_net_ctrl + 6);
+    writeq(0, vfpga->vfpga_net_ctrl + 6);
     // vfpga->vfpga_net_rx_buf[5] = 16; 
     // iowrite64(16, vfpga->vfpga_net_rx_buf + 5); 
 
@@ -466,11 +453,10 @@ static int vfpga_net_stop(struct net_device *dev)
 // Function that is called when the FPGA issues an interrupt for packet reception at threshold 
 void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga)
 {
-    // NAPI poll call to handle the packet reception 
-    dbg_info("Dispatching NAPI poll for FPGA-NIC \n"); 
-    dbg_info("vfpga_net_irq_dispatch: NAPI struct address: %p\n", &vfpga->napi);
-    dbg_info("napi.dev=%p, ndev=%p\n", vfpga->napi.dev, vfpga->ndev);
-    dbg_info("napi.poll=%p\n", vfpga->napi.poll);
+    //dbg_info("Dispatching NAPI poll for FPGA-NIC \n");
+    //dbg_info("vfpga_net_irq_dispatch: NAPI struct address: %p\n", &vfpga->napi);
+    //dbg_info("napi.dev=%p, ndev=%p\n", vfpga->napi.dev, vfpga->ndev);
+    //dbg_info("napi.poll=%p\n", vfpga->napi.poll);
     // napi_enable(&vfpga->napi);
     napi_schedule(&vfpga->napi);
 }
@@ -478,56 +464,72 @@ void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga)
 // Function that polls the RX-ring buffer for new packets and handles their processing within the Linux network stack 
 static int vfpga_net_poll(struct napi_struct *napi, int budget)
 {
-    dbg_info("vfpga_net_poll: Polling the RX-ring buffer for new packets from the FPGA-NIC. \n");
-    // return 0; 
+    //dbg_info("vfpga_net_poll: Polling the RX-ring buffer for new packets from the FPGA-NIC. \n");
+    // return 0;
 
     // Get the vfpga device structure from the napi struct
     struct vfpga_dev *vfpga = container_of(napi, struct vfpga_dev, napi);
-    dbg_info("vfpga_net_poll: Retrieved vfpga device structure. \n");
+    //dbg_info("vfpga_net_poll: Retrieved vfpga device structure. \n");
 
     // Count the number of packets processed (must not exceed the budget given during registration)
     int packets_processed = 0;
 
-    // Start the main loop for polling the RX-ring buffer and fetching packets from there for further processing in the network stack 
-    dbg_info("vfpga_net_poll: Starting packet processing loop with budget %d. \n", budget);
+    //dbg_info("vfpga_net_poll: Starting packet processing loop with budget %d. \n", budget);
 
     while(packets_processed < budget && vfpga_rx_has_packet(vfpga)) {
-        dbg_info("vfpga_net_poll: Processing packet %d. \n", packets_processed + 1);
+        //dbg_info("vfpga_net_poll: Processing packet %d. \n", packets_processed + 1);
 
-        // Fetch the packet from the RX-ring buffer 
+        // Fetch the packet from the RX-ring buffer
         struct sk_buff *skb = vfpga_rx_fetch_packet(vfpga);
 
         if(!skb) {
-            dbg_info("vfpga_net_poll: Didn't get the skb back from the RX-ring (although there should have been one...) \n");
-            break; 
+            //dbg_info("vfpga_net_poll: Didn't get the skb back from the RX-ring (although there should have been one...) \n");
+            break;
         }
 
         // Pass the packet to the network stack
-        dbg_info("vfpga_net_poll: Passing the packet to the network stack. \n");
+        //dbg_info("vfpga_net_poll: Passing the packet to the network stack. \n");
         // skb->protocol = eth_type_trans(skb, vfpga->ndev);
         napi_gro_receive(napi, skb);
-        dbg_info("vfpga_net_poll: Packet successfully passed to the network stack. \n");
+        //dbg_info("vfpga_net_poll: Packet successfully passed to the network stack. \n");
 
-        // Increment the processed packets counter
         packets_processed++;
-        dbg_info("vfpga_net_poll: Finished processing packet %d. \n", packets_processed);
+        //dbg_info("vfpga_net_poll: Finished processing packet %d. \n", packets_processed);
     }
 
     // Checking if we processed all packets or if we reached the budget limit
     if(packets_processed < budget) {
-        // Budget has not been fully used 
-        dbg_info("vfpga_net_poll: Processed all available packets (%d), completing NAPI poll. \n", packets_processed);
-
         // Check if there are no more packets left in the RX-ring buffer
         if(!vfpga_rx_has_packet(vfpga)) {
-            dbg_info("vfpga_net_poll: No more packets left in RX-ring buffer, completing NAPI poll. \n");
+            //dbg_info("vfpga_net_poll: No more packets left in RX-ring buffer, completing NAPI poll. \n");
             napi_complete_done(napi, packets_processed);
         }
     }
 
-    // Return the number of packets processed
-    dbg_info("vfpga_net_poll: Finished polling with %d packets processed. \n", packets_processed);
-    return packets_processed;   
+    // Write the updated consumer pointer back to the FPGA hardware so that the
+    // edge-triggered IRQ threshold can re-arm for the next incoming packet.
+    // Without this, (write_ptr - ring_head_reg) never drops back below the
+    // coalesce threshold and no further RX interrupts are generated.
+    if (packets_processed > 0)
+        writeq(vfpga->rx_buf_head, vfpga->vfpga_net_ctrl + 4);
+
+    // Reclaim any TX completions that arrived while we were polling RX, and
+    // restart the TX queue if it was stopped due to a full ring.
+    spin_lock(&vfpga->tx_lock);
+    uint32_t tx_done = vfpga_net_check_completed(vfpga, LOCAL_READ);
+    if (tx_done) {
+        vfpga->tx_completed += tx_done;
+        vfpga_net_clear_completed(vfpga);
+        //dbg_info("vfpga_net_poll: Reclaimed %u TX slots in poll, tx_completed=%u tx_head=%u. \n",
+        //         tx_done, vfpga->tx_completed, vfpga->tx_head);
+        if (netif_queue_stopped(vfpga->ndev) &&
+            (vfpga->tx_head - vfpga->tx_completed) < TX_NUM_SLOTS)
+            netif_wake_queue(vfpga->ndev);
+    }
+    spin_unlock(&vfpga->tx_lock);
+
+    //dbg_info("vfpga_net_poll: Finished polling with %d packets processed. \n", packets_processed);
+    return packets_processed;
 }
 
 // Function to check if there is a packet available in the RX-ring buffer at the next position 
@@ -538,10 +540,9 @@ static bool vfpga_rx_has_packet(struct vfpga_dev *vfpga)
     uint8_t *pkt_ptr = base_ptr + vfpga->rx_buf_head * 6144;
     uint32_t *meta_word_ptr = (uint32_t *)(pkt_ptr);
 
-    dbg_info("vfpga_rx_has_packet: Base Pointer is %px\n", base_ptr);
-    dbg_info("vfpga_rx_has_packet: Packet Pointer is %px\n", pkt_ptr);
-    dbg_info("vfpga_rx_has_packet: Meta Word Pointer is %px\n", meta_word_ptr);
-
+    //dbg_info("vfpga_rx_has_packet: Base Pointer is %px\n", base_ptr);
+    //dbg_info("vfpga_rx_has_packet: Packet Pointer is %px\n", pkt_ptr);
+    //dbg_info("vfpga_rx_has_packet: Meta Word Pointer is %px\n", meta_word_ptr);
 
     // Read raw meta word from DMA buffer
     uint32_t raw_meta = *meta_word_ptr;
@@ -552,10 +553,10 @@ static bool vfpga_rx_has_packet(struct vfpga_dev *vfpga)
     meta.packet_len      = (raw_meta >> 3)  & 0x0FFFFFFF;
     meta.rsvd            = raw_meta & 0x7;
 
-    dbg_info("vfpga_rx_has_packet: Raw meta word is %08x\n", raw_meta);
-    dbg_info("vfpga_rx_has_packet: Decoded packet length: %u\n", meta.packet_len);
-    dbg_info("vfpga_rx_has_packet: Checking RX slot %d, possession_flag=%u\n",
-             vfpga->rx_buf_head, meta.possession_flag);
+    //dbg_info("vfpga_rx_has_packet: Raw meta word is %08x\n", raw_meta);
+    //dbg_info("vfpga_rx_has_packet: Decoded packet length: %u\n", meta.packet_len);
+    //dbg_info("vfpga_rx_has_packet: Checking RX slot %d, possession_flag=%u\n",
+    //         vfpga->rx_buf_head, meta.possession_flag);
 
     // Return true if FPGA owns the packet (flag=1)
     return (meta.possession_flag == 1);
@@ -564,16 +565,14 @@ static bool vfpga_rx_has_packet(struct vfpga_dev *vfpga)
 // Function to fetch the packet from the RX-ring buffer at the current position and hand it over to the network stack 
 static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
 {
-    dbg_info("vfpga_rx_fetch_packet: Retrieved net_device structure. \n");
-
     // Calculate pointer to the packet of the current RX slot
     uint8_t *base_ptr = (uint8_t *)vfpga->vfpga_net_rx_buf;
     uint8_t *pkt_ptr = base_ptr + vfpga->rx_buf_head * 6144;
     uint32_t *meta_word_ptr = (uint32_t *)(pkt_ptr);
 
-    dbg_info("vfpga_rx_fetch_packet: Base Pointer is %px\n", base_ptr);
-    dbg_info("vfpga_rx_fetch_packet: Packet Pointer is %px\n", pkt_ptr);
-    dbg_info("vfpga_rx_fetch_packet: Meta Pointer is %px\n", meta_word_ptr);
+    //dbg_info("vfpga_rx_fetch_packet: Base Pointer is %px\n", base_ptr);
+    //dbg_info("vfpga_rx_fetch_packet: Packet Pointer is %px\n", pkt_ptr);
+    //dbg_info("vfpga_rx_fetch_packet: Meta Pointer is %px\n", meta_word_ptr);
 
     // Read raw meta word from DMA buffer
     uint32_t raw_meta = *meta_word_ptr;
@@ -585,32 +584,30 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
     meta.rsvd            = raw_meta & 0x7;
     // One more check to ensure the possession flag is set
     if(meta.possession_flag == 0) {
-        dbg_info("vfpga_rx_fetch_packet: Possession flag not set, no packet to fetch. \n");
+        //dbg_info("vfpga_rx_fetch_packet: Possession flag not set, no packet to fetch. \n");
         return NULL;
     }
 
     // For fetching the actual packet: Read out the packet length from the meta-tag and calculate the packet start address
     size_t pkt_len = meta.packet_len;
-    dbg_info("vfpga_rx_fetch_packet: Packet length from meta-tag is %zu. \n", pkt_len);
+    //dbg_info("vfpga_rx_fetch_packet: Packet length from meta-tag is %zu. \n", pkt_len);
     void *actual_pkt_addr = (void *)(meta_word_ptr + 1);
-    dbg_info("vfpga_rx_fetch_packet: Actual packet length is %zu, starting at address %px\n", pkt_len, actual_pkt_addr);
-
+    //dbg_info("vfpga_rx_fetch_packet: Actual packet length is %zu, starting at address %px\n", pkt_len, actual_pkt_addr);
 
     // Allocate a new skb for the packet
-    struct sk_buff *skb = netdev_alloc_skb(vfpga->ndev, pkt_len); 
+    struct sk_buff *skb = netdev_alloc_skb(vfpga->ndev, pkt_len);
     if(!skb) {
-        dbg_info("vfpga_rx_fetch_packet: Failed to allocate skb for incoming packet. \n");
-        return NULL; 
+        //dbg_info("vfpga_rx_fetch_packet: Failed to allocate skb for incoming packet. \n");
+        return NULL;
     }
-    dbg_info("vfpga_rx_fetch_packet: Successfully allocated skb at %px \n", skb);
-    dbg_info("vfpga_rx_fetch_packet: alloc_skb -> skb=%p skb->data=%p skb->truesize=%u users=%d skb->dev=%p\n",
-        skb, skb->data, skb->truesize, refcount_read(&skb->users), skb->dev);
+    //dbg_info("vfpga_rx_fetch_packet: Successfully allocated skb at %px \n", skb);
+    //dbg_info("vfpga_rx_fetch_packet: alloc_skb -> skb=%p skb->data=%p skb->truesize=%u users=%d skb->dev=%p\n",
+    //    skb, skb->data, skb->truesize, refcount_read(&skb->users), skb->dev);
 
-    if (skb->dev) {
-        dbg_info("skb->dev: name=%s registered=%d\n", skb->dev->name,
-                skb->dev->reg_state == NETREG_REGISTERED);
-    }
-
+    //if (skb->dev) {
+    //    dbg_info("skb->dev: name=%s registered=%d\n", skb->dev->name,
+    //            skb->dev->reg_state == NETREG_REGISTERED);
+    //}
 
     // Copy the packet data into the skb
     dma_sync_single_for_cpu(&vfpga->bd_data->pci_dev->dev,
@@ -622,7 +619,7 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
     // Update the stats for incoming packets and bytes
     vfpga->ndev->stats.rx_packets++;
     vfpga->ndev->stats.rx_bytes += pkt_len;
-    
+
     /* char dump[512];
     char *p = dump;
     p += scnprintf(p, sizeof(dump) - (p - dump),
@@ -632,16 +629,16 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
         p += scnprintf(p, sizeof(dump) - (p - dump), "%02x ", ((uint8_t*)actual_pkt_addr)[i]);
     }
     dbg_info("%s\n", dump);
-    dbg_info("\n"); */ 
+    dbg_info("\n"); */
 
     skb->protocol = eth_type_trans(skb, vfpga->ndev);
     skb->ip_summed = CHECKSUM_NONE; // Hand over checksum checking to the network stack
-    dbg_info("vfpga_rx_fetch_packet: Set skb protocol to %x. \n", skb->protocol);
+    //dbg_info("vfpga_rx_fetch_packet: Set skb protocol to %x. \n", skb->protocol);
 
-    // Hand over the packet to the stack 
+    // Hand over the packet to the stack
     // napi_gro_receive(&vfpga->napi, skb);
     // dev_kfree_skb_any(skb); // For testing purposes, we just free the skb here
-    dbg_info("vfpga_rx_fetch_packet: Handed over skb to the network stack. \n");
+    //dbg_info("vfpga_rx_fetch_packet: Handed over skb to the network stack. \n");
 
     // Clear the possession flag in the meta-tag to indicate the packet has been processed
     meta.possession_flag = 0;
@@ -650,58 +647,76 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
                     (meta.rsvd & 0x7);
     *(uint32_t *)meta_word_ptr = raw_meta;
 
-    wmb(); 
-    dbg_info("vfpga_rx_fetch_packet: Cleared possession flag in meta-tag. \n");
+    wmb();
+    //dbg_info("vfpga_rx_fetch_packet: Cleared possession flag in meta-tag. \n");
 
     // Update the RX buffer head to the next position (wrap around if necessary)
-    vfpga->rx_buf_head = (vfpga->rx_buf_head + 1) % 512; 
-    dbg_info("vfpga_rx_fetch_packet: Updated RX buffer head to %d. \n", vfpga->rx_buf_head);
+    vfpga->rx_buf_head = (vfpga->rx_buf_head + 1) % 512;
+    //dbg_info("vfpga_rx_fetch_packet: Updated RX buffer head to %d. \n", vfpga->rx_buf_head);
 
-    // Return the skb to the caller 
     return skb;
 }
 
 // Function for transmitting packets
 static netdev_tx_t vfpga_net_xmit(struct sk_buff *skb, struct net_device *dev)
 {
-    // Get the vfpga device structure from the net_device
     struct vfpga_dev *vfpga = *(struct vfpga_dev **)netdev_priv(dev);
-
-    // Read the packet length from the skb
+    unsigned long flags;
     size_t pkt_len = skb->len;
-    dbg_info("vfpga_net_xmit: Transmitting packet of length %zu. \n", pkt_len);
 
-    // Sanity check for packet length whether it fits into the TX buffer
-    if (pkt_len == 0 || pkt_len > TX_BUFF_SIZE) {
+    //dbg_info("vfpga_net_xmit: Transmitting packet of length %zu. \n", pkt_len);
+
+    if (pkt_len == 0 || pkt_len > BUFFER_STRIDE) {
         dev_kfree_skb_any(skb);
         dev->stats.tx_dropped++;
-        dbg_info("vfpga_net_xmit: Packet length %zu is invalid, dropping packet. \n", pkt_len);
+        //dbg_info("vfpga_net_xmit: Packet length %zu is invalid, dropping packet. \n", pkt_len);
         return NETDEV_TX_OK;
     }
 
-    // Copy the packet data into the TX buffer  
-    // spin_lock_irqsave(&vfpga->tx_lock);
-    memcpy(vfpga->vfpga_net_tx_buf, skb->data, pkt_len);
-    dbg_info("vfpga_net_xmit: Copied packet data to TX buffer at %px. \n", vfpga->vfpga_net_tx_buf);
-    wmb(); 
+    spin_lock_irqsave(&vfpga->tx_lock, flags);
 
-    // Trigger the LOCAL READ to push the packet out through the FPGA
+    // Reclaim completed TX slots: the writeback counter tells us how many
+    // LOCAL_READ ops the FPGA has finished since we last cleared it.
+    uint32_t done = vfpga_net_check_completed(vfpga, LOCAL_READ);
+    if (done) {
+        vfpga->tx_completed += done;
+        vfpga_net_clear_completed(vfpga);
+        //dbg_info("vfpga_net_xmit: Reclaimed %u TX slots, tx_completed=%u tx_head=%u. \n",
+        //         done, vfpga->tx_completed, vfpga->tx_head);
+    }
+
+    // Ring full? Stop the queue; NAPI poll will restart it once slots free up.
+    if ((vfpga->tx_head - vfpga->tx_completed) >= TX_NUM_SLOTS) {
+        netif_stop_queue(dev);
+        spin_unlock_irqrestore(&vfpga->tx_lock, flags);
+        //dbg_info("vfpga_net_xmit: TX ring full, stopping queue. \n");
+        return NETDEV_TX_BUSY;
+    }
+
+    // Copy the packet into the next free slot.
+    uint32_t slot = vfpga->tx_head % TX_NUM_SLOTS;
+    uint8_t *slot_ptr = (uint8_t *)vfpga->vfpga_net_tx_buf + (size_t)slot * BUFFER_STRIDE;
+    memcpy(slot_ptr, skb->data, pkt_len);
+    //dbg_info("vfpga_net_xmit: Copied packet to TX slot %u at %px. \n", slot, slot_ptr);
+    wmb();
+
+    // Trigger the LOCAL_READ for this slot.
     struct localSg sg = LOCAL_SG_INIT;
-    sg.addr = vfpga->vfpga_net_tx_buf;
+    sg.addr   = slot_ptr;
     sg.stream = 1;
-    sg.dest = 0; 
-    sg.len = pkt_len;
+    sg.dest   = 0;
+    sg.len    = pkt_len;
     vfpga_net_invoke_local_op(vfpga, LOCAL_READ, sg, true);
-    dbg_info("vfpga_net_xmit: Triggered LOCAL READ to push packet out through FPGA. \n");
-    // spin_unlock_irqrestore(&vfpga->tx_lock);
+    //dbg_info("vfpga_net_xmit: Posted LOCAL_READ for TX slot %u. \n", slot);
 
-    // Increment the counter for outgoing packets and bytes for pushed out packets 
+    vfpga->tx_head++;
+
+    spin_unlock_irqrestore(&vfpga->tx_lock, flags);
+
     dev->stats.tx_packets++;
-    dev->stats.tx_bytes += skb->len;
-
-    // Free the socket buffer
+    dev->stats.tx_bytes += pkt_len;
     dev_kfree_skb(skb);
-    return NETDEV_TX_OK; // Return that everything is ok
+    return NETDEV_TX_OK;
 }
 
 // Function for passing over the statistics of the FPGA-NIC 

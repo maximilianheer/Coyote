@@ -22,7 +22,7 @@
 #include "vfpga_isr.h"
 
 irqreturn_t vfpga_isr(int irq, void *d) {
-    dbg_info("(irq=%d) ISR entry\n", irq);
+    //dbg_info("(irq=%d) ISR entry\n", irq);
     struct vfpga_dev *device = (struct vfpga_dev *) d;
     BUG_ON(!device);
 
@@ -36,28 +36,28 @@ irqreturn_t vfpga_isr(int irq, void *d) {
     switch (type) {
         case IRQ_DMA_OFFL:
             // vFPGA completed DMA off-load, set the correct flag (which is being polled on in the memory handler (HMM/GUP))
-            dbg_info("(irq=%d) DMA offload completed, vFPGA %d\n", irq, device->id);
+            //dbg_info("(irq=%d) DMA offload completed, vFPGA %d\n", irq, device->id);
             atomic_set(&device->wait_offload, FLAG_SET);
             wake_up_interruptible(&device->waitqueue_offload);
             break;
 
         case IRQ_DMA_SYNC:
             // vFPGA completed DMA sync, set the correct flag (which is being polled on in the memory handler (HMM/GUP))
-            dbg_info("(irq=%d) DMA sync completed, vFPGA %d\n", irq, device->id);
+            //dbg_info("(irq=%d) DMA sync completed, vFPGA %d\n", irq, device->id);
             atomic_set(&device->wait_sync, FLAG_SET);
             wake_up_interruptible(&device->waitqueue_sync);
             break;
 
         case IRQ_INVLDT: 
             // vFPGA completed invalidation, set the correct flag (which is being polled on in the memory handler (HMM/GUP))
-            dbg_info("(irq=%d) invalidation completed, vFPGA %d\n", irq, device->id);
+            //dbg_info("(irq=%d) invalidation completed, vFPGA %d\n", irq, device->id);
             atomic_set(&device->wait_invldt, FLAG_SET);
             wake_up_interruptible(&device->waitqueue_invldt);
             break;
 
         case IRQ_PFAULT:
             // vFPGA issued page fault; issue asynchronous work via vfpga_pfault_handler to handle the page fault
-            dbg_info("(irq=%d) page fault, vFPGA %d\n", irq, device->id);
+            //dbg_info("(irq=%d) page fault, vFPGA %d\n", irq, device->id);
             struct vfpga_irq_pfault *irq_pf = kzalloc(sizeof(struct vfpga_irq_pfault), GFP_KERNEL);
             BUG_ON(!irq_pf);
 
@@ -73,7 +73,7 @@ irqreturn_t vfpga_isr(int irq, void *d) {
 
         case IRQ_NOTIFY:
             // vFPGA issued a user interrupt (notification); issue asynchronous work via vfpga_notify_handler to handle the user interrupt
-            dbg_info("(irq=%d) notify, vFPGA %d\n", irq, device->id);
+            //dbg_info("(irq=%d) notify, vFPGA %d\n", irq, device->id);
             struct vfpga_irq_notify *irq_not = kzalloc(sizeof(struct vfpga_irq_notify), GFP_KERNEL);
             BUG_ON(!irq_not);
 
@@ -83,7 +83,7 @@ irqreturn_t vfpga_isr(int irq, void *d) {
             // Case decision: For NIC interrupts, we call the network driver directly
             if(irq_not->notification_value == IRQ_NET_PACKET_COALESCE) {
                 // Call the network driver's NAPI handler directly
-                dbg_info("(irq=%d) NIC packet coalescing interrupt, vFPGA %d\n", irq, device->id);
+                //dbg_info("(irq=%d) NIC packet coalescing interrupt, vFPGA %d\n", irq, device->id);
                 vfpga_net_irq_dispatch(device); 
                 kfree(irq_not);
                 break;
@@ -97,7 +97,7 @@ irqreturn_t vfpga_isr(int irq, void *d) {
             }
 
         default:
-            dbg_info("(irq=%d) unknown ISR entry, dropping...\n", irq);
+            //dbg_info("(irq=%d) unknown ISR entry, dropping...\n", irq);
             break;
     }
 
@@ -118,7 +118,7 @@ void vfpga_notify_handler(struct work_struct *work) {
     // Typically, the hardware can issue interrupts faster than the software can process them; therefore a mutex (to prevent some interrupts being dropped)
     // In case the notification cannot be parsed, the mutex is unlocked immediately; otherwise it's unlocked form the user-space via IOCTL_SET_NOTIFICATION_PROCESSED
     mutex_lock(&user_notifier_lock[device->id][irq_not->ctid]);
-    dbg_info("notify vFPGA %d, notification value %d, ctid %d\n", device->id, irq_not->notification_value, irq_not->ctid);
+    //dbg_info("notify vFPGA %d, notification value %d, ctid %d\n", device->id, irq_not->notification_value, irq_not->ctid);
 
     // Check an eventfd exists for this vFPGA and Coyote thread (must have been registered using vfpga_register_eventfd(...))
     if (!user_notifier[device->id][irq_not->ctid]) {
@@ -169,9 +169,9 @@ void vfpga_pfault_handler(struct work_struct *work) {
 
     mutex_lock(&device->mmu_lock);
     pid_t hpid = device->pid_array[irq_pf->ctid];
-    dbg_info("page fault vFPGA %d, virtual address %llx, length %d, stream %d, ctid %d, hpid %d\n", 
+    /* dbg_info("page fault vFPGA %d, virtual address %llx, length %d, stream %d, ctid %d, hpid %d\n", 
         device->id, irq_pf->vaddr, irq_pf->len, irq_pf->stream, irq_pf->ctid, hpid
-    );
+    ); */
 
     int ret_val = -1;
     #ifdef HMM_KERNEL
@@ -193,7 +193,7 @@ void vfpga_pfault_handler(struct work_struct *work) {
     // Restart MMU and unlock mutex
     restart_mmu(device, irq_pf->wr, irq_pf->ctid);
     mutex_unlock(&device->mmu_lock);
-    dbg_info("page fault vFPGA %d handled\n", device->id);
+    //dbg_info("page fault vFPGA %d handled\n", device->id);
     kfree(irq_pf);
 
 err_mmu:

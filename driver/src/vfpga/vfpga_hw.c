@@ -96,10 +96,10 @@ void create_tlb_mapping(
                     | (1UL                          << (tlb_meta->key_size + tlb_meta->tag_size + PID_SIZE + STRM_SIZE))
                     | (physical_address_masked      << (tlb_meta->key_size + tlb_meta->tag_size + PID_SIZE + STRM_SIZE + 1));
 
-    dbg_info(
+    /* dbg_info(
         "creating new TLB entry: virtual address %llx, physical address %llx, stream %d, ctid %d, hpid %d, hugepage %d\n", 
         vaddr, physical_address, host, ctid, hpid, tlb_meta->hugepage
-    );
+    ); */ 
 
     // Map page through AXI Lite
     if(tlb_meta->hugepage) {

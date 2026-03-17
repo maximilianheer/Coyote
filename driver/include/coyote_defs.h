@@ -255,7 +255,8 @@ extern bool en_hmm;
 #define BUFFER_STRIDE 6144
 #define RX_BUFF_SIZE BUFFER_RING_SIZE*BUFFER_STRIDE
 
-#define TX_BUFF_SIZE 6144
+#define TX_NUM_SLOTS 32
+#define TX_BUFF_SIZE (TX_NUM_SLOTS * BUFFER_STRIDE)
 
 /**
  * Coyote RDMA definitions
@@ -1181,11 +1182,16 @@ struct vfpga_dev {
     uint64_t vfpga_net_tx_buf_phys_addr; 
     uint64_t *vfpga_net_tx_buf; 
 
-    // Global RX buffer index for state-keeping on the RX-polling path 
-    uint32_t rx_buf_head; 
+    // Global RX buffer index for state-keeping on the RX-polling path
+    uint32_t rx_buf_head;
 
-    // Spinlock for synchronizing access to the transmit path 
-    spinlock_t tx_lock; 
+    // TX ring indices: tx_head is the next slot to write into (mod TX_NUM_SLOTS),
+    // tx_completed accumulates FPGA completion counts so slots can be safely recycled.
+    uint32_t tx_head;
+    uint32_t tx_completed;
+
+    // Spinlock for synchronizing access to the transmit path
+    spinlock_t tx_lock;
 
     // Network statistics
     struct rtnl_link_stats64 stats; 
