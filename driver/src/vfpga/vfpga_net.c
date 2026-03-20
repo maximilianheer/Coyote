@@ -28,6 +28,7 @@
 #include "vfpga_net.h"
 #include <linux/swab.h>
 #include <asm/unaligned.h>
+#include <net/gso.h>
 
 // ======-------------------------------------------------------------------------------
 //
@@ -367,7 +368,7 @@ static int vfpga_net_open(struct net_device *dev)
 
     // Offset 5: HOST_NETWORKING_IRQ_COALESCE
     //dbg_info("Write irq coalesce 16 to ctrl-reg. \n");
-    writeq(16, vfpga->vfpga_net_ctrl + 6);
+    writeq(64, vfpga->vfpga_net_ctrl + 6);
     // vfpga->vfpga_net_rx_buf[5] = 16; 
     // iowrite64(16, vfpga->vfpga_net_rx_buf + 5); 
 
@@ -659,6 +660,25 @@ static netdev_tx_t vfpga_net_xmit(struct sk_buff *skb, struct net_device *dev)
 {
     struct vfpga_dev *vfpga = *(struct vfpga_dev **)netdev_priv(dev);
     unsigned long flags;
+
+    /* Software GSO: the kernel segmented a large flow into MTU-sized skbs
+     * before calling us, but if for any reason a GSO skb still arrives here
+     * (e.g. forwarded traffic), segment it now so every sub-skb fits in one
+     * TX slot. */
+    if (skb_is_gso(skb)) {
+        struct sk_buff *segs = skb_gso_segment(skb, dev->features & ~NETIF_F_GSO);
+        dev_kfree_skb(skb);
+        if (IS_ERR(segs))
+            return NETDEV_TX_OK;
+        struct sk_buff *next;
+        for (skb = segs; skb; skb = next) {
+            next = skb->next;
+            skb_mark_not_on_list(skb);
+            vfpga_net_xmit(skb, dev);
+        }
+        return NETDEV_TX_OK;
+    }
+
     size_t pkt_len = skb->len;
 
     //dbg_info("vfpga_net_xmit: Transmitting packet of length %zu. \n", pkt_len);
@@ -802,7 +822,16 @@ int vfpga_net_register(struct vfpga_dev *vfpga, uint64_t net_mac_addr)
         return -ENOMEM;
     }
 
-    vfpga->ndev->max_mtu = 4000; 
+    vfpga->ndev->max_mtu = 4000;
+
+    /* Enable GRO (receive) and software GSO (transmit).  The hardware cannot
+     * do segmentation itself, so NETIF_F_GSO makes the kernel's GSO layer
+     * split large TCP flows into MTU-sized skbs before they reach xmit. */
+    vfpga->ndev->features    |= NETIF_F_GRO | NETIF_F_RXCSUM | NETIF_F_GSO | NETIF_F_SG;
+    vfpga->ndev->hw_features  = vfpga->ndev->features;
+    vfpga->ndev->gso_max_size = vfpga->ndev->max_mtu;
+    vfpga->ndev->gso_max_segs = 65535;
+
     //dbg_info("Finished allocating the ethernet device\n");
 
     // Set the device operations

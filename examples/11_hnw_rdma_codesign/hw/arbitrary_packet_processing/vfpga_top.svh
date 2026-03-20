@@ -312,7 +312,7 @@ logic [31:0] dma_packet_counter;
 logic [31:0] dma_time_counter;
 
 // Localparam for the timing threshold that should trigger an IRQ if no packets are being received otherwise 
-localparam integer DMA_TIME_IRQ_THRESHOLD = 32'd25000; // Approx. 1ms at 250MHz clock
+localparam integer DMA_TIME_IRQ_THRESHOLD = 32'd2500; // Approx. 1ms at 250MHz clock
 
 // Signal for dma_packet_counter-based IRQ notification
 logic dma_packet_counter_irq_trigger; 
@@ -326,7 +326,7 @@ logic dma_time_threshold_crossed;
 always_ff @(posedge aclk) begin 
     if(!aresetn) begin 
         dma_time_counter <= 32'd0;
-        dma_time_counter_irq_trigger <= 1'b0;
+        // dma_time_counter_irq_trigger <= 1'b0;
     end else begin 
         // Reset the timer if we see a valid tlast of a forwarded packet. Otherwise count up. 
         if(axis_host_send[0].tvalid && axis_host_send[0].tlast && axis_host_send[0].tready) begin 
@@ -812,5 +812,7 @@ ila_host_networking inst_ila_host_networking (
 
     // Register the two interrupt triggers 
     .probe43(dma_packet_counter_irq_trigger),            // 1
-    .probe44(dma_time_counter_irq_trigger)               // 1
+    .probe44(dma_time_counter_irq_trigger),              // 1
+    .probe45(dma_time_threshold_crossed),                // 1
+    .probe46(dma_time_counter)                           // 32
 );
