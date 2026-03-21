@@ -325,6 +325,8 @@ static int vfpga_net_stop(struct net_device *dev)
 // Function that is called when the FPGA issues an interrupt for packet reception at threshold 
 void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga)
 {
+    // dbg_info("vfpga_net_irq_dispatch: Received an IRQ from the FPGA, scheduling NAPI poll. \n");
+
     // Schedule a napi-call 
     napi_schedule(&vfpga->napi);
 }
@@ -332,6 +334,8 @@ void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga)
 // Function that polls the RX-ring buffer for new packets and handles their processing within the Linux network stack 
 static int vfpga_net_poll(struct napi_struct *napi, int budget)
 {
+    // dbg_info("vfpga_net_poll: Starting NAPI poll with budget %d. \n", budget);
+
     // Get the vfpga device structure from the napi struct
     struct vfpga_dev *vfpga = container_of(napi, struct vfpga_dev, napi);
 
@@ -340,7 +344,7 @@ static int vfpga_net_poll(struct napi_struct *napi, int budget)
 
     // Keep on processing packets until we reach the budget limit or there are no more packets left to process 
     while(packets_processed < budget && vfpga_rx_has_packet(vfpga)) {
-
+        // dbg_info("vfpga_net_poll: Processing packet %d. \n", packets_processed);
         // Fetch the packet from the RX-ring buffer
         struct sk_buff *skb = vfpga_rx_fetch_packet(vfpga);
 
@@ -356,21 +360,22 @@ static int vfpga_net_poll(struct napi_struct *napi, int budget)
         packets_processed++;
     }
 
-    // Checking if we processed all packets or if we reached the budget limit
+    // If we returned less than the full budget, we are done for this round.
+    // napi_complete_done() MUST be called in this case to clear NAPI_STATE_SCHED;
+    // without it, subsequent napi_schedule() calls in the IRQ handler are no-ops
+    // and polling never restarts (even though the hardware keeps firing interrupts).
     if(packets_processed < budget) {
-        // Check if there are no more packets left in the RX-ring buffer
-        if(!vfpga_rx_has_packet(vfpga)) {
-            // Finish the NAPI polling and re-enable interrupts for the next incoming packet
-            napi_complete_done(napi, packets_processed);
-        }
+        napi_complete_done(napi, packets_processed);
     }
 
     // Write the updated consumer pointer back to the FPGA hardware so that the
     // edge-triggered IRQ threshold can re-arm for the next incoming packet.
     // Without this, (write_ptr - ring_head_reg) never drops back below the
     // coalesce threshold and no further RX interrupts are generated.
-    if (packets_processed > 0)
+    if (packets_processed > 0) {
+        // dbg_info("vfpga_net_poll: Processed %d packets. \n", packets_processed); 
         writeq(vfpga->rx_buf_head, vfpga->vfpga_net_ctrl + 4);
+    }
 
     // Reclaim any TX completions that arrived while we were polling RX, and
     // restart the TX queue if it was stopped due to a full ring.
