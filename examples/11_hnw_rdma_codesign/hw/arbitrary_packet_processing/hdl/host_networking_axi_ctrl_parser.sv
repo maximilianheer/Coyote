@@ -30,13 +30,14 @@ module host_networking_axi_ctrl_parser (
   output logic [VADDR_BITS-1:0]       host_networking_ring_size,
   input  logic [VADDR_BITS-1:0]       host_networking_ring_tail,
   output logic [VADDR_BITS-1:0]       host_networking_ring_head,
-  output logic [31:0]                 host_networking_irq_coalesce
+  output logic [31:0]                 host_networking_irq_coalesce, 
+  output logic [31:0]                 host_networking_irq_timeout
 );
 
 /////////////////////////////////////
 //          CONSTANTS             //
 ///////////////////////////////////
-localparam integer N_REGS = 7;
+localparam integer N_REGS = 8;
 localparam integer ADDR_MSB = $clog2(N_REGS);
 localparam integer ADDR_LSB = $clog2(AXIL_DATA_BITS/8);
 localparam integer AXI_ADDR_BITS = ADDR_LSB + ADDR_MSB;
@@ -75,6 +76,7 @@ localparam integer HOST_NETWORKING_RING_SIZE_REG = 3;
 localparam integer HOST_NETWORKING_RING_TAIL_REG = 4;
 localparam integer HOST_NETWORKING_RING_HEAD_REG = 5;
 localparam integer HOST_NETWORKING_IRQ_COALESCE_REG = 6;
+localparam integer HOST_NETWORKING_IRQ_TIMEOUT_REG = 7;
 
 /////////////////////////////////////
 //         WRITE PROCESS          //
@@ -133,6 +135,13 @@ always_ff @(posedge aclk) begin
             end
           end
 
+        HOST_NETWORKING_IRQ_TIMEOUT_REG:      // Coyote Thread ID (PID)
+          for (int i = 0; i < (AXIL_DATA_BITS/8); i++) begin
+            if(axi_ctrl.wstrb[i]) begin
+              ctrl_reg[HOST_NETWORKING_IRQ_TIMEOUT_REG][(i*8)+:8] <= axi_ctrl.wdata[(i*8)+:8];
+            end
+          end
+
         default: ;
       endcase
     end
@@ -149,6 +158,7 @@ always_comb begin
   host_networking_ring_size             = ctrl_reg[HOST_NETWORKING_RING_SIZE_REG][VADDR_BITS-1:0];
   host_networking_ring_head             = ctrl_reg[HOST_NETWORKING_RING_HEAD_REG][VADDR_BITS-1:0];
   host_networking_irq_coalesce          = ctrl_reg[HOST_NETWORKING_IRQ_COALESCE_REG][31:0];
+  host_networking_irq_timeout           = ctrl_reg[HOST_NETWORKING_IRQ_TIMEOUT_REG][31:0];
 end
 
 /////////////////////////////////////

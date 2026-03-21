@@ -27,6 +27,9 @@ logic [VADDR_BITS-1:0] host_networking_ring_tail;
 // IRQ coalescing packet counter 
 logic [31:0] host_networking_irq_coalesce;
 
+// Timeout value for time-based IRQ triggering if no packets are being received
+logic [31:0] host_networking_irq_timeout;
+
 // Coyote thread ID to be used for the local writes 
 logic [15:0] host_networking_pid;
 
@@ -44,7 +47,8 @@ host_networking_axi_ctrl_parser inst_axi_ctrl_parser (
     .host_networking_ring_size(host_networking_ring_size), 
     .host_networking_ring_tail(host_networking_ring_tail), 
     .host_networking_ring_head(host_networking_ring_head),
-    .host_networking_irq_coalesce(host_networking_irq_coalesce)
+    .host_networking_irq_coalesce(host_networking_irq_coalesce), 
+    .host_networking_irq_timeout(host_networking_irq_timeout)
 );
 
 
@@ -348,7 +352,7 @@ always_ff @(posedge aclk) begin
             dma_time_counter_irq_trigger <= 1'b0;
 
             // Check if we have crossed the threshold now 
-            if(dma_time_counter >= DMA_TIME_IRQ_THRESHOLD) begin 
+            if(dma_time_counter >= host_networking_irq_timeout) begin 
                 dma_time_threshold_crossed <= 1'b1;
                 dma_time_counter_irq_trigger <= 1'b1;
             end
