@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 -c \":*)"
+      "Bash(python3 -c \":*)",
+      "Read(//pub/scratch/hmaximili/cyt_rdma_pcc/**)",
+      "Bash(find /mnt/scratch/hmaximili/cyt_rdma_pcc/examples/12_hnw_rdma_pcc/hw -name *.tcl)",
+      "Bash(find /mnt/scratch/hmaximili/cyt_rdma_pcc -maxdepth 4 -name *.tcl ! -path */build/* ! -path */runs/*)"
     ]
   }
 }
