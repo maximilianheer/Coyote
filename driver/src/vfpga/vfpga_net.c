@@ -218,7 +218,7 @@ static int vfpga_net_open(struct net_device *dev)
     // Writeback buffer is host RAM (dma_alloc_coherent); use wb_addr_virt directly
     // instead of ioremap, which would create an uncached MMIO mapping and turn
     // every completion read into a slow PCIe round-trip.
-    vfpga->vfpga_net_wb = (volatile uint64_t *)vfpga->wb_addr_virt;
+    vfpga->vfpga_net_wb = (volatile uint32_t *)vfpga->wb_addr_virt;
 
     // Also, reset the current counter of outstanding commands to the FPGA to later be able to work efficiently with this command pipeline 
     vfpga->cmd_cnt = 0;
@@ -258,6 +258,12 @@ static int vfpga_net_open(struct net_device *dev)
     tlb_get_kernel_buffers(vfpga, (uint64_t)(((uint64_t)vfpga->vfpga_net_rx_buf & 0xFFFFFFFFFFFFULL) >> 12), vfpga->vfpga_net_rx_buf_phys_addr, vfpga_net_ctid, RX_BUFF_SIZE);
     tlb_get_kernel_buffers(vfpga, (uint64_t)(((uint64_t)vfpga->vfpga_net_tx_buf & 0xFFFFFFFFFFFFULL) >> 12), vfpga->vfpga_net_tx_buf_phys_addr, vfpga_net_ctid, TX_BUFF_SIZE);
 
+    // Initialize our debugging flags in the vFPGA to 0 
+    vfpga->rx_buf_cycle_cnt = 0;
+    vfpga->rx_buf_first_pkt_flag = 0;
+    vfpga->rx_buf_stuck_flag = 0;
+    vfpga->iperf_pkt_cnt = 0;
+
     // -----------------------
     // AXI-CTRL to the vFPGA 
     // -----------------------
@@ -269,16 +275,22 @@ static int vfpga_net_open(struct net_device *dev)
     writeq((uint64_t)vfpga->vfpga_net_rx_buf, vfpga->vfpga_net_ctrl + 1);
 
     // Offset 2: HOST_NETWORKING_BUFF_STRIDE 
-    writeq(6144, vfpga->vfpga_net_ctrl + 2);
+    writeq(BUFFER_STRIDE, vfpga->vfpga_net_ctrl + 2);
 
     // Offset 3: HOST_NETWORKING_RING_SIZE
-    writeq(512, vfpga->vfpga_net_ctrl + 3);
+    // Use 511 instead of 512 to leave one sentinel slot, preventing the
+    // aliasing deadlock where fp_wp == ring_head (mod ring_size) is
+    // ambiguous between "ring empty" and "ring full" at full saturation.
+    writeq(BUFFER_RING_SIZE, vfpga->vfpga_net_ctrl + 3);
 
     // Offset 4: HOST_NETWORKING_RING_HEAD 
     writeq(0, vfpga->vfpga_net_ctrl + 4);
 
-    // Offset 5: HOST_NETWORKING_IRQ_COALESCE
-    writeq(64, vfpga->vfpga_net_ctrl + 6);
+    // Offset 6: HOST_NETWORKING_IRQ_COALESCE
+    writeq(32, vfpga->vfpga_net_ctrl + 6);
+
+    // Offset 7: HOST_NETWORKING_IRQ_TIMEOUT
+    writeq(500, vfpga->vfpga_net_ctrl + 7);
 
     pr_info("vfpga_net: device %s opened\n", dev->name);
 
@@ -306,7 +318,6 @@ static int vfpga_net_open(struct net_device *dev)
 // Function for stopping the FPGA-NIC 
 static int vfpga_net_stop(struct net_device *dev)
 {
-    dbg_info("vfpga_net_stop: Stopping the FPGA-NIC and cleaning up resources. \n");
     struct vfpga_dev *vfpga = *(struct vfpga_dev **)netdev_priv(dev);
 
     // Stop the queue 
@@ -325,8 +336,6 @@ static int vfpga_net_stop(struct net_device *dev)
 // Function that is called when the FPGA issues an interrupt for packet reception at threshold 
 void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga)
 {
-    // dbg_info("vfpga_net_irq_dispatch: Received an IRQ from the FPGA, scheduling NAPI poll. \n");
-
     // Schedule a napi-call 
     napi_schedule(&vfpga->napi);
 }
@@ -334,8 +343,6 @@ void vfpga_net_irq_dispatch(struct vfpga_dev *vfpga)
 // Function that polls the RX-ring buffer for new packets and handles their processing within the Linux network stack 
 static int vfpga_net_poll(struct napi_struct *napi, int budget)
 {
-    // dbg_info("vfpga_net_poll: Starting NAPI poll with budget %d. \n", budget);
-
     // Get the vfpga device structure from the napi struct
     struct vfpga_dev *vfpga = container_of(napi, struct vfpga_dev, napi);
 
@@ -344,7 +351,6 @@ static int vfpga_net_poll(struct napi_struct *napi, int budget)
 
     // Keep on processing packets until we reach the budget limit or there are no more packets left to process 
     while(packets_processed < budget && vfpga_rx_has_packet(vfpga)) {
-        // dbg_info("vfpga_net_poll: Processing packet %d. \n", packets_processed);
         // Fetch the packet from the RX-ring buffer
         struct sk_buff *skb = vfpga_rx_fetch_packet(vfpga);
 
@@ -360,21 +366,25 @@ static int vfpga_net_poll(struct napi_struct *napi, int budget)
         packets_processed++;
     }
 
+    // Write the updated consumer pointer back to the FPGA hardware so that the
+    // edge-triggered IRQ threshold can re-arm for the next incoming packet.
+    // Without this, (write_ptr - ring_head_reg) never drops back below the
+    // coalesce threshold and no further RX interrupts are generated.
+    // IMPORTANT: must happen BEFORE napi_complete_done() re-enables IRQs.
+    // Writing after completing opens a race: a concurrent poll on another CPU
+    // can advance rx_buf_head and write it to HW first; our stale write would
+    // then regress the hardware ring pointer, starving the FPGA's RX write path.
+    /* if (packets_processed > 0) {
+        dbg_info("vfpga_net_poll: Processed %d packets. \n", packets_processed);
+        writeq(vfpga->rx_buf_head, vfpga->vfpga_net_ctrl + 4);
+    } */ 
+
     // If we returned less than the full budget, we are done for this round.
     // napi_complete_done() MUST be called in this case to clear NAPI_STATE_SCHED;
     // without it, subsequent napi_schedule() calls in the IRQ handler are no-ops
     // and polling never restarts (even though the hardware keeps firing interrupts).
     if(packets_processed < budget) {
         napi_complete_done(napi, packets_processed);
-    }
-
-    // Write the updated consumer pointer back to the FPGA hardware so that the
-    // edge-triggered IRQ threshold can re-arm for the next incoming packet.
-    // Without this, (write_ptr - ring_head_reg) never drops back below the
-    // coalesce threshold and no further RX interrupts are generated.
-    if (packets_processed > 0) {
-        // dbg_info("vfpga_net_poll: Processed %d packets. \n", packets_processed); 
-        writeq(vfpga->rx_buf_head, vfpga->vfpga_net_ctrl + 4);
     }
 
     // Reclaim any TX completions that arrived while we were polling RX, and
@@ -397,13 +407,21 @@ static int vfpga_net_poll(struct napi_struct *napi, int budget)
 // Function to check if there is a packet available in the RX-ring buffer at the next position 
 static bool vfpga_rx_has_packet(struct vfpga_dev *vfpga)
 {
+    // dbg_info("vfpga_rx_has_packet: Checking for new packet at RX buffer head index %u. \n", vfpga->rx_buf_head);
     // Calculate pointer to the meta word of the current RX slot
     uint8_t *base_ptr = (uint8_t *)vfpga->vfpga_net_rx_buf;
-    uint8_t *pkt_ptr = base_ptr + vfpga->rx_buf_head * 6144;
+    uint8_t *pkt_ptr = base_ptr + vfpga->rx_buf_head * BUFFER_STRIDE;
     uint32_t *meta_word_ptr = (uint32_t *)(pkt_ptr);
+    // dbg_info("vfpga_rx_has_packet: Base pointer address: %p, packet pointer address: %p. \n", base_ptr, pkt_ptr);
+    // dbg_info("vfpga_rx_has_packet: Meta word pointer address: %p. \n", meta_word_ptr);
 
     // Read raw meta word from DMA buffer
+    dma_sync_single_for_cpu(&vfpga->bd_data->pci_dev->dev,
+                        vfpga->vfpga_net_rx_buf_phys_addr +
+                        (vfpga->rx_buf_head * BUFFER_STRIDE),
+                        sizeof(uint32_t), DMA_FROM_DEVICE);
     uint32_t raw_meta = *meta_word_ptr;
+    // dbg_info("vfpga_rx_has_packet: Raw meta word value: 0x%08x. \n", raw_meta);
 
     // Decode the meta word
     meta_tag_decoded_t meta;
@@ -411,16 +429,18 @@ static bool vfpga_rx_has_packet(struct vfpga_dev *vfpga)
     meta.packet_len      = (raw_meta >> 3)  & 0x0FFFFFFF;
     meta.rsvd            = raw_meta & 0x7;
 
+    // dbg_info("vfpga_rx_has_packet: Meta tag - possession_flag: %u, packet_len: %u, rsvd: %u. \n", meta.possession_flag, meta.packet_len, meta.rsvd);
+
     // Return true if FPGA owns the packet (flag=1)
     return (meta.possession_flag == 1);
-}  
+}
 
-// Function to fetch the packet from the RX-ring buffer at the current position and hand it over to the network stack 
+// Function to fetch the packet from the RX-ring buffer at the current position and hand it over to the network stack
 static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
 {
     // Calculate pointer to the packet of the current RX slot
     uint8_t *base_ptr = (uint8_t *)vfpga->vfpga_net_rx_buf;
-    uint8_t *pkt_ptr = base_ptr + vfpga->rx_buf_head * 6144;
+    uint8_t *pkt_ptr = base_ptr + vfpga->rx_buf_head * BUFFER_STRIDE;
     uint32_t *meta_word_ptr = (uint32_t *)(pkt_ptr);
 
     // Read raw meta word from DMA buffer
@@ -434,12 +454,24 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
 
     // One more check to ensure the possession flag is set
     if(meta.possession_flag == 0) {
+        // dbg_info("vfpga_rx_fetch_packet: Packet at RX buffer head index %u does not have possession flag set. \n", vfpga->rx_buf_head);
         return NULL;
     }
 
     // For fetching the actual packet: Read out the packet length from the meta-tag and calculate the packet start address
     size_t pkt_len = meta.packet_len;
     void *actual_pkt_addr = (void *)(meta_word_ptr + 1);
+
+    // If packet length is 1514, this is a iperf packet and we count it for debugging purposes by setting a flag in the vFPGA; this allows us to correlate the number of iperf packets we receive with the number of times we circle around in the RX buffer, which gives us insights into how many iperf packets we can store in the RX buffer before we start dropping them
+    /* if(pkt_len == 1514) {
+        vfpga->iperf_pkt_cnt++;
+        dbg_info("vfpga_rx_fetch_packet: Received iperf packet at RX buffer head index %u, total iperf packets received so far: %u. \n", vfpga->rx_buf_head, vfpga->iperf_pkt_cnt);
+    }
+
+    // If this is the first iperf packet, we store the position of the buf head in the vFPGA for debugging purposes; this allows us to correlate the position of the first iperf packet in the RX buffer with the number of packets we can receive before we start dropping them, which gives us insights into how many non-iperf packets we receive before we can store an iperf packet in the RX buffer
+    if(pkt_len == 1514 && vfpga->rx_buf_first_pkt_flag == 0) {
+        vfpga->rx_buf_first_pkt_flag = vfpga->rx_buf_head;
+    } */ 
 
     // Allocate a new skb for the packet
     struct sk_buff *skb = netdev_alloc_skb(vfpga->ndev, pkt_len);
@@ -451,7 +483,7 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
     // Copy the packet data into the skb
     dma_sync_single_for_cpu(&vfpga->bd_data->pci_dev->dev,
                         vfpga->vfpga_net_rx_buf_phys_addr +
-                        (vfpga->rx_buf_head * 6144) + sizeof(uint32_t),
+                        (vfpga->rx_buf_head * BUFFER_STRIDE) + sizeof(uint32_t),
                         pkt_len, DMA_FROM_DEVICE);
     memcpy(skb_put(skb, pkt_len), actual_pkt_addr, pkt_len);
 
@@ -473,7 +505,13 @@ static struct sk_buff *vfpga_rx_fetch_packet(struct vfpga_dev *vfpga)
     wmb();
 
     // Update the RX buffer head to the next position (wrap around if necessary)
-    vfpga->rx_buf_head = (vfpga->rx_buf_head + 1) % 512;
+    vfpga->rx_buf_head = (vfpga->rx_buf_head + 1) % BUFFER_RING_SIZE;
+
+    // If the buf head is 0, we wrapped around and store that in the vFPGA for debugging purposes
+    if(vfpga->rx_buf_head == 0) {
+        vfpga->rx_buf_cycle_cnt++;
+        dbg_info("vfpga_rx_fetch_packet: Wrapped around RX buffer, cycle count: %u. \n", vfpga->rx_buf_cycle_cnt);
+    }
 
     return skb;
 }

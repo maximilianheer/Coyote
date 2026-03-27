@@ -1171,7 +1171,7 @@ struct vfpga_dev {
     // For network device: Pointer to the config, control and writeback memory mapping 
     volatile uint64_t *vfpga_net_ctrl;
     volatile uint64_t *vfpga_net_cnfg;
-    volatile uint64_t *vfpga_net_wb;
+    volatile uint32_t *vfpga_net_wb;
 
     // For network device: Counter of outstanding commands to not overflow the RX and TX queues in hardware
     uint64_t cmd_cnt; 
@@ -1184,6 +1184,18 @@ struct vfpga_dev {
 
     // Global RX buffer index for state-keeping on the RX-polling path
     uint32_t rx_buf_head;
+
+    // Counter for the number of times we circled around in the RX buffer 
+    uint32_t rx_buf_cycle_cnt;
+
+    // Indicator for which RX buffer location held the first packet for the current iperf server 
+    uint32_t rx_buf_first_pkt_flag;
+
+    // General counter for all iperf packets
+    uint32_t iperf_pkt_cnt;
+
+    // Indicator for which RX buffer location we get stuck on
+    uint32_t rx_buf_stuck_flag;
 
     // TX ring indices: tx_head is the next slot to write into (mod TX_NUM_SLOTS),
     // tx_completed accumulates FPGA completion counts so slots can be safely recycled.

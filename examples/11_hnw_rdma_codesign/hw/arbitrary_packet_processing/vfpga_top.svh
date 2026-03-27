@@ -1,5 +1,9 @@
 // VFPGA FOR HOST NETWORKING, ALTERNATIVE VERSION -> RECEIVE INTO FIFOs, RELEASE CENTRALLY & MERGED
 
+// For debugging: Packet length counters at all relevant positions in the data stream 
+logic [31:0] packet_length_at_reception;
+logic [31:0] packet_length_at_release;
+logic [31:0] packet_length_in_host_send;
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -103,7 +107,32 @@ axis_data_fifo_512_dma_cmd inst_axis_data_fifo_512_dma_cmd(
 
 // Connect the ready signal of the incoming host networking to the control setup and the FIFO reception
 assign axis_host_networking_rx.tready = data_stream_fifo_reception_ready && reception_fsm_ready;
-assign data_stream_fifo_reception_valid = axis_host_networking_rx.tvalid && (host_networking_buff_vaddr != 0);
+assign data_stream_fifo_reception_valid = axis_host_networking_rx.tvalid && (host_networking_buff_vaddr != 0) && reception_fsm_ready;  // We can only receive data if the control setup has been done (base address of the packet buffers has been set) and if the reception FSM is ready to receive a new stream
+
+// Implement the packet length counter for this FIFO - we count AXI beats. Reset with tlast. 
+always_ff @(posedge aclk) begin 
+    if(!aresetn) begin 
+        packet_length_at_reception <= 0;
+        packet_length_at_release <= 0;
+    end else begin 
+        if(data_stream_fifo_reception_valid && data_stream_fifo_reception_ready) begin
+            if(axis_host_networking_rx.tlast) begin 
+                packet_length_at_reception <= 0;
+            end else begin
+                packet_length_at_reception <= packet_length_at_reception + 1;
+            end
+        end
+        
+        if(data_stream_valid_out && data_stream_ready_in) begin 
+            if(data_stream_last_out) begin 
+                packet_length_at_release <= 0;
+            end else begin 
+                packet_length_at_release <= packet_length_at_release + 1;
+            end
+        end
+    end 
+end
+
 
 // ----------------------------------------------------------------------------
 // FIFO for the meta tags
@@ -431,6 +460,15 @@ always_ff @(posedge aclk) begin
 
                     // Trigger the transmission of the DMA command to the XDMA engine 
                     sq_wr.valid <= 1'b1;
+                    sq_wr_vaddr_value <= host_networking_buff_vaddr + (host_networking_ring_tail * host_networking_buff_stride); 
+
+                    // Count up the current ring position to be able to address the correct buffer for the next packet
+                    if(host_networking_ring_tail == (host_networking_ring_size - 1)) begin 
+                        host_networking_ring_tail <= 0;
+                    end else begin 
+                        host_networking_ring_tail <= host_networking_ring_tail + 1;
+                    end
+
 
                     // Increment the DMA packet counter for IRQ coalescing (wrap around at threshold)
                     if(dma_packet_counter == host_networking_irq_coalesce) begin 
@@ -459,14 +497,7 @@ always_ff @(posedge aclk) begin
                     data_stream_ready_in <= 1'b1; 
 
                     // Go to the state where we can deal with the transmission of the first data chunk to the host 
-                    release_state <= TRANSMIT_FIRST_CHUNK; 
-
-                    // Count up the current ring position to be able to address the correct buffer 
-                    if(host_networking_ring_tail == (host_networking_ring_size - 1)) begin 
-                        host_networking_ring_tail <= 0;
-                    end else begin 
-                        host_networking_ring_tail <= host_networking_ring_tail + 1;
-                    end
+                    release_state <= TRANSMIT_FIRST_CHUNK;                 
                 end 
             end
 
@@ -645,6 +676,21 @@ always_ff @(posedge aclk) begin
     end 
 end
 
+// Implement the packet length counter for this FIFO - we count AXI beats. Reset with tlast.
+always_ff @(posedge aclk) begin 
+    if(!aresetn) begin 
+        packet_length_in_host_send <= 0;
+    end else begin 
+        if(axis_host_send[0].tvalid && axis_host_send[0].tready) begin
+            if(axis_host_send[0].tlast) begin 
+                packet_length_in_host_send <= 0;
+            end else begin
+                packet_length_in_host_send <= packet_length_in_host_send + 1;
+            end
+        end 
+    end 
+end
+
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -652,10 +698,13 @@ end
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+logic [47:0] sq_wr_vaddr_value; 
+
 // Assign the data signal of the DMA command 
 assign sq_wr.data.last = 1'b1; 
 assign sq_wr.data.pid = host_networking_pid;
-assign sq_wr.data.vaddr = host_networking_buff_vaddr + (host_networking_ring_tail * host_networking_buff_stride);   // Base address + current ring position 
+// assign sq_wr.data.vaddr = host_networking_buff_vaddr + (host_networking_ring_tail * host_networking_buff_stride);   // Base address + current ring position 
+assign sq_wr.data.vaddr = sq_wr_vaddr_value;   // Base address + current ring position (optimized with shift since stride is 64 bytes)
 assign sq_wr.data.len = meta_tag_data_out.packet_len + 4;  // Length of the packet + 4 bytes for the meta tag to be merged into the data stream 
 assign sq_wr.data.strm = STRM_HOST;
 assign sq_wr.data.opcode = LOCAL_WRITE;
@@ -818,5 +867,14 @@ ila_host_networking inst_ila_host_networking (
     .probe43(dma_packet_counter_irq_trigger),            // 1
     .probe44(dma_time_counter_irq_trigger),              // 1
     .probe45(dma_time_threshold_crossed),                // 1
-    .probe46(dma_time_counter)                           // 32
+    .probe46(dma_time_counter),                          // 32
+
+    // Additional debugging probes 
+    .probe47(data_stream_fifo_reception_ready),          // 1 
+    .probe48(data_stream_fifo_reception_valid),          // 1
+
+    // Packet length counters 
+    .probe49(packet_length_at_reception),                // 32
+    .probe50(packet_length_at_release),                  // 32
+    .probe51(packet_length_in_host_send)                 // 32
 );
