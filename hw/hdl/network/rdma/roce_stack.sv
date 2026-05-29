@@ -122,12 +122,16 @@ assign rdma_ack.data.ack.strm = ack_meta_data[32+RDMA_QPN_BITS+1+DEST_BITS+:STRM
 assign rdma_ack.data.ack.rsrvd = 0;
 assign rdma_ack.data.last = ack_meta_data[32+RDMA_QPN_BITS+1+DEST_BITS+STRM_BITS+:1];
 
+logic [7:0] rdma_ack_count;
+assign rdma_ack_count = ack_meta_data[56+:8];
+
 rdma_flow inst_rdma_flow (
     .aclk(nclk),
     .aresetn(nresetn),
     .s_req(s_rdma_sq),
     .m_req(rdma_sq),
     .s_ack(rdma_ack),
+    .s_ack_count(rdma_ack_count),
     .m_ack(m_rdma_ack)
 );
 

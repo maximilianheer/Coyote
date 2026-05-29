@@ -31,6 +31,7 @@ module rdma_flow (
     metaIntf.m                  m_req,
 
     metaIntf.s                  s_ack,
+    input  logic [7:0]          s_ack_count,
     metaIntf.m                  m_ack,
 
     input  logic                aclk,
@@ -58,6 +59,7 @@ metaIntf #(.STYPE(dreq_t)) req_out (.*);
 logic [RDMA_OST_BITS-1:0] tail, tail_next;
 logic [RDMA_OST_BITS-1:0] head, head_next;
 logic issued, issued_next;
+logic [7:0] count_C, count_N;
 
 
 // Pointer table
@@ -78,10 +80,12 @@ always_ff @(posedge aclk) begin: PROC_REG
     if (aresetn == 1'b0) begin
         state_C <= ST_IDLE;
         addr_C <= 'X;
+        count_C <= 0;
     end
     else begin
         state_C <= state_N;
         addr_C <= addr_N;
+        count_C <= count_N;
     end
 end
 
@@ -116,6 +120,7 @@ assign tail = ssn_out[0+:RDMA_OST_BITS];
 
 always_comb begin: DP
     addr_N = addr_C;
+    count_N = count_C;
 
     // ACKs
     s_ack.ready = 1'b0;
@@ -132,7 +137,7 @@ always_comb begin: DP
     // Table
     ssn_wr = 0;
     ssn_addr = 0;
-    
+
     // Pointers
     head_next = 0;
     tail_next = 0;
@@ -143,6 +148,7 @@ always_comb begin: DP
             if(s_ack.valid) begin
                 s_ack.ready = 1'b1;
                 ack_que_in.valid = s_ack.data.last;
+                count_N = s_ack_count;
 
                 ssn_addr = {is_opcode_rd_resp(s_ack.data.ack.opcode), s_ack.data.ack.vfid[N_REGIONS_BITS-1:0], s_ack.data.ack.pid};
                 addr_N = ssn_addr;
@@ -155,8 +161,8 @@ always_comb begin: DP
 
         ST_ACK_LUP: begin
             head_next = head;
-            tail_next = tail + 1;
-            if(head == tail_next) 
+            tail_next = tail + count_C;
+            if(head == tail_next)
                 issued_next = 1'b0;
             else
                 issued_next = issued;
