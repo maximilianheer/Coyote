@@ -14,8 +14,9 @@ excluded from the PR surface.
 | `dataset.py` | Manifest discovery, bitstream loading, 1D/2D dataset views |
 | `model.py` | Grayscale ResNet-18 and hls4ml-friendly CNN factories |
 | `train.py` | Training loop, validation, plots, and checkpoints |
-| `visualize.py` | Optional debug image generation |
-| `resnet18_baseline.ipynb` | Notebook version of the baseline flow |
+| `gradcam.py` | Grad-CAM bundle generation used by training and hls4ml plots |
+| `visualize.py` | Debug/evaluation image helpers imported by training |
+| `setup_env.sh` | Minimal local Python environment setup |
 | `../hls4ml/` | Production hls4ml pipeline and reproducibility packages |
 
 ## Dataset
@@ -33,8 +34,8 @@ export COYOTE_DATASET_VAULT=/path/to/coyote_vault_work
 ```
 
 The expected vault layout is one or more `full_dataset_it*` directories, each
-with `manifest.csv` and `bitstreams/`. In-repository dataset generation sources
-are documented under `../datasets/`.
+with `manifest.csv` and `bitstreams/`. Dataset-generation sources and exported
+bitstreams are intentionally kept outside the PR source surface.
 
 ## Setup and Checks
 
@@ -44,7 +45,7 @@ cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/ml_basel
 bash setup_env.sh
 source .venv/bin/activate
 python model.py
-python -m py_compile dataset.py model.py train.py visualize.py
+python -m py_compile dataset.py model.py train.py gradcam.py visualize.py
 ```
 
 ## Training
@@ -63,7 +64,7 @@ Training outputs are written to `runs/<run_name>/` and ignored by Git.
 ## hls4ml / Vitis
 
 The production hls4ml flow is documented in `../hls4ml/README.md`. Vitis tools
-must be available in the shell before notebooks or synthesis jobs are started.
+must be available in the shell before synthesis jobs are started.
 
 ```bash
 set -euo pipefail

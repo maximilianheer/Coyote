@@ -116,6 +116,7 @@ examples/ml_deep_bitstream_inspection/hls4ml/configs/hls4ml_experiment_layer7_ex
 examples/ml_deep_bitstream_inspection/hls4ml/configs/hls4ml_hand_tuning/*fifo_opt*.yaml
 examples/ml_deep_bitstream_inspection/hls4ml/configs/hls4ml_runs/*.yaml
 examples/ml_deep_bitstream_inspection/hls4ml/configs/hls4ml_runs/diagnostics/
+examples/ml_deep_bitstream_inspection/datasets/
 examples/ml_deep_bitstream_inspection/datasets/full_dataset_it5_big_ro_test/
 examples/ml_deep_bitstream_inspection/datasets/*/jobs*/
 examples/ml_deep_bitstream_inspection/datasets/*/logs/
