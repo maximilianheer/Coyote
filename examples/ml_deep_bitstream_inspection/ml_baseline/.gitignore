@@ -8,3 +8,4 @@ logs/
 .vscode/
 *.log
 **/AGENT_*.md
+resnet18_baseline.ipynb
