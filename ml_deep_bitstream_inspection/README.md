@@ -20,10 +20,10 @@ reproduce from another vault location.
 
 ```bash
 set -euo pipefail
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/ml_baseline
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/ml_baseline
 source .venv/bin/activate
 
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 ../ml_baseline/.venv/bin/python scripts/hls4ml_run.py --config configs/hls4ml_production/res256_layers7_W8A8_P50_manualA_production.yaml --stages ''
 ../ml_baseline/.venv/bin/python scripts/hls4ml_run.py --config configs/hls4ml_production/res512_layers7_W8A8_P50_manualA_production.yaml --stages ''
 ```

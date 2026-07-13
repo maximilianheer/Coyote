@@ -53,7 +53,7 @@ Run training, HLS conversion/synthesis, and U55C bitstream build for the
 default pruned-QAT configuration:
 
 ```bash
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 ./scripts/hls4ml_run.py --config configs/hls4ml_runs/cnn_small_hls_opt_img512_pruned_qat_u55c.yaml --stages train,hls,bitstream
 ```
 
@@ -97,7 +97,7 @@ Run float training with pruning enabled:
 Resume on the U55C host from the same shared run directory:
 
 ```bash
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 ./scripts/hls4ml_run.py --config configs/hls4ml_runs/cnn_small_hls_opt_img512_pruned_qat_u55c.yaml --run-root <existing_run_root> --stages deploy,validate
 ```
 
@@ -111,7 +111,7 @@ Check the frozen production configs without launching training or synthesis:
 
 ```bash
 set -euo pipefail
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 
 ./scripts/hls4ml_run.py --config configs/hls4ml_production/res256_layers7_W8A8_P50_manualA_production.yaml --stages ''
 ./scripts/hls4ml_run.py --config configs/hls4ml_production/res512_layers7_W8A8_P50_manualA_production.yaml --stages ''
@@ -121,7 +121,7 @@ Verify the production reproducibility manifests:
 
 ```bash
 set -euo pipefail
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/reproducibility
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/reproducibility
 
 python prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/verify_manifest.py
 python prod_res512_coyote_accel_downsampler_hls4ml_e2e_20260524/verify_manifest.py
@@ -179,7 +179,7 @@ For a new hand-tuned candidate, use this workflow:
 
 ```bash
 set -euo pipefail
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 
 CONFIG=configs/hls4ml_hand_tuning/res256_layers6_W8A8_P50_manualA.yaml
 RESULTS_DIR=results/hand_tuning
@@ -203,7 +203,7 @@ manual YAML knobs:
 
 ```bash
 set -euo pipefail
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 
 ./scripts/verify_hls_layer_tuning.py \
   --configs configs/hls4ml_hand_tuning \
@@ -215,7 +215,7 @@ sweeps, regenerate the summary CSV and plots:
 
 ```bash
 set -euo pipefail
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 
 ./scripts/plot_hand_optimized_layer_costs.py \
   --output-dir results/hand_optimized
@@ -304,7 +304,7 @@ After marking timeouts, collect tables and regenerate plots:
 Run the U55C wrapper C-sim test for a staged deployment:
 
 ```bash
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 export CLI_PATH=/opt/hdev/cli
 export TERM=${TERM:-xterm}
 source /opt/hdev/cli/enable/vitis -v 2024.2
@@ -340,7 +340,7 @@ processes and aggregate the results:
 Run the same wrapper test through Vitis HLS RTL cosimulation:
 
 ```bash
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 export CLI_PATH=/opt/hdev/cli
 export TERM=${TERM:-xterm}
 source /opt/hdev/cli/enable/vitis -v 2024.2
@@ -363,7 +363,7 @@ full Coyote shell or `vfpga_top.svh`.
 `--resume-cosim` to skip csim+csynth and retry only the cosim step:
 
 ```bash
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 export CLI_PATH=/opt/hdev/cli
 export TERM=${TERM:-xterm}
 source /opt/hdev/cli/enable/vitis -v 2024.2

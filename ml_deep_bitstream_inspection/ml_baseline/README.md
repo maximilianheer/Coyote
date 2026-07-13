@@ -41,7 +41,7 @@ bitstreams are intentionally kept outside the PR source surface.
 
 ```bash
 set -euo pipefail
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/ml_baseline
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/ml_baseline
 bash setup_env.sh
 source .venv/bin/activate
 python model.py
@@ -52,7 +52,7 @@ python -m py_compile dataset.py model.py train.py gradcam.py visualize.py
 
 ```bash
 set -euo pipefail
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/ml_baseline
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/ml_baseline
 source .venv/bin/activate
 
 python train.py --epochs 1 --run-name smoke
@@ -70,7 +70,7 @@ must be available in the shell before synthesis jobs are started.
 set -euo pipefail
 source /tools/Xilinx/Vitis/2024.2/.settings64-Vitis.sh
 source /tools/Xilinx/Vitis_HLS/2024.2/.settings64-Vitis_HLS.sh
-cd /pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml
+cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 ../ml_baseline/.venv/bin/python scripts/hls4ml_run.py --config configs/hls4ml_production/res256_layers7_W8A8_P50_manualA_production.yaml --stages ''
 ../ml_baseline/.venv/bin/python scripts/hls4ml_run.py --config configs/hls4ml_production/res512_layers7_W8A8_P50_manualA_production.yaml --stages ''
 ```

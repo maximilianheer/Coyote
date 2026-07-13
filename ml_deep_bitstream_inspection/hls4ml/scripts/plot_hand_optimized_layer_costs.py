@@ -30,7 +30,7 @@ SWEEPS = [
         "sweep_reuse_factor": 1,
         "bar_order": 0,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img256/notebook_pruned_qat/"
             "res256_layers7_W8A8_P50_RFbase_74abd8967440/hls_sweeps/RF1_hls_ec24b5cc81fe"
         ),
@@ -42,7 +42,7 @@ SWEEPS = [
         "sweep_reuse_factor": 1,
         "bar_order": 1,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img256/notebook_pruned_qat/"
             "res256_layers7_W8A8_P50_RFbase_resource_strategy_from_74abd8967440/"
             "hls_sweeps/RFResource1_hls_db0d83b80b6e"
@@ -55,7 +55,7 @@ SWEEPS = [
         "sweep_reuse_factor": 2,
         "bar_order": 2,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img256/notebook_pruned_qat/"
             "res256_layers7_W8A8_P50_RFbase_resource_strategy_from_74abd8967440/"
             "hls_sweeps/RFResource2_hls_d4f551930017"
@@ -68,7 +68,7 @@ SWEEPS = [
         "sweep_reuse_factor": 4,
         "bar_order": 3,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img256/notebook_pruned_qat/"
             "res256_layers7_W8A8_P50_RFbase_resource_strategy_from_74abd8967440/"
             "hls_sweeps/RFResource4_hls_c73fa830e212"
@@ -81,7 +81,7 @@ SWEEPS = [
         "sweep_reuse_factor": 8,
         "bar_order": 4,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img256/notebook_pruned_qat/"
             "res256_layers7_W8A8_P50_RFbase_resource_strategy_from_74abd8967440/"
             "hls_sweeps/RFResource8_hls_9c3f5eeda556"
@@ -94,7 +94,7 @@ SWEEPS = [
         "sweep_reuse_factor": 16,
         "bar_order": 5,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img256/notebook_pruned_qat/"
             "res256_layers7_W8A8_P50_RFbase_resource_strategy_from_74abd8967440/"
             "hls_sweeps/RFResource16_hls_bbab2a8cfb79"
@@ -107,7 +107,7 @@ SWEEPS = [
         "sweep_reuse_factor": 32,
         "bar_order": 6,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img256/notebook_pruned_qat/"
             "res256_layers7_W8A8_P50_RFbase_resource_strategy_from_74abd8967440/"
             "hls_sweeps/RFResource32_hls_6b653c3fdc27"
@@ -120,7 +120,7 @@ SWEEPS = [
         "sweep_reuse_factor": "mixed",
         "bar_order": 7,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img256/notebook_pruned_qat/"
             "res256_layers7_W8A8_P50_manualA_ad5955bea6e9/hls_sweeps/manualA_hls_c73ef690acf2"
         ),
@@ -132,7 +132,7 @@ SWEEPS = [
         "sweep_reuse_factor": "mixed",
         "bar_order": 8,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img256/notebook_pruned_qat/"
             "res256_layers7_W8A8_P50_manual_v1_global_cc6b9c24dcbd/"
             "hls_sweeps/manual_v1_global_hls_437d6afb343d"
@@ -145,7 +145,7 @@ SWEEPS = [
         "sweep_reuse_factor": 1,
         "bar_order": 0,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img512/notebook_pruned_qat/"
             "res512_layers7_W8A8_P50_RFbase_b3a09a3d898b/hls_sweeps/RFbase_hls_9f3541f73c5d"
         ),
@@ -157,7 +157,7 @@ SWEEPS = [
         "sweep_reuse_factor": 1,
         "bar_order": 1,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img512/notebook_pruned_qat/"
             "res512_layers7_W8A8_P50_RFbase_resource_strategy_from_b3a09a3d898b/"
             "hls_sweeps/RFResource1_hls_d305ee5e13cc"
@@ -170,7 +170,7 @@ SWEEPS = [
         "sweep_reuse_factor": 2,
         "bar_order": 2,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img512/notebook_pruned_qat/"
             "res512_layers7_W8A8_P50_RFbase_resource_strategy_from_b3a09a3d898b/"
             "hls_sweeps/RFResource2_hls_8c7b90ce3603"
@@ -183,7 +183,7 @@ SWEEPS = [
         "sweep_reuse_factor": 4,
         "bar_order": 3,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img512/notebook_pruned_qat/"
             "res512_layers7_W8A8_P50_RFbase_resource_strategy_from_b3a09a3d898b/"
             "hls_sweeps/RFResource4_hls_151264670e00"
@@ -196,7 +196,7 @@ SWEEPS = [
         "sweep_reuse_factor": 8,
         "bar_order": 4,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img512/notebook_pruned_qat/"
             "res512_layers7_W8A8_P50_RFbase_resource_strategy_from_b3a09a3d898b/"
             "hls_sweeps/RFResource8_hls_00d67c66dfd0"
@@ -209,7 +209,7 @@ SWEEPS = [
         "sweep_reuse_factor": 16,
         "bar_order": 5,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img512/notebook_pruned_qat/"
             "res512_layers7_W8A8_P50_RFbase_resource_strategy_from_b3a09a3d898b/"
             "hls_sweeps/RFResource16_hls_bfa9ddb35197"
@@ -222,7 +222,7 @@ SWEEPS = [
         "sweep_reuse_factor": 32,
         "bar_order": 6,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img512/notebook_pruned_qat/"
             "res512_layers7_W8A8_P50_RFbase_resource_strategy_from_b3a09a3d898b/"
             "hls_sweeps/RFResource32_hls_04a8ea59b68e"
@@ -235,7 +235,7 @@ SWEEPS = [
         "sweep_reuse_factor": "mixed",
         "bar_order": 7,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img512/notebook_pruned_qat/"
             "res512_layers7_W8A8_P50_manualA_53819173e114/hls_sweeps/manualA_hls_97999e7ec333"
         ),
@@ -247,7 +247,7 @@ SWEEPS = [
         "sweep_reuse_factor": "mixed",
         "bar_order": 8,
         "root": Path(
-            "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+            "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
             "artifacts_selected_feasible_candidates/cnn_small_hls_opt_img512/notebook_pruned_qat/"
             "res512_layers7_W8A8_P50_manual_v1_global_a3b46c23cc50/"
             "hls_sweeps/manual_v1_global_hls_e8b0dc08647f"

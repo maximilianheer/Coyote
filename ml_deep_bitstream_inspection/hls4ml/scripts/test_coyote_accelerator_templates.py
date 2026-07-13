@@ -18,7 +18,7 @@ def render_template(name: str, **values: object) -> str:
 
 
 DEFAULT_GOLDEN = Path(
-    "/pub/scratch/sdeheredia/Coyote/examples/ml_deep_bitstream_inspection/hls4ml/"
+    "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/"
     "reproducibility/zero_in_coyote_accel_downsampler_hls4ml_e2e_20260517/"
     "sources/generated_project/src"
 )
