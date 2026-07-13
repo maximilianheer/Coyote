@@ -1,0 +1,13 @@
+**/*.pt
+runs/
+saved_runs/
+debug_viz/
+.venv*
+logs/
+.Xil/
+.vscode/
+*.log
+**/AGENT_*.md
+resnet18_baseline.ipynb
+monitor_runs.sh
+setup_jupyter.sh
