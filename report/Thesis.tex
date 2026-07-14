@@ -1,0 +1,93 @@
+\documentclass[a4paper, oneside]{discothesis}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{siunitx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DOCUMENT METADATA
+
+\thesistype{Semester Project} % Master's Thesis, Bachelor's Thesis, Semester Thesis, Group Project
+\title{ML-based Deep Bitstream Inspection for
+serverless FPGAs}
+
+\author{Santiago de Heredia Tenorio}
+\email{sdeheredia@ethz.ch}
+
+\institute{Systems Group \\[2pt]
+ETH Zürich}
+
+% Optionally, you can put in your own logo here
+% \logo{\includegraphics[width=0.2\columnwidth]{figures/disco_logo_faded}}
+
+\supervisors{Maximilian Heer\\[2pt] Prof.\ Dr.\ Gustavo Alonso}
+
+% Optionally, keywords and categories of the work can be shown (on the Abstract page)
+%\keywords{Keywords go here.}
+%\categories{ACM categories go here.}
+
+\date{\today}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\frontmatter % do not remove this line
+\maketitle
+
+\cleardoublepage
+
+\begin{acknowledgements}
+	I thank Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+\end{acknowledgements}
+
+
+\begin{abstract}
+Cloud and serverless FPGA platforms expose reconfigurable fabric to user-supplied designs, making them vulnerable to malicious circuits such as ring oscillators. Prior work on ML-based bitstream inspection has shown that malicious payloads can be detected from bitstream-level patterns, but these approaches are generally evaluated as offline software classifiers and are not designed for low-latency deployment on datacenter-grade FPGA infrastructure. This motivates an online inspection approach in which the detection model itself is implemented in FPGA fabric and integrated into a cloud-oriented FPGA shell before user bitstreams are deployed.
+
+This report investigates whether malicious-bitstream detection can be moved into the FPGA deployment path itself. We generate a dataset of benign Coyote partial bitstreams and trojan ring-oscillator bitstreams, represent bitstreams as image-like inputs, train compact CNN classifiers, and synthesize selected models using hls4ml. We evaluate the resulting design space across classification quality, input resolution, model depth, quantization, pruning, reuse factor, latency, and FPGA resource utilization.
+
+Our results show that [main accuracy/F1/FNR result], while synthesized models achieve [latency] with [LUT/DSP/BRAM] utilization. We further integrate [selected model/downsampler] into the Coyote flow, demonstrating [end-to-end result]. The findings suggest that FPGA-resident ML-based inspection is feasible under [conditions], but remains limited by [main limitation].
+
+\end{abstract}
+\tableofcontents
+
+\mainmatter % do not remove this line
+
+% Start writing here
+\include{chapter1_introduction}
+
+\include{chapter2_related_work}
+
+\include{chapter3_dataset_generation}
+
+\include{chapter4_cnn_pipeline}
+
+\include{chapter5_hls4ml}
+
+\include{chapter6_coyote_integration}
+
+\include{chapter7_discussion}
+
+\include{chapter8_conclusion}
+\include{rest.tex}
+
+% This displays the bibliography for all cited external documents. All references have to be defined in the file references.bib and can then be cited from within this document.
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\appendix
+\chapter{First Appendix Chapter Title}
+
+
+
+\end{document}

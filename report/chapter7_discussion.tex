@@ -1,0 +1,62 @@
+\chapter{Discussion, Limitations, and Future Work}
+\label{ch:discussion}
+
+\section{Discussion}
+\label{sec:discussion}
+
+The results show that FPGA-resident ML inspection is a feasible direction for serverless FPGA deployment. The checker can be placed before partial reconfiguration, trained CNNs can classify Coyote-style partial bitstreams with useful accuracy, and hls4ml can synthesize selected models into concrete hardware candidates.
+
+The main design lesson is that the best software model is not always the best deployment model. The 512$\times$7 candidate improves several detection metrics, including F1, false positive rate, ROC AUC, and extended RO-footprint detection. It also has much higher BRAM overhead and higher latency. The 256$\times$7 candidate gives a better deployment balance. It has lower added latency, much lower BRAM use, and still provides useful detection quality.
+
+The checker should be understood as a defense-in-depth component. It can reduce the chance that an RO-based malicious bitstream reaches the reconfigurable region. It does not prove that a bitstream is safe. A practical platform should combine this checker with static validation, bitstream authentication, runtime monitoring, and platform policy.
+
+The RO-footprint results also show where the detector is strongest. Larger RO payloads are detected more reliably. These payloads are the most relevant for power-stress attacks. Smaller payloads remain harder and require stronger datasets, better models, or additional checks.
+
+\section{Limitations}
+\label{sec:limitations}
+
+This work is a feasibility study. It makes progress toward FPGA-resident inspection, but it has several limitations.
+
+\begin{table}[t]
+    \centering
+    \caption{Current limitations of the prototype.}
+    \label{tab:limitations}
+    \begin{tabular}{p{0.28\linewidth} p{0.62\linewidth}}
+        \toprule
+        \textbf{Limitation} & \textbf{Impact} \\
+        \midrule
+        Binary classification &
+        The current task distinguishes benign Coyote bitstreams from RO-based malicious bitstreams. It does not cover broader malicious-circuit classes. \\
+        \midrule
+        RO-focused dataset &
+        The malicious class is generated from ring-oscillator payloads. Other attacks may produce different bitstream patterns. \\
+        \midrule
+        CNN-only evaluation &
+        The main detector family is CNN-based. Other hardware-friendly classifiers may provide better latency or resource tradeoffs. \\
+        \midrule
+        Low-footprint attacks &
+        Small malicious payloads are harder to detect. Misses concentrate in the smallest RO-footprint regime. \\
+        \midrule
+        One platform setting &
+        The evaluation focuses on Coyote-style artifacts and one FPGA platform family. Generalization across devices and shells is not yet shown. \\
+        \midrule
+        Partial integration &
+        The checker is synthesized and placed in a proposed Coyote path, but it is not yet a complete production deployment component. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+The dataset also has possible confounders. Since labels are assigned by construction, the model may learn features correlated with the generation process. These could include payload size, routing density, floorplan effects, or configuration artifacts. The floorplan and configuration sweeps reduce this risk, but they do not eliminate it.
+
+\section{Future Work}
+\label{sec:future-work}
+
+The next step is broader validation. The dataset should include more attack classes, more benign applications, and harder malicious examples. Important additions include timing attacks, side-channel circuits, covert channels, non-RO power wasters, and mixed benign-plus-malicious designs.
+
+Low-footprint attacks deserve special attention. A stronger benchmark should include subtle payloads with different RO densities and placements. This would test whether the classifier can detect malicious structure without relying on large payload size.
+
+Future work should also evaluate other model families. MLPs, decision trees, tiny CNNs, binary neural networks, and FINN-style quantized models may provide better latency and resource tradeoffs. These models should be compared under the same dataset, metrics, and synthesis flow.
+
+Generalization is another open question. The current results should be repeated across different FPGA families, floorplans, shells, and benign workloads. Versal or V80-class devices would be especially useful targets because they are relevant to newer datacenter FPGA deployments.
+
+The final systems step is full Coyote integration. The checker should be connected directly to the PR control path, with threshold policy, logging, error handling, and a clear response for low-confidence predictions. This would turn the current prototype into a complete in-path security gate.

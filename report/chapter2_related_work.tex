@@ -1,0 +1,101 @@
+\chapter{Background, Threat Model, and Gap}
+\label{ch:background-threat-gap}
+
+\section{Serverless FPGAs and Partial Reconfiguration}
+\label{sec:serverless-fpgas}
+
+Serverless FPGA systems expose reconfigurable hardware as an on-demand acceleration service. Users submit hardware applications, while the platform manages the FPGA shell, host interface, memory system, networking, and runtime services. This model hides low-level FPGA management from users and allows the provider to share FPGA capacity across applications.
+
+Partial reconfiguration makes this deployment model practical. The FPGA is divided into a static region and one or more reconfigurable regions. The static region contains trusted platform logic, while the reconfigurable region contains user logic. A user application can therefore be loaded without rebuilding the full FPGA image.
+
+This structure creates a natural security boundary. The user partial bitstream enters the platform before it is loaded into the reconfigurable region. If the bitstream contains malicious logic, the platform may configure that logic directly into shared FPGA fabric. The deployment path should therefore include an inspection step before partial reconfiguration.
+
+Coyote is a relevant target for this work because it provides a datacenter FPGA shell with partial reconfiguration, multitenancy, and platform services. It gives a concrete setting for studying whether bitstream inspection can become part of the FPGA deployment path.
+
+\section{Ring-Oscillator Payloads}
+\label{sec:ring-oscillators}
+
+Ring oscillators are a simple and well-studied malicious payload for FPGAs. A ring oscillator is built from an odd feedback loop of inverters. The loop has no stable state and continuously toggles. A single ring oscillator is small, but a large array of attacker-controlled ring oscillators can create high-frequency switching activity.
+
+This switching activity stresses shared physical resources. In a cloud or serverless FPGA setting, the relevant resources include power delivery, thermal headroom, and neighboring user logic. Large ring-oscillator arrays can waste power, induce voltage drops, cause denial of service, or trigger timing faults. For this reason, RO-based payloads are a useful first target for malicious-bitstream inspection.
+
+This work focuses on detecting RO-based malicious partial bitstreams. This is a narrow threat class, but it is realistic enough to test the core systems question. The main goal is to evaluate whether a learned detector can be accurate, small, and fast enough to sit in the deployment path.
+
+\section{Threat Model}
+\label{sec:threat-model}
+
+We consider a serverless FPGA platform with a trusted shell and an untrusted user partial bitstream. The attacker can submit a syntactically valid partial bitstream for the user reconfigurable region. The bitstream may contain an RO-based payload designed to stress shared physical resources after configuration.
+
+The attacker's goal is to have the malicious bitstream accepted and loaded through partial reconfiguration. The platform's goal is to inspect the bitstream before configuration and reject suspicious inputs.
+
+The checker is placed before the partial reconfiguration step. It receives the incoming partial bitstream, preprocesses it into the fixed input format expected by the classifier, and outputs either a decision or a suspiciousness score.
+
+This work has several non-goals. It does not prove bitstream safety. It does not reverse-engineer arbitrary bitstreams. It does not detect all possible malicious circuits. It also does not replace vendor checks, static design rules, authentication, or runtime monitoring. The checker is a defense-in-depth mechanism for one important class of malicious payloads.
+
+\section{Prior Work}
+\label{sec:prior-work}
+
+Existing approaches to malicious FPGA bitstream detection can be grouped into three categories. Cloud and vendor checks are practical because they are integrated into deployment flows, but they usually target known rule violations. Structural methods search for suspicious circuit patterns, such as self-oscillators, but can depend strongly on device architecture and bitstream structure. ML-based methods learn patterns from bitstream-derived data, but are commonly evaluated as offline software classifiers.
+
+\begin{table}[t]
+    \centering
+    \caption{Comparison of approaches for malicious FPGA bitstream detection.}
+    \label{tab:prior-work-gap}
+    \begin{tabular}{p{0.22\linewidth} p{0.25\linewidth} p{0.27\linewidth} p{0.18\linewidth}}
+        \toprule
+        \textbf{Approach} & \textbf{Strength} & \textbf{Limitation} & \textbf{Relation to this work} \\
+        \midrule
+        Cloud and vendor checks &
+        Integrated into deployment flows &
+        Limited to known rules and platform policies &
+        Complemented by learned inspection \\
+        \midrule
+        Structural RO analysis &
+        Targets oscillator structures directly &
+        Can be architecture-specific and hard to generalize &
+        Avoids explicit bitstream reverse engineering \\
+        \midrule
+        ML-based inspection &
+        Learns patterns from bitstream data &
+        Usually evaluated offline in software &
+        Synthesizes the detector for FPGA deployment \\
+        \midrule
+        This work &
+        Connects partial-bitstream ML detection to hardware synthesis &
+        Feasibility prototype for one threat class &
+        Studies detection, hardware cost, and integration together \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Prior ML-based work is important because it shows that bitstream-derived representations contain learnable structure. CNNs and other classifiers can distinguish benign and malicious bitstreams without fully decoding the circuit semantics. This supports the use of bitstream-as-data representations. The remaining question is whether such inspection can satisfy the constraints of a serverless FPGA deployment path.
+
+\section{Research Gap}
+\label{sec:research-gap}
+
+The gap addressed in this report is deployment-oriented ML inspection. Offline classification alone is not enough for a serverless FPGA platform. A useful checker must satisfy three requirements.
+
+\begin{table}[t]
+    \centering
+    \caption{Feasibility dimensions for FPGA-resident bitstream inspection.}
+    \label{tab:feasibility-dimensions}
+    \begin{tabular}{p{0.22\linewidth} p{0.43\linewidth} p{0.25\linewidth}}
+        \toprule
+        \textbf{Dimension} & \textbf{Question} & \textbf{Metrics} \\
+        \midrule
+        Detection quality &
+        Does the checker retain useful security coverage? &
+        F1, FNR, FPR, ROC AUC \\
+        \midrule
+        Hardware cost &
+        Can the checker fit beside platform and user logic? &
+        Latency, LUT, BRAM, DSP \\
+        \midrule
+        Integration &
+        Can the checker sit on the Coyote partial-reconfiguration path? &
+        PR-path placement and prototype design \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+This report studies all three dimensions together. We generate Coyote-style partial bitstreams, train CNN classifiers on deterministic byte-image representations, synthesize selected models with hls4ml, and evaluate whether the resulting hardware designs are practical candidates for deployment-path inspection.
