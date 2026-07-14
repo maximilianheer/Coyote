@@ -15,14 +15,15 @@ This dataset is designed to test deployment-like variation. Samples are generate
 
 Benign samples are generated from real Coyote applications. These applications represent normal user accelerators that could be deployed into a reconfigurable region. To increase variation, the applications are built across multiple floorplans and configurations.
 
+The benign catalog contains eight debug-enabled Coyote applications: hello world, HLS vector add, multitenancy AES, user interrupts, perf FPGA, multithreading AES, Euclidean distance, and cosine similarity. It also contains no-debug variants for seven of these applications. In the available manifests, this gives 120 debug-enabled benign samples and 101 no-debug benign samples.
+
 Malicious samples are generated from RO-based designs. These designs place attacker-controlled ring oscillators into the reconfigurable region. The RO count is varied to create payloads with different logic footprints. This allows the evaluation to distinguish between small low-footprint payloads and larger high-density payloads.
 
 Figure~\ref{fig:dataset-pipeline} shows the dataset generation flow. Both benign and malicious designs pass through the same floorplan and configuration sweep before partial-bitstream generation. The output is a labeled dataset of partial bitstreams and metadata.
 
 \begin{figure}[t]
     \centering
-    % Replace with the exported figure from the presentation.
-    % Recommended file name: figures/dataset_generation_pipeline.pdf
+    % Figure generated locally from figures/dataset_generation_pipeline.dot.
     \includegraphics[width=0.95\linewidth]{figures/dataset_generation_pipeline.pdf}
     \caption{Dataset generation pipeline. Benign Coyote applications and RO-based malicious designs are generated across deployment-like variation and converted into labeled partial bitstreams.}
     \label{fig:dataset-pipeline}
@@ -31,32 +32,43 @@ Figure~\ref{fig:dataset-pipeline} shows the dataset generation flow. Both benign
 \section{Dataset Composition}
 \label{sec:dataset-composition}
 
-Table~\ref{tab:dataset-composition} summarizes the dataset. The exact counts should be filled in from the final generated dataset. The important distinction is between the original test set and the extended RO-footprint set. The original test set evaluates normal benign versus RO-based malicious classification. The extended set evaluates whether detection improves as the malicious RO footprint grows.
+Table~\ref{tab:dataset-composition} summarizes the available generated dataset. The original generated corpus contains benign Coyote bitstreams and normal-RO malicious bitstreams across 15 floorplans, FP00--FP14. The higher-density big-RO extension uses six of those floorplans and is kept separate because it is used for the extended footprint evaluation.
+
+The available generated manifests contain 221 benign samples, 225 normal-RO malicious samples, and 78 big-RO malicious samples. The normal-RO corpus spans 33 RO-count settings. The big-RO extension spans 13 higher-density RO-count settings.
 
 \begin{table}[t]
     \centering
-    \caption{Dataset composition. Fill in the final counts after freezing the dataset.}
+    \caption{Dataset composition by class and RO category.}
     \label{tab:dataset-composition}
-    \begin{tabular}{p{0.20\linewidth} p{0.28\linewidth} p{0.20\linewidth} r r r}
+    \small
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{@{}l l l r r@{}}
         \toprule
-        \textbf{Class} & \textbf{Source} & \textbf{Variation} & \textbf{Train} & \textbf{Test} & \textbf{Total} \\
+        \textbf{Class} & \textbf{Source} & \textbf{Variation} & \textbf{Floorplans} & \textbf{Samples} \\
         \midrule
+        % Sources: ../ml_deep_bitstream_inspection/datasets/full_dataset_it{1,2,3}/artifacts/manifest_available.csv
         Benign &
         Coyote applications &
-        Floorplans and configs &
-        TODO & TODO & TODO \\
+        8 apps, 7 no-debug variants &
+        15 &
+        221 \\
         \midrule
-        Malicious &
-        RO payloads &
-        RO count and floorplan &
-        TODO & TODO & TODO \\
+        % Sources: ../ml_deep_bitstream_inspection/datasets/full_dataset_it{1,2,3}/artifacts/manifest_available.csv
+        Normal RO &
+        Standalone RO payloads &
+        33 RO-count settings &
+        15 &
+        225 \\
         \midrule
-        Extended RO &
+        % Source: ../ml_deep_bitstream_inspection/datasets/full_dataset_it4_big_ro/artifacts/manifest_available.csv
+        Big RO &
         Higher-density RO payloads &
-        RO footprint bins &
-        TODO & TODO & TODO \\
+        13 RO-count settings &
+        6 &
+        78 \\
         \bottomrule
     \end{tabular}
+    }
 \end{table}
 
 Each sample also stores metadata used during analysis. This includes the design source, floorplan, configuration, label, bitstream size, and estimated RO footprint when applicable. The RO footprint metadata is used later to evaluate whether misses concentrate in small malicious designs.

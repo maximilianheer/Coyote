@@ -67,8 +67,7 @@ Figure~\ref{fig:f1-resolution-depth} shows the main software result. F1 improves
 
 \begin{figure}[t]
     \centering
-    % Replace with the exported F1 heatmap from the presentation.
-    % Recommended file name: figures/f1_resolution_depth.pdf
+    % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/results/_snapshots/20260514_190735_stable_collect_global/plots/f1_heatmap.png
     \includegraphics[width=0.82\linewidth]{figures/f1_resolution_depth.pdf}
     \caption{F1 score across input resolution and CNN depth. Higher resolution and deeper models improve software detection quality, but they also increase hardware cost.}
     \label{fig:f1-resolution-depth}
@@ -84,9 +83,10 @@ The strongest software models are not automatically the best deployment candidat
         \toprule
         \textbf{Model} & \textbf{Resolution} & \textbf{Depth} & \textbf{F1} & \textbf{Role} \\
         \midrule
-        256$\times$7 & $256^2$ & 7 & TODO & Deployment candidate \\
-        512$\times$7 & $512^2$ & 7 & TODO & Accuracy-oriented candidate \\
-        1024$\times$7 & $1024^2$ & 7 & TODO & Software upper-bound candidate \\
+        % Source: ../ml_deep_bitstream_inspection/hls4ml/results/_snapshots/20260514_190735_stable_collect_global/resolution_depth_results.csv
+        256$\times$7 & $256^2$ & 7 & 93.6\% & Deployment candidate \\
+        512$\times$7 & $512^2$ & 7 & 97.1\% & Accuracy-oriented candidate \\
+        1024$\times$7 & $1024^2$ & 7 & 98.3\% & Software upper-bound candidate \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -98,10 +98,9 @@ We use Grad-CAM as a qualitative sanity check. The goal is to inspect whether th
 
 \begin{figure}[t]
     \centering
-    % Optional. Replace with the Grad-CAM figure from the presentation.
-    % Recommended file name: figures/gradcam_example.pdf
-    \includegraphics[width=0.82\linewidth]{figures/gradcam_example.pdf}
-    \caption{Grad-CAM example for a malicious prediction. The highlighted regions show which parts of the bitstream image contribute most to the classifier output.}
+    % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img512/notebook_pruned_qat/20260521_185923_production_prod_res512_layers7_W8A8_P50_manualA_9d14ccddbbe2/fold_3/gradcam_final_64x64/it1_S072_standalone_gradcam_1024.png
+    \includegraphics[width=\linewidth]{figures/gradcam_it1_s072_standalone_fold3.png}
+    \caption{Grad-CAM example for a correctly classified RO-malicious sample. The input, class activation map, and overlay show localized regions that contribute to the standalone prediction.}
     \label{fig:gradcam-example}
 \end{figure}
 
@@ -116,8 +115,7 @@ Figure~\ref{fig:ro-footprint-detection} shows the extended RO-footprint result. 
 
 \begin{figure}[t]
     \centering
-    % Replace with the exported RO-footprint plot from the presentation.
-    % Recommended file name: figures/ro_footprint_detection.pdf
+    % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/pooled/standalone_probability_vs_estimated_ro_lut_utilization.png
     \includegraphics[width=0.82\linewidth]{figures/ro_footprint_detection.pdf}
     \caption{Detection across RO-footprint bins. Smaller RO payloads are harder to detect, while larger evaluated payloads are detected more reliably.}
     \label{fig:ro-footprint-detection}

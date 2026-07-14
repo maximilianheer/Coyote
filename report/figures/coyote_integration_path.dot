@@ -1,0 +1,43 @@
+digraph coyote_integration_path {
+  graph [
+    rankdir=LR,
+    bgcolor="white",
+    margin=0.08,
+    nodesep=0.5,
+    ranksep=0.65
+  ];
+
+  node [
+    shape=rect,
+    style="rounded,filled",
+    fontname="DejaVu Sans",
+    fontsize=16,
+    color="#3b3b3b",
+    penwidth=1.3,
+    fillcolor="#f7f7f7"
+  ];
+
+  edge [
+    fontname="DejaVu Sans",
+    fontsize=12,
+    color="#4d4d4d",
+    arrowsize=0.8
+  ];
+
+  user [label="User-submitted\npartial bitstream", fillcolor="#eef4ff"];
+  downsample [label="FPGA byte-stream\npreprocessing", fillcolor="#f5f5ff"];
+  cnn [label="hls4ml CNN\nchecker", fillcolor="#f5f5ff"];
+  decision [label="Allow or reject\ndeployment", shape=diamond, fillcolor="#fff8e8"];
+  pr [label="Coyote partial\nreconfiguration", fillcolor="#eef7f1"];
+  block [label="Block and log\nsuspicious bitstream", fillcolor="#fff1ee"];
+  shell [label="Static Coyote shell\nhost, memory, networking,\ncontrol services", fillcolor="#f7f7f7"];
+  rr [label="User reconfigurable\nregion", fillcolor="#eef7f1"];
+
+  user -> downsample;
+  downsample -> cnn;
+  cnn -> decision;
+  decision -> pr [label="benign"];
+  decision -> block [label="malicious"];
+  shell -> pr [style=dashed, label="platform control"];
+  pr -> rr;
+}

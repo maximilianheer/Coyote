@@ -12,8 +12,7 @@ Figure~\ref{fig:coyote-integration} shows the proposed placement. The checker re
 
 \begin{figure}[t]
     \centering
-    % Replace with the exported Coyote integration figure from the presentation.
-    % Recommended file name: figures/coyote_integration_path.pdf
+    % Figure generated locally from figures/coyote_integration_path.dot.
     \includegraphics[width=0.95\linewidth]{figures/coyote_integration_path.pdf}
     \caption{Proposed Coyote integration path. The partial-bitstream checker is placed before partial reconfiguration and decides whether the bitstream should be loaded or rejected.}
     \label{fig:coyote-integration}
@@ -28,17 +27,13 @@ The deployment logic uses this output to control partial reconfiguration. If the
 
 The intended flow is:
 
-\[
-    \text{user bitstream}
-    \rightarrow
-    \text{preprocessing}
-    \rightarrow
-    \text{CNN checker}
-    \rightarrow
-    \text{allow or reject}
-    \rightarrow
-    \text{partial reconfiguration}.
-\]
+\begin{center}
+\small
+\begin{tabular}{c}
+\textbf{user bitstream} $\rightarrow$ \textbf{preprocessing} $\rightarrow$ \textbf{CNN checker} \\[3pt]
+$\rightarrow$ \textbf{allow or reject} $\rightarrow$ \textbf{partial reconfiguration}
+\end{tabular}
+\end{center}
 
 This design keeps inspection inside the FPGA deployment path. It avoids a separate host-side inspection stage and gives the platform a self-contained gate before loading user logic.
 

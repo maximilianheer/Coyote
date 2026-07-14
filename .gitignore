@@ -64,6 +64,8 @@ AGENT_PR_READY_PLAN.md
 
 # Local PR hygiene and generated experiment artifacts.
 logs/
+report/outputs/
+report/figures/*-eps-converted-to.pdf
 examples/pilot_dataset/
 examples/01_hello_world/hw/src/hdl/perf_local.sv
 examples/01_hello_world/hw/src/hdl/ring_oscillator.sv

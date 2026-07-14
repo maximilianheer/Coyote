@@ -17,17 +17,13 @@ The hardware flow starts from a trained CNN. The model is exported and passed to
 
 The flow is:
 
-\[
-    \text{trained CNN}
-    \rightarrow
-    \text{hls4ml conversion}
-    \rightarrow
-    \text{C simulation}
-    \rightarrow
-    \text{HLS synthesis}
-    \rightarrow
-    \text{latency and resource report}.
-\]
+\begin{center}
+\small
+\begin{tabular}{c}
+\textbf{trained CNN} $\rightarrow$ \textbf{hls4ml conversion} $\rightarrow$ \textbf{C simulation} \\[3pt]
+$\rightarrow$ \textbf{HLS synthesis} $\rightarrow$ \textbf{latency and resource report}
+\end{tabular}
+\end{center}
 
 This flow is repeated for selected CNN candidates. We do not synthesize every software model. Larger software models can improve F1, but they can also produce hardware designs that are too slow or too resource-heavy. The synthesis stage therefore acts as a filter between high-quality software models and deployable FPGA checkers.
 
@@ -76,18 +72,17 @@ Table~\ref{tab:hls4ml-knobs} summarizes the main knobs.
 
 The HLS exploration shows a clear tradeoff between detection quality, latency, and resource usage. Larger input resolutions preserve more bitstream detail and improve software F1. They also increase the cost of the hardware checker. Lower reuse factors reduce latency but require more parallel hardware. Higher reuse factors reduce hardware use but increase latency.
 
-Figure~\ref{fig:hls-tradeoff} shows the main latency and resource tradeoff. Each point corresponds to a synthesized model configuration. The relevant deployment points are those with useful F1, acceptable latency, and moderate resource overhead.
+Figure~\ref{fig:hls-tradeoff} shows the W8A8 P50 resource-strategy sweep. Circles and squares show reuse-factor sweeps for the 256$\times$7 and 512$\times$7 models. The starred points show the manually tuned v1 candidates used for deployment evaluation. These manual candidates keep the same reported F1 as the corresponding resource-strategy sweep while reducing latency and LUT utilization.
 
 \begin{figure}[t]
     \centering
-    % Replace with the exported HLS tradeoff plot from the presentation.
-    % Recommended file name: figures/hls_latency_resource_f1.pdf
-    \includegraphics[width=0.88\linewidth]{figures/hls_latency_resource_f1.pdf}
-    \caption{Latency, resource, and F1 tradeoff across synthesized CNN candidates. The final design point must balance detection quality with deployment cost.}
+    % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/results/selected_feasible_candidates_resource_strategy/plots/latency_lut_f1_tradeoff.png
+    \includegraphics[width=0.92\linewidth]{figures/hls_latency_resource_f1_resource_strategy.png}
+    \caption{Latency, LUT utilization, and F1 tradeoff for W8A8 P50 resource-strategy candidates. Marker shapes distinguish the 256$\times$7 and 512$\times$7 reuse-factor sweeps from the manually tuned v1 deployment candidates.}
     \label{fig:hls-tradeoff}
 \end{figure}
 
-The best software model is not necessarily the best hardware model. For deployment, the useful model is the one that fits into the Coyote system with low enough latency and acceptable area overhead.
+The best software model is not necessarily the best hardware model. For deployment, the useful model is the one that fits into the Coyote system with low enough latency and acceptable area overhead. The manual v1 points are therefore the relevant candidates for the final Coyote comparison.
 
 \section{Final Synthesized Candidates}
 \label{sec:final-synthesized-candidates}
@@ -98,7 +93,7 @@ Table~\ref{tab:final-candidates} shows the final comparison. Classification metr
 
 \begin{table}[t]
     \centering
-    \caption{Final synthesized candidates. Added resources are measured relative to the baseline Coyote design.}
+    \caption{Final synthesized candidates. Resource percentages are routed hls4ml wrapper/user-logic attribution on the target U55C.}
     \label{tab:final-candidates}
     \resizebox{\linewidth}{!}{
     \begin{tabular}{l r r r r r r r r r r}
@@ -115,6 +110,7 @@ Table~\ref{tab:final-candidates} shows the final comparison. Classification metr
         \textbf{BRAM} &
         \textbf{DSP} \\
         \midrule
+        % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
         256$\times$7 &
         87.7\% &
         88.5\% &
@@ -127,6 +123,7 @@ Table~\ref{tab:final-candidates} shows the final comparison. Classification metr
         +17.86\% &
         +14.72\% \\
         \midrule
+        % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res512_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
         512$\times$7 &
         90.4\% &
         90.5\% &
@@ -145,7 +142,7 @@ Table~\ref{tab:final-candidates} shows the final comparison. Classification metr
 
 The 512$\times$7 model has higher accuracy, higher F1, lower false positive rate, higher ROC AUC, and perfect TPR on the extended RO-footprint dataset. This makes it the stronger detection candidate.
 
-The 256$\times$7 model is the better deployment candidate. It has lower added latency and much lower BRAM overhead. Its F1 is only two percentage points lower than the 512$\times$7 model, and its original-set TPR is higher. The BRAM difference is the main reason for preferring 256$\times$7. The 512$\times$7 model adds 61.78\% BRAM relative to the baseline Coyote design, while the 256$\times$7 model adds 17.86\%.
+The 256$\times$7 model is the better deployment candidate. It has lower added latency and much lower BRAM overhead. Its F1 is only two percentage points lower than the 512$\times$7 model, and its original-set TPR is higher. The BRAM difference is the main reason for preferring 256$\times$7. The routed hierarchy attributes 61.78\% of device BRAM to the 512$\times$7 checker wrapper, while the 256$\times$7 wrapper accounts for 17.86\%.
 
 \section{Latency Context}
 \label{sec:latency-context}
@@ -201,7 +198,7 @@ Table~\ref{tab:resource-context} summarizes the baseline and the added checker o
 
 \begin{table}[t]
     \centering
-    \caption{Baseline Coyote resource usage and added checker overhead.}
+    \caption{Baseline Coyote resource usage and routed checker wrapper/user-logic attribution.}
     \label{tab:resource-context}
     \begin{tabular}{l r r r r}
         \toprule
@@ -213,16 +210,18 @@ Table~\ref{tab:resource-context} summarizes the baseline and the added checker o
         0\% &
         0\% \\
         \midrule
+        % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
         Added 256$\times$7 checker &
         +4.47\% &
         +17.86\% &
-        TODO &
+        +1.15\% &
         +14.72\% \\
         \midrule
+        % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res512_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
         Added 512$\times$7 checker &
         +4.90\% &
         +61.78\% &
-        TODO &
+        +1.77\% &
         +14.45\% \\
         \bottomrule
     \end{tabular}

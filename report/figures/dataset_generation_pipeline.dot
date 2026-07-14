@@ -1,0 +1,44 @@
+digraph dataset_generation_pipeline {
+  graph [
+    rankdir=LR,
+    bgcolor="white",
+    margin=0.08,
+    nodesep=0.5,
+    ranksep=0.65
+  ];
+
+  node [
+    shape=rect,
+    style="rounded,filled",
+    fontname="DejaVu Sans",
+    fontsize=16,
+    color="#3b3b3b",
+    penwidth=1.3,
+    fillcolor="#f7f7f7"
+  ];
+
+  edge [
+    fontname="DejaVu Sans",
+    fontsize=12,
+    color="#4d4d4d",
+    arrowsize=0.8
+  ];
+
+  benign [label="Benign Coyote\napplications", fillcolor="#eef7f1"];
+  malicious [label="RO-based\nmalicious designs", fillcolor="#fff1ee"];
+  sweep [label="Floorplan and\nconfiguration sweep", fillcolor="#f5f5ff"];
+  build [label="Coyote PR\nimplementation flow", fillcolor="#f5f5ff"];
+  bitstreams [label="Partial bitstreams", fillcolor="#eef4ff"];
+  manifest [label="Manifest metadata\nclass, floorplan, RO count,\nresources, status", fillcolor="#fff8e8"];
+  tensor [label="Deterministic\nbyte-image tensor", fillcolor="#eef4ff"];
+
+  { rank=same; benign; malicious; }
+
+  benign -> sweep;
+  malicious -> sweep;
+  sweep -> build;
+  build -> bitstreams;
+  build -> manifest;
+  bitstreams -> tensor;
+  manifest -> tensor [style=dashed, label="labels and analysis fields"];
+}
