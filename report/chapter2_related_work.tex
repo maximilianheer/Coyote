@@ -4,18 +4,18 @@
 \section{Serverless FPGAs and Partial Reconfiguration}
 \label{sec:serverless-fpgas}
 
-Serverless FPGA systems expose reconfigurable hardware as an on-demand acceleration service. Users submit hardware applications, while the platform manages the FPGA shell, host interface, memory system, networking, and runtime services. This model hides low-level FPGA management from users and allows the provider to share FPGA capacity across applications.
+Serverless FPGA systems expose reconfigurable hardware as an on-demand acceleration service. Users submit hardware applications, while the platform manages the FPGA shell, host interface, memory system, networking, and runtime services~\cite{korolija2020os,ramhorst2025coyote,mainas2025f3}. This model hides low-level FPGA management from users and allows the provider to share FPGA capacity across applications.
 
 Partial reconfiguration makes this deployment model practical. The FPGA is divided into a static region and one or more reconfigurable regions. The static region contains trusted platform logic, while the reconfigurable region contains user logic. A user application can therefore be loaded without rebuilding the full FPGA image.
 
 This structure creates a natural security boundary. The user partial bitstream enters the platform before it is loaded into the reconfigurable region. If the bitstream contains malicious logic, the platform may configure that logic directly into shared FPGA fabric. The deployment path should therefore include an inspection step before partial reconfiguration.
 
-Coyote is a relevant target for this work because it provides a datacenter FPGA shell with partial reconfiguration, multitenancy, and platform services. It gives a concrete setting for studying whether bitstream inspection can become part of the FPGA deployment path.
+Coyote is a relevant target for this work because it provides a datacenter FPGA shell with partial reconfiguration, multitenancy, and platform services~\cite{korolija2020os,ramhorst2025coyote}. It gives a concrete setting for studying whether bitstream inspection can become part of the FPGA deployment path.
 
 \section{Ring-Oscillator Payloads}
 \label{sec:ring-oscillators}
 
-Ring oscillators are a simple and well-studied malicious payload for FPGAs. A ring oscillator is built from an odd feedback loop of inverters. The loop has no stable state and continuously toggles. A single ring oscillator is small, but a large array of attacker-controlled ring oscillators can create high-frequency switching activity.
+Ring oscillators are a simple and well-studied malicious payload for FPGAs~\cite{gnad2017voltage,la2020fpgadefender,la2021denial,provelengios2020power}. A ring oscillator is built from an odd feedback loop of inverters. The loop has no stable state and continuously toggles. A single ring oscillator is small, but a large array of attacker-controlled ring oscillators can create high-frequency switching activity.
 
 This switching activity stresses shared physical resources. In a cloud or serverless FPGA setting, the relevant resources include power delivery, thermal headroom, and neighboring user logic. Large ring-oscillator arrays can waste power, induce voltage drops, cause denial of service, or trigger timing faults. For this reason, RO-based payloads are a useful first target for malicious-bitstream inspection.
 
@@ -35,12 +35,14 @@ This work has several non-goals. It does not prove bitstream safety. It does not
 \section{Prior Work}
 \label{sec:prior-work}
 
-Existing approaches to malicious FPGA bitstream detection can be grouped into three categories. Cloud and vendor checks are practical because they are integrated into deployment flows, but they usually target known rule violations. Structural methods search for suspicious circuit patterns, such as self-oscillators, but can depend strongly on device architecture and bitstream structure. ML-based methods learn patterns from bitstream-derived data, but are commonly evaluated as offline software classifiers.
+Existing approaches to malicious FPGA bitstream detection can be grouped into three categories~\cite{jin2020security,zhang2019recent}. Cloud and vendor checks are practical because they are integrated into deployment flows, but they usually target known rule violations~\cite{giechaskiel2019measuring,la2021denial}. Structural methods search for suspicious circuit patterns, such as self-oscillators, but can depend strongly on device architecture and bitstream structure~\cite{la2020fpgadefender,provelengios2020power,yoon2018bret}. ML-based methods learn patterns from bitstream-derived data, but are commonly evaluated as offline software classifiers~\cite{rettkowski2019inspection,chaudhuri2022detection,elnaggar2023learning,palumbo2022trojan}.
 
 \begin{table}[t]
     \centering
     \caption{Comparison of approaches for malicious FPGA bitstream detection.}
     \label{tab:prior-work-gap}
+    \small
+    \resizebox{\linewidth}{!}{
     \begin{tabular}{p{0.22\linewidth} p{0.25\linewidth} p{0.27\linewidth} p{0.18\linewidth}}
         \toprule
         \textbf{Approach} & \textbf{Strength} & \textbf{Limitation} & \textbf{Relation to this work} \\
@@ -66,9 +68,10 @@ Existing approaches to malicious FPGA bitstream detection can be grouped into th
         Studies detection, hardware cost, and integration together \\
         \bottomrule
     \end{tabular}
+    }
 \end{table}
 
-Prior ML-based work is important because it shows that bitstream-derived representations contain learnable structure. CNNs and other classifiers can distinguish benign and malicious bitstreams without fully decoding the circuit semantics. This supports the use of bitstream-as-data representations. The remaining question is whether such inspection can satisfy the constraints of a serverless FPGA deployment path.
+Prior ML-based work is important because it shows that bitstream-derived representations contain learnable structure~\cite{rettkowski2019inspection,chaudhuri2022detection,elnaggar2023learning,palumbo2022trojan}. CNNs and other classifiers can distinguish benign and malicious bitstreams without fully decoding the circuit semantics. This supports the use of bitstream-as-data representations. The remaining question is whether such inspection can satisfy the constraints of a serverless FPGA deployment path.
 
 \section{Research Gap}
 \label{sec:research-gap}

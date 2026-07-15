@@ -12,6 +12,7 @@
 \usepackage{siunitx}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\usepackage{url}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DOCUMENT METADATA
@@ -52,9 +53,9 @@ ETH Zürich}
 
 
 \begin{abstract}
-Cloud and serverless FPGA platforms expose reconfigurable fabric to user-supplied designs, making them vulnerable to malicious circuits such as ring oscillators. Prior work on ML-based bitstream inspection has shown that malicious payloads can be detected from bitstream-level patterns, but these approaches are generally evaluated as offline software classifiers and are not designed for low-latency deployment on datacenter-grade FPGA infrastructure. This motivates an online inspection approach in which the detection model itself is implemented in FPGA fabric and integrated into a cloud-oriented FPGA shell before user bitstreams are deployed.
+Cloud and serverless FPGA platforms expose reconfigurable fabric to user designs, making them vulnerable to malicious circuits such as ring oscillators~\cite{gnad2017voltage,la2021denial,provelengios2020power}. Prior work on ML-based bitstream inspection has shown that malicious payloads can be detected from bitstream-level patterns~\cite{rettkowski2019inspection,chaudhuri2022detection,elnaggar2023learning,palumbo2022trojan}, but these approaches are generally evaluated as offline software classifiers and are not designed for low-latency deployment on datacenter-grade FPGA infrastructure. This motivates an online inspection approach in which the detection model itself is implemented in FPGA fabric and integrated into a cloud-oriented FPGA shell before user bitstreams are deployed.
 
-This report investigates whether malicious-bitstream detection can be moved into the FPGA deployment path itself. We generate a dataset of benign Coyote partial bitstreams and trojan ring-oscillator bitstreams, represent bitstreams as image-like inputs, train compact CNN classifiers, and synthesize selected models using hls4ml. We evaluate the resulting design space across classification quality, input resolution, model depth, quantization, pruning, reuse factor, latency, and FPGA resource utilization.
+This report investigates whether malicious-bitstream detection can be moved into the FPGA deployment path itself. We generate a dataset of benign Coyote partial bitstreams and trojan ring-oscillator bitstreams, represent bitstreams as image-like inputs, train compact CNN classifiers, and synthesize selected models using hls4ml~\cite{duarte2018fast,aarrestad2021fast}. We evaluate the resulting design space across classification quality, input resolution, model depth, quantization, pruning, reuse factor, latency, and FPGA resource utilization.
 
 % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
 % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res512_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json

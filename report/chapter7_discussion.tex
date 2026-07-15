@@ -8,7 +8,7 @@ The results show that FPGA-resident ML inspection is a feasible direction for se
 
 The main design lesson is that the best software model is not always the best deployment model. The 512$\times$7 candidate improves several detection metrics, including F1, false positive rate, ROC AUC, and extended RO-footprint detection. It also has much higher BRAM overhead and higher latency. The 256$\times$7 candidate gives a better deployment balance. It has lower added latency, much lower BRAM use, and still provides useful detection quality.
 
-The checker should be understood as a defense-in-depth component. It can reduce the chance that an RO-based malicious bitstream reaches the reconfigurable region. It does not prove that a bitstream is safe. A practical platform should combine this checker with static validation, bitstream authentication, runtime monitoring, and platform policy.
+The checker should be understood as a defense-in-depth component. It can reduce the chance that an RO-based malicious bitstream reaches the reconfigurable region. It does not prove that a bitstream is safe. A practical platform should combine this checker with static validation, bitstream authentication, runtime monitoring, and platform policy~\cite{jin2020security,zhang2019recent,ahmed2022multitenant}.
 
 The RO-footprint results also show where the detector is strongest. Larger RO payloads are detected more reliably. These payloads are the most relevant for power-stress attacks. Smaller payloads remain harder and require stronger datasets, better models, or additional checks.
 
@@ -55,7 +55,7 @@ The next step is broader validation. The dataset should include more attack clas
 
 Low-footprint attacks deserve special attention. A stronger benchmark should include subtle payloads with different RO densities and placements. This would test whether the classifier can detect malicious structure without relying on large payload size.
 
-Future work should also evaluate other model families. MLPs, decision trees, tiny CNNs, binary neural networks, and FINN-style quantized models may provide better latency and resource tradeoffs. These models should be compared under the same dataset, metrics, and synthesis flow.
+Future work should also evaluate other model families. MLPs, decision trees, tiny CNNs, binary neural networks, and FINN-style quantized models may provide better latency and resource tradeoffs~\cite{blott2018finnr,coelho2020qkeras,han2016deepcompression}. Netlist-oriented GNN classifiers are another possible direction for broader malicious-circuit coverage~\cite{alrahis2024malignnoma}. These models should be compared under the same dataset, metrics, and synthesis flow.
 
 Generalization is another open question. The current results should be repeated across different FPGA families, floorplans, shells, and benign workloads. Versal or V80-class devices would be especially useful targets because they are relevant to newer datacenter FPGA deployments.
 

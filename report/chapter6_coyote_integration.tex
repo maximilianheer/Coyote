@@ -6,7 +6,7 @@
 
 The final goal is to place the bitstream checker directly on the Coyote deployment path. In this path, a user bitstream reaches the platform before partial reconfiguration. The checker should inspect the bitstream before it is loaded into the reconfigurable region.
 
-Coyote provides a suitable target because it already separates platform services from user logic. The static shell manages host communication, memory services, networking, command handling, and runtime control. User accelerators are deployed into reconfigurable regions. This structure gives a clear location for inspection before the partial reconfiguration step.
+Coyote provides a suitable target because it already separates platform services from user logic~\cite{korolija2020os,ramhorst2025coyote}. The static shell manages host communication, memory services, networking, command handling, and runtime control. User accelerators are deployed into reconfigurable regions. This structure gives a clear location for inspection before the partial reconfiguration step.
 
 Figure~\ref{fig:coyote-integration} shows the proposed placement. The checker receives the user partial bitstream, applies preprocessing, runs the synthesized CNN, and returns a decision to the deployment logic.
 
@@ -35,7 +35,7 @@ $\rightarrow$ \textbf{allow or reject} $\rightarrow$ \textbf{partial reconfigura
 \end{tabular}
 \end{center}
 
-This design keeps inspection inside the FPGA deployment path. It avoids a separate host-side inspection stage and gives the platform a self-contained gate before loading user logic.
+This design keeps inspection inside the FPGA deployment path. It avoids a separate host-side inspection stage and gives the platform a self-contained gate before loading user logic. This follows the broader goal of making FPGA-resident ML components deployable inside systems paths rather than treating them only as offline models~\cite{heer2025ml4sys}.
 
 \section{Prototype Scope}
 \label{sec:coyote-prototype-scope}

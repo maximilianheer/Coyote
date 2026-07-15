@@ -4,9 +4,9 @@
 \section{Choice of CNNs}
 \label{sec:cnn-choice}
 
-We use convolutional neural networks because prior work has shown that bitstream-derived representations contain learnable structure. Rettkowski et al. studied neural-network-based inspection of partial FPGA bitstreams. Chaudhuri and Chakrabarty used CNN-based learning to detect malicious FPGA bitstreams. Elnaggar et al. also used CNNs as part of a malicious-circuit detection pipeline. These results support the idea that bitstreams can be treated as structured data for classification, even without full bitstream reverse engineering~\cite{rettkowski2019partialbitstreams,chaudhuri2022cnnbitstreams,elnaggar2023learning}.
+We use convolutional neural networks because prior work has shown that representations derived from bitstreams contain learnable structure. Rettkowski et al. studied neural-network-based inspection of partial FPGA bitstreams. Chaudhuri and Chakrabarty used CNN-based learning to detect malicious FPGA bitstreams. Elnaggar et al. also used CNNs as part of a malicious-circuit detection pipeline. These results support the idea that bitstreams can be treated as structured data for classification, even without full bitstream reverse engineering~\cite{rettkowski2019inspection,chaudhuri2022detection,chaudhuri2023criticality,chaudhuri2023detectionclassification,elnaggar2023learning,palumbo2022trojan}.
 
-This project follows the same direction, but with a different systems goal. The model is not only trained for software accuracy. It must also be small enough and regular enough to synthesize into FPGA logic. CNNs are a good fit for this because they can operate on fixed-size image-like tensors and can be converted to hardware using tools such as hls4ml.
+This project follows the same direction, but with a different systems goal. The model is not only trained for software accuracy. It must also be small enough and regular enough to synthesize into FPGA logic. CNNs are a good fit for this because they can operate on fixed-size image-like tensors and can be converted to hardware using tools such as hls4ml~\cite{duarte2018fast,aarrestad2021fast}.
 
 The classifier receives the preprocessed bitstream tensor from Chapter~\ref{ch:dataset-preprocessing}. The output is a binary prediction. The positive class is the RO-based malicious class. The negative class is the benign Coyote application class.
 
@@ -94,7 +94,7 @@ The strongest software models are not automatically the best deployment candidat
 \section{Interpretability Check}
 \label{sec-interpretability}
 
-We use Grad-CAM as a qualitative sanity check. The goal is to inspect whether the CNN focuses on localized regions of the bitstream image or behaves as if it only learned a trivial global statistic.
+We use Grad-CAM as a qualitative sanity check~\cite{selvaraju2017gradcam}. The goal is to inspect whether the CNN focuses on localized regions of the bitstream image or behaves as if it only learned a trivial global statistic.
 
 \begin{figure}[t]
     \centering

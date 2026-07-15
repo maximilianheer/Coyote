@@ -4,7 +4,7 @@
 \section{Dataset Goal}
 \label{sec:dataset-goal}
 
-The goal of the dataset is to evaluate malicious-bitstream inspection on the same type of artifact that appears in a serverless FPGA deployment path. The input to the checker is a partial bitstream, not source code, a netlist, or an implementation report. The dataset is therefore built from Coyote-style partial bitstreams.
+The goal of the dataset is to evaluate malicious-bitstream inspection on the same type of artifact that appears in a serverless FPGA deployment path. The input to the checker is a partial bitstream, not source code, a netlist, or an implementation report. The dataset is therefore built from Coyote-style partial bitstreams~\cite{korolija2020os,ramhorst2025coyote}.
 
 The classification task is binary. Benign samples are partial bitstreams generated from Coyote applications. Malicious samples are partial bitstreams that contain ring-oscillator payloads. Labels are assigned by construction from the generation flow.
 
@@ -17,7 +17,7 @@ Benign samples are generated from real Coyote applications. These applications r
 
 The benign catalog contains eight debug-enabled Coyote applications: hello world, HLS vector add, multitenancy AES, user interrupts, perf FPGA, multithreading AES, Euclidean distance, and cosine similarity. It also contains no-debug variants for seven of these applications. In the available manifests, this gives 120 debug-enabled benign samples and 101 no-debug benign samples.
 
-Malicious samples are generated from RO-based designs. These designs place attacker-controlled ring oscillators into the reconfigurable region. The RO count is varied to create payloads with different logic footprints. This allows the evaluation to distinguish between small low-footprint payloads and larger high-density payloads.
+Malicious samples are generated from RO-based designs. These designs place attacker-controlled ring oscillators into the reconfigurable region. The RO count is varied to create payloads with different logic footprints~\cite{la2020fpgadefender,provelengios2020power,chaudhuri2023criticality}. This allows the evaluation to distinguish between small low-footprint payloads and larger high-density payloads.
 
 Figure~\ref{fig:dataset-pipeline} shows the dataset generation flow. Both benign and malicious designs pass through the same floorplan and configuration sweep before partial-bitstream generation. The output is a labeled dataset of partial bitstreams and metadata.
 
@@ -76,7 +76,7 @@ Each sample also stores metadata used during analysis. This includes the design 
 \section{Preprocessing}
 \label{sec:preprocessing}
 
-The preprocessing step converts each partial bitstream into the fixed input shape expected by the CNN. The transform is intentionally simple. It does not reverse-engineer the bitstream. It does not extract hand-crafted circuit features. It treats the partial bitstream as a byte stream.
+The preprocessing step converts each partial bitstream into the fixed input shape expected by the CNN. Related work has used bitstream-derived tensors or image-like transforms for FPGA classification tasks~\cite{rettkowski2019inspection,chaudhuri2022detection,chen2020bitstreamimage}. The transform used here is intentionally simple. It does not reverse-engineer the bitstream. It does not extract hand-crafted circuit features. It treats the partial bitstream as a byte stream.
 
 Each bitstream is read as a sequence of bytes
 \[
