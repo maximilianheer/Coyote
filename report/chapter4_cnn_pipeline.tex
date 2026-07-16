@@ -75,25 +75,25 @@ The final 256$\times$7 and 512$\times$7 candidates use the same seven-stage conv
         \toprule
         \textbf{Stage} & \textbf{Layer} & \textbf{Filters} & \textbf{Kernel} & \textbf{Stride} & \textbf{Pooling} & \textbf{Activation} & \textbf{Quantization} \\
         \midrule
-        % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
-        % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img512/notebook_pruned_qat/20260521_185923_production_prod_res512_layers7_W8A8_P50_manualA_9d14ccddbbe2/production/training_manifest.json
+        % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/model_config.json
+        % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img512/notebook_pruned_qat/20260521_185923_production_prod_res512_layers7_W8A8_P50_manualA_9d14ccddbbe2/production/model_config.json
         Input & Byte image & -- & -- & -- & -- & -- & float input \\
-        0 & QConv2D & 8 & $5 \times 5$ & $2 \times 2$ & none & QReLU & W8 / A8(2) \\
-        1 & QConv2D & 16 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(2) \\
-        2 & QConv2D & 24 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(3) \\
-        3 & QConv2D & 24 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(4) \\
-        4 & QConv2D & 32 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(5) \\
-        5 & QConv2D & 32 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(5) \\
-        6 & QConv2D & 32 & $3 \times 3$ & $1 \times 1$ & final avg. & QReLU & W8 / A8(5) \\
+        0 & QConv2D & 8 & $5 \times 5$ & $2 \times 2$ & MaxPool $2 \times 2$ & QReLU & W8 / A8(2) \\
+        1 & QConv2D & 16 & $3 \times 3$ & $1 \times 1$ & MaxPool $2 \times 2$ & QReLU & W8 / A8(2) \\
+        2 & QConv2D & 24 & $3 \times 3$ & $1 \times 1$ & MaxPool $2 \times 2$ & QReLU & W8 / A8(3) \\
+        3 & QConv2D & 24 & $3 \times 3$ & $1 \times 1$ & MaxPool $2 \times 2$ & QReLU & W8 / A8(4) \\
+        4 & QConv2D & 32 & $3 \times 3$ & $1 \times 1$ & MaxPool $2 \times 2$ & QReLU & W8 / A8(5) \\
+        5 & QConv2D & 32 & $3 \times 3$ & $1 \times 1$ & MaxPool $2 \times 2$ & QReLU & W8 / A8(5) \\
+        6 & QConv2D & 32 & $3 \times 3$ & $1 \times 1$ & MaxPool $2 \times 2$ + final avg. & QReLU & W8 / A8(5) \\
         Output & QDense & 1 & -- & -- & -- & linear logit & W8 \\
         \bottomrule
     \end{tabular}
     }
 \end{table}
 
-Each convolution uses explicit zero padding before a valid convolution. No batch normalization is used, and there is no pooling between convolutional stages. A final average-pool layer and flattening step feed the dense output. The model has 35,400 non-bias weights. The P50 pruning target leaves 17,700 nonzero weights because the output dense layer is not pruned. At 32-bit floating point, the non-bias weights occupy about 138 KiB. At 8-bit weight precision, dense storage is about 34.6 KiB, or about 17.3 KiB with ideal sparse storage. Hardware resource use is reported separately in Chapter~\ref{ch:hls4ml-results}.
+Each convolution uses explicit zero padding before a valid convolution. No batch normalization is used. Each convolutional stage is followed by a QReLU activation and a $2 \times 2$ max-pool layer. A final average-pool layer and flattening step feed the dense output. The model has 35,368 non-bias weights. The P50 pruning target leaves 17,700 nonzero weights because the output dense layer is not pruned. At 32-bit floating point, the non-bias weights occupy about 138.2 KiB. At 8-bit weight precision, dense storage is about 34.5 KiB, or about 17.3 KiB with ideal sparse storage. Hardware resource use is reported separately in Chapter~\ref{ch:hls4ml-results}.
 
-% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/model_config.json
 % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/sparsity_fold_production.csv
 % Source: ../ml_deep_bitstream_inspection/hls4ml/pipeline/part2_train.py
 The production training setup is:

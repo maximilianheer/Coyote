@@ -73,8 +73,10 @@ The available generated manifests contain 221 benign samples, 225 normal-RO mali
 
 \begin{figure}[t]
     \centering
-    \resizebox{\linewidth}{!}{\input{figures/ro_count_distribution.tikz}}
-    \caption{Distribution of RO counts in the normal-RO dataset and the big-RO extension. Bars count available bitstream samples at each RO-count setting.}
+    % Sources: ../ml_deep_bitstream_inspection/datasets/full_dataset_it{1,2,3}/artifacts/manifest_available.csv
+    % Source: ../ml_deep_bitstream_inspection/datasets/full_dataset_it4_big_ro/artifacts/manifest_available.csv
+    \includegraphics[width=0.95\linewidth]{figures/ro_count_distribution.png}
+    \caption{Distribution of RO counts in the normal-RO dataset and the big-RO extension. Bars count available bitstream samples in 2k-RO bins.}
     \label{fig:ro-count-distribution}
 \end{figure}
 
