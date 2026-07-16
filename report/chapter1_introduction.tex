@@ -3,7 +3,7 @@
 
 Field-programmable gate arrays (FPGAs) are increasingly used as datacenter accelerators because they provide programmable hardware with high performance and energy efficiency~\cite{caulfield2016cloud,chung2018brainwave,bobda2022future,wang2022fpga}. In cloud and serverless settings, this programmability enables users to submit hardware applications that are deployed on shared FPGA infrastructure~\cite{mainas2025f3}. Partial reconfiguration (PR) makes this model practical by allowing user logic to be loaded into a reconfigurable region while the trusted FPGA shell remains active~\cite{korolija2020os,ramhorst2025coyote}.
 
-This deployment model creates a security boundary. The user partial bitstream becomes an input to the platform, and loading it into the FPGA fabric may expose shared physical resources such as power delivery, thermal headroom, routing infrastructure, and neighboring workloads. Malicious circuits based on ring oscillators (ROs) are a representative threat: at scale, RO arrays can generate high-frequency switching activity, waste power, induce voltage drops, and cause denial-of-service or fault effects~\cite{gnad2017voltage,la2020fpgadefender,la2021denial,provelengios2020power,boutros2020neighbors}.
+This deployment model creates a security boundary. The user partial bitstream becomes an input to the platform, and loading it into the FPGA fabric may expose shared physical resources such as power delivery, thermal headroom, routing infrastructure, and neighboring workloads. Malicious circuits based on ring oscillators (ROs) are a representative threat: at scale, RO arrays can generate high-frequency switching activity, waste power, induce voltage drops, and cause denial-of-service or fault effects~\cite{gnad2017voltage,la2020fpgadefender,la2021denial,provelengios2020power,boutros2020neighbors, mahmoud2023practical}.
 
 Existing cloud FPGA platforms show that bitstream validation is a practical concern. Prior attacks on AWS F1 demonstrated that malicious power-hammering designs could pass platform checks and crash instances~\cite{la2021denial}. AWS F2 continues the cloud-FPGA deployment model, and its official flow supports development and deployment of reconfigurable hardware on second-generation FPGA instances~\cite{awsF2Docs}. This keeps deployment-path validation relevant for newer cloud FPGA platforms.
 
@@ -17,10 +17,10 @@ This report makes four contributions:
 
 \begin{enumerate}
     \item \textbf{Partial-bitstream dataset.}
-    We construct a Coyote-oriented dataset from benign application partial bitstreams and RO-based malicious payloads.
+    We construct a dataset of Coyote partial bitstreams from real benign Coyote applications and RO-based malicious payloads.
 
     \item \textbf{Datacenter FPGA setting.}
-    We evaluate inspection in a Coyote-style deployment setting with partial reconfiguration, multitenancy, and UltraScale+ FPGA hardware.
+    We evaluate inspection in a datacenter deployment setting with partial reconfiguration and UltraScale+ FPGA hardware.
 
     \item \textbf{ML-to-hardware inspection path.}
     We connect CNN training to hls4ml synthesis and evaluate whether trained bitstream classifiers can become practical FPGA-resident checkers.
@@ -29,4 +29,4 @@ This report makes four contributions:
     We compare candidate models across detection quality, FNR/FPR, ROC AUC, LUT, BRAM, DSP, and added inspection latency.
 \end{enumerate}
 
-The main result is that FPGA-resident ML bitstream inspection is feasible as a deployment-path defense-in-depth mechanism. Among the synthesized candidates, the 256$\times$7 CNN provides the preferred deployment point because it balances useful detection quality with lower latency and substantially lower BRAM overhead than the larger 512$\times$7 alternative. Overall, the prototype shows a practical path from user-submitted partial bitstreams to a hardware-backed checker before deployment.
+The main result is that FPGA-resident ML bitstream inspection is feasible as a deployment-path defense-in-depth mechanism. Among the synthesized candidates, the 256$\times$7 CNN provides the preferred deployment point because it balances useful detection quality with lower latency and substantially lower BRAM overhead than larger alternatives. Overall, the prototype shows a practical path from user-submitted partial bitstreams to a hardware-backed checker before deployment.

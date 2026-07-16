@@ -1,7 +1,7 @@
 \chapter{Conclusion}
 \label{ch:conclusion}
 
-This project studied whether ML-based malicious-bitstream inspection can move into the FPGA deployment path for serverless FPGA systems. The target setting is a Coyote-style platform where user partial bitstreams are checked before partial reconfiguration. The goal is to add a hardware-backed security gate that can reject suspicious bitstreams before they enter the reconfigurable region.
+This project studied whether ML-based malicious-bitstream inspection can move into the FPGA deployment path for serverless FPGA systems. The target setting is a Coyote-style environment where user partial bitstreams are checked before partial reconfiguration. The goal is to add a hardware-backed security gate that can reject suspicious bitstreams before they enter the reconfigurable region.
 
 We built a partial-bitstream inspection pipeline around three components. First, we generated a dataset with benign Coyote application bitstreams and RO-based malicious bitstreams. Second, we transformed each bitstream into a fixed-size byte-image tensor and trained CNN classifiers for binary detection. Third, we synthesized selected CNNs with hls4ml and evaluated their detection quality, latency, and FPGA resource overhead.
 

@@ -72,7 +72,7 @@ Table~\ref{tab:hls4ml-knobs} summarizes the main knobs.
 
 The HLS exploration shows a clear tradeoff between detection quality, latency, and resource usage. Larger input resolutions preserve more bitstream detail and improve software F1. They also increase the cost of the hardware checker. Lower reuse factors reduce latency but require more parallel hardware. Higher reuse factors reduce hardware use but increase latency.
 
-Figure~\ref{fig:hls-tradeoff} shows the W8A8 P50 resource-strategy sweep for the two selected model families only. It is not the full hls4ml design-space sweep. Circles and squares show reuse-factor sweeps for the 256$\times$7 and 512$\times$7 models. The starred points show the manually tuned v1 candidates used for deployment evaluation. These manual candidates keep the same reported F1 as the corresponding resource-strategy sweep while reducing latency and LUT utilization.
+Figure~\ref{fig:hls-tradeoff} shows the W8A8 P50 resource-strategy sweep. Circles and squares show reuse-factor sweeps for the 256$\times$7 and 512$\times$7 models. The starred points show the manually tuned v1 candidates used for deployment evaluation. These manual candidates keep the same reported F1 as the corresponding resource-strategy sweep while reducing latency and LUT utilization.
 
 \begin{figure}[t]
     \centering
@@ -82,37 +82,46 @@ Figure~\ref{fig:hls-tradeoff} shows the W8A8 P50 resource-strategy sweep for the
     \label{fig:hls-tradeoff}
 \end{figure}
 
-Figure~\ref{fig:hls-frontiers} shows the broader design-space frontier. Unless the design is hand-optimized per CNN layer, better F1 generally requires a larger latency budget. The same pattern appears for LUT utilization. Higher-quality models are available, but they move rightward on the latency and LUT axes. The hand-optimized points are important because they shift selected candidates toward the useful frontier instead of accepting the default global resource-strategy mapping.
+Figure~\ref{fig:hls-latency-f1-frontier} and  Figure~\ref{fig:hls-lut-f1-frontier} show the broader design-space frontier. Unless the design is hand-optimized per CNN layer, better F1 generally requires a larger latency budget. The same pattern appears for LUT utilization. Higher-quality models are available, but they move rightward on the latency and LUT axes. The hand-optimized points are important because they shift selected candidates toward the useful frontier instead of accepting the default global resource-strategy mapping.
 
-\begin{figure}[p]
+\begin{figure}[t]
     \centering
-    \begin{subfigure}{0.96\linewidth}
-        \centering
-        % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/results/plots/latency_f1_frontier.png
-        \includegraphics[width=\linewidth]{figures/hls_latency_f1_frontier.png}
-        \caption{Best achievable F1 as the latency budget increases.}
-        \label{fig:hls-latency-f1-frontier}
-    \end{subfigure}
+    \includegraphics[
+        width=\linewidth,
+        trim={0 5mm 0 3mm},
+        clip
+    ]{figures/hls_latency_f1_frontier.png}
 
-    \vspace{0.7em}
-
-    \begin{subfigure}{0.96\linewidth}
-        \centering
-        % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/results/plots/lut_f1_frontier.png
-        \includegraphics[width=\linewidth]{figures/hls_lut_f1_frontier.png}
-        \caption{Best achievable F1 as the LUT budget increases.}
-        \label{fig:hls-lut-f1-frontier}
-    \end{subfigure}
-    \caption{Broader hls4ml design-space frontiers. Without per-layer hand optimization, higher F1 tends to require more latency or more LUT utilization.}
-    \label{fig:hls-frontiers}
+    \caption{
+        Best achievable F1 as the latency budget increases.
+        The black frontier shows the maximum F1 achieved by any synthesized
+        candidate within each latency budget. Stars indicate the manually
+        optimized deployment candidates.
+    }
+    \label{fig:hls-latency-f1-frontier}
 \end{figure}
 
-The best software model is not necessarily the best hardware model. For deployment, the useful model is the one that fits into the Coyote system with low enough latency and acceptable area overhead. The manual v1 points are therefore the relevant candidates for the final Coyote comparison.
+\begin{figure}[t]
+    \centering
+    \includegraphics[
+        width=\linewidth,
+        trim={0 5mm 0 3mm},
+        clip
+    ]{figures/hls_lut_f1_frontier.png}
+
+    \caption{
+        Best achievable F1 as the LUT budget increases.
+        The black frontier shows the maximum F1 achieved by any synthesized
+        candidate within each LUT budget. Stars indicate the manually
+        optimized deployment candidates.
+    }
+    \label{fig:hls-lut-f1-frontier}
+\end{figure}
 
 \section{Final Synthesized Candidates}
 \label{sec:final-synthesized-candidates}
 
-The final comparison focuses on two synthesized models. The 256$\times$7 model is the preferred deployment candidate. The 512$\times$7 model is the accuracy-oriented alternative. Both models use seven convolutional stages, but they differ in input resolution.
+The final comparison focuses on two synthesized models. The 256$\times$7 model is the preferred deployment candidate. The 512$\times$7 model is the accuracy-oriented alternative. 
 
 Table~\ref{tab:final-candidates} shows the final comparison. Classification metrics are evaluated on the original small-RO test set unless stated otherwise. The extended TPR is measured on the extended RO-footprint dataset.
 

@@ -40,8 +40,6 @@ This design keeps inspection inside the FPGA deployment path. It avoids a separa
 \section{Prototype Scope}
 \label{sec:coyote-prototype-scope}
 
-This work evaluates the main components needed for such an integration. The preprocessing method has already been implemented as HLS C++ raw-byte downsampling logic, lowered to Verilog by the HLS flow, and used for the deployment-oriented latency results. The CNN candidates are synthesized with hls4ml and evaluated for latency and resource cost. The final 256$\times$7 candidate is selected as the preferred model for further integration because it has lower latency and much lower BRAM overhead than the 512$\times$7 model.
+This work evaluates the main components needed for such an integration. The preprocessing method has already been implemented as HLS C++ raw-byte downsampling logic, lowered to Verilog by the HLS flow, and used for the deployment-oriented latency results. The CNN candidates are synthesized with hls4ml and evaluated for latency and resource cost.
 
 The current integration is still a proposal and prototype direction. A complete Coyote deployment would require control-plane integration, threshold policy, logging, error handling, and validation with the real PR controller. It would also need a clear policy for low-confidence predictions.
-
-The checker should be used as a defense-in-depth component. It can reject suspicious bitstreams before configuration, but it should operate together with static checks, authentication, and runtime monitoring.

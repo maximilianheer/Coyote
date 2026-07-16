@@ -8,12 +8,10 @@ We use convolutional neural networks because prior work has shown that represent
 
 This project follows the same direction, but with a different systems goal. The model is not only trained for software accuracy. It must also be small enough and regular enough to synthesize into FPGA logic. CNNs are a good fit for this because they can operate on fixed-size image-like tensors and can be converted to hardware using tools such as hls4ml~\cite{duarte2018fast,aarrestad2021fast}.
 
-The classifier receives the preprocessed bitstream tensor from Chapter~\ref{ch:dataset-preprocessing}. The output is a binary prediction. The positive class is the RO-based malicious class. The negative class is the benign Coyote application class.
-
 \section{Model Input and Classification Task}
 \label{sec:model-input-task}
 
-Each partial bitstream is converted into a grayscale image-like tensor through deterministic resizing. The tensor does not represent a natural image. It is a fixed-size layout of byte values sampled from the bitstream. This gives the CNN local neighborhoods of byte values from which it can learn statistical and spatial patterns.
+Each partial bitstream is converted into a grayscale image-like tensor through deterministic resizing. This gives the CNN local neighborhoods of byte values from which it can learn statistical and spatial patterns.
 
 The main classification task is binary:
 \[
@@ -63,7 +61,7 @@ The main software sweep varies input resolution and depth. The tested resolution
 \section{Candidate Architecture and Training}
 \label{sec:cnn-architecture-training}
 
-The final 256$\times$7 and 512$\times$7 candidates use the same seven-stage convolutional architecture. They differ in input resolution and final average-pool area. The 256$\times$7 model pools over a $1 \times 1$ final feature map. The 512$\times$7 model pools over a $2 \times 2$ final feature map. The output layer has one logit. Probabilities are computed by applying a sigmoid to this logit. The reported default predictions use threshold 0.5 on probability, equivalent to threshold 0 on the logit.
+The synthesized 256$\times$7 and 512$\times$7 candidates use the same seven-stage convolutional architecture. They differ in input resolution and final average-pool area. The 256$\times$7 model pools over a $1 \times 1$ final feature map. The 512$\times$7 model pools over a $2 \times 2$ final feature map. The output layer has one logit. Probabilities are computed by applying a sigmoid to this logit. The reported default predictions use threshold 0.5 on probability, equivalent to threshold 0 on the logit.
 
 \begin{table}[t]
     \centering
@@ -75,8 +73,6 @@ The final 256$\times$7 and 512$\times$7 candidates use the same seven-stage conv
         \toprule
         \textbf{Stage} & \textbf{Layer} & \textbf{Filters} & \textbf{Kernel} & \textbf{Stride} & \textbf{Pooling} & \textbf{Activation} & \textbf{Quantization} \\
         \midrule
-        % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/model_config.json
-        % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img512/notebook_pruned_qat/20260521_185923_production_prod_res512_layers7_W8A8_P50_manualA_9d14ccddbbe2/production/model_config.json
         Input & Byte image & -- & -- & -- & -- & -- & float input \\
         0 & QConv2D & 8 & $5 \times 5$ & $2 \times 2$ & MaxPool $2 \times 2$ & QReLU & W8 / A8(2) \\
         1 & QConv2D & 16 & $3 \times 3$ & $1 \times 1$ & MaxPool $2 \times 2$ & QReLU & W8 / A8(2) \\
@@ -91,9 +87,9 @@ The final 256$\times$7 and 512$\times$7 candidates use the same seven-stage conv
     }
 \end{table}
 
-Each convolution uses explicit zero padding before a valid convolution. No batch normalization is used. Each convolutional stage is followed by a QReLU activation and a $2 \times 2$ max-pool layer. A final average-pool layer and flattening step feed the dense output. The model has 35,368 non-bias weights. The P50 pruning target leaves 17,700 nonzero weights because the output dense layer is not pruned. At 32-bit floating point, the non-bias weights occupy about 138.2 KiB. At 8-bit weight precision, dense storage is about 34.5 KiB, or about 17.3 KiB with ideal sparse storage. Hardware resource use is reported separately in Chapter~\ref{ch:hls4ml-results}.
+Each convolution uses explicit zero padding before a valid convolution. No batch normalization is used, and there is no pooling between convolutional stages. A final average-pool layer and flattening step feed the dense output. Hardware resource use is reported in Chapter~\ref{ch:hls4ml-results}.
 
-% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/model_config.json
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
 % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/sparsity_fold_production.csv
 % Source: ../ml_deep_bitstream_inspection/hls4ml/pipeline/part2_train.py
 The production training setup is:
@@ -104,16 +100,14 @@ The production training setup is:
     \item \textbf{Seeds:} seed 42 for dataset splitting and seed 10042 for production-model initialization.
     \item \textbf{Class balance:} 119 benign and 119 malicious training samples, with no class weights after balancing.
     \item \textbf{Augmentation:} horizontal and vertical flips with probability 0.5 each, no translation, and no random crop scaling below 1.0.
-    \item \textbf{Early stopping:} not used in the saved production training path.
-    \item \textbf{Thresholds:} reported default confusion matrices use probability threshold 0.5.
-    \item \textbf{Diagnostics:} ROC-optimal thresholds are recorded separately.
-    \item \textbf{Reproducibility metadata:} production manifests record source hashes, but not pinned Python package versions.
+    \item \textbf{Thresholds:} We use a probability threshold of 0.5 for decisions (higher means a more suspicious bitstream).
+    \item \textbf{Reproducibility metadata:} production manifests record source hashes.
 \end{itemize}
 
 \section{Software Detection Results}
 \label{sec:software-detection-results}
 
-Figure~\ref{fig:f1-resolution-depth} shows the main software result:
+Figure~\ref{fig:f1-resolution-depth} shows the main (software) machine learning result:
 \begin{itemize}
     \item F1 improves as input resolution and model depth increase.
     \item Small inputs lose information during resizing, while larger inputs preserve more byte-level structure.
@@ -128,7 +122,7 @@ Figure~\ref{fig:f1-resolution-depth} shows the main software result:
     \label{fig:f1-resolution-depth}
 \end{figure}
 
-The strongest software models are not automatically the best deployment candidates. Larger inputs improve F1, but they also increase memory pressure, latency, and resource usage after synthesis. The later hardware evaluation therefore focuses on deployable candidates rather than only the maximum-F1 software model.
+The strongest software models are not necessarily the best candidates. Larger inputs improve F1, but they also increase latency and resource usage after synthesis. The later hardware evaluation therefore focuses on deployable candidates rather than only the best F1 software model.
 
 \begin{table}[t]
     \centering
@@ -146,9 +140,9 @@ The strongest software models are not automatically the best deployment candidat
     \end{tabular}
 \end{table}
 
-Table~\ref{tab:software-cnn-results} and Table~\ref{tab:final-candidates} should not be read as the same metric on the same split. Table~\ref{tab:software-cnn-results} reports pooled validation performance from the software design-space sweep. Table~\ref{tab:final-candidates} reports final production candidates on a held-out test set after pruning, quantization, hls4ml conversion, and U55C validation. This split and flow change explains why the final 256$\times$7 and 512$\times$7 F1 values are lower than the software sweep values.
+Note: Table~\ref{tab:software-cnn-results} and Table~\ref{tab:final-candidates} should not be read as the same metric on the same data. Table~\ref{tab:software-cnn-results} reports pooled validation performance from the software design-space sweep. Table~\ref{tab:final-candidates} reports final production candidates on a held-out test set after pruning, quantization, hls4ml conversion, and U55C validation. This split and flow change explains why the final 256$\times$7 and 512$\times$7 F1 values are lower than the software sweep values.
 
-\section{Interpretability Check}
+\section{Interpretability and Failure Modes}
 \label{sec-interpretability}
 
 We use Grad-CAM as a qualitative sanity check~\cite{selvaraju2017gradcam}. The goal is to inspect whether the CNN focuses on localized regions of the bitstream image or behaves as if it only learned a trivial global statistic.
@@ -161,9 +155,9 @@ We use Grad-CAM as a qualitative sanity check~\cite{selvaraju2017gradcam}. The g
     \label{fig:gradcam-example}
 \end{figure}
 
-The Grad-CAM examples show localized regions and bands with higher contribution. This supports the use of a spatial bitstream representation. It does not prove that the model identifies ring oscillators at the circuit level. It is only a qualitative check on the learned representation.
+The Grad-CAM examples show localized regions and bands with higher contribution. This supports the use of a spatial bitstream representation. However, it does not prove that the model identifies ring oscillators at the circuit level, and it is only a qualitative check on the learned representation.
 
-Grad-CAM also exposed a failure mode. In fold 0 of the 256$\times$7 run, the sample \texttt{it2\_S045} is a standalone RO design with 8000 ROs, but the model assigns standalone probability 0.434 and predicts benign at the default 0.5 threshold. Figure~\ref{fig:gradcam-fold0-failure} shows that the activation concentrates on linear edge and band patterns rather than clear distributed evidence of the malicious payload.
+Grad-CAM can also exposed a failure mode. In fold 0 of the 256$\times$7 k-fold CV, the sample \texttt{it2\_S045} is a RO design with 8000 ROs, but the model assigns standalone probability 0.434 and predicts benign. Figure~\ref{fig:gradcam-fold0-failure} shows that the activation concentrates on linear edge and band patterns rather than clear distributed evidence of the malicious payload.
 
 \begin{figure}[t]
     \centering
@@ -174,7 +168,7 @@ Grad-CAM also exposed a failure mode. In fold 0 of the 256$\times$7 run, the sam
     \label{fig:gradcam-fold0-failure}
 \end{figure}
 
-The training curves provide the corresponding quantitative warning. In Figure~\ref{fig:res256-training-curves}, fold 0 learns more slowly than the other folds and its loss remains comparatively high for much of training. We interpret this as an overfitting or training-instability issue that needs detection beyond Grad-CAM. This matters most for lower-signal settings such as the non-extended dataset, where a model can latch onto incidental linear bitstream patterns instead of robust malicious-payload evidence. Practical use should therefore pair Grad-CAM with fold-level diagnostics, per-sample failure review, threshold monitoring, and retraining or stronger regularization when a fold shows this behavior.
+The training curves provide the corresponding warning. In Figure~\ref{fig:res256-training-curves}, fold 0 learns more slowly than the other folds and its loss remains comparatively high. We interpret this as an overfitting or training-instability issue that needs detection beyond Grad-CAM. This matters most for lower-signal settings such as the non-extended dataset, where a model can fit onto incidental linear bitstream patterns instead of robust malicious-payload evidence. Practical use should therefore pair Grad-CAM with fold-level diagnostics, per-sample failure review, threshold monitoring, and retraining or stronger regularization when a fold shows this behavior.
 
 \begin{figure}[t]
     \centering

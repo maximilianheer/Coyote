@@ -17,9 +17,9 @@ Benign samples are generated from real Coyote applications. These applications r
 
 The benign catalog contains eight debug-enabled Coyote applications: hello world, HLS vector add, multitenancy AES, user interrupts, perf FPGA, multithreading AES, Euclidean distance, and cosine similarity. It also contains no-debug variants for seven of these applications. In the available manifests, this gives 120 debug-enabled benign samples and 101 no-debug benign samples.
 
-Malicious samples are generated from RO-based designs. These designs place attacker-controlled ring oscillators into the reconfigurable region. The RO count is varied to create payloads with different logic footprints~\cite{la2020fpgadefender,provelengios2020power,chaudhuri2023criticality}. This allows the evaluation to distinguish between small low-footprint payloads and larger high-density payloads.
+Malicious samples are generated from RO designs from \cite{mahmoud2023practical}. The RO count is varied to create payloads with different footprints~\cite{la2020fpgadefender,provelengios2020power,chaudhuri2023criticality}. This allows the evaluation to distinguish between small low-footprint payloads and larger high-density payloads.
 
-Figure~\ref{fig:dataset-pipeline} shows the dataset generation flow. Both benign and malicious designs pass through the same floorplan and configuration sweep before partial-bitstream generation. The output is a labeled dataset of partial bitstreams and metadata.
+Figure~\ref{fig:dataset-pipeline} shows the dataset generation flow. Both benign and malicious designs pass through a floorplan and configuration sweep before partial-bitstream generation. The output is a labeled dataset of partial bitstreams and metadata.
 
 \begin{figure}[t]
     \centering
@@ -34,7 +34,7 @@ Figure~\ref{fig:dataset-pipeline} shows the dataset generation flow. Both benign
 
 Table~\ref{tab:dataset-composition} summarizes the available generated dataset. The original generated corpus contains benign Coyote bitstreams and normal-RO malicious bitstreams across 15 floorplans, FP00--FP14. The higher-density big-RO extension uses six of those floorplans and is kept separate because it is used for the extended footprint evaluation. Figure~\ref{fig:ro-count-distribution} shows the RO-count distribution for both malicious subsets.
 
-The available generated manifests contain 221 benign samples, 225 normal-RO malicious samples, and 78 big-RO malicious samples. The normal-RO corpus spans 32 RO-count settings. The big-RO extension spans 13 higher-density RO-count settings. These counts are not full Cartesian products. For normal RO, we did not build every RO setting on every floorplan. Instead, the generation flow used more RO-count settings and a subset of floorplan combinations to keep the malicious sample count close to the benign count. For benign samples, the intended catalog is 15 variants across 15 floorplans, but some builds did not finish, leaving 221 available benign bitstreams.
+The available generated manifests contain 221 benign samples, 225 normal-RO malicious samples, and 78 big-RO malicious samples. The normal-RO corpus spans 33 RO-count settings. The big-RO extension spans 13 higher-density RO-count settings. These counts are not full Cartesian products. For normal RO, we did not build every RO setting on every floorplan. Instead, the generation flow used more RO-count settings and a subset of floorplan combinations to keep the malicious sample count close to the benign count. For benign samples, the intended catalog is 15 variants across 15 floorplans, but some builds did not finish, leaving 221 available benign bitstreams.
 
 \begin{table}[t]
     \centering
@@ -56,7 +56,7 @@ The available generated manifests contain 221 benign samples, 225 normal-RO mali
         % Sources: ../ml_deep_bitstream_inspection/datasets/full_dataset_it{1,2,3}/artifacts/manifest_available.csv
         Normal RO &
         Standalone RO payloads &
-        32 RO-count settings &
+        33 RO-count settings &
         15 &
         225 \\
         \midrule

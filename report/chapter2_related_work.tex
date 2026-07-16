@@ -28,9 +28,7 @@ We consider a serverless FPGA platform with a trusted shell and an untrusted use
 
 The attacker's goal is to have the malicious bitstream accepted and loaded through partial reconfiguration. The platform's goal is to inspect the bitstream before configuration and reject suspicious inputs.
 
-The checker is placed before the partial reconfiguration step. It receives the incoming partial bitstream, preprocesses it into the fixed input format expected by the classifier, and outputs either a decision or a suspiciousness score.
-
-This work has several non-goals. It does not prove bitstream safety. It does not reverse-engineer arbitrary bitstreams. It does not detect all possible malicious circuits. It also does not replace vendor checks, static design rules, authentication, or runtime monitoring. The checker is a defense-in-depth mechanism for one important class of malicious payloads.
+The checker is placed before the partial reconfiguration step. It receives the incoming partial bitstream, preprocesses it into the fixed input format expected by the classifier, and outputs a decision.
 
 \section{Prior Work}
 \label{sec:prior-work}
@@ -41,44 +39,60 @@ FPGA security surveys provide the broader context for bitstream-level attacks an
     \centering
     \caption{Comparison of approaches for malicious FPGA bitstream detection.}
     \label{tab:prior-work-gap}
-    \small
-    \resizebox{\linewidth}{!}{
-    \begin{tabular}{p{0.22\linewidth} p{0.25\linewidth} p{0.27\linewidth} p{0.18\linewidth}}
-        \toprule
-        \textbf{Approach} & \textbf{Strength} & \textbf{Limitation} & \textbf{Relation to this work} \\
-        \midrule
-        Cloud and vendor checks &
-        Integrated into deployment flows &
-        Limited to known rules and platform policies &
-        Complemented by learned inspection \\
-        \midrule
-        Structural RO analysis &
-        Targets oscillator structures directly &
-        Can be architecture-specific and hard to generalize &
-        Avoids explicit bitstream reverse engineering \\
-        \midrule
-        ML-based inspection &
-        Learns patterns from bitstream data &
-        Usually evaluated offline in software &
-        Synthesizes the detector for FPGA deployment \\
-        \midrule
-        This work &
-        Connects partial-bitstream ML detection to hardware synthesis &
-        Feasibility prototype for one threat class &
-        Studies detection, hardware cost, and integration together \\
-        \bottomrule
-    \end{tabular}
-    }
-\end{table}
 
+    \small
+    \setlength{\tabcolsep}{5pt}
+    \renewcommand{\arraystretch}{1.18}
+
+    \begin{tabularx}{\linewidth}{
+        @{}
+        >{\hsize=0.80\hsize}Y
+        >{\hsize=1.05\hsize}Y
+        >{\hsize=1.15\hsize}Y
+        >{\hsize=1.00\hsize}Y
+        @{}
+    }
+        \toprule
+        \textbf{Approach} &
+        \textbf{Strength} &
+        \textbf{Limitation} &
+        \textbf{Relation to this work} \\
+        \midrule
+
+        Cloud and vendor checks &
+        Already integrated into deployment flows &
+        Restricted to known rules and platform policies &
+        Complemented by learned inspection \\
+        \addlinespace[0.45em]
+
+        Structural RO analysis &
+        Detects oscillator structures directly &
+        Often architecture-specific and difficult to generalize &
+        Avoids explicit structural reverse engineering \\
+        \addlinespace[0.45em]
+
+        ML-based inspection &
+        Learns patterns directly from bitstream data &
+        Commonly evaluated as an offline software classifier &
+        Moves the learned detector into FPGA fabric \\
+        \midrule
+
+        \textbf{This work} &
+        Connects partial-bitstream classification with hardware synthesis &
+        Evaluates one platform and one primary threat class &
+        Studies detection quality, hardware cost, and deployment-path integration \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
 Prior ML-based work is important because it shows that bitstream-derived representations contain learnable structure~\cite{rettkowski2019inspection,chaudhuri2022detection,elnaggar2023learning,palumbo2022trojan}. CNNs and other classifiers can distinguish benign and malicious bitstreams without fully decoding the circuit semantics. Recent work by Stahle-Smith and Karakchi is especially close in motivation because it uses static byte-level features for malicious-bitstream detection and deploys the selected classifier on a PYNQ-Z1 embedded platform~\cite{stahlesmith2025realtime}. That work uses byte-frequency features, TSVD, SMOTE, and a Random Forest for embedded-system detection. This report instead studies deterministic byte-image tensors, CNN classifiers, hls4ml synthesis, and integration into a Coyote-style U55C deployment path. The remaining question is whether such inspection can satisfy the constraints of a serverless FPGA deployment path.
 
 \section{Research Gap}
 \label{sec:research-gap}
 
+
 The gap addressed in this report is deployment-oriented ML inspection. Offline classification alone is not enough for a serverless FPGA platform. A useful checker must satisfy three requirements.
 
-\begin{table}[t]
+\begin{table}[H]
     \centering
     \caption{Feasibility dimensions for FPGA-resident bitstream inspection.}
     \label{tab:feasibility-dimensions}
@@ -100,5 +114,7 @@ The gap addressed in this report is deployment-oriented ML inspection. Offline c
         \bottomrule
     \end{tabular}
 \end{table}
+
+
 
 This report studies all three dimensions together. We generate Coyote-style partial bitstreams, train CNN classifiers on deterministic byte-image representations, synthesize selected models with hls4ml, and evaluate whether the resulting hardware designs are practical candidates for deployment-path inspection.

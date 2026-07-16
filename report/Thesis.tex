@@ -12,11 +12,15 @@
 \usepackage{amsmath}
 \usepackage{subcaption}
 \usepackage{xcolor}
-\usepackage{tikz}
 \usepackage{siunitx}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{url}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DOCUMENT METADATA
@@ -59,11 +63,11 @@ I would like to thank Maximilian Heer and Prof.\ Dr.\ Gustavo Alonso for their g
 \begin{abstract}
 Cloud and serverless FPGA platforms expose reconfigurable fabric to user designs, making them vulnerable to malicious circuits such as ring oscillators~\cite{gnad2017voltage,la2021denial,provelengios2020power}. Prior work on ML-based bitstream inspection has shown that malicious payloads can be detected from bitstream-level patterns~\cite{rettkowski2019inspection,chaudhuri2022detection,elnaggar2023learning,palumbo2022trojan}, but these approaches are generally evaluated as offline software classifiers and are not designed for low-latency deployment on datacenter-grade FPGA infrastructure. This motivates an online inspection approach in which the detection model itself is implemented in FPGA fabric and integrated into a cloud-oriented FPGA shell before user bitstreams are deployed.
 
-This report investigates whether malicious-bitstream detection can be moved into the FPGA deployment path itself. We generate a dataset of benign Coyote partial bitstreams and trojan ring-oscillator bitstreams, represent bitstreams as image-like inputs, train compact CNN classifiers, and synthesize selected models using hls4ml~\cite{duarte2018fast,aarrestad2021fast}. We evaluate the resulting design space across classification quality, input resolution, model depth, quantization, pruning, reuse factor, latency, and FPGA resource utilization.
+This report investigates whether malicious-bitstream detection can be moved into the FPGA deployment path itself. We generate a dataset of benign Coyote partial bitstreams and malicious ring-oscillator bitstreams, represent bitstreams as image-like inputs, train compact CNN classifiers, and synthesize selected models using hls4ml~\cite{duarte2018fast,aarrestad2021fast}. We evaluate the resulting design space across classification quality, input resolution, model depth, quantization, pruning, reuse factor, latency, and FPGA resource utilization.
 
 % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
 % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res512_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
-Our results show that the U55C 256$\times$7 checker reaches 87.7\% accuracy, 88.5\% F1, and 8.0\% false-negative rate on the held-out test set. The U55C 512$\times$7 checker reaches 90.4\% accuracy, 90.5\% F1, and 10.7\% false-negative rate. Estimated FPGA-side preprocessing-plus-inference latency is 3.35 ms per sample for 256$\times$7 and 6.53 ms per sample for 512$\times$7. The 256$\times$7 routed design meets timing and attributes 4.47\% LUT, 17.86\% BRAM, 1.15\% URAM, and 14.72\% DSP to the checker wrapper. The 512$\times$7 design does not meet timing and attributes 4.90\% LUT, 61.78\% BRAM, 1.77\% URAM, and 14.45\% DSP. These results suggest that FPGA-resident ML-based inspection is feasible as a deployment-path defense-in-depth checker for RO-payload detection, but remains limited by dataset breadth, low-footprint attacks, threshold policy, and full production control-plane integration.
+Our results show that the Alveo U55C 256$\times$7 checker reaches 87.7\% accuracy, 88.5\% F1, and 8.0\% false-negative rate on the held-out test set. The alternative 512$\times$7 checker reaches 90.4\% accuracy, 90.5\% F1, and 10.7\% false-negative rate. Estimated FPGA-side preprocessing-plus-inference latency is 3.35 ms per sample for 256$\times$7 and 6.53 ms per sample for 512$\times$7. The 256$\times$7 routed design attributes 4.47\% LUT, 17.86\% BRAM, 1.15\% URAM, and 14.72\% DSP to the checker wrapper. The 512$\times$7 design attributes 4.90\% LUT, 61.78\% BRAM, 1.77\% URAM, and 14.45\% DSP. These results suggest that FPGA-resident ML-based inspection is feasible as a deployment-path defense-in-depth checker for RO-payload detection, but remains limited by dataset breadth, low-footprint attacks, threshold policy, and full production control-plane integration.
 
 \end{abstract}
 \tableofcontents
