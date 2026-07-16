@@ -63,6 +63,10 @@ The main software sweep varies input resolution and depth. The tested resolution
 
 The synthesized 256$\times$7 and 512$\times$7 candidates use the same seven-stage convolutional architecture. They differ in input resolution and final average-pool area. The 256$\times$7 model pools over a $1 \times 1$ final feature map. The 512$\times$7 model pools over a $2 \times 2$ final feature map. The output layer has one logit. Probabilities are computed by applying a sigmoid to this logit. The reported default predictions use threshold 0.5 on probability, equivalent to threshold 0 on the logit.
 
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/sparsity_fold_production.csv
+The final candidates are the 256$\times$7 and 512$\times$7 W8A8 P50 manual-v1 models. W8A8 means 8-bit quantized weights and activations. P50 means pruning with a final sparsity target of 0.5 on pruned layers, while the output dense layer is not pruned. Manual-v1 refers to the manually tuned per-layer hls4ml configuration used for the deployment evaluation.
+
 \begin{table}[t]
     \centering
     \caption{Seven-stage QKeras CNN architecture used for the final candidates.}
@@ -87,9 +91,10 @@ The synthesized 256$\times$7 and 512$\times$7 candidates use the same seven-stag
     }
 \end{table}
 
-Each convolution uses explicit zero padding before a valid convolution. No batch normalization is used, and there is no pooling between convolutional stages. A final average-pool layer and flattening step feed the dense output. Hardware resource use is reported in Chapter~\ref{ch:hls4ml-results}.
+Each convolution uses explicit zero padding before a valid convolution. No batch normalization is used. Each convolutional stage is followed by quantized ReLU activation and $2 \times 2$ max pooling. A final average-pool layer and flattening step feed the dense output. Hardware resource use is reported in Chapter~\ref{ch:hls4ml-results}.
 
 % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/splits/summary.csv
 % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/sparsity_fold_production.csv
 % Source: ../ml_deep_bitstream_inspection/hls4ml/pipeline/part2_train.py
 The production training setup is:
@@ -98,7 +103,8 @@ The production training setup is:
     \item \textbf{Optimizer and loss:} Adam with learning rate $10^{-4}$ and binary cross-entropy from logits.
     \item \textbf{Batch and epochs:} batch size 16 and a fixed 300-epoch budget.
     \item \textbf{Seeds:} seed 42 for dataset splitting and seed 10042 for production-model initialization.
-    \item \textbf{Class balance:} 119 benign and 119 malicious training samples, with no class weights after balancing.
+    \item \textbf{Split protocol:} the training pool has 269 usable samples before balancing: 150 benign and 119 RO-malicious. Benign samples are downsampled to produce 238 balanced training samples: 119 benign and 119 malicious. Stratified five-fold validation uses seed 42. Folds 0--2 use 190 train and 48 validation samples; folds 3--4 use 191 train and 47 validation samples. The final production model trains on all 238 balanced samples and is evaluated on a held-out 146-sample test set with 71 benign and 75 malicious samples.
+    \item \textbf{Class weights:} no class weights are used after balancing.
     \item \textbf{Augmentation:} horizontal and vertical flips with probability 0.5 each, no translation, and no random crop scaling below 1.0.
     \item \textbf{Thresholds:} We use a probability threshold of 0.5 for decisions (higher means a more suspicious bitstream).
     \item \textbf{Reproducibility metadata:} production manifests record source hashes.
@@ -157,7 +163,7 @@ We use Grad-CAM as a qualitative sanity check~\cite{selvaraju2017gradcam}. The g
 
 The Grad-CAM examples show localized regions and bands with higher contribution. This supports the use of a spatial bitstream representation. However, it does not prove that the model identifies ring oscillators at the circuit level, and it is only a qualitative check on the learned representation.
 
-Grad-CAM can also exposed a failure mode. In fold 0 of the 256$\times$7 k-fold CV, the sample \texttt{it2\_S045} is a RO design with 8000 ROs, but the model assigns standalone probability 0.434 and predicts benign. Figure~\ref{fig:gradcam-fold0-failure} shows that the activation concentrates on linear edge and band patterns rather than clear distributed evidence of the malicious payload.
+Grad-CAM can also expose a failure mode. In fold 0 of the 256$\times$7 k-fold CV, the sample \texttt{it2\_S045} is a RO design with 8000 ROs, but the model assigns standalone probability 0.434 and predicts benign. Figure~\ref{fig:gradcam-fold0-failure} shows that the activation concentrates on linear edge and band patterns rather than clear distributed evidence of the malicious payload.
 
 \begin{figure}[t]
     \centering

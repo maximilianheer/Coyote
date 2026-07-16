@@ -6,7 +6,8 @@
 
 The CNN models from Chapter~\ref{ch:cnn-pipeline} are useful only if they can be mapped to practical FPGA hardware. The goal of this chapter is to evaluate whether the trained classifiers can become deployment-path checkers with acceptable latency and resource overhead.
 
-We use hls4ml to convert trained CNN models into hardware designs~\cite{duarte2018fast,aarrestad2021fast}. The synthesis flow takes a trained Keras or QKeras model~\cite{coelho2020qkeras}, generates an HLS implementation, validates the generated design with C simulation, and produces latency and resource estimates after synthesis. The final W8A8 candidates are trained with QKeras quantization-aware training before hls4ml conversion, so the software model already uses the quantized weight and activation behavior evaluated by the hardware flow. The final candidates are then evaluated in terms of added latency and added FPGA resources relative to the Coyote baseline.
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
+We use hls4ml to convert trained CNN models into hardware designs~\cite{duarte2018fast,aarrestad2021fast}. The synthesis flow takes a trained Keras or QKeras model~\cite{coelho2020qkeras}, generates an HLS implementation, validates the generated design with C simulation, and produces latency and resource estimates after synthesis. The final W8A8 P50 manual-v1 candidates are trained with QKeras quantization-aware training and 50\% pruning before hls4ml conversion, so the software model already uses the quantized weight and activation behavior evaluated by the hardware flow. The final candidates are then evaluated in terms of added latency and added FPGA resources relative to the Coyote baseline.
 
 The main hardware metrics are LUT usage, BRAM usage, DSP usage, and added inspection latency. The main detection metrics are accuracy, F1, true positive rate, false positive rate, and ROC AUC. The final design point should balance both groups of metrics.
 
@@ -30,9 +31,12 @@ This flow is repeated for selected CNN candidates. We do not synthesize every so
 \section{Hardware Tuning Parameters}
 \label{sec:hls4ml-knobs}
 
-The main hls4ml tuning parameters are quantization, reuse factor, synthesis strategy, and manual per-layer configuration.
+The main hls4ml tuning parameters are quantization, pruning, reuse factor, synthesis strategy, and manual per-layer configuration.
 
 Quantization controls the precision of weights and activations. Lower precision can reduce hardware cost, but it can also reduce model quality or create numerical differences between the software model and the generated HLS model.
+
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
+Pruning controls weight sparsity. In the final W8A8 P50 candidates, P50 denotes a final sparsity target of 0.5 for pruned layers.
 
 The reuse factor controls how much hardware is shared across operations. A low reuse factor increases parallelism and reduces latency. It also increases resource usage. A high reuse factor uses fewer resources but increases latency.
 
@@ -51,6 +55,10 @@ Table~\ref{tab:hls4ml-knobs} summarizes the main knobs.
         Quantization &
         Sets weight and activation precision &
         Quality vs. area \\
+        \midrule
+        Pruning &
+        Sets target weight sparsity &
+        Quality vs. exploitable sparsity \\
         \midrule
         Reuse factor &
         Controls hardware sharing across operations &
@@ -121,7 +129,7 @@ Figure~\ref{fig:hls-latency-f1-frontier} and  Figure~\ref{fig:hls-lut-f1-frontie
 \section{Final Synthesized Candidates}
 \label{sec:final-synthesized-candidates}
 
-The final comparison focuses on two synthesized models. The 256$\times$7 model is the preferred deployment candidate. The 512$\times$7 model is the accuracy-oriented alternative. 
+The final comparison focuses on two synthesized models. The final 256$\times$7 candidate is the seven-layer, W8A8, 50\%-pruned model with the manually tuned v1 hls4ml configuration. It is the preferred deployment candidate. The final 512$\times$7 candidate uses the same W8A8 P50 manual-v1 setup at higher input resolution. It is the accuracy-oriented alternative.
 
 Table~\ref{tab:final-candidates} shows the final comparison. Classification metrics are evaluated on the original small-RO test set unless stated otherwise. The extended TPR is measured on the extended RO-footprint dataset.
 
@@ -145,7 +153,7 @@ Table~\ref{tab:final-candidates} shows the final comparison. Classification metr
         \textbf{DSP} \\
         \midrule
         % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
-        256$\times$7 &
+        256$\times$7 W8A8 P50 manual-v1 &
         87.7\% &
         88.5\% &
         92.0\% &
@@ -158,7 +166,7 @@ Table~\ref{tab:final-candidates} shows the final comparison. Classification metr
         +14.72\% \\
         \midrule
         % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res512_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
-        512$\times$7 &
+        512$\times$7 W8A8 P50 manual-v1 &
         90.4\% &
         90.5\% &
         89.3\% &
@@ -174,9 +182,9 @@ Table~\ref{tab:final-candidates} shows the final comparison. Classification metr
     }
 \end{table}
 
-The 512$\times$7 model has higher accuracy, higher F1, lower false positive rate, higher ROC AUC, and perfect TPR on the extended RO-footprint dataset. This makes it the stronger detection candidate.
+The 512$\times$7 W8A8 P50 manual-v1 model has higher accuracy, higher F1, lower false positive rate, higher ROC AUC, and perfect TPR on the extended RO-footprint dataset. This makes it the stronger detection candidate.
 
-The 256$\times$7 model is the better deployment candidate. It has lower added latency and much lower BRAM overhead. Its F1 is only two percentage points lower than the 512$\times$7 model, and its original-set TPR is higher. The BRAM difference is the main reason for preferring 256$\times$7. The routed hierarchy attributes 61.78\% of device BRAM to the 512$\times$7 checker wrapper, while the 256$\times$7 wrapper accounts for 17.86\%.
+The 256$\times$7 W8A8 P50 manual-v1 model is the better deployment candidate. It has lower added latency and much lower BRAM overhead. Its F1 is only two percentage points lower than the 512$\times$7 W8A8 P50 manual-v1 model, and its original-set TPR is higher. The BRAM difference is the main reason for preferring 256$\times$7. The routed hierarchy attributes 61.78\% of device BRAM to the 512$\times$7 checker wrapper, while the 256$\times$7 wrapper accounts for 17.86\%.
 
 \section{Latency Context}
 \label{sec:latency-context}
@@ -221,7 +229,7 @@ The added inspection latency should be interpreted relative to the latency of pa
 
 The added latency is small relative to full serverless invocation latencies and larger PR operations. It is more significant for very small PR regions. This suggests that FPGA-resident inspection is most attractive when the checker is used in realistic deployment paths where PR and runtime overheads already dominate a few milliseconds of inference time.
 
-The 256$\times$7 model adds 3.35 ms. The 512$\times$7 model adds 6.53 ms. Both are plausible for deployment-path inspection, but the smaller model gives a safer latency budget.
+The 256$\times$7 W8A8 P50 manual-v1 model adds 3.35 ms. The 512$\times$7 W8A8 P50 manual-v1 model adds 6.53 ms. Both are plausible for deployment-path inspection, but the smaller model gives a safer latency budget.
 
 \section{Resource Context}
 \label{sec:resource-context}
@@ -266,15 +274,15 @@ The LUT overhead is similar for both synthesized candidates. DSP overhead is als
 \section{Quantization and Pruning}
 \label{sec:quantization-pruning-results}
 
-Quantization and pruning are evaluated as hardware-aware compression techniques~\cite{coelho2020qkeras,han2016deepcompression}. Quantization reduces arithmetic precision. Pruning removes weights and increases sparsity. Both can reduce the cost of a neural network, but the benefit depends on the synthesis flow and on whether the generated hardware can exploit the reduced precision or sparsity. For the selected W8A8 models, quantization is not applied only after training. We use QKeras quantization-aware training so the model learns under the target 8-bit weight and activation quantizers.
+Quantization and pruning are evaluated as hardware-aware compression techniques~\cite{coelho2020qkeras,han2016deepcompression}. Quantization reduces arithmetic precision. Pruning removes weights and increases sparsity. Both can reduce the cost of a neural network, but the benefit depends on the synthesis flow and on whether the generated hardware can exploit the reduced precision or sparsity. For the selected W8A8 P50 models, quantization is not applied only after training. We use QKeras quantization-aware training so the model learns under the target 8-bit weight and activation quantizers.
 
 For quantized models, we check both software quality and hls4ml parity. This is important because a low-bit model can have good software accuracy but still produce mismatches after conversion. For pruned models, we track actual sparsity and classification quality. Sparse models are useful only if sparsity translates into lower synthesis cost or better feasibility.
 
-In the final design selection, quantization and pruning are treated as supporting tools. The main deployment decision is driven by the synthesized 256$\times$7 and 512$\times$7 candidates, where measured latency and resource overhead are available.
+In the final design selection, quantization and pruning are treated as supporting tools. The main deployment decision is driven by the synthesized 256$\times$7 and 512$\times$7 W8A8 P50 manual-v1 candidates, where measured latency and resource overhead are available.
 
 \section{Takeaway}
 \label{sec:hls4ml-takeaway}
 
-The hardware results show that FPGA-resident CNN inspection is feasible, but the design point matters. The 512$\times$7 model gives stronger detection metrics, especially lower FPR, higher ROC AUC, and perfect TPR on the extended RO-footprint dataset. It also has much higher BRAM overhead and roughly double the latency of the 256$\times$7 model.
+The hardware results show that FPGA-resident CNN inspection is feasible, but the design point matters. The 512$\times$7 W8A8 P50 manual-v1 model gives stronger detection metrics, especially lower FPR, higher ROC AUC, and perfect TPR on the extended RO-footprint dataset. It also has much higher BRAM overhead and roughly double the latency of the 256$\times$7 W8A8 P50 manual-v1 model.
 
-The 256$\times$7 model is the preferred candidate for further Coyote integration. It provides useful detection quality, lower added latency, and much lower BRAM overhead. It is the better balance between security coverage and deployment cost.
+The 256$\times$7 W8A8 P50 manual-v1 model is the preferred candidate for further Coyote integration. It provides useful detection quality, lower added latency, and much lower BRAM overhead. It is the better balance between security coverage and deployment cost.

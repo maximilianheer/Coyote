@@ -34,7 +34,11 @@ Figure~\ref{fig:dataset-pipeline} shows the dataset generation flow. Both benign
 
 Table~\ref{tab:dataset-composition} summarizes the available generated dataset. The original generated corpus contains benign Coyote bitstreams and normal-RO malicious bitstreams across 15 floorplans, FP00--FP14. The higher-density big-RO extension uses six of those floorplans and is kept separate because it is used for the extended footprint evaluation. Figure~\ref{fig:ro-count-distribution} shows the RO-count distribution for both malicious subsets.
 
-The available generated manifests contain 221 benign samples, 225 normal-RO malicious samples, and 78 big-RO malicious samples. The normal-RO corpus spans 33 RO-count settings. The big-RO extension spans 13 higher-density RO-count settings. These counts are not full Cartesian products. For normal RO, we did not build every RO setting on every floorplan. Instead, the generation flow used more RO-count settings and a subset of floorplan combinations to keep the malicious sample count close to the benign count. For benign samples, the intended catalog is 15 variants across 15 floorplans, but some builds did not finish, leaving 221 available benign bitstreams.
+The available generated manifests contain 221 benign samples, 225 normal-RO malicious samples, and 78 big-RO malicious samples. The normal-RO corpus spans 32 RO-count settings. The big-RO extension spans 13 higher-density RO-count settings. These counts are not full Cartesian products. For normal RO, we did not build every RO setting on every floorplan. Instead, the generation flow used more RO-count settings and a subset of floorplan combinations to keep the malicious sample count close to the benign count. For benign samples, the intended catalog is 15 variants across 15 floorplans, but some builds did not finish, leaving 221 available benign bitstreams.
+
+% Source: ../ml_deep_bitstream_inspection/hls4ml/pipeline/part2_train.py
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
+For training and held-out testing, benign samples are always kept, while standalone RO samples are kept only when \texttt{ro\_count} is at least 8000. We use this threshold as a project-level lower bound for attack-relevant RO payloads. Prior work such as FPGADefender shows that malicious self-oscillator payloads are a realistic FPGA security target~\cite{la2020fpgadefender}; the 8000-RO cutoff is our dataset policy, not a threshold claimed by that work.
 
 \begin{table}[t]
     \centering
@@ -56,7 +60,7 @@ The available generated manifests contain 221 benign samples, 225 normal-RO mali
         % Sources: ../ml_deep_bitstream_inspection/datasets/full_dataset_it{1,2,3}/artifacts/manifest_available.csv
         Normal RO &
         Standalone RO payloads &
-        33 RO-count settings &
+        32 RO-count settings &
         15 &
         225 \\
         \midrule
