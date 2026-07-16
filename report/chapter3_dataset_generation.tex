@@ -32,9 +32,9 @@ Figure~\ref{fig:dataset-pipeline} shows the dataset generation flow. Both benign
 \section{Dataset Composition}
 \label{sec:dataset-composition}
 
-Table~\ref{tab:dataset-composition} summarizes the available generated dataset. The original generated corpus contains benign Coyote bitstreams and normal-RO malicious bitstreams across 15 floorplans, FP00--FP14. The higher-density big-RO extension uses six of those floorplans and is kept separate because it is used for the extended footprint evaluation.
+Table~\ref{tab:dataset-composition} summarizes the available generated dataset. The original generated corpus contains benign Coyote bitstreams and normal-RO malicious bitstreams across 15 floorplans, FP00--FP14. The higher-density big-RO extension uses six of those floorplans and is kept separate because it is used for the extended footprint evaluation. Figure~\ref{fig:ro-count-distribution} shows the RO-count distribution for both malicious subsets.
 
-The available generated manifests contain 221 benign samples, 225 normal-RO malicious samples, and 78 big-RO malicious samples. The normal-RO corpus spans 33 RO-count settings. The big-RO extension spans 13 higher-density RO-count settings.
+The available generated manifests contain 221 benign samples, 225 normal-RO malicious samples, and 78 big-RO malicious samples. The normal-RO corpus spans 32 RO-count settings. The big-RO extension spans 13 higher-density RO-count settings. These counts are not full Cartesian products. For normal RO, we did not build every RO setting on every floorplan. Instead, the generation flow used more RO-count settings and a subset of floorplan combinations to keep the malicious sample count close to the benign count. For benign samples, the intended catalog is 15 variants across 15 floorplans, but some builds did not finish, leaving 221 available benign bitstreams.
 
 \begin{table}[t]
     \centering
@@ -56,7 +56,7 @@ The available generated manifests contain 221 benign samples, 225 normal-RO mali
         % Sources: ../ml_deep_bitstream_inspection/datasets/full_dataset_it{1,2,3}/artifacts/manifest_available.csv
         Normal RO &
         Standalone RO payloads &
-        33 RO-count settings &
+        32 RO-count settings &
         15 &
         225 \\
         \midrule
@@ -71,18 +71,42 @@ The available generated manifests contain 221 benign samples, 225 normal-RO mali
     }
 \end{table}
 
+\begin{figure}[t]
+    \centering
+    \resizebox{\linewidth}{!}{\input{figures/ro_count_distribution.tikz}}
+    \caption{Distribution of RO counts in the normal-RO dataset and the big-RO extension. Bars count available bitstream samples at each RO-count setting.}
+    \label{fig:ro-count-distribution}
+\end{figure}
+
 Each sample also stores metadata used during analysis. This includes the design source, floorplan, configuration, label, bitstream size, and estimated RO footprint when applicable. The RO footprint metadata is used later to evaluate whether misses concentrate in small malicious designs.
 
 \section{Preprocessing}
 \label{sec:preprocessing}
 
-The preprocessing step converts each partial bitstream into the fixed input shape expected by the CNN. Related work has used bitstream-derived tensors or image-like transforms for FPGA classification tasks~\cite{rettkowski2019inspection,chaudhuri2022detection,chen2020bitstreamimage}. The transform used here is intentionally simple. It does not reverse-engineer the bitstream. It does not extract hand-crafted circuit features. It treats the partial bitstream as a byte stream.
+The preprocessing step converts each partial bitstream into the fixed input shape expected by the CNN. Related work has used bitstream-derived tensors or image-like transforms for FPGA classification tasks~\cite{rettkowski2019inspection,chaudhuri2022detection,chen2020bitstreamimage}. Our transform treats the entire \texttt{.bin} file as a byte stream. It does not skip headers, reverse-engineer the bitstream, or extract hand-crafted circuit features.
 
-Each bitstream is read as a sequence of bytes
-\[
-    b = [b_0, b_1, \ldots, b_n].
-\]
-The sequence is resized to a fixed number of bytes. If the bitstream is longer than the target size, it is downsampled. If it is shorter, it is padded. The result is reshaped into a grayscale image-like tensor.
+\begin{algorithm}[t]
+    \caption{Pseudocode for deterministic byte-image preprocessing.}
+    \label{alg:byte-preprocessing}
+    \begin{algorithmic}[1]
+        \Require bitstream path $p$, image height $H$, image width $W$
+        \State $T \gets H \cdot W$
+        \State $b \gets \Call{ReadAllBytesAsUint8}{p}$
+        \If{$|b| > T$}
+            \State $i \gets \lfloor \Call{Linspace}{0, |b|-1, T} \rfloor$
+            \State $w \gets b[i]$
+        \Else
+            \State $w \gets \Call{ZerosUint8}{T}$
+            \State $w[0:|b|] \gets b$
+        \EndIf
+        \State $w \gets 255 - w$
+        \State $x \gets \Call{Reshape}{w, H, W, 1}$
+        \State $x \gets x / 255.0$
+        \State \Return $x$
+    \end{algorithmic}
+\end{algorithm}
+
+Algorithm~\ref{alg:byte-preprocessing} is the exact preprocessing rule. Long bitstreams are sampled uniformly across the full byte range using deterministic \texttt{linspace} indices, rather than truncated. Short bitstreams are padded with raw zero bytes before inversion, so padding becomes normalized value 1.0 after division by 255. The rule is deterministic at every resolution, although each resolution has its own target length and sampling grid.
 
 The main input resolutions are
 \[
@@ -90,7 +114,12 @@ The main input resolutions are
 \]
 Larger resolutions are also used during model exploration to measure how much classification quality improves when more bitstream detail is preserved.
 
-This representation is useful for two reasons. First, it gives CNNs a fixed-size input while preserving byte-level structure from across the bitstream. Second, the operation is simple enough to implement in FPGA logic before inference. This matters because the final goal is an FPGA-resident checker that can run in the deployment path.
+This representation is useful for two reasons. First, it gives CNNs a fixed-size input while preserving byte-level structure from across the bitstream. Second, the operation maps directly to FPGA logic before inference. We wrote this preprocessing block as HLS C++ raw-byte downsampling logic, lowered it to Verilog through the HLS flow, and used it in the deployment-oriented latency results reported in Chapter~\ref{ch:hls4ml-results}. This matters because the final goal is an FPGA-resident checker that can run in the deployment path.
+
+% Source: ../ml_deep_bitstream_inspection/ml_baseline/dataset.py
+% Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
+% Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res512_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
+The final latency numbers in Chapter~\ref{ch:hls4ml-results} include the estimated FPGA raw-byte downsampler latency and the hls4ml CNN latency. They exclude Python, host setup, memory-copy overhead, and output readback. The routed resource percentages report the checker wrapper/user-logic attribution. They do not isolate the downsampler resources from the CNN resources.
 
 \section{Dataset Limitations}
 \label{sec:dataset-limitations}

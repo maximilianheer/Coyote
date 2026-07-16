@@ -26,7 +26,7 @@ This report makes four contributions:
     We connect CNN training to hls4ml synthesis and evaluate whether trained bitstream classifiers can become practical FPGA-resident checkers.
 
     \item \textbf{Hardware-aware design-space evaluation.}
-    We compare candidate models across detection quality, FNR/FPR, ROC AUC, LUT usage, BRAM usage, DSP usage, and added inspection latency.
+    We compare candidate models across detection quality, FNR/FPR, ROC AUC, LUT, BRAM, DSP, and added inspection latency.
 \end{enumerate}
 
 The main result is that FPGA-resident ML bitstream inspection is feasible as a deployment-path defense-in-depth mechanism. Among the synthesized candidates, the 256$\times$7 CNN provides the preferred deployment point because it balances useful detection quality with lower latency and substantially lower BRAM overhead than the larger 512$\times$7 alternative. Overall, the prototype shows a practical path from user-submitted partial bitstreams to a hardware-backed checker before deployment.

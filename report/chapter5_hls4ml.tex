@@ -6,7 +6,7 @@
 
 The CNN models from Chapter~\ref{ch:cnn-pipeline} are useful only if they can be mapped to practical FPGA hardware. The goal of this chapter is to evaluate whether the trained classifiers can become deployment-path checkers with acceptable latency and resource overhead.
 
-We use hls4ml to convert trained CNN models into hardware designs~\cite{duarte2018fast,aarrestad2021fast}. The synthesis flow takes a trained Keras or QKeras model~\cite{coelho2020qkeras}, generates an HLS implementation, validates the generated design with C simulation, and produces latency and resource estimates after synthesis. The final candidates are then evaluated in terms of added latency and added FPGA resources relative to the Coyote baseline.
+We use hls4ml to convert trained CNN models into hardware designs~\cite{duarte2018fast,aarrestad2021fast}. The synthesis flow takes a trained Keras or QKeras model~\cite{coelho2020qkeras}, generates an HLS implementation, validates the generated design with C simulation, and produces latency and resource estimates after synthesis. The final W8A8 candidates are trained with QKeras quantization-aware training before hls4ml conversion, so the software model already uses the quantized weight and activation behavior evaluated by the hardware flow. The final candidates are then evaluated in terms of added latency and added FPGA resources relative to the Coyote baseline.
 
 The main hardware metrics are LUT usage, BRAM usage, DSP usage, and added inspection latency. The main detection metrics are accuracy, F1, true positive rate, false positive rate, and ROC AUC. The final design point should balance both groups of metrics.
 
@@ -232,7 +232,7 @@ The LUT overhead is similar for both synthesized candidates. DSP overhead is als
 \section{Quantization and Pruning}
 \label{sec:quantization-pruning-results}
 
-Quantization and pruning are evaluated as hardware-aware compression techniques~\cite{coelho2020qkeras,han2016deepcompression}. Quantization reduces arithmetic precision. Pruning removes weights and increases sparsity. Both can reduce the cost of a neural network, but the benefit depends on the synthesis flow and on whether the generated hardware can exploit the reduced precision or sparsity.
+Quantization and pruning are evaluated as hardware-aware compression techniques~\cite{coelho2020qkeras,han2016deepcompression}. Quantization reduces arithmetic precision. Pruning removes weights and increases sparsity. Both can reduce the cost of a neural network, but the benefit depends on the synthesis flow and on whether the generated hardware can exploit the reduced precision or sparsity. For the selected W8A8 models, quantization is not applied only after training. We use QKeras quantization-aware training so the model learns under the target 8-bit weight and activation quantizers.
 
 For quantized models, we check both software quality and hls4ml parity. This is important because a low-bit model can have good software accuracy but still produce mismatches after conversion. For pruned models, we track actual sparsity and classification quality. Sparse models are useful only if sparsity translates into lower synthesis cost or better feasibility.
 

@@ -35,7 +35,7 @@ This work has several non-goals. It does not prove bitstream safety. It does not
 \section{Prior Work}
 \label{sec:prior-work}
 
-Existing approaches to malicious FPGA bitstream detection can be grouped into three categories~\cite{jin2020security,zhang2019recent}. Cloud and vendor checks are practical because they are integrated into deployment flows, but they usually target known rule violations~\cite{giechaskiel2019measuring,la2021denial}. Structural methods search for suspicious circuit patterns, such as self-oscillators, but can depend strongly on device architecture and bitstream structure~\cite{la2020fpgadefender,provelengios2020power,yoon2018bret}. ML-based methods learn patterns from bitstream-derived data, but are commonly evaluated as offline software classifiers~\cite{rettkowski2019inspection,chaudhuri2022detection,elnaggar2023learning,palumbo2022trojan}.
+FPGA security surveys provide the broader context for bitstream-level attacks and defenses~\cite{jin2020security,zhang2019recent}. For this report, the most relevant defenses fall into three groups. Cloud and vendor checks are practical because they are integrated into deployment flows, but they usually target known rule violations~\cite{giechaskiel2019measuring,la2021denial}. Structural methods search for suspicious circuit patterns, such as self-oscillators, but can depend strongly on device architecture and bitstream structure~\cite{la2020fpgadefender,provelengios2020power,yoon2018bret}. ML-based methods learn patterns from bitstream-derived data, but are commonly evaluated as offline software classifiers~\cite{rettkowski2019inspection,chaudhuri2022detection,elnaggar2023learning,palumbo2022trojan,stahlesmith2025realtime}.
 
 \begin{table}[t]
     \centering
@@ -71,7 +71,7 @@ Existing approaches to malicious FPGA bitstream detection can be grouped into th
     }
 \end{table}
 
-Prior ML-based work is important because it shows that bitstream-derived representations contain learnable structure~\cite{rettkowski2019inspection,chaudhuri2022detection,elnaggar2023learning,palumbo2022trojan}. CNNs and other classifiers can distinguish benign and malicious bitstreams without fully decoding the circuit semantics. This supports the use of bitstream-as-data representations. The remaining question is whether such inspection can satisfy the constraints of a serverless FPGA deployment path.
+Prior ML-based work is important because it shows that bitstream-derived representations contain learnable structure~\cite{rettkowski2019inspection,chaudhuri2022detection,elnaggar2023learning,palumbo2022trojan}. CNNs and other classifiers can distinguish benign and malicious bitstreams without fully decoding the circuit semantics. Recent work by Stahle-Smith and Karakchi is especially close in motivation because it uses static byte-level features for malicious-bitstream detection and deploys the selected classifier on a PYNQ-Z1 embedded platform~\cite{stahlesmith2025realtime}. That work uses byte-frequency features, TSVD, SMOTE, and a Random Forest for embedded-system detection. This report instead studies deterministic byte-image tensors, CNN classifiers, hls4ml synthesis, and integration into a Coyote-style U55C deployment path. The remaining question is whether such inspection can satisfy the constraints of a serverless FPGA deployment path.
 
 \section{Research Gap}
 \label{sec:research-gap}

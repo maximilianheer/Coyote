@@ -60,10 +60,65 @@ The CNN design space is explored in stages. The goal is to preserve useful detec
 
 The main software sweep varies input resolution and depth. The tested resolutions include smaller inputs such as $128^2$ and larger inputs such as $256^2$ and $512^2$. Higher resolutions preserve more bitstream detail, but they also increase the cost of the synthesized checker. The depth sweep evaluates whether additional convolutional layers improve detection enough to justify the hardware cost.
 
+\section{Candidate Architecture and Training}
+\label{sec:cnn-architecture-training}
+
+The final 256$\times$7 and 512$\times$7 candidates use the same seven-stage convolutional architecture. They differ in input resolution and final average-pool area. The 256$\times$7 model pools over a $1 \times 1$ final feature map. The 512$\times$7 model pools over a $2 \times 2$ final feature map. The output layer has one logit. Probabilities are computed by applying a sigmoid to this logit. The reported default predictions use threshold 0.5 on probability, equivalent to threshold 0 on the logit.
+
+\begin{table}[t]
+    \centering
+    \caption{Seven-stage QKeras CNN architecture used for the final candidates.}
+    \label{tab:cnn-architecture}
+    \scriptsize
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{@{}l l r l l l l l@{}}
+        \toprule
+        \textbf{Stage} & \textbf{Layer} & \textbf{Filters} & \textbf{Kernel} & \textbf{Stride} & \textbf{Pooling} & \textbf{Activation} & \textbf{Quantization} \\
+        \midrule
+        % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
+        % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img512/notebook_pruned_qat/20260521_185923_production_prod_res512_layers7_W8A8_P50_manualA_9d14ccddbbe2/production/training_manifest.json
+        Input & Byte image & -- & -- & -- & -- & -- & float input \\
+        0 & QConv2D & 8 & $5 \times 5$ & $2 \times 2$ & none & QReLU & W8 / A8(2) \\
+        1 & QConv2D & 16 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(2) \\
+        2 & QConv2D & 24 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(3) \\
+        3 & QConv2D & 24 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(4) \\
+        4 & QConv2D & 32 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(5) \\
+        5 & QConv2D & 32 & $3 \times 3$ & $1 \times 1$ & none & QReLU & W8 / A8(5) \\
+        6 & QConv2D & 32 & $3 \times 3$ & $1 \times 1$ & final avg. & QReLU & W8 / A8(5) \\
+        Output & QDense & 1 & -- & -- & -- & linear logit & W8 \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+Each convolution uses explicit zero padding before a valid convolution. No batch normalization is used, and there is no pooling between convolutional stages. A final average-pool layer and flattening step feed the dense output. The model has 35,400 non-bias weights. The P50 pruning target leaves 17,700 nonzero weights because the output dense layer is not pruned. At 32-bit floating point, the non-bias weights occupy about 138 KiB. At 8-bit weight precision, dense storage is about 34.6 KiB, or about 17.3 KiB with ideal sparse storage. Hardware resource use is reported separately in Chapter~\ref{ch:hls4ml-results}.
+
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
+% Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/sparsity_fold_production.csv
+% Source: ../ml_deep_bitstream_inspection/hls4ml/pipeline/part2_train.py
+The production training setup is:
+\begin{itemize}
+    \item \textbf{Framework and model path:} QKeras with TensorFlow, \texttt{tf\_keras}, and TensorFlow Model Optimization.
+    \item \textbf{Optimizer and loss:} Adam with learning rate $10^{-4}$ and binary cross-entropy from logits.
+    \item \textbf{Batch and epochs:} batch size 16 and a fixed 300-epoch budget.
+    \item \textbf{Seeds:} seed 42 for dataset splitting and seed 10042 for production-model initialization.
+    \item \textbf{Class balance:} 119 benign and 119 malicious training samples, with no class weights after balancing.
+    \item \textbf{Augmentation:} horizontal and vertical flips with probability 0.5 each, no translation, and no random crop scaling below 1.0.
+    \item \textbf{Early stopping:} not used in the saved production training path.
+    \item \textbf{Thresholds:} reported default confusion matrices use probability threshold 0.5.
+    \item \textbf{Diagnostics:} ROC-optimal thresholds are recorded separately.
+    \item \textbf{Reproducibility metadata:} production manifests record source hashes, but not pinned Python package versions.
+\end{itemize}
+
 \section{Software Detection Results}
 \label{sec:software-detection-results}
 
-Figure~\ref{fig:f1-resolution-depth} shows the main software result. F1 improves as input resolution and model depth increase. Small inputs lose information during resizing. Larger inputs preserve more byte-level structure and give the CNN more useful signal. Deeper models also improve classification up to the evaluated range.
+Figure~\ref{fig:f1-resolution-depth} shows the main software result:
+\begin{itemize}
+    \item F1 improves as input resolution and model depth increase.
+    \item Small inputs lose information during resizing, while larger inputs preserve more byte-level structure.
+    \item Deeper models improve classification up to the evaluated range.
+\end{itemize}
 
 \begin{figure}[t]
     \centering
@@ -77,7 +132,7 @@ The strongest software models are not automatically the best deployment candidat
 
 \begin{table}[t]
     \centering
-    \caption{Representative software CNN results.}
+    \caption{Representative pooled-validation software CNN results.}
     \label{tab:software-cnn-results}
     \begin{tabular}{l r r r r}
         \toprule
@@ -90,6 +145,8 @@ The strongest software models are not automatically the best deployment candidat
         \bottomrule
     \end{tabular}
 \end{table}
+
+Table~\ref{tab:software-cnn-results} and Table~\ref{tab:final-candidates} should not be read as the same metric on the same split. Table~\ref{tab:software-cnn-results} reports pooled validation performance from the software design-space sweep. Table~\ref{tab:final-candidates} reports final production candidates on a held-out test set after pruning, quantization, hls4ml conversion, and U55C validation. This split and flow change explains why the final 256$\times$7 and 512$\times$7 F1 values are lower than the software sweep values.
 
 \section{Interpretability Check}
 \label{sec-interpretability}
@@ -106,18 +163,40 @@ We use Grad-CAM as a qualitative sanity check~\cite{selvaraju2017gradcam}. The g
 
 The Grad-CAM examples show localized regions and bands with higher contribution. This supports the use of a spatial bitstream representation. It does not prove that the model identifies ring oscillators at the circuit level. It is only a qualitative check on the learned representation.
 
+Grad-CAM also exposed a failure mode. In fold 0 of the 256$\times$7 run, the sample \texttt{it2\_S045} is a standalone RO design with 8000 ROs, but the model assigns standalone probability 0.434 and predicts benign at the default 0.5 threshold. Figure~\ref{fig:gradcam-fold0-failure} shows that the activation concentrates on linear edge and band patterns rather than clear distributed evidence of the malicious payload.
+
+\begin{figure}[t]
+    \centering
+    % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/fold_0/gradcam_final_64x64/it2_S045_standalone_gradcam_1024.png
+    % Source CSV: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/fold_0/per_sample.csv
+    \includegraphics[width=\linewidth]{figures/gradcam_it2_s045_fold0_low_signal.png}
+    \caption{Grad-CAM failure example for the 256$\times$7 fold 0 model. The RO-malicious \texttt{it2\_S045} sample is predicted benign at the default threshold, and the heatmap concentrates on linear bitstream patterns.}
+    \label{fig:gradcam-fold0-failure}
+\end{figure}
+
+The training curves provide the corresponding quantitative warning. In Figure~\ref{fig:res256-training-curves}, fold 0 learns more slowly than the other folds and its loss remains comparatively high for much of training. We interpret this as an overfitting or training-instability issue that needs detection beyond Grad-CAM. This matters most for lower-signal settings such as the non-extended dataset, where a model can latch onto incidental linear bitstream patterns instead of robust malicious-payload evidence. Practical use should therefore pair Grad-CAM with fold-level diagnostics, per-sample failure review, threshold monitoring, and retraining or stronger regularization when a fold shows this behavior.
+
+\begin{figure}[t]
+    \centering
+    % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/kfold_training_curves.png
+    \includegraphics[width=\linewidth]{figures/res256_kfold_training_curves.png}
+    \caption{Training diagnostics for the 256$\times$7 W8A8 P50 run. Fold 0 shows slower improvement and a higher loss trajectory than the strongest folds, motivating additional checks beyond qualitative Grad-CAM inspection.}
+    \label{fig:res256-training-curves}
+\end{figure}
+
 \section{Extended RO-Footprint Evaluation}
 \label{sec:ro-footprint-evaluation}
 
 The original dataset tests whether the classifier can separate benign Coyote bitstreams from RO-based malicious bitstreams. We also evaluate how detection changes as the RO footprint increases. This matters because high-density RO payloads are more relevant for power-stress and timing-fault scenarios.
 
-Figure~\ref{fig:ro-footprint-detection} shows the extended RO-footprint result. Misses concentrate in the smallest RO-footprint bin. Detection becomes reliable for larger evaluated payloads. This suggests that the classifier is strongest for high-density RO attacks, while low-footprint payloads remain the harder case.
+Figure~\ref{fig:ro-footprint-detection} shows the extended RO-footprint result as binned detection rates. Misses concentrate in the smallest RO-footprint bin. Detection becomes reliable for larger evaluated payloads. This suggests that the classifier is strongest for high-density RO attacks, while low-footprint payloads remain the harder case.
 
 \begin{figure}[t]
     \centering
-    % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/pooled/standalone_probability_vs_estimated_ro_lut_utilization.png
-    \includegraphics[width=0.82\linewidth]{figures/ro_footprint_detection.pdf}
-    \caption{Detection across RO-footprint bins. Smaller RO payloads are harder to detect, while larger evaluated payloads are detected more reliably.}
+    % Source image copied from ../ml_deep_bitstream_inspection/hls4ml/results/big_ro_training/standalone_detection_rate_by_model_vs_full_fpga_lut_percent_paper.png
+    % Source CSV: ../ml_deep_bitstream_inspection/hls4ml/results/big_ro_training/standalone_detection_rate_by_model_vs_full_fpga_lut_percent_paper.csv
+    \includegraphics[width=0.92\linewidth]{figures/ro_footprint_binned_detection.png}
+    \caption{Binned standalone detection rate versus estimated RO LUT share for W8A8 P50 256$\times$7 and 512$\times$7 models. The smallest RO-footprint bins contain most misses, while larger evaluated RO payloads are detected reliably.}
     \label{fig:ro-footprint-detection}
 \end{figure}
 

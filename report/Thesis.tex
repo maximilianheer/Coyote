@@ -2,6 +2,9 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\input{glyphtounicode}
+\pdfgentounicode=1
 
 \usepackage{graphicx}
 \usepackage{booktabs}
@@ -9,6 +12,7 @@
 \usepackage{amsmath}
 \usepackage{subcaption}
 \usepackage{xcolor}
+\usepackage{tikz}
 \usepackage{siunitx}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
@@ -48,7 +52,7 @@ ETH Zürich}
 \cleardoublepage
 
 \begin{acknowledgements}
-	I thank Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+I would like to thank Maximilian Heer and Prof.\ Dr.\ Gustavo Alonso for their guidance and supervision throughout this semester project. I am also grateful to the Systems Group at ETH Zürich for the project context, infrastructure, and feedback.
 \end{acknowledgements}
 
 
@@ -59,7 +63,7 @@ This report investigates whether malicious-bitstream detection can be moved into
 
 % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
 % Source: ../ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res512_coyote_accel_downsampler_hls4ml_e2e_20260524/results/performance_summary.json
-Our results show that the U55C 256$\times$7 checker reaches 87.7\% accuracy, 88.5\% F1, and 8.0\% false-negative rate on the held-out test set. The U55C 512$\times$7 checker reaches 90.4\% accuracy, 90.5\% F1, and 10.7\% false-negative rate. Estimated FPGA critical-path latency is 3.35 ms per sample for 256$\times$7 and 6.53 ms per sample for 512$\times$7, including raw byte-stream preprocessing and CNN inference. The 256$\times$7 routed design meets timing and attributes 4.47\% LUT, 17.86\% BRAM, 1.15\% URAM, and 14.72\% DSP to the checker wrapper. The 512$\times$7 design does not meet timing and attributes 4.90\% LUT, 61.78\% BRAM, 1.77\% URAM, and 14.45\% DSP. These results suggest that FPGA-resident ML-based inspection is feasible as a deployment-path defense-in-depth checker for RO-payload detection, but remains limited by dataset breadth, low-footprint attacks, threshold policy, and full production control-plane integration.
+Our results show that the U55C 256$\times$7 checker reaches 87.7\% accuracy, 88.5\% F1, and 8.0\% false-negative rate on the held-out test set. The U55C 512$\times$7 checker reaches 90.4\% accuracy, 90.5\% F1, and 10.7\% false-negative rate. Estimated FPGA-side preprocessing-plus-inference latency is 3.35 ms per sample for 256$\times$7 and 6.53 ms per sample for 512$\times$7. The 256$\times$7 routed design meets timing and attributes 4.47\% LUT, 17.86\% BRAM, 1.15\% URAM, and 14.72\% DSP to the checker wrapper. The 512$\times$7 design does not meet timing and attributes 4.90\% LUT, 61.78\% BRAM, 1.77\% URAM, and 14.45\% DSP. These results suggest that FPGA-resident ML-based inspection is feasible as a deployment-path defense-in-depth checker for RO-payload detection, but remains limited by dataset breadth, low-footprint attacks, threshold policy, and full production control-plane integration.
 
 \end{abstract}
 \tableofcontents
@@ -86,10 +90,5 @@ Our results show that the U55C 256$\times$7 checker reaches 87.7\% accuracy, 88.
 % This displays the bibliography for all cited external documents. All references have to be defined in the file references.bib and can then be cited from within this document.
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-
-\appendix
-\chapter{First Appendix Chapter Title}
-
-
 
 \end{document}
