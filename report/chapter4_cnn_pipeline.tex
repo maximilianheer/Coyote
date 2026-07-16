@@ -103,7 +103,7 @@ The production training setup is:
     \item \textbf{Optimizer and loss:} Adam with learning rate $10^{-4}$ and binary cross-entropy from logits.
     \item \textbf{Batch and epochs:} batch size 16 and a fixed 300-epoch budget.
     \item \textbf{Seeds:} seed 42 for dataset splitting and seed 10042 for production-model initialization.
-    \item \textbf{Split protocol:} the training pool has 269 usable samples before balancing: 150 benign and 119 RO-malicious. Benign samples are downsampled to produce 238 balanced training samples: 119 benign and 119 malicious. Stratified five-fold validation uses seed 42. Folds 0--2 use 190 train and 48 validation samples; folds 3--4 use 191 train and 47 validation samples. The final production model trains on all 238 balanced samples and is evaluated on a held-out 146-sample test set with 71 benign and 75 malicious samples.
+    \item \textbf{Split protocol:} training uses a class-balanced subset created by downsampling benign samples to match the available RO-malicious samples. Model selection uses stratified five-fold validation with seed 42. The final production model is retrained on the full balanced training subset and evaluated once on a separate held-out test set.
     \item \textbf{Class weights:} no class weights are used after balancing.
     \item \textbf{Augmentation:} horizontal and vertical flips with probability 0.5 each, no translation, and no random crop scaling below 1.0.
     \item \textbf{Thresholds:} We use a probability threshold of 0.5 for decisions (higher means a more suspicious bitstream).

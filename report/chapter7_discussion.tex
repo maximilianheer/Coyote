@@ -6,7 +6,7 @@
 
 The results show that FPGA-resident ML inspection is a feasible direction for serverless FPGA deployment. The checker can be placed before partial reconfiguration, trained CNNs can classify Coyote-style partial bitstreams with useful accuracy, and hls4ml can synthesize selected models into concrete hardware candidates.
 
-The main design lesson is that the best software model is not always the best deployment model. The 512$\times$7 candidate improves several detection metrics, yet it also has prohibitevly higher BRAM overhead and higher latency. The 256$\times$7 candidate gives a better deployment balance. It has lower added latency, much lower BRAM use, and still provides useful detection quality.
+The main design lesson is that the best software model is not always the best deployment model. The 512$\times$7 candidate improves several detection metrics, yet it also has prohibitively higher BRAM overhead and higher latency. The 256$\times$7 candidate gives a better deployment balance. It has lower added latency, much lower BRAM use, and still provides useful detection quality.
 
 The checker should be understood as a defense-in-depth component, affecting and improving the economics of serverless FPGAs. It can reduce the chance that an RO-based malicious bitstream reaches the reconfigurable region. It does not prove that a bitstream is safe. A practical platform should combine this checker with static validation, bitstream authentication, runtime monitoring, and platform policy~\cite{jin2020security,zhang2019recent,ahmed2022multitenant}.
 

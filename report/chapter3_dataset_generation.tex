@@ -38,7 +38,7 @@ The available generated manifests contain 221 benign samples, 225 normal-RO mali
 
 % Source: ../ml_deep_bitstream_inspection/hls4ml/pipeline/part2_train.py
 % Source: ../ml_deep_bitstream_inspection/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/production/training_manifest.json
-For training and held-out testing, benign samples are always kept, while standalone RO samples are kept only when \texttt{ro\_count} is at least 8000. We use this threshold as a project-level lower bound for attack-relevant RO payloads. Prior work such as FPGADefender shows that malicious self-oscillator payloads are a realistic FPGA security target~\cite{la2020fpgadefender}; the 8000-RO cutoff is our dataset policy, not a threshold claimed by that work.
+For training and held-out testing, benign samples are always kept, while standalone RO samples are kept only when \texttt{ro\_count} is at least 8000. We use this threshold as a project-level lower bound for attack-relevant RO payloads. Prior work such as FPGADefender shows that malicious self-oscillator payloads at this range (particularly as a percentage of LUTs occupied by ROs) are a realistic FPGA security target~\cite{la2020fpgadefender}; the 8000-RO cutoff is our dataset policy to establisj a lower bound for attack-relevant RO payloads.
 
 \begin{table}[t]
     \centering
