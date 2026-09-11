@@ -9,6 +9,7 @@ PyTorch ML baseline, and the hls4ml/U55C production flow under one PR surface.
 | Path | Purpose |
 | --- | --- |
 | `datasets/` | Frozen dataset-generation iterations and manifests |
+| `upload_dataset/` | Publishable dataset subset containing 524 partial bitstreams, CSV manifests, and the matching HDL/HLS source snapshots |
 | `ml_baseline/` | PyTorch bitstream classifiers, dataset loader, notebooks, and training scripts |
 | `hls4ml/` | YAML-driven hls4ml production pipeline, final results, and reproducibility packages |
 
@@ -30,3 +31,23 @@ cd /pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml
 
 Final production summaries live under `hls4ml/artifacts_production/`; packaged
 replay manifests live under `hls4ml/reproducibility/`.
+
+## Publishable dataset
+
+`upload_dataset/` is the compact, GitHub-facing form of the generated datasets.
+It mirrors the four populated dataset iterations while omitting Vivado build
+trees, checkpoints, logs, jobs, and other regeneration intermediates. Each
+iteration contains its available `.bin` partial bitstreams under
+`artifacts/bitstreams/`, the corresponding source snapshot under
+`artifacts/sources/`, and artifact-level CSV manifests.
+
+The 524 `.bin` files are stored with Git LFS. A clone that skipped LFS downloads
+can retrieve only this dataset with:
+
+```bash
+git lfs pull --include="ml_deep_bitstream_inspection/upload_dataset/**"
+```
+
+See [`upload_dataset/README.md`](upload_dataset/README.md) for the layout,
+iteration counts, manifest fields, integrity checks, and selective download
+examples.
