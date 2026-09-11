@@ -1,0 +1,1 @@
+sample_id,class_label,class_name,source_type,app_id,app_name,variant_id,floorplan_id,ro_count,target_ro_lut_count,target_ro_lut_pct,target_device,target_device_luts,batch_id,config_local,config_global,shell_id,tool_version,bitstream_path,timing_status,wns,lut_count,ff_count,bram_count,dsp_count,validation_status,file_hash,notes
