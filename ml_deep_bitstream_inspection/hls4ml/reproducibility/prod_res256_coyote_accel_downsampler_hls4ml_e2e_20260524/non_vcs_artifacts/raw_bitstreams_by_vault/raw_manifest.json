@@ -1,0 +1,5 @@
+{
+  "csv": "/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/non_vcs_artifacts/raw_bitstreams_by_vault/production_test.csv",
+  "n_samples": 146,
+  "total_raw_bytes": 5290152396
+}

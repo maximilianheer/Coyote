@@ -1,0 +1,221 @@
+[prod-deploy] host=alveo-u55c-09.inf.ethz.ch
+[prod-deploy] start=2026-05-24T17:38:54+02:00
+[prod-deploy] START res256 2026-05-24T17:38:55+02:00
+mkdir -p /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build
+cp Makefile /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build
+cp -r src/ /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build
+cp -r include/ /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build
+make -C /lib/modules/6.8.0-117-generic/build M=/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build modules
+make[1]: Entering directory '/usr/src/linux-headers-6.8.0-117-generic'
+warning: the compiler differs from the one used to build the kernel
+  The kernel was built by: x86_64-linux-gnu-gcc-12 (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+  You are using:           gcc-12 (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/coyote_driver.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/coyote_setup.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/coyote_sysfs.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/platform/pci_xdma.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/platform/pci_util.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/reconfig/reconfig_hw.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/reconfig/reconfig_isr.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/reconfig/reconfig_mem.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/reconfig/reconfig_ops.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/vfpga/vfpga_gup.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/vfpga/vfpga_hw.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/vfpga/vfpga_isr.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/vfpga/vfpga_ops.o
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src/vfpga/vfpga_uisr.o
+  LD [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/coyote_driver.o
+  MODPOST /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/Module.symvers
+  CC [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/coyote_driver.mod.o
+  LD [M]  /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/coyote_driver.ko
+  BTF [M] /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/coyote_driver.ko
+Skipping BTF generation for /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/coyote_driver.ko due to unavailability of vmlinux
+make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-117-generic'
+rm -rf /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/src /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/include /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/Makefile
+** Programming the FPGA with /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/build/prod_res256_manualA_coyote_accel_cyt_hw/bitstreams/cyt_top.bit
+
+[1mhdev program bitstream[m
+
+[1mVivado programming:[m
+
+****** Vivado v2024.2 (64-bit)
+  **** SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+  **** IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+  **** SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+  **** Start of session at: Sun May 24 17:41:36 2026
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+    ** Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+
+source /opt/hdev/cli/program/flash_bitstream.tcl
+# set serveraddr [lindex $::argv 0]
+# set boardsn [lindex $::argv 1]
+# set devicename  [lindex $::argv 2]
+# set bitpath [lindex $::argv 3]
+# set ltxpath [lindex $::argv 4]
+# open_hw_manager
+open_hw_manager: Time (s): cpu = 00:00:08 ; elapsed = 00:00:10 . Memory (MB): peak = 1573.305 ; gain = 140.805 ; free physical = 20889 ; free virtual = 32244
+# connect_hw_server -url ${serveraddr}:3121 -allow_non_jtag
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-2222] Launching hw_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx hw_server v2024.2
+  **** Build date : Oct 29 2024 at 10:16:47
+    ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+
+
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:0
+INFO: [Labtools 27-3417] Launching cs_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+
+******** Xilinx cs_server v2024.2.0
+  ****** Build date   : Oct 30 2024-19:19:07
+    **** Build number : 2024.2.1730312347
+      ** Copyright 2017-2022 Xilinx, Inc. All Rights Reserved.
+      ** Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+
+
+
+# current_hw_target [get_hw_targets */xilinx_tcf/Xilinx/${boardsn}]
+# set_property PARAM.FREQUENCY 15000000 [get_hw_targets */xilinx_tcf/Xilinx/${boardsn}]
+# open_hw_target
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Xilinx/XFL1W5OWZCXXA
+# current_hw_device [get_hw_devices ${devicename}]
+# refresh_hw_device -update_hw_probes false [lindex [get_hw_devices ${devicename}] 0]
+INFO: [Labtools 27-2302] Device xcu280_u55c (JTAG device index = 0) is programmed with a design that has 2 JTAG AXI core(s).
+# set_property PROGRAM.FILE ${bitpath} [get_hw_devices ${devicename}]
+# set_property PROBES.FILE ${ltxpath} [get_hw_devices ${devicename}]
+# set_property FULL_PROBES.FILE ${ltxpath} [get_hw_devices ${devicename}]
+# program_hw_devices [get_hw_devices ${devicename}]
+INFO: [Labtools 27-3164] End of startup status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1645.398 ; gain = 1.000 ; free physical = 19786 ; free virtual = 32046
+# refresh_hw_device [lindex [get_hw_devices ${devicename}] 0]
+INFO: [Labtools 27-2302] Device xcu280_u55c (JTAG device index = 0) is programmed with a design that has 3 VIO core(s).
+WARNING: [Labtools 27-1347] Unable to find Debug Probes file []. Please update hw_device property [PROBES.FILE]
+ Update of hw_probe objects, will be skipped.
+WARNING: [Labtools 27-1974] Mismatch between the design programmed into the device xcu280_u55c_0 and the probes file(s) .
+The device design has 0 ILA core(s) and 3 VIO core(s). 0 ILA core(s) and 0 VIO core(s) are matched in the probes file(s).
+Resolution: 
+1. Reprogram device with the correct programming file and associated probes file(s) OR
+2. Goto device properties and associate the correct probes file(s) with the programming file already programmed in the device.
+# close_hw_target ${serveraddr}:3121/xilinx_tcf/Xilinx/${boardsn}
+INFO: [Labtoolstcl 44-464] Closing hw_target localhost:3121/xilinx_tcf/Xilinx/XFL1W5OWZCXXA
+# close_hw_manager
+INFO: [Common 17-206] Exiting Vivado at Sun May 24 17:42:44 2026...
+
+[1mpci_hot_plug[m
+
+[1mGetting upstream ports:[m
+upstream_port (0) = c4:00.0
+
+[1mGetting root ports:[m
+root_port (0) = c0:01.1
+
+[1mGetting LnkCtl capabilities:[m
+LinkCtl (0) = 58
+
+[1mGetting control addresses:[m
+link_control_access (0) = 68
+
+[1mRemoving and re-scanning root port:[m
+sudo echo 1 > /sys/bus/pci/devices/0000\:c0\:01.1/remove
+sudo echo 1 > /sys/bus/pci/rescan
+
+[1mRemoving upstream device:[m
+sudo echo 1 > /sys/bus/pci/devices/0000\:c4\:00.0/remove
+
+[1mDisabling root:[m
+sudo setpci -s c0:01.1 68.b=70
+
+[1mEnabling link:[m
+sudo setpci -s c0:01.1 68.b=60
+
+[1mPCI rescanning:[m
+sudo echo 1 > /sys/bus/pci/rescan
+
+[1mRemoving and re-scanning root port:[m
+sudo echo 1 > /sys/bus/pci/devices/0000\:c0\:01.1/remove
+sudo echo 1 > /sys/bus/pci/rescan
+
+** Inserting the driver from /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/coyote_driver.ko
+** FPGA IP_ADDRESS: 0AFD4A64
+** FPGA MAC_ADDRESS: 000A350B2498
+
+[1mhdev program driver[m
+
+[1mCopying driver to /tmp/devices_acap_fpga_drivers:[m
+
+cp -f /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_deployment/coyote_accelerator_project/project/Coyote/driver/build/coyote_driver.ko /tmp/devices_acap_fpga_drivers
+
+[1mInserting coyote_driver.ko module:[m
+
+sudo insmod /tmp/devices_acap_fpga_drivers/coyote_driver.ko ip_addr=0AFD4A64 mac_addr=000A350B2498
+
+** It's Coyote after all, so thoughts & prayers!
+** Lasciate ogni speranza, voi ch'entrate - Ihr, die ihr hier eintretet, lasst alle Hoffnung fahren
+[info] config=/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/configs/hls4ml_production/res256_layers7_W8A8_P50_manualA_production.yaml
+[info] run_root=/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb
+[info] hls_sweep_root=/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34
+[info] stages=deploy,validate force=False
+[stage] deploy
+[deploy] programming Coyote FPGA
+Batch size: 16; batches processed: 1
+Mean latency: 57542.174us (inference only)
+Mean throughput: 278.1 samples/s (inference only)
+[deploy] FPGA raw batch 1/10: 147641.018 us wall
+Batch size: 16; batches processed: 1
+Mean latency: 63412.201us (inference only)
+Mean throughput: 252.3 samples/s (inference only)
+[deploy] FPGA raw batch 2/10: 164515.719 us wall
+Batch size: 16; batches processed: 1
+Mean latency: 65185.558us (inference only)
+Mean throughput: 245.5 samples/s (inference only)
+[deploy] FPGA raw batch 3/10: 165507.568 us wall
+Batch size: 16; batches processed: 1
+Mean latency: 63447.659us (inference only)
+Mean throughput: 252.2 samples/s (inference only)
+[deploy] FPGA raw batch 4/10: 160598.621 us wall
+Batch size: 16; batches processed: 1
+Mean latency: 60363.856us (inference only)
+Mean throughput: 265.1 samples/s (inference only)
+[deploy] FPGA raw batch 5/10: 151968.628 us wall
+Batch size: 16; batches processed: 1
+Mean latency: 61260.364us (inference only)
+Mean throughput: 261.2 samples/s (inference only)
+[deploy] FPGA raw batch 6/10: 154135.834 us wall
+Batch size: 16; batches processed: 1
+Mean latency: 66423.916us (inference only)
+Mean throughput: 240.9 samples/s (inference only)
+[deploy] FPGA raw batch 7/10: 169920.951 us wall
+Batch size: 16; batches processed: 1
+Mean latency: 64499.892us (inference only)
+Mean throughput: 248.1 samples/s (inference only)
+[deploy] FPGA raw batch 8/10: 164977.408 us wall
+Batch size: 16; batches processed: 1
+Mean latency: 65357.705us (inference only)
+Mean throughput: 244.8 samples/s (inference only)
+[deploy] FPGA raw batch 9/10: 164157.526 us wall
+Batch size: 16; batches processed: 1
+Mean latency: 65483.314us (inference only)
+Mean throughput: 244.3 samples/s (inference only)
+[deploy] FPGA raw batch 10/10: 165067.609 us wall
+[stage] validate
+Saved checkpoint plots: /pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/u55c_validation/final_evaluation_plots.png
+[prod-deploy] DONE res256 2026-05-24T17:43:31+02:00
+[prod-deploy] START res512 2026-05-24T17:43:32+02:00
+[info] config=/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/configs/hls4ml_production/res512_layers7_W8A8_P50_manualA_production.yaml
+[info] run_root=/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img512/notebook_pruned_qat/20260521_185923_production_prod_res512_layers7_W8A8_P50_manualA_9d14ccddbbe2
+[info] hls_sweep_root=/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/artifacts_production/cnn_small_hls_opt_img512/notebook_pruned_qat/20260521_185923_production_prod_res512_layers7_W8A8_P50_manualA_9d14ccddbbe2/hls_sweeps/manualA_hls_145a59d7e493
+[info] stages=deploy,validate force=False
+[stage] deploy
+Traceback (most recent call last):
+  File "/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/scripts/run_archived_stage.py", line 52, in <module>
+    main()
+  File "/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/scripts/run_archived_stage.py", line 48, in main
+    STAGES[stage](ctx, force=args.force)
+  File "/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/pipeline/part5_deploy.py", line 83, in stage_deploy
+    _timing_guard(ctx, bit_manifest)
+  File "/pub/scratch/sdeheredia/Coyote/examples/ml_baseline/hls4ml/pipeline/part5_deploy.py", line 27, in _timing_guard
+    raise RuntimeError(
+RuntimeError: Refusing to deploy a timing-violating bitstream. WNS=-1.279 TNS=-3237.176 failing_endpoints=9744. Set u55c.allow_timing_violating_deploy=true only for explicit diagnostics.
