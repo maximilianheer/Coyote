@@ -1,9 +1,6 @@
 # Upload Dataset
 
-This directory is the publishable subset of the Coyote deep-bitstream
-inspection datasets. It contains the inputs and source context needed for ML
-experiments without the much larger Vivado build trees and intermediate files
-from `../datasets/`.
+Contains the raw bitstreams, inputs and source context needed for ML experiments without the much larger Vivado build trees and intermediate files from the original dataset generation `../datasets/`.
 
 ## Contents
 
@@ -32,15 +29,9 @@ full_dataset_*/
     └── dropped_samples.csv          # present where applicable
 ```
 
-The `.bin` files are Xilinx/Coyote partial-bitstream samples and are stored with
-Git LFS. Source snapshots and CSV files are ordinary Git objects.
+## Pointers
 
-## Manifests
-
-`manifest.csv` is the primary sample index. Its fields identify the class,
-application or ring-oscillator variant, floorplan, tool version, relative
-bitstream path, timing and validation status, resource counts, and SHA-256 file
-hash. The large-RO iteration adds target-device and target-LUT fields.
+Use the `manifest.csv` as the main index. 
 
 Resolve a manifest bitstream path relative to the iteration's
 `artifacts/bitstreams/` directory. For example, a value of
@@ -96,10 +87,6 @@ find ml_deep_bitstream_inspection/upload_dataset \
   -type f -name '*.bin' | wc -l
 ```
 
-The second command should report `524` after all four iterations are fetched.
-Individual bitstreams can be checked against the `file_hash` column using
-`sha256sum`.
-
 ## Excluded material
 
 This publication intentionally excludes:
@@ -109,7 +96,3 @@ This publication intentionally excludes:
 - `.Xil` and tool-cache directories
 - Job-control state and temporary files
 - Complete hardware project copies
-
-Those files are regeneration intermediates rather than ML dataset inputs. The
-original frozen dataset-generation trees remain under `../datasets/` in the
-research workspace.
