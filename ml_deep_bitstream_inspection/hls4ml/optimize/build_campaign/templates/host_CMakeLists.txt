@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.16)
+project(opt_bench LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(EN_GPU 0 CACHE STRING "GPU disabled")
+add_subdirectory("${COYOTE_SW}" coyote)
+add_executable(opt_bench host_bench.cpp)
+target_link_libraries(opt_bench PRIVATE Coyote)

@@ -1,2 +1,6 @@
 runs/
 __pycache__/
+
+!build_campaign/
+!build_campaign/**
+build_campaign/**/__pycache__/
