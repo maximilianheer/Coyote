@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "diagnostic": false,
+  "rows": 2640,
+  "failures": [],
+  "backend": "direct_sink",
+  "allocation": "HPF",
+  "library_sha256": "a6b7bbfb0cbaed7c0ab90bcb1558bb510e9f73089291fefdaa276f0fe5db111b",
+  "cases_sha256": "56310e7b6b5927e0dae9527a29a96357b64a6af51058f2c358874d9c994c5f7b",
+  "tolerances_sha256": "4164e79421e1ece9ad38ce1aca289fcaca09fe198664a3abe5a3d50de3370180",
+  "hardware_identity": {
+    "job": "D_N",
+    "bitstream_sha256": "903e517091069c3341b77852bb4bc6195d5bafde0a5ab14df6dd9e4c9606d222",
+    "driver_sha256": "60eee8f48d29908ec7ed929762ac0aa9bf9063fc2848a9bcbe0802ee5929c463",
+    "source_manifest_sha256": "eda7bac1647493ac04a324575c17d1593775d97083e0fcd8ecbcfa7dfcfef200"
+  },
+  "environment_snapshots": {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.environment.jsonl",
+    "sha256": "95a924a3bee6f02524364dbac9b20338cfc4bc41c839dc87981c11e1ca4d1dba",
+    "scope": "before/after each case, outside measured calls"
+  }
+}

@@ -1,13 +1,24 @@
 # Same netlist/clock constraints; each invocation writes to its own attempt.
 if {[catch {
-    lassign $argv original_base output seed strategy reference
+    lassign $argv original_base output seed strategy reference boundary_cell boundary_loc
     source $original_base
     set_param general.maxThreads 8
     set dcp_dir "$output/checkpoints"
     set rprt_dir "$output/reports"
     file mkdir $dcp_dir $rprt_dir
     open_checkpoint $seed
-    if {$strategy == 1} {
+    if {$strategy eq "boundary_relocation"} {
+        # Placement guidance only; reuse this attempt's own optimized netlist.
+        # The completed sink supplies a location, never an IP or checkpoint seed.
+        set target [get_cells -hier -filter [format {NAME == "%s"} $boundary_cell]]
+        if {[llength $target] != 1} {error "Expected one shell boundary register"}
+        set_property LOC $boundary_loc $target
+        puts [list BOUNDARY_PLACEMENT [get_property NAME $target] LOC [get_property LOC $target]]
+        place_design -directive Explore
+        phys_opt_design -directive AggressiveFanoutOpt
+        route_design -directive NoTimingRelaxation
+        phys_opt_design -directive AggressiveExplore
+    } elseif {$strategy == 1} {
         phys_opt_design -directive AggressiveFanoutOpt
         route_design -directive NoTimingRelaxation
         phys_opt_design -directive Explore

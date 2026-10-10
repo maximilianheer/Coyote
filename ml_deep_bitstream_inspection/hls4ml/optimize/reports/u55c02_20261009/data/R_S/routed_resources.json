@@ -1,0 +1,109 @@
+{
+  "variant": "R_S",
+  "scope": "routed user wrapper including Coyote interfaces and ILA; no board-latency implication",
+  "capacity": {
+    "LUT": 1303680.0,
+    "FF": 2607360.0,
+    "BRAM_tiles": 2016.0,
+    "URAM": 960.0,
+    "DSP": 9024.0
+  },
+  "limits_10_percent": {
+    "LUT": 130368.0,
+    "FF": 260736.0,
+    "BRAM_tiles": 201.5,
+    "DSP": 902.0,
+    "URAM": 96.0
+  },
+  "full_design": {
+    "LUT": 184129.0,
+    "FF": 253001.0,
+    "BRAM_tiles": 487.0,
+    "URAM": 11.0,
+    "DSP": 1328.0
+  },
+  "wrapper_path": "cyt_top/inst_shell/inst_dynamic/inst_user_wrapper_0",
+  "wrapper": {
+    "LUT": 63764,
+    "FF": 82210,
+    "BRAM_tiles": 345.0,
+    "DSP": 1328,
+    "URAM": 11
+  },
+  "wrapper_percent": {
+    "LUT": 4.891077565046637,
+    "FF": 3.1529976681394207,
+    "BRAM_tiles": 17.113095238095237,
+    "DSP": 14.71631205673759,
+    "URAM": 1.1458333333333333
+  },
+  "meets_resource_target": {
+    "LUT": true,
+    "FF": true,
+    "BRAM_tiles": false,
+    "DSP": false,
+    "URAM": true
+  },
+  "components": {
+    "preprocessing": {
+      "path": "cyt_top/inst_shell/inst_dynamic/inst_user_wrapper_0/inst_user_c0_0/inst_model/inst/raw_bitstream_downsample_to_input_stream_U0",
+      "resources": {
+        "LUT": 5012,
+        "FF": 4887,
+        "BRAM_tiles": 0.0,
+        "DSP": 16,
+        "URAM": 0
+      }
+    },
+    "inference_and_publication": {
+      "path": "cyt_top/inst_shell/inst_dynamic/inst_user_wrapper_0/inst_user_c0_0/inst_model/inst/production_infer_and_publish_U0",
+      "resources": {
+        "LUT": 53486,
+        "FF": 67955,
+        "BRAM_tiles": 328.0,
+        "DSP": 1312,
+        "URAM": 11
+      }
+    },
+    "pixel_fifo": {
+      "path": "cyt_top/inst_shell/inst_dynamic/inst_user_wrapper_0/inst_user_c0_0/inst_model/inst/bitstream_input_U",
+      "resources": {
+        "LUT": 31,
+        "FF": 13,
+        "BRAM_tiles": 0.0,
+        "DSP": 0,
+        "URAM": 0
+      }
+    },
+    "ILA": {
+      "path": "cyt_top/inst_shell/inst_dynamic/inst_user_wrapper_0/inst_user_c0_0/inst_ila_benchmark_keepalive",
+      "resources": {
+        "LUT": 578,
+        "FF": 985,
+        "BRAM_tiles": 0.5,
+        "DSP": 0,
+        "URAM": 0
+      }
+    }
+  },
+  "remaining_wrapper_and_interfaces": {
+    "LUT": 4657,
+    "FF": 8370,
+    "BRAM_tiles": 16.5,
+    "DSP": 0,
+    "URAM": 0
+  },
+  "outside_wrapper": {
+    "LUT": 120365.0,
+    "FF": 170791.0,
+    "BRAM_tiles": 142.0,
+    "DSP": 0.0,
+    "URAM": 0.0
+  },
+  "attribution_note": "Inclusive, non-overlapping component roots; remaining logic is a residual, not isolated physical cost",
+  "source_manifest_sha256": "e5c1cbab226d2492a14b68c3c573e91eb3596d1d8501cfae0eabf9b016d8f5f5",
+  "reports": {
+    "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/R_S/recovery/route_03/reports/shell_utilization_hierarchical.rpt": "2a3d8478cba6e560bb8dc34604694c1a828c9a25d8d6a967bda5b7a6d05e3594",
+    "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/R_S/recovery/route_03/reports/shell_utilization.rpt": "7fab0d57d3b71e1f88092e1c0dd69c48d1f1fe1ec5e468db5f5e4ae75eaf85b5"
+  }
+}

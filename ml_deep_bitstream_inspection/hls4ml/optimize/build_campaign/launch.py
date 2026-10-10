@@ -1,39 +1,37 @@
 #!/usr/bin/env python3
-"""Create a new isolated campaign and persistent scheduler/notification windows."""
-import argparse
-from datetime import datetime, timezone
-import json
+"""Launch the three direct-stream builds. Legacy campaign artifacts are read-only."""
+import argparse,json,shlex,subprocess,sys,time
+from datetime import datetime,timezone
 from pathlib import Path
-import shlex
-import subprocess
-import sys
-import time
-from campaign import ORDER
-
-HERE = Path(__file__).resolve().parent
+from worker import save
+HERE=Path(__file__).resolve().parent
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--root', type=Path, default=HERE.parent/'runs'/datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S'))
-    parser.add_argument('--streaming-only', action='store_true', help='Isolated S_I job; leave existing campaigns untouched')
-    args = parser.parse_args()
-    root = args.root.resolve()
-    root.mkdir(parents=True, exist_ok=False)
-    (root/'jobs').mkdir()
-    session = 'coyote_opt_'+root.name
-    state = dict(phase='preparing', heartbeat=time.time(), tmux_session=session,
-                 max_jobs=5, jobs=[dict(id=j, status='pending', stage='preparation', attempt=1) for j in (['S_I'] if args.streaming_only else ORDER)])
-    (root/'status.json').write_text(json.dumps(state, indent=2))
-    def command(script, *argv):
-        return shlex.join([sys.executable, '-u', str(HERE/script), *map(str,argv)])
-    monitor = command('monitor.py', root)+' >> '+shlex.quote(str(root/'monitor.log'))+' 2>&1'
-    scheduler = command('campaign.py', 'run', root, '--jobs', '5')+' >> '+shlex.quote(str(root/'scheduler.log'))+' 2>&1'
-    subprocess.run(['tmux','-L','coyote-opt','new-session','-d','-s',session,'-n','monitor',monitor],check=True)
-    subprocess.run(['tmux','-L','coyote-opt','new-window','-d','-t',session,'-n','scheduler',scheduler],check=True)
-    if args.streaming_only:
-        outcome=command('record_outcome.py',root,'--watch')+' >> '+shlex.quote(str(root/'outcome.log'))+' 2>&1'
-        subprocess.run(['tmux','-L','coyote-opt','new-window','-d','-t',session,'-n','outcome',outcome],check=True)
-    print(f'Run: {root}\nAttach: tmux -L coyote-opt attach -t {session}')
-
-if __name__ == '__main__':
-    main()
+    p=argparse.ArgumentParser()
+    p.add_argument('--root',type=Path,default=HERE.parent/'runs'/('direct_stream_'+datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')))
+    p.add_argument('--conv0-gate',type=Path,help='Verified conv0 gate JSON from check_conv0 validation')
+    a=p.parse_args();root=a.root.resolve();root.mkdir(parents=True,exist_ok=True)
+    if (root/'status.json').exists():raise RuntimeError('Campaign already initialized; resume campaign.py explicitly')
+    (root/'jobs').mkdir(exist_ok=True)
+    if a.conv0_gate:
+        import shutil
+        shutil.copy2(a.conv0_gate,root/'conv0_gate.json')
+    if not (root/'conv0_gate.json').exists():raise RuntimeError('Run isolated conv0 parity/synthesis checks before launching')
+    session_file=root/'tmux_session.txt'
+    session=session_file.read_text().strip() if session_file.exists() else 'coyote_direct_'+root.name
+    if subprocess.run(['tmux','-L','coyote-opt','has-session','-t',session],capture_output=True).returncode:
+        subprocess.run(['tmux','-L','coyote-opt','new-session','-d','-s',session,'-n','tracking'],check=True)
+    subprocess.run(['tmux','-L','coyote-opt','set-option','-t',session,'remain-on-exit','on'],check=True)
+    jobs=[]
+    for ident in ['D_I','D_N','D_G']:
+        path=root/'jobs'/ident/'job.json'
+        job=json.loads(path.read_text()) if path.exists() else dict(id=ident,attempt=1,prepared=False)
+        job.update(status='pending',stage='preparation');jobs.append(job)
+    save(root/'status.json',dict(phase='preparing',heartbeat=time.time(),tmux_session=session,max_jobs=5,jobs=jobs,write_status_markdown=False))
+    save(root/'recovery_policy.json',dict(enabled=True,hbm_clock_fallback=dict(enabled=False)))
+    for name,script,args in [('scheduler','campaign.py',['run',str(root),'--jobs','5']),('monitor','direct_monitor.py',[str(root)])]:
+        command=shlex.join([sys.executable,'-u',str(HERE/script),*args])+' >> '+shlex.quote(str(root/(name+'.log')))+' 2>&1'
+        subprocess.run(['tmux','-L','coyote-opt','new-window','-d','-t',session,'-n',name,command],check=True)
+    session_file.write_text(session+'\n');(HERE.parent/'active_direct_campaign.txt').write_text(str(root)+'\n')
+    print(f'Campaign {root}\nAttach: tmux -L coyote-opt attach -t {session}')
+if __name__=='__main__':main()

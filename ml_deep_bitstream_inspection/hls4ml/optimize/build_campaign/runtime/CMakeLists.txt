@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.16)
+project(CoyoteInferenceCampaign LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(EN_GPU 0 CACHE STRING "GPU deferred" FORCE)
+add_subdirectory("${COYOTE_SW}" coyote)
+add_library(CoyoteInferenceCampaign SHARED host_libs.cpp)
+target_link_libraries(CoyoteInferenceCampaign PRIVATE Coyote)

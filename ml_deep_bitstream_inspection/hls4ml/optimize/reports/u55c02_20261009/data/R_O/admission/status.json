@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "stage": "complete",
+  "job": "R_O",
+  "pid": 184848,
+  "started_at": 1791582796.1031122,
+  "bitstream": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/build/bitstreams/cyt_top.bit",
+  "bitstream_sha256": "7b8e828ca265c23ffe81eb23f1b53884aa0904f2216c819e9292e08a437b4154",
+  "source_manifest_sha256": "5ce74b5b371e170b57212c8be0689c93119d400d866656475431cccdf4eee7e4",
+  "driver_sha256": "60eee8f48d29908ec7ed929762ac0aa9bf9063fc2848a9bcbe0802ee5929c463",
+  "project": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/runtime_project",
+  "stage_started_at": 1791582862.2391484,
+  "child_pid": 186548,
+  "heartbeat": 1791582864.2554927,
+  "board_calls": 260,
+  "finished_at": 1791582866.2648675
+}

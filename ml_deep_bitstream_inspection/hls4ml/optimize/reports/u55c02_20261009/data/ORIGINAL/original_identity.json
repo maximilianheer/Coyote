@@ -1,0 +1,7 @@
+{
+  "bitstream": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/non_vcs_artifacts/runtime_project/build/prod_res256_manualA_coyote_accel_cyt_hw/bitstreams/cyt_top.bit",
+  "bitstream_sha256": "9617545b049b4f0a1c3b90674b68db6a894047f1507f436e85aa1e73cfb87365",
+  "package_manifest_sha256": "27848694f342c70af2f2c412f5403ce8ca62f92e893efdc446052874383b03d9",
+  "project": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/software/production_current_project",
+  "previous_control": "passed"
+}

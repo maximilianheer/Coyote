@@ -1,0 +1,392 @@
+{
+  "data/D_I/full.analysis.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/full.analysis.json",
+    "sha256": "4a33f20f40ae3229135d9548d5cbb930e53209a7dada4f43e6e5c7b210023b2b",
+    "bytes": 25037
+  },
+  "data/D_I/full.environment.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/full.environment.jsonl",
+    "sha256": "ee54bb2ef8a199f7acd76ac84943642aecdd45cf37ff268a3aaa29edee96855e",
+    "bytes": 16682
+  },
+  "data/D_I/full.clock.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/full.clock.csv",
+    "sha256": "466c3cb62b70c029d3a1e6573834213f708d1c320246f0d6c395566cc30fa839",
+    "bytes": 49273
+  },
+  "data/D_I/full.resources.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/full.resources.json",
+    "sha256": "5b673a2f941038d56310e568124efc0a8dde548d4a1bd0237bb0e947df1f80dc",
+    "bytes": 3683
+  },
+  "data/D_I/full.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/full.csv",
+    "sha256": "83b593c923895f3b39d2a003e085b24153161a400d5c34d85aeed9375aca0bcd",
+    "bytes": 1032978
+  },
+  "data/D_I/full.derived.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/full.derived.csv",
+    "sha256": "76ae03a635eab0185c499e3c2a78d671f9cc98482be913fa5669c658c950d73e",
+    "bytes": 1095668
+  },
+  "data/D_I/full.summary.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/full.summary.csv",
+    "sha256": "8235714486c9372ce2184f6a2f350d2c1fa095cdde04e733ee2ba3e334b08cc1",
+    "bytes": 7886
+  },
+  "data/D_I/full.status.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/full.status.json",
+    "sha256": "a4269d1e03cf74be8ad2bcd14638ecd17aec1f41898b4bf238c1351ae9a5d48d",
+    "bytes": 1076
+  },
+  "data/D_I/full.log": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/full.log",
+    "sha256": "e66b71ea48eeaa948529208896d11bf86c45891f5c944e323b66a0abc4eda0ed",
+    "bytes": 1733
+  },
+  "data/D_I/status.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_I/attempt_01/status.json",
+    "sha256": "1a10c9ac4276688ba008a24001930aa3ce360b829e6d1067886fff2eb4e96329",
+    "bytes": 832
+  },
+  "data/D_N/full.summary.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.summary.csv",
+    "sha256": "2a55db863534ce1f077b5d53162cf6d6a81393c1876a27c04717ce9e79fe96f3",
+    "bytes": 5436
+  },
+  "data/D_N/full.environment.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.environment.jsonl",
+    "sha256": "95a924a3bee6f02524364dbac9b20338cfc4bc41c839dc87981c11e1ca4d1dba",
+    "bytes": 16682
+  },
+  "data/D_N/full.status.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.status.json",
+    "sha256": "89604982b6bc841fad67744e7c95857c0fc86637abc30a770a67cdb1ff27257a",
+    "bytes": 1073
+  },
+  "data/D_N/full.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.csv",
+    "sha256": "4e1d3c22fce8c2e5d2735bcf0be38fb1061e8bbe96dceb7f4bc32ed89ffd8269",
+    "bytes": 844486
+  },
+  "data/D_N/full.resources.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.resources.json",
+    "sha256": "791caa2e0daf16aea895c936f4a06d87ad2c2588f048acad8fdece8436b93e1e",
+    "bytes": 2800
+  },
+  "data/D_N/full.analysis.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.analysis.json",
+    "sha256": "e16d00e436a6be9be189b643d8a260b56d7a38f088115c8702128263104346b9",
+    "bytes": 19183
+  },
+  "data/D_N/full.log": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.log",
+    "sha256": "95a9a9824d996faa06923b6b4a2f0b2a5bd16eda328ee16fffc5e4630e29f5a9",
+    "bytes": 1730
+  },
+  "data/D_N/full.clock.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.clock.csv",
+    "sha256": "aef00b99bdcb900af7c7e3b35b05f68a0a15f834356f9dd0cdabad8a1b006725",
+    "bytes": 49273
+  },
+  "data/D_N/full.derived.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/full.derived.csv",
+    "sha256": "74c2962b471e1bb7c5bc1d879c3cd7debcdc20410d8e79a6c8a7e909788bf9a1",
+    "bytes": 595271
+  },
+  "data/D_N/status.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/D_N/attempt_01/status.json",
+    "sha256": "309610cf8c132bdb9f1dc70c1f660436e1fd37ecc40cf29affb3b05bf16a4f89",
+    "bytes": 834
+  },
+  "data/R_O/full.summary.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_O/full.summary.csv",
+    "sha256": "7f024be90625a5816ace78c99e6ed2a1a224a77a66b9280aa99adc4f68bf159d",
+    "bytes": 1947
+  },
+  "data/R_O/full.analysis.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_O/full.analysis.json",
+    "sha256": "35bfbd8b2409d59358cf24d44ed53938d8b74dec1c97dfcbcd0e285f2d6d9490",
+    "bytes": 7871
+  },
+  "data/R_O/full.environment.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_O/full.environment.jsonl",
+    "sha256": "b0a9f37c1da6d5ae414bd35e7380c9239c9c8c95699feebdc2be037b4688ec7a",
+    "bytes": 16682
+  },
+  "data/R_O/full.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_O/full.jsonl",
+    "sha256": "6b1bec7d514a121740e2e9a764d29b02b5786450c65ef657d5fd239001258311",
+    "bytes": 1533667
+  },
+  "data/R_O/gate.analysis.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_O/gate.analysis.json",
+    "sha256": "05bd02123c7e816e3a8540334e1b970f51eff584c2021b82c7d1457e9fa111c4",
+    "bytes": 14523
+  },
+  "data/R_O/gate.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_O/gate.jsonl",
+    "sha256": "270de2d3d0fb10b6021905f66af1ceb45616f1b6fa7ee32d8acf7848999b8121",
+    "bytes": 149281
+  },
+  "data/R_O/admission/status.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_O/admission/status.json",
+    "sha256": "a7828b268f66edcbf76cb2e6e76c3a2754ec08f33e7924b33f9e85314b3e28a8",
+    "bytes": 882
+  },
+  "data/R_O/admission/isolation_validation.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_O/admission/isolation_validation.json",
+    "sha256": "894d5a78bd8a43ee82bc86bfa855812e94dba081a2ece6abe1951d4c9d18085a",
+    "bytes": 10711
+  },
+  "data/R_O/admission/production.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_O/admission/production.csv",
+    "sha256": "d03500e3327ca65d02ca8844947ea7d9a879cc5496b2b6ca5c7ed463d4c11a17",
+    "bytes": 30905
+  },
+  "data/R_O/collector.py": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/sources/production_host_benchmark.py",
+    "sha256": "541a801711e49b3e05ddbb4378b87d797519da5b6901a32d570909599454e4e9",
+    "bytes": 4778
+  },
+  "data/R_S/full.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_S/full.jsonl",
+    "sha256": "a0c6d9b7f129b4b6d0d768183765818974d14c9757c3860ef7da54279f907b9f",
+    "bytes": 1533854
+  },
+  "data/R_S/full.summary.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_S/full.summary.csv",
+    "sha256": "3dac3389b3bfdae1ca7c95968463917932c23799cf7a4cc0dc5fa52909c1a541",
+    "bytes": 1942
+  },
+  "data/R_S/full.analysis.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_S/full.analysis.json",
+    "sha256": "e20e13bd22a616b3b2e16fe1ab1a72e5884f8c0528ae957cea9db0713019fa1e",
+    "bytes": 7871
+  },
+  "data/R_S/full.environment.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_S/full.environment.jsonl",
+    "sha256": "7a9600658cf762eac8233240025a437eab3a6e1ce68bd9d42c95c656e5e5f4bf",
+    "bytes": 16682
+  },
+  "data/R_S/gate.analysis.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_S/gate.analysis.json",
+    "sha256": "6365073b98da3f70ccbcc616e750ec4f5d7bf3aa5a7071e0cc147c23c9fc261a",
+    "bytes": 14532
+  },
+  "data/R_S/gate.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_S/gate.jsonl",
+    "sha256": "d06179c56ce867bddaaaed542f1dd1cbb37b80416b6d2bd69d936157b64c1ac6",
+    "bytes": 149308
+  },
+  "data/R_S/admission/status.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_S/admission/status.json",
+    "sha256": "e3e4821ce3861e95698f1eb1742afbcd40141e661057da6525ca555ba22aab52",
+    "bytes": 880
+  },
+  "data/R_S/admission/isolation_validation.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_S/admission/isolation_validation.json",
+    "sha256": "7c22a035268d25a08c8b0c5ab18e835e3cbdb918e41f6269488a0abf71df9d44",
+    "bytes": 10711
+  },
+  "data/R_S/admission/production.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/R_S/admission/production.csv",
+    "sha256": "d03500e3327ca65d02ca8844947ea7d9a879cc5496b2b6ca5c7ed463d4c11a17",
+    "bytes": 30905
+  },
+  "data/R_S/collector.py": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/sources/production_host_benchmark.py",
+    "sha256": "541a801711e49b3e05ddbb4378b87d797519da5b6901a32d570909599454e4e9",
+    "bytes": 4778
+  },
+  "data/ORIGINAL/full.analysis.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/original_extension/ORIGINAL/full.analysis.json",
+    "sha256": "d5ef98549a45918938d17723c5ce66af3b5cfdad374d6bed3b0a9f54bf14de94",
+    "bytes": 8036
+  },
+  "data/ORIGINAL/full.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/original_extension/ORIGINAL/full.jsonl",
+    "sha256": "a569d2a6684dc6ef5529b7265764d3f707e23a71dd2687059ac90317bb0fcc5a",
+    "bytes": 1546884
+  },
+  "data/ORIGINAL/full.environment.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/original_extension/ORIGINAL/full.environment.jsonl",
+    "sha256": "bab5ad21614ef2c3fde4f6fa6914de350a174f96b9f304d3602fd6d084a89612",
+    "bytes": 16682
+  },
+  "data/ORIGINAL/full.summary.csv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/original_extension/ORIGINAL/full.summary.csv",
+    "sha256": "fa226dfc663dcca16ef8b8b64fdddb1b37001ede8c9b0a3520e996140d729666",
+    "bytes": 2039
+  },
+  "data/ORIGINAL/gate.analysis.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/original_extension/ORIGINAL/gate.analysis.json",
+    "sha256": "0e133ece8bd6b86a6fc2da5b1136ccc153224f7d27dec6fefb8b5e75675f4c19",
+    "bytes": 14689
+  },
+  "data/ORIGINAL/gate.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/original_extension/ORIGINAL/gate.jsonl",
+    "sha256": "579afa26840bed85e6d438f8aca5a1f276ffa604f9b7b685c8a889c937dada13",
+    "bytes": 150602
+  },
+  "data/ORIGINAL/original_identity.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/original_extension/ORIGINAL/original_identity.json",
+    "sha256": "0660c9ed4584a1201eeaf14f8c27afd0c7983ccaf130dc1c25d9fe184264edba",
+    "bytes": 648
+  },
+  "data/ORIGINAL/collector.py": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/build_campaign/production_host_benchmark.py",
+    "sha256": "ff8dd7fd1978912d9cc32e26fab3e99c525f47ca85e2834cbd6a2af775729eb6",
+    "bytes": 4789
+  },
+  "data/inputs.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/inputs.json",
+    "sha256": "29fe91b276487376741426b24a9092262c87ca1c55adbbde893bab5b5e3d98cb",
+    "bytes": 13798
+  },
+  "data/cases.tsv": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/cases.tsv",
+    "sha256": "56310e7b6b5927e0dae9527a29a96357b64a6af51058f2c358874d9c994c5f7b",
+    "bytes": 2992
+  },
+  "data/production_tolerances.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_tolerances.json",
+    "sha256": "4164e79421e1ece9ad38ce1aca289fcaca09fe198664a3abe5a3d50de3370180",
+    "bytes": 10549
+  },
+  "data/board_target.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/board_target.json",
+    "sha256": "cddaabe68b9c4024d793aa7b7e106c8c5c1c4e397d70549a600ce15f2141e8da",
+    "bytes": 152
+  },
+  "data/hardware_selection.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/hardware_selection.json",
+    "sha256": "1192d7677124f0f935fc3b8d67f249a47b20850c67cce6d2dc80f243d3576b5a",
+    "bytes": 507
+  },
+  "data/runtime_validation.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/runtime_validation.json",
+    "sha256": "3f8c13f7c070e8c5a814de3aa6f58530b6b803cd45963c7e4a38025f0bc080fe",
+    "bytes": 1666
+  },
+  "data/notifications.jsonl": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/notifications.jsonl",
+    "sha256": "19d588a44c5b982144f2a021d9817ec3ee947e0f67e15398d4cf56f9f4dad574",
+    "bytes": 3909
+  },
+  "data/production_queue_status.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/production_extensions/status.json",
+    "sha256": "f8115032b054f1670b2160f124ac38e506e75b71488fa8a666215a51b277b294",
+    "bytes": 531
+  },
+  "data/original_queue_status.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/original_extension/status.json",
+    "sha256": "96670e3f8060bee8e0d12158ff6372e356bc5f83ea0371c81e70c6b7962207ce",
+    "bytes": 387
+  },
+  "data/R_S/earlier_parity.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/diagnostics/R_S_parity_01/isolation_validation.json",
+    "sha256": "7c22a035268d25a08c8b0c5ab18e835e3cbdb918e41f6269488a0abf71df9d44",
+    "bytes": 10711
+  },
+  "data/sources/production_host_benchmark.py": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/build_campaign/production_host_benchmark.py",
+    "sha256": "ff8dd7fd1978912d9cc32e26fab3e99c525f47ca85e2834cbd6a2af775729eb6",
+    "bytes": 4789
+  },
+  "data/sources/production_host_queue.py": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/build_campaign/production_host_queue.py",
+    "sha256": "224881c9b410ae47b5de809cf68772719ce5b820103c133ffaffa140dffc079c",
+    "bytes": 9602
+  },
+  "data/sources/report_board_comparison.py": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/build_campaign/report_board_comparison.py",
+    "sha256": "bbb0a35f043a356ea7e08445d9597a4031a291325bb9bf2f1bb4e86ede7060c4",
+    "bytes": 11319
+  },
+  "data/sources/board_benchmark.py": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/build_campaign/board_benchmark.py",
+    "sha256": "272198688e07d732e52cd1a6a10cb4f0068ccd20d692751d561e18442814f37a",
+    "bytes": 16274
+  },
+  "data/sources/parity_gate.py": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/build_campaign/parity_gate.py",
+    "sha256": "e1e5b5edaebebcf0f875a9e3b0863c55af3ccfcc913098f800145a338d86a7d1",
+    "bytes": 1604
+  },
+  "data/D_I/hardware/source_manifest.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/D_I/source_manifest.json",
+    "sha256": "1b483602e3e6fe486b0e8b67cb8c5505cff8e2edc4292180b519d06cb02bf714",
+    "bytes": 63053
+  },
+  "data/D_I/hardware/artifact_manifest.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/D_I/artifact_manifest.json",
+    "sha256": "cf0359811a844c931ead3596fc72f1c7aa64bcadc39688fd5d9527d65e0307f9",
+    "bytes": 1064
+  },
+  "data/D_I/hardware/progress.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/D_I/progress.json",
+    "sha256": "972faa7739a72d1df81c73a068e20011be4e5dc5fe1c5fa0805e4e4a2a591c58",
+    "bytes": 1929
+  },
+  "data/D_N/hardware/source_manifest.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/direct_stream_20261008_002352/jobs/D_N/source_manifest.json",
+    "sha256": "eda7bac1647493ac04a324575c17d1593775d97083e0fcd8ecbcfa7dfcfef200",
+    "bytes": 10945
+  },
+  "data/D_N/hardware/artifact_manifest.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/direct_stream_20261008_002352/jobs/D_N/artifact_manifest.json",
+    "sha256": "0f864bf7a2234ba31663645e65e13697666dcb78268e10d4f778ce6fdf4e3f65",
+    "bytes": 1005
+  },
+  "data/D_N/hardware/progress.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/direct_stream_20261008_002352/jobs/D_N/progress.json",
+    "sha256": "142fcbe2dda4e89b9356a52dc5164f07867c1326eb742e99140b34b01b8f91ed",
+    "bytes": 1310
+  },
+  "data/R_O/hardware/source_manifest.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/source_manifest.json",
+    "sha256": "5ce74b5b371e170b57212c8be0689c93119d400d866656475431cccdf4eee7e4",
+    "bytes": 20205
+  },
+  "data/R_O/hardware/progress.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/progress.json",
+    "sha256": "7deb08f97da6f5f9bd0356ab75ac1260f66915b9388cf270ce6d2a7df7c7e559",
+    "bytes": 1833
+  },
+  "data/R_S/hardware/source_manifest.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/R_S/source_manifest.json",
+    "sha256": "e5c1cbab226d2492a14b68c3c573e91eb3596d1d8501cfae0eabf9b016d8f5f5",
+    "bytes": 20327
+  },
+  "data/R_S/hardware/artifact_manifest.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/R_S/artifact_manifest.json",
+    "sha256": "d4f6684de7049c91b6b6a996d58d7196f999c4688dfcefc19cca761b5e536220",
+    "bytes": 1064
+  },
+  "data/R_S/hardware/progress.json": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/R_S/progress.json",
+    "sha256": "884288d8cb8f00ff36f74bf210e5b73728c58d217e695c0c6c8cd21c37ebc4e8",
+    "bytes": 1930
+  },
+  "data/ORIGINAL/hardware/shell_routed_hierarchical_utilization.rpt": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/results/reports/shell_routed_hierarchical_utilization.rpt",
+    "sha256": "6074727d46006d2d7f4d727b529515e6431be76c85ddf084915d81b94e9f499a",
+    "bytes": 545464
+  },
+  "data/ORIGINAL/hardware/shell_utilization.rpt": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/results/reports/shell_utilization.rpt",
+    "sha256": "7227aa1dadf875313c1ab1c48d61e1d2c60c6c25b7a77ec6e3d4019be22f7165",
+    "bytes": 21620
+  },
+  "data/sources/write_board_report.py": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/build_campaign/write_board_report.py",
+    "sha256": "5c992e59f27a5a1117b0899f680b6528afb7f7aadc8a9b841ee266c1c89477ac",
+    "bytes": 11617
+  },
+  "data/GPU_BASELINE.pdf": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/GPU_BASELINE.pdf",
+    "sha256": "bd3ecc1b5d1c99edca71aae636dce5cc01f0b0b8cf42a7f2c4efd6e6ab6ce38b",
+    "bytes": 308409
+  }
+}

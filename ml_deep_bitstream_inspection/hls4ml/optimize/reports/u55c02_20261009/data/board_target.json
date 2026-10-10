@@ -1,0 +1,8 @@
+{
+  "hostname": "hacc-u55c-02.inf.ethz.ch",
+  "device": 1,
+  "pci_bdf": "0000:c4:00.0",
+  "cpu": 2,
+  "numa_node": 0,
+  "kernel": "6.8.0-138-generic"
+}

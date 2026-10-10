@@ -26,11 +26,18 @@ class QueueTests(unittest.TestCase):
     def test_initial_priority_and_diagnostics_fill_slots(self):
         jobs = self.jobs()
         self.assertEqual([j['id'] for j in jobs if eligible(j, jobs)][:5],
-                         ['S_I', 'I', 'H16', 'H8', 'H4'])
+                         ['D_I', 'D_N', 'D_G', 'I', 'H16'])
         for job in jobs:
-            if job['id'] in INITIAL or job['id'] in ('S_I','I'):
+            if job['id'] in INITIAL or job['id'] in ('D_I','D_N','D_G','I'):
                 job['status'] = 'running'
-        self.assertEqual([j['id'] for j in jobs if eligible(j, jobs)], ['U', 'N', 'P', 'C'])
+        self.assertEqual([j['id'] for j in jobs if eligible(j, jobs)], ['U', 'N', 'P', 'C', 'R_O', 'R_S'])
+
+    def test_production_isolation_runs_without_legacy_dependencies(self):
+        jobs=[dict(id=ident,status='pending') for ident in ['R_O','R_S']]
+        self.assertTrue(all(eligible(job,jobs) for job in jobs))
+        jobs[0]['status']='running'
+        self.assertFalse(eligible(jobs[0],jobs))
+        self.assertTrue(eligible(jobs[1],jobs))
 
     def test_refinement_waits_for_all_coarse_attempts(self):
         jobs = self.jobs()

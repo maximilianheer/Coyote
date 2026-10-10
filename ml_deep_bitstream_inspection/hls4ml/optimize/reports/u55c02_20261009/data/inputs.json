@@ -1,0 +1,267 @@
+{
+  "order_seed": 20261002,
+  "warmups": 20,
+  "trials": 200,
+  "cases": [
+    {
+      "id": "real_18876484",
+      "sweep": "real",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/H16/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "bytes": 18876484,
+      "sha256": "521d2745e73a87f74a951e751ac3d6f862bb0395afe99162f152e8390812011b",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/H16/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "415a2800"
+    },
+    {
+      "id": "synthetic_16777216",
+      "sweep": "synthetic",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/synthetic_16777216.bin",
+      "bytes": 16777216,
+      "sha256": "44fa594745908203fb86c31fb0696d412ca3ee6df59f34479b7d2c16cb24bd8c",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "repeat/truncate benign HR; last point 128 MiB minus 64 bytes",
+      "expected_logit_hex": "416cd800"
+    },
+    {
+      "id": "real_5540996",
+      "sweep": "real",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "bytes": 5540996,
+      "sha256": "51607d35fa6ebb6b255161c83cc4fa57bc4c70f34cb52d3a141d489e0321aafd",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "42071000"
+    },
+    {
+      "id": "synthetic_4194304",
+      "sweep": "synthetic",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/synthetic_4194304.bin",
+      "bytes": 4194304,
+      "sha256": "71ae6c2386d223ebb90d1ac1e8861740d305aefc9e7a2282d50e864e039736f5",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "repeat/truncate benign HR; last point 128 MiB minus 64 bytes",
+      "expected_logit_hex": "41ab3c00"
+    },
+    {
+      "id": "real_41278872",
+      "sweep": "real",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it2/artifacts/bitstreams/config_105/vfpga_c105_0.bin",
+      "bytes": 41278872,
+      "sha256": "28c3ec6e93431c5f337906d6ffa65c8bd253545b421270740ae9283d09cc0644",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it2/artifacts/bitstreams/config_105/vfpga_c105_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "40136000"
+    },
+    {
+      "id": "real_30323588",
+      "sweep": "real",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it1/artifacts/bitstreams/config_027/vfpga_c027_0.bin",
+      "bytes": 30323588,
+      "sha256": "e84994793a9c4c4820f53215bf46eacf54907218992c933022d07e1ba12ca2ba",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it1/artifacts/bitstreams/config_027/vfpga_c027_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "c09d5800"
+    },
+    {
+      "id": "synthetic_134217664",
+      "sweep": "synthetic",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/synthetic_134217664.bin",
+      "bytes": 134217664,
+      "sha256": "55a44d60e9f2d783e21b890160c679d812b859d0ec8c030bc8270a02af1212e6",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "repeat/truncate benign HR; last point 128 MiB minus 64 bytes",
+      "expected_logit_hex": "41684c00"
+    },
+    {
+      "id": "real_12004440",
+      "sweep": "real",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/H4/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "bytes": 12004440,
+      "sha256": "3ee2a1009ca2ead0cb4aac1afc83b60656b87d94aa3ceedfdc609ae2b6046aca",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/H4/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "41b2be00"
+    },
+    {
+      "id": "real_34162708",
+      "sweep": "real",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it1/artifacts/bitstreams/config_109/vfpga_c109_0.bin",
+      "bytes": 34162708,
+      "sha256": "bb4e3cd2e788d07b875b660752b65e548ee1ed42afecd5f99b06f75c48fed347",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it1/artifacts/bitstreams/config_109/vfpga_c109_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "c0a6d000"
+    },
+    {
+      "id": "real_55676772",
+      "sweep": "real",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it4_big_ro/artifacts/bitstreams/config_075/vfpga_c075_0.bin",
+      "bytes": 55676772,
+      "sha256": "e2a084d7fcd9f32523e8f8f16eb99016e895294091e4a8831cec04e90338e750",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it4_big_ro/artifacts/bitstreams/config_075/vfpga_c075_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "4115e000"
+    },
+    {
+      "id": "real_48540364",
+      "sweep": "real",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it4_big_ro/artifacts/bitstreams/config_050/vfpga_c050_0.bin",
+      "bytes": 48540364,
+      "sha256": "6a2fcc47677532bb6f8c10720bacf8cbeeb99ae3225a0ecd8235286f0f890131",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it4_big_ro/artifacts/bitstreams/config_050/vfpga_c050_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "41710c00"
+    },
+    {
+      "id": "synthetic_67108864",
+      "sweep": "synthetic",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/synthetic_67108864.bin",
+      "bytes": 67108864,
+      "sha256": "d2e475137897c87411431defbd97a0ecf5bccd064a1a7a136316b0a7e3952c6b",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "repeat/truncate benign HR; last point 128 MiB minus 64 bytes",
+      "expected_logit_hex": "41b54000"
+    }
+  ],
+  "smoke": [
+    {
+      "id": "smoke_0",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_0.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_logit_hex": "bf2f4000"
+    },
+    {
+      "id": "smoke_1",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_1.bin",
+      "bytes": 1,
+      "sha256": "a8100ae6aa1940d0b663bb31cd466142ebbdbd5187131b92d93818987832eb89",
+      "expected_logit_hex": "bf204000"
+    },
+    {
+      "id": "smoke_63",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_63.bin",
+      "bytes": 63,
+      "sha256": "d12449c8124182545ae91924286cc6af13528bcf62a5ddbd5e00b891fffc1b48",
+      "expected_logit_hex": "bf054000"
+    },
+    {
+      "id": "smoke_64",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_64.bin",
+      "bytes": 64,
+      "sha256": "8667e718294e9e0df1d30600ba3eeb201f764aad2dad72748643e4a285e1d1f7",
+      "expected_logit_hex": "bf068000"
+    },
+    {
+      "id": "smoke_65",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_65.bin",
+      "bytes": 65,
+      "sha256": "c0d9d4d67cfdb02c16431b5034715dbb4743f73884c1470099ef6263e07707c1",
+      "expected_logit_hex": "bf068000"
+    },
+    {
+      "id": "smoke_65535",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_65535.bin",
+      "bytes": 65535,
+      "sha256": "fb82a7179707bf5bb427e18d4c89a73fa6e3c59c63b42f2fd41cbcc92d0e05e2",
+      "expected_logit_hex": "c101ac00"
+    },
+    {
+      "id": "smoke_65536",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_65536.bin",
+      "bytes": 65536,
+      "sha256": "e73a4da1fc087dc2791da3835e36bf1944df1274ba79c76d6d6065f0e22652bd",
+      "expected_logit_hex": "c101ac00"
+    },
+    {
+      "id": "smoke_65537",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_65537.bin",
+      "bytes": 65537,
+      "sha256": "ae2de9ba4e6d108f089fad5c90156eff40b9666f3cce1f660bb7896fc10f7602",
+      "expected_logit_hex": "c101ac00"
+    },
+    {
+      "id": "smoke_4194240",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_4194240.bin",
+      "bytes": 4194240,
+      "sha256": "0947dd0845b07ce21b8435dc8afce4a35d52fc8eb0cc6e67da0011fc9f66164f",
+      "expected_logit_hex": "4193d600"
+    },
+    {
+      "id": "smoke_4194241",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_4194241.bin",
+      "bytes": 4194241,
+      "sha256": "077d1cef12bc6347ad5aa6c5e10c0b652bb379a87f7e65857fbd8dce95b5cae1",
+      "expected_logit_hex": "416de000"
+    },
+    {
+      "id": "smoke_4194242",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/smoke_4194242.bin",
+      "bytes": 4194242,
+      "sha256": "86eaec560c20c1a855984bfdee2c68fda2a0cd583326b295f9b9683a32c1bdb8",
+      "expected_logit_hex": "416ef400"
+    },
+    {
+      "id": "smoke_real_5540996",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "bytes": 5540996,
+      "sha256": "51607d35fa6ebb6b255161c83cc4fa57bc4c70f34cb52d3a141d489e0321aafd",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "42071000"
+    },
+    {
+      "id": "smoke_synthetic_4194304",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/synthetic_4194304.bin",
+      "bytes": 4194304,
+      "sha256": "71ae6c2386d223ebb90d1ac1e8861740d305aefc9e7a2282d50e864e039736f5",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "repeat/truncate benign HR; last point 128 MiB minus 64 bytes",
+      "expected_logit_hex": "41ab3c00"
+    },
+    {
+      "id": "smoke_synthetic_134217664",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_20261008_130137/inputs/synthetic_134217664.bin",
+      "bytes": 134217664,
+      "sha256": "55a44d60e9f2d783e21b890160c679d812b859d0ec8c030bc8270a02af1212e6",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/20261001_184524/jobs/HR/build/bitstreams/config_0/vfpga_c0_0.bin",
+      "recipe": "repeat/truncate benign HR; last point 128 MiB minus 64 bytes",
+      "expected_logit_hex": "41684c00"
+    },
+    {
+      "id": "smoke_real_55676772",
+      "sweep": "smoke",
+      "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it4_big_ro/artifacts/bitstreams/config_075/vfpga_c075_0.bin",
+      "bytes": 55676772,
+      "sha256": "e2a084d7fcd9f32523e8f8f16eb99016e895294091e4a8831cec04e90338e750",
+      "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/upload_dataset/full_dataset_it4_big_ro/artifacts/bitstreams/config_075/vfpga_c075_0.bin",
+      "recipe": "unchanged",
+      "expected_logit_hex": "4115e000"
+    }
+  ],
+  "hardware_build": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550",
+  "variants": [
+    7,
+    8
+  ],
+  "max_raw_bytes": 134217664,
+  "host": "hacc-u55c-02.inf.ethz.ch",
+  "cpu": 2,
+  "numa_node": 0,
+  "clock_mhz": 250
+}

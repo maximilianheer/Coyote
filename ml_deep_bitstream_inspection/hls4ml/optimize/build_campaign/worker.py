@@ -46,7 +46,29 @@ def collect_artifacts(build, ident):
         artifacts.update(partial=str(partial[0]), partial_bytes=partial[0].stat().st_size)
     return artifacts
 
+def seal_artifacts(jobdir, artifacts):
+    """Record source/report/bitstream identities for a completed fresh attempt."""
+    source=verify_sources(jobdir)
+    files={}
+    for category in ('bitstreams','timing_reports','utilization_reports'):
+        for name in artifacts[category]:
+            path=Path(name).resolve()
+            if not path.is_relative_to(jobdir.resolve()) or not path.is_file() or not path.stat().st_size:
+                raise RuntimeError('Invalid artifact path: '+str(path))
+            if category=='timing_reports':validate_timing_report(path)
+            files[str(path.relative_to(jobdir.resolve()))]=dict(bytes=path.stat().st_size,sha256=sha(path))
+    if not artifacts['bitstreams'] or not artifacts['timing_reports']:
+        raise RuntimeError('Missing final artifacts')
+    save(jobdir/'artifact_manifest.json',dict(status='passed',verified_at=time.time(),
+        source_manifest_sha256=source,hardware_validated=False,files=files))
+
 def run(jobdir, job, validate_only=False):
+    if job['id'] in ('R_O', 'R_S', 'R_SO_T'):
+        from production_isolation import run_isolation
+        return run_isolation(jobdir, job, validate_only)
+    if job['id'] in ('D_I', 'D_N', 'D_G'):
+        from direct_worker import run_direct
+        return run_direct(jobdir, job, validate_only)
     env=os.environ.copy()
     env['PATH']='/tools/Xilinx/Vivado/2024.2/bin:/tools/Xilinx/Vitis_HLS/2024.2/bin:'+env['PATH']
     env.update(OMP_NUM_THREADS='8',OPENBLAS_NUM_THREADS='1')

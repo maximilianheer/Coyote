@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "verified_at": 1791430107.0938494,
+  "source_manifest_sha256": "eda7bac1647493ac04a324575c17d1593775d97083e0fcd8ecbcfa7dfcfef200",
+  "hardware_validated": false,
+  "files": {
+    "build/bitstreams/cyt_top.bit": {
+      "bytes": 36706926,
+      "sha256": "903e517091069c3341b77852bb4bc6195d5bafde0a5ab14df6dd9e4c9606d222"
+    },
+    "build/bitstreams/shell_top.bin": {
+      "bytes": 37055180,
+      "sha256": "26d50f31e270efb7292f1ec5fa71604deb9628d481520c4c7ccb0bae0d2adf04"
+    },
+    "build/reports/shell_timing_summary.rpt": {
+      "bytes": 1518016,
+      "sha256": "5091ec760823264cf5dd4cdef7f332b7712feaa30975a745e21af2d701352e8e"
+    },
+    "build/reports/shell_utilization.rpt": {
+      "bytes": 20856,
+      "sha256": "a88e84088fa5a82a2e5251b30b22107b77738de0f35c801933141ef9dd4d6f6b"
+    },
+    "build/reports/shell_utilization_hierarchical.rpt": {
+      "bytes": 1741603,
+      "sha256": "0e5486b2c91f8e77a57fbae7198752274ed11686f22970f91f42e208846666d0"
+    }
+  }
+}

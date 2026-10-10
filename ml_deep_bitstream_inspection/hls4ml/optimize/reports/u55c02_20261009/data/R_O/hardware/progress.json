@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "stage": "complete",
+  "started_at": 1791465882.3005085,
+  "pid": 139532,
+  "hardware_started": true,
+  "stage_started_at": 1791491796.002107,
+  "hardware_started_at": 1791466213.4620368,
+  "artifacts": {
+    "utilization_reports": [
+      "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/build/reports/shell_utilization.rpt",
+      "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/build/reports/shell_utilization_hierarchical.rpt"
+    ],
+    "shared_debug_overhead": "ila_benchmark_keepalive: one 1-bit probe, depth 1024",
+    "bitstreams": [
+      "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/build/bitstreams/cyt_top.bit",
+      "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/build/bitstreams/shell_top.bin"
+    ],
+    "timing_reports": [
+      "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/build/reports/shell_timing_summary.rpt"
+    ],
+    "sha256": {
+      "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/build/bitstreams/cyt_top.bit": "7b8e828ca265c23ffe81eb23f1b53884aa0904f2216c819e9292e08a437b4154",
+      "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/production_isolation_20261008_132304/jobs/R_O/build/bitstreams/shell_top.bin": "b5452ffbad1430691b9a930919a2b3c20c1576475211ce3714d4e5fef53f7e49"
+    }
+  },
+  "hardware_validated": false,
+  "finished_at": 1791493349.0151515
+}

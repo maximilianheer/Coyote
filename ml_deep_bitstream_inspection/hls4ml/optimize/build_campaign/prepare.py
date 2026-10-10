@@ -14,9 +14,9 @@ MODEL = PACKAGE/'sources/generated_project/src/hls/model_wrapper'
 HELLO = REPO/'datasets/full_dataset_it1/hw/apps/benign_variants/V01_hello_world_nodbg'
 INITIAL = {'H16': (0,0,3,3), 'H8': (0,0,3,1), 'H4': (0,0,1,1),
            'H2': (0,0,1,0), 'H1': (0,0,0,0)}
-VARIANTS = {'I': 1, 'U': 2, 'N': 3, 'P': 4, 'C': 5, 'S_I': 6}
+VARIANTS = {'I': 1, 'U': 2, 'N': 3, 'P': 4, 'C': 5}
 VARIANT_FILES = {'I': 'instrumented', 'U': 'uninstrumented', 'N': 'transport_only',
-                 'P': 'preprocessing_only', 'C': 'inference_only', 'S_I': 'streaming_instrumented'}
+                 'P': 'preprocessing_only', 'C': 'inference_only'}
 HARDWARE = HERE/'hardware'
 
 
@@ -154,6 +154,14 @@ def choose_geometry(job, state, root):
 
 
 def prepare(root, job, state):
+    if job['id'] in ('R_O', 'R_S', 'R_SO_T'):
+        from production_isolation import prepare_isolation
+        return prepare_isolation(root, job, state)
+    if job['id'] == 'S_I':
+        raise ValueError('S_I is retired; use the direct-host D_I campaign')
+    if job['id'] in ('D_I', 'D_N', 'D_G'):
+        from direct_prepare import prepare_direct
+        return prepare_direct(root, job, state)
     dst = root/'jobs'/job['id']
     dst.mkdir(parents=True, exist_ok=False)
     coyote = dst/'coyote'

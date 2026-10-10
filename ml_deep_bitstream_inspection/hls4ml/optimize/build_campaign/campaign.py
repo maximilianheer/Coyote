@@ -13,7 +13,7 @@ from worker import save
 from recovery import recover_failed, archive_and_retry
 
 HERE=Path(__file__).resolve().parent
-ORDER=['S_I','I','H16','H8','H4','H2','H1','HN','HR','HE','U','N','P','C']
+ORDER=['D_I','D_N','D_G','I','H16','H8','H4','H2','H1','HN','HR','HE','U','N','P','C','R_O','R_S','R_SO_T']
 TERMINAL={'passed','failed','blocked'}
 
 def eligible(job,jobs):
@@ -34,7 +34,9 @@ def render(root,state):
         lines.append(f"| {j['id']} | {j['status']} | {j.get('stage','')} | {max(0,elapsed):.2f} | {details.replace('|','/')} |")
     lines+=['', f"Attach: `tmux -L coyote-opt attach -t {state['tmux_session']}`",
             '', 'Build success does not imply hardware/PR validation.']
-    (root/'STATUS.md').write_text('\n'.join(lines)+'\n')
+    # No narrative report files unless requested; status.json is authoritative.
+    if state.get('write_status_markdown', False):
+        (root/'STATUS.md').write_text('\n'.join(lines)+'\n')
 
 def run(root,jobs_limit=5):
     if not 1<=jobs_limit<=5:raise ValueError('jobs must be between 1 and 5')
@@ -124,7 +126,7 @@ if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('action',choices=['run','status','dry-run'])
     p.add_argument('root',type=Path);p.add_argument('--jobs',type=int,default=5);a=p.parse_args()
     if a.action=='run':run(a.root.resolve(),a.jobs)
-    elif a.action=='status':print((a.root/'STATUS.md').read_text())
+    elif a.action=='status':print((a.root/'status.json').read_text())
     else:
         state=json.loads((a.root/'status.json').read_text())
         print('Initially eligible:',', '.join(j['id'] for j in state['jobs'] if eligible(j,state['jobs'])))

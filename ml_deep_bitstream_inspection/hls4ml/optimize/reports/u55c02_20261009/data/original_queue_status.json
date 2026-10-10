@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "pid": 190364,
+  "started_at": 1791583118.085838,
+  "jobs": [
+    {
+      "job": "ORIGINAL",
+      "status": "passed",
+      "stage": "complete",
+      "finished_at": 1791583208.392061,
+      "calls": 2640
+    }
+  ],
+  "stage": "complete",
+  "heartbeat": 1791583268.8092766,
+  "child_pid": 192112,
+  "sink_restored": true,
+  "finished_at": 1791583270.8706195
+}

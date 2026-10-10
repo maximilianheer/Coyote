@@ -1,0 +1,19 @@
+{
+  "job": "D_I",
+  "attempt": 1,
+  "status": "passed",
+  "stage": "complete",
+  "pid": 179053,
+  "started_at": 1791581979.321541,
+  "heartbeat": 1791582114.5030227,
+  "stage_started_at": 1791582100.796729,
+  "child_pid": 181453,
+  "artifact_manifest_sha256": "cf0359811a844c931ead3596fc72f1c7aa64bcadc39688fd5d9527d65e0307f9",
+  "bitstream_sha256": "3fc293ce1ee9c8027e86b877c0449b01d77ca8c357ccbe3ed1beafce92cde3b7",
+  "driver_sha256": "60eee8f48d29908ec7ed929762ac0aa9bf9063fc2848a9bcbe0802ee5929c463",
+  "runner_sha256": "624e9e7581e9239b293c0e377efb060801bc58669a1c93a47c1dc5f42eef908c",
+  "library_sha256": "a6b7bbfb0cbaed7c0ab90bcb1558bb510e9f73089291fefdaa276f0fe5db111b",
+  "tolerances_sha256": "4164e79421e1ece9ad38ce1aca289fcaca09fe198664a3abe5a3d50de3370180",
+  "allocation": "HPF",
+  "finished_at": 1791582114.5030224
+}

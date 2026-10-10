@@ -16,6 +16,17 @@ import numpy as np
 class RawCoyoteOverlay:
     """Load a generated CoyoteAccelerator shared library and run raw-byte inference."""
 
+    def open_production_session(self, max_input_bytes=134217664):
+        """Reuse the production LOCAL_TRANSFER context and buffers across inputs."""
+        from .production_session import ProductionCoyoteSession
+        return ProductionCoyoteSession(self, max_input_bytes)
+
+    @classmethod
+    def open_direct_session(cls, library_path, backend="direct_checker", max_input_bytes=134217664, allocation="HPF"):
+        """Open a batch-one campaign backend; leaves production predict_raw unchanged."""
+        from .direct_session import DirectCoyoteSession
+        return DirectCoyoteSession(library_path, backend, max_input_bytes, allocation)
+
     def __init__(self, path: str | Path, project_name: str = "myproject") -> None:
         self.path = Path(path).resolve()
         self.project_name = project_name

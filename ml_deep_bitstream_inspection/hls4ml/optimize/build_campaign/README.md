@@ -1,213 +1,217 @@
-# Optimization build campaign
+# Direct-host build campaign
 
-Five concurrent jobs, isolated Coyote source/build trees, one tmux window per job.
-The scheduler fills free slots in this order:
+## Streaming reset recovery
 
-| Jobs | Purpose | Dependency |
+- Driver insertion resets the application after FPGA configuration.
+- Early CNN padding advances static position/stride counters; control reset retains them.
+- Second-reset RTL reproduces board logits: **D_I `3f97e000`; R_S `3f944000`**; expected `bf2f4000`.
+- `hardware/common/frame_start.hpp`: wait for first pixel before CNN launch; preserve input/output ABI.
+- `check_frame_start.py`: fresh C-sim/HLS/RTL; **8 R_S / 11 D_I frames**, second reset after **20,000 idle cycles**.
+- `launch_isolation.py --variants D_I R_S --conv0-gate ... --frame-start-gates ...`: fresh replacement attempts; **5-slot** queue, shared implementation memory permit.
+- Corrected builds require standard-driver board parity; diagnostic reset suppression never admits benchmarks.
+- `direct_board_validation.py`: exact rebuilt D_I + standard driver → **520 checks** → explicit D_I/D_N hardware selection.
+- `benchmark_handoff.py`: wait for that admission → smoke/pilot/full D_I then D_N; board operations share an exclusive lock.
+
+## Production streaming candidate
+
+- **R_SO_T:** R_S single-IP wrapper + first-pixel guard + R_O optimized conv0 + passive five-event observer.
+- Original production host implementation, raw framing and result DMA; read-only CSR extension only.
+- `production_candidate.py`: verify separate R_O/R_S **260/260 standard-driver board gates** and maintained source identities before preparation.
+- `hardware/production/vfpga_timed.svh`: unchanged DMA connections; monitor outputs drive only CSR responses.
+- `package_campaign.tcl`: add FIFO event ports after fresh HLS export, before Coyote imports the IP.
+- Combined RTL gate: **8 frames**, second reset, exact pixels/logits, stalls, consecutive frames and five timestamp events; reject any change to existing exported HLS logic.
+- `candidate_handoff.py`: wait for board prerequisites; launch one instrumented build; share the replacement campaign's implementation memory permit.
+- `launch_isolation.py --variants R_SO_T --production-prerequisites SPEC.json --implementation-lock LOCK ...`.
+- `SPEC.json`: `board` path; `R_O` and `R_S` each contain explicit `job` and `evidence` paths.
+- [Live gated handoff](../runs/frame_start_recovery_20261009_0134/R_SO_T_handoff/status.json); no candidate hardware launch before prerequisite board parity.
+- `isolation_board.py ... R_SO_T ... --wait`: verify final build → **260 persistent production-DMA predictions and passive captures**; standard driver only.
+- `isolation_evidence.py`: replay all **260** saved captures; compare frame IDs, register decoding and production result rows.
+- `production_collect.py`: one persistent production context per sweep; **20 warm-ups + 200 measured/case**, read-only timestamps after result DMA; hardware/runtime/input/software identity sidecars.
+- `production_benchmark_queue.py`: require R_SO_T admission; prioritize D_I when ready, otherwise allow the candidate independently; smoke/pilot/full; exclusive board lease; restore verified D_N; outcome-only ntfy monitor.
+- [Candidate benchmark handoff](../runs/board_benchmark_20261008_130137/R_SO_T/handoff.json); no candidate measurements admitted yet.
+
+## Recovery campaigns
+
+- **Active correctness recovery:** [first-pixel validation / automatic launch](../runs/frame_start_recovery_20261009_0134/launch_status.json).
+- Original [production isolation queue](../runs/production_isolation_20261008_132304/status.json): builds complete; R_O board pass, R_S standard-driver board failure preserved.
+- R_O: frozen sequential production wrapper + optimized conv0. R_S: monolithic streaming wrapper + original conv0.
+- R_S helper: preprocessing DATAFLOW → 32-token FIFO → sequential CNN + production float publication; preserve nested CNN call control.
+- R_S initial outer-DATAFLOW form stalled its first frame in RTL; preserve attempt 2. Replacement uses fresh sources/IP/checkpoints.
+- Both retain production raw header/exact transfer length, unchanged host source, LOCAL_TRANSFER and result DMA.
+- Launch: `launch_isolation.py --cases CASES.tsv --boundary-reference direct_expected.txt`.
+- Maintained wrappers: `hardware/variants/production_optimized.cpp`, `production_streaming.cpp`; top: `hardware/production/vfpga_top.svh`.
+- Gates: 52 corpus C-simulation calls + 8 independent boundary references; eight HLS RTL frames; final routed timing/hashes.
+- Production output: LAST=0, KEEP unspecified; destination DMA length=4 bytes. Preserve this ABI.
+- After build success: `prepare_production_runtime.py JOB_DIR VERIFIED_BITSTREAM`; returns the project layout for unchanged `RawCoyoteOverlay.predict_raw` / `production_control.py`.
+- Two workers, four threads each; whole-device implementation stages share a memory permit on the 62-GiB host.
+- No new board measurements accepted until parity passes. Original D_I campaign below remains preserved.
+
+- Plan: [OPTIMIZATION_PLAN.md](../OPTIMIZATION_PLAN.md).
+- `resource_attribution.py JOB`: routed wrapper, preprocessing/CNN, FIFO, control/monitor, ILA and residual costs; device capacities and discrete ≤10% limits; reject synthesis reports and overlapping hierarchy totals.
+- Full benchmark analysis writes `full.resources.json`, bound to the exact measured image/source; HLS estimates remain separate.
+- `host_environment.py`: read-only before/after-case snapshots in `*.environment.jsonl`; affinity/governor/frequency, CPU counters/load, memory/hugepages, kernel and PCIe link; no work inside timed calls.
+- Current run: [status.json](../runs/direct_stream_20261008_002352/status.json).
+- Three isolated builds; maximum five concurrent workers; no board programming.
+- **2026-10-08:** all three builds passed; source/artifact hashes verified; ntfy success alerts delivered.
+- D_I final outputs: `jobs/D_I/recovery/route_01/`; original failed routing is preserved.
+- Routed D_I: WNS **+0.035 ns**, WHS **+0.009 ns**; clocks unchanged.
+- Build evidence: each job’s `artifact_manifest.json`; board/GPU execution remains unvalidated.
+
+| Job / ABI ID | Hardware | Priority |
 | --- | --- | --- |
-| S_I, I | Streaming and sequential instrumented checkers | None; first priorities |
-| H16, H8, H4, H2, H1 | Hello-world with 16, 8, 4, 2, 1 clock regions | None |
-| HN, HR | Narrower / relocated smallest feasible region | All five coarse attempts finish |
-| HE | Disable routing-containment expansion | Coarse attempts, HN and HR finish |
-| U, N, P, C | Uninstrumented checker, transport sink, preprocessing, inference | None; fill otherwise idle slots |
+| D_I / 7 | Direct-host preprocessing + conv0-optimized CNN | First |
+| D_N / 8 | Direct-host transport sink | Parallel |
+| D_G / 9 | Byte-preserving FPGA→GPU bridge + P2P result capture | Parallel |
 
-Refinements require a successful anchor. Failed jobs are reported and do not stop
-independent builds. A run with `recovery_policy.json` containing `{"enabled": true}`
-automatically diagnoses failures and applies the bounded recovery steps below.
-Vivado uses eight threads; newly prepared projects serialize IP synthesis runs.
+## Implementation
 
-## Maintained hardware
+- `hardware/direct/`: shared AXI-Lite control, elastic FIFO, top, variant constants.
+- `hardware/variants/preprocess_wrapper.cpp`: raw bytes → 65,536 normalized pixels.
+- `hardware/variants/cnn_wrapper.cpp`: pixel stream → production CNN → score.
+- CNN wrapper: one model invocation per verdict; sequential call control, internal CNN DATAFLOW retained. Prevents premature next-frame launches.
+- `hardware/common/conv0_dataflow.hpp`: copied 5×5 windows; depth-four FIFO; unchanged arithmetic.
+- Preprocessing/CNN boundary: observable AXIS handshakes; 32-pixel elastic FIFO.
+- Internal production CNN FIFO depths, weights, types, and other layers unchanged.
+- Python isolates sources, selects variants, patches only the isolated conv0 call, and manages tools.
+- `EN_MEM=0`, `EN_PR=0`, two host-stream destinations; target 250 MHz.
+- S_I is retired from active preparation/launch. Previous campaign artifacts remain unchanged.
 
-- `hardware/variants/{instrumented,uninstrumented,transport_only,preprocessing_only,inference_only,streaming_instrumented}.cpp`
-  are the six explicit HLS tops. Preparation selects one and copies it unchanged
-  as `model_wrapper.cpp`; common headers provide preprocessing, CNN, adapters and
-  diagnostic helpers. The production firmware and weights are copied unchanged.
-- `hardware/benchmark_control.sv` maintains the register ABI and counters.
-  `hardware/vfpga_top.svh` uses ordinary SystemVerilog constants from the selected
-  variant's `.svh` file, with generate branches for the optional phase port.
-- `hardware/debug_probe.svh` and `hardware/init_ip.tcl` supply the same one-bit,
-  1024-sample ILA in all designs. This keeps Coyote's mandatory user debug bridge
-  connected and addresses the observed `Chipscope 16-320` checkpoint-reopen error.
-  It observes accepted input beats and does not drive the datapath or control ABI.
-  Include its resources in design totals and attribute them as shared debug overhead.
-  Hello-world uses `hardware/hello_world/vfpga_top.svh` over the isolated dataset copy.
-  Its maintained `hello_world/hdl/perf_local.sv` restores normal TVALID propagation
-  while retaining the original add-one datapath and register stages. The frozen
-  nodbg source's RO-driven TVALID is omitted from new H builds, as approved.
-- Python handles isolation, file selection, floorplans, tool configuration,
-  validation, scheduling and notifications. It does not construct C++ or SV logic.
-- `source_manifest.json` records SHA-256 hashes for each attempt's inputs, the
-  maintained hardware and build scripts. Diagnostic workers verify these inputs
-  before synthesis. Validated sources may not be edited in place.
+## Gates and attempts
 
-## Current campaign
+- `check_conv0.py`: independent window/output parity and paired HLS synthesis.
+- `conv0_gate.json`: verified helper hash, baseline/candidate synthesis evidence.
+- Worker gates: host compile, control RTL, pristine-vs-candidate full-CNN C simulation.
+- D_I implementation gate: actual HLS RTL, eleven boundary frames, parity, stalls, consecutive frames, cycle reduction.
+- `check_direct_rtl.py JOB_DIR --reference-only`: overlap pristine reference synthesis with IP packaging; reuse only intact RTL/reports from that source attempt.
+- `check_direct_rtl.py JOB_DIR --early`: detect functional failures during packaging, using separately synthesized preprocessing and the build's CNN RTL. Final gate still checks both actual build cores.
+- Final gate reuses early results only when all actual RTL/data files, test inputs, source hashes, PASS logs and eleven paired cycle rows match. Changed or incomplete evidence triggers fresh simulation.
+- Successful build: intact source manifest, final routed timing, nonempty bitstreams.
+- New source changes require fresh attempts; old directories retained under `attempts/<ID>/`.
+- Checkpoints/IP are not reused across source changes.
+- Timing retries may reuse checkpoints within the identical source attempt.
+- Build success does not imply board validation, end-to-end speedup, or a GPU win.
 
-- Run: `hls4ml/optimize/runs/20261001_184524`
-- Live overview: [STATUS.md](../runs/20261001_184524/STATUS.md)
-- Attach: `tmux -L coyote-opt attach -t coyote_opt_20261001_184524`
-- Logs: `jobs/<ID>/{worker,project,synth,link,shell,app,bitgen}.log`
-- Artifacts: `jobs/<ID>/build/{bitstreams,reports,checkpoints}`
-- Timing recovery artifacts: `jobs/<ID>/recovery/route_<N>/`; the original
-  checkpoint, sources, logs and bitstreams remain untouched.
-- Timing retries use four distinct strategies: post-route optimization, rerouting
-  from placement, new placement, then incremental timing closure using the best
-  completed checkpoint from the same source attempt. The last strategy preserves
-  the current netlist, clocks and DFX floorplan; reference hashes and reuse are
-  recorded. See [AMD's incremental DFX guidance](https://docs.amd.com/r/2024.1-English/ug909-vivado-partial-reconfiguration/Incremental-Compile).
-- H1/HN/HR can reuse H2's identical common shell/app checkpoints after checking
-  source, script, shell HDL, block-design, constraint, static-checkpoint and
-  configuration hashes. `shell_reuse.json` records provenance. Each new floorplan
-  still runs subdivision, linking, placement, routing, final timing and bitgen.
-  HE and all diagnostics are excluded from this hello-world reuse path.
-- Narrowing uses ordinary Tcl after `link_design`, before saving the linked
-  checkpoint. XDC files contain only supported constraint commands. The Tcl
-  trims edges only while all original BRAM sites (and DSP/URAM sites when those
-  primitive types are used) remain available after snapping. It checks that
-  effective slice sites decrease and required resource sites are retained;
-  workers require its success marker. `floorplan_implementation.json` hashes the
-  refinement source and generated implementation script.
-- Each diagnostic also builds `jobs/<ID>/host_build/opt_bench` and runs C simulation.
-- `monitor` sends hourly summaries, failure/blockage alerts, per-job completion,
-  scheduler-heartbeat alerts and final status to `https://ntfy.sh/coyote-build-sdeheredia`.
-  Delivery responses are saved in `notifications.jsonl`; failed deliveries retry.
-- The monitor exits after the final summary is delivered. tmux survives terminal
-  disconnection, but does not survive a host reboot.
-
-To start a new campaign from the repository root:
+## Launch and monitoring
 
 ```bash
-python3 hls4ml/optimize/build_campaign/launch.py
+python3 hls4ml/optimize/build_campaign/launch.py --root RUN_ROOT --conv0-gate VALIDATED_GATE.json
+tmux -L coyote-opt attach -t coyote_direct_direct_stream_20261008_002352
 ```
 
-If only the scheduler stops, restart it in a tmux window using
-`python3 -u hls4ml/optimize/build_campaign/campaign.py run <RUN_ROOT> --jobs 5`.
-Its lock prevents duplicate schedulers; live workers are adopted. If a worker
-fails, inspect its log and fix the cause before writing a JSON list of job IDs
-to `<RUN_ROOT>/retry_requests.json`. Retries archive the entire previous job under
-`attempts/<ID>/attempt_<N>` and prepare fresh sources/build directories.
+- Existing scheduler resume: `campaign.py run RUN_ROOT --jobs 5`.
+- Pause dispatch: create `RUN_ROOT/dispatch_paused`; running workers continue.
+- Retry terminated job: JSON list of IDs in `RUN_ROOT/retry_requests.json`.
+- `direct_monitor.py`: process/heartbeat checks; silent inspection snapshots every **1,800 seconds**.
+- ntfy topic: `coyote-build-sdeheredia`.
+- Notifications: **actual hardware-build termination/success and required-input blockers only**.
+- No periodic notifications or validation-job alerts; delivery/dedup state persists across monitor restarts.
+- Local records: `status.json`, `progress.json`, `inspections.jsonl`, `notifications.jsonl`, source manifests, tool logs.
+- Known timing failures: bounded automatic recovery; unknown source failures require agent diagnosis/fix, not unchanged retries.
+- D_I recovery 1 may use verified boundary-register placement guidance: exact failing setup path, current source hash, and intact successful-sink evidence required. Uses D_I's own optimized checkpoint; clocks unchanged; guidance and hashes recorded in recovery provenance.
+- No generated narrative report files.
 
-Create `<RUN_ROOT>/dispatch_paused` to stop dispatch; wait until `STATUS.md` reports
-`paused`. Running workers and hourly monitoring continue. Remove the file to
-resume dispatch. Restart the scheduler after changing its Python inputs; it adopts
-live workers and respects the pause file. Replacing a running implementation also
-requires stopping its full process tree and preserving its attempt before preparing
-the replacement; simply changing its queue status is insufficient.
+## Register ABI v3
 
-While paused, run `python3 build_campaign/validate_campaign.py <RUN_ROOT>` from
-`hls4ml/optimize/` to validate all five prepared diagnostics. Run it in tmux; results
-are recorded in `refactor_validation.json` and each job's `validation.json`.
-It sends an ntfy success/failure notice and leaves dispatch paused for inspection.
-Workers also enforce validation before synthesis when no matching validation record
-exists. Host compilation, C simulation and XSim use the same isolated attempt.
+- Offsets below: 64-bit CSR word indices.
+- Signature: `0x4342595400030000 | variant`.
+- Timing: absolute 64-bit aclk ticks; zero/absent events distinguished by bitmap.
 
-## Measurement contract
+| CSR | Meaning |
+| --- | --- |
+| 0 | Write bit 0 to arm; read busy/done/error bits 0/1/2 |
+| 1–2 | Raw byte count, trial ID; writable while idle |
+| 4–7 | Signature, free-running tick, arm tick, event bitmap |
+| 8–9 | First/last raw payload acceptance |
+| 10–11 | First/last pixel produced |
+| 12–13 | First/last CNN input accepted |
+| 14–15 | Score accepted at controller, verdict captured |
+| 16–17 | Payload read/write DMA acknowledgment |
+| 18–19 | First/last forwarded beat, including header/padding |
+| 20–21 | Input/output beat counts |
+| 22–25 | Input starvation/backpressure, pixel backpressure, CNN starvation |
+| 26 | Float32 logit bits [31:0], classification [32] |
+| 27–29 | Produced/consumed pixel counts, peak pixel FIFO occupancy |
 
-All five diagnostic designs use the same card-memory request path and CSR result
-endpoint. Raw inputs have a 64-byte length header and 64-byte payload alignment.
-Inference-only consumes exactly 65,536 preprocessed float32 values. The host
-offloads data once, then issues 20 recorded warmups and 200 measured requests.
+- Event bits 0–11 correspond to CSR 8–19.
+- Classification: production `logit >= 0`; nonfinite results flag an error.
+- Payload: 64-byte little-endian length header + raw bytes + zero alignment padding.
+- GPU bridge preserves all frame bytes and transaction IDs; destination 0 carries payload.
+- Destination 1 accepts a 64-byte GPU result: float32 score, `0x43565233`, uint64 trial ID, reserved zeros.
+- Premature/stale/malformed GPU results flag an error.
+- CSR 14 marks the externally observed HLS result, including float publication latency; it is not an internal CNN arithmetic timestamp.
+- Wait for DMA completion and verdict before rearming. Timeouts require diagnosis/reset, not reuse of incomplete frames.
 
-The primary hardware interval is **accepted FPGA read request → captured result**;
-host offload and the wait to accept the request are excluded. CSV also records
-host start/poll time, read completion, first/last beat, phase cycles, input stalls
-and result bits. Phase counters measure whole preprocessing/CNN calls, not
-individual layers. HLS and hierarchical routed reports provide resource detail.
-Use the implemented clock to convert cycles into time. This is a resident-input
-benchmark; end-to-end host transport needs the existing host reference path.
+## Deferred host/GPU runner
 
-Preprocessing tests cover sampling boundaries and partial beats; diagnostic
-outputs are checked against the pristine production CNN or independent checksum.
-The AXI-Lite simulation tests all five variant IDs, instrumentation enabled/disabled,
-split address/data writes, backpressure, DMA request acceptance, counters, result
-capture and repeat trials. Run queue/isolation tests with
-`python3 -m unittest discover -s hls4ml/optimize/build_campaign/tests -p 'test_*.py'`
-from the repository root. Optional `tests/check_top.py <RUN_ROOT> <lynx_pkg.sv>`
-elaborates the maintained top against actual Coyote interfaces and an HLS port stub;
-this checks wiring, not synthesized CNN behavior.
+- Host start: before per-trial arming/submission; complete host upload every trial.
+- Separate setup: file loading, buffer registration, GPU allocations/model initialization.
+- `direct_bench`: stores host timestamps, CSRs, and bracketed host/FPGA calibration samples.
+- GPU stages use HIP events; external DMA completion is timed separately.
+- `DIRECT_GPU=ON`: compile with ROCm, `HIP_PATH=/opt/rocm`, and explicit `gfx90a` target for MI210.
+- `gpu_backend.hpp`: adapter ABI for the **original** baseline; no replacement model or dummy verdict.
+- Adapter must establish completed external-DMA visibility, run GPU preprocessing/CNN, and publish the result before returning.
+- GPU backend source/model and target host remain missing. Bridge bitstream does not imply GPU integration is validated.
+- No automatic board execution or benchmarking.
 
-The refactor preserves the software-visible contract and is checked by C simulation
-and control RTL tests. **Synthesis equivalence, resource usage and timing must be
-assessed using the replacement synthesis and routed reports.**
+## Checks
 
-Build success requires bitstreams and timing reports. **PR compatibility, board
-loopback, actual DFX footprints and benchmark execution remain hardware follow-up**;
-the scheduler never programs the board or marks a result hardware-validated.
+### Direct runtime recovery
 
-The timing validator accepts Vivado 2024.2's exact success sentence, "All user
-specified timing constraints are met." It rejects failed, contradictory or missing
-timing evidence. The debug fix still requires routed-checkpoint reopening and
-bitstream generation to confirm resolution on each full design.
-
-## Automatic recovery
-
-The current queue includes S_I and I first, with a single five-worker limit.
-Existing U/C workers are adopted. Every recovery transition is recorded in
-`recovery_events.jsonl` and delivered by the hourly ntfy monitor.
-
-- PR jobs use `reports/config_0/shell_timing_summary_c0.rpt`; diagnostics use
-  `reports/shell_timing_summary.rpt`. Intermediate reports remain available.
-  Final timing is checked before bitgen. Old false failures can be recovered
-  without rebuilding only after checking source hashes and bitgen completion.
-- Diagnostic timing failures try three distinct strategies: post-route fanout
-  optimization/NoTimingRelaxation; post-placement fanout optimization/
-  MoreGlobalIterations; then fresh Explore placement/AlternateReplication/
-  NoTimingRelaxation. All preserve clocks and hardware. Each attempt hashes its
-  seed checkpoint and Tcl, checks final timing, and reopens its own checkpoint
-  for bitgen. These strategies follow the AMD
-  [physical optimization](https://docs.amd.com/r/2024.1-English/ug835-vivado-tcl-commands/phys_opt_design)
-  and [routing directive](https://docs.amd.com/r/2024.1-English/ug904-vivado-implementation/Using-Directives)
-  references; closure is determined by the generated reports.
-- BRAM capacity failures receive at most two enlarged-floorplan attempts, with
-  previous directories archived. HN avoids a known BRAM-insufficient rectangle
-  and can narrow logic columns while retaining the feasible BRAM columns.
-- Exhausted or unknown failures trigger `needs_new_fix` alerts, retain all
-  evidence, and do not rerun unchanged inputs. This is a deterministic recovery
-  service, not an unattended agent that can invent arbitrary RTL fixes.
-
-S_I now uses the consumed frame token as a control dependency for the CNN call.
-Its real-IP RTL simulation must show exactly one stage event per frame and no
-events before header acceptance, as well as all previous parity/overlap checks.
-The previous failed S_I attempt remains in `runs/20261002_streaming_instrumented`;
-the replacement is in the shared queue's `jobs/S_I`.
-
-## Streaming instrumented variant (S_I, ID 6)
-
-Launch only the new variant in its own run with
-`python3 hls4ml/optimize/build_campaign/launch.py --streaming-only`.
-This preserves the original queue and any current workers. S_I selects maintained
-`streaming_instrumented.cpp/.svh` and `streaming_api.hpp`, using outer DATAFLOW,
-independent stage event toggles, and target-index cached-beat preprocessing.
-Production firmware, weights, normalization, and existing FIFO depths are unchanged.
-See [the current plan](../OPTIMIZATION_PLAN.md) for ABI v2 words 20–27 and interpretation.
-The controller captures read acknowledgement and result independently for all IDs;
-new host code waits for `done && !busy`, and appends fields while retaining old columns.
-
-The S_I worker gates implementation on synthesized-HLS RTL tests using the actual
-pixel FIFO read handshake, saves `streaming_rtl/streaming.wdb`, and requires all
-boundary-frame logits to match pristine C simulation. `streaming_control_tb.sv`
-checks exact timestamps, concurrent stages, stalls, empty payloads and all ack orders.
-`check_streaming_rtl.py <JOB_DIR> --output early_streaming_rtl --notify-root <RUN_ROOT>`
-can run that same check as soon as `csynth_design` completes, while IP packaging
-continues. It hashes an isolated RTL/test snapshot and verifies the source RTL
-is unchanged at completion. The worker's implementation gate remains mandatory.
-The unchanged real ILA remains required; the top elaboration stub is never built
-into hardware. Bitgen must reopen the real routed checkpoint and generate bitstreams.
-
-Prepare inputs without executing any board work:
+- `runtime/`: maintained production-derived `CoyoteInference` adapter; D_I/D_N ABI v3; batch 1.
+- `RawCoyoteOverlay.open_direct_session(library_path, backend, max_input_bytes, allocation="HPF")`.
+- Session API: `prepare(raw)`, `run()`, `clock_sample()`, `close()`; context-manager cleanup.
+- `direct_checker`: CSR logit/verdict; `direct_sink`: transport completion, no prediction.
+- Preserve aligned 64-byte framing; use `LOCAL_READ`; production `predict_raw` unchanged.
+- `runtime_benchmark.py`: persistent allocation; native timestamps; recorded warmups; existing CSV schema.
+- `production_control.py`: frozen production library/image, identical inputs, 10 repetitions.
+- `parity_gate.py`: per-input production tolerance; all verdicts must match; shared runner/analyzer policy.
+- `benchmark_queue.py`: requires passing `runtime_validation.json` and hashed production tolerances before programming benchmark images.
+- `run_diagnostic.py`: bounded tmux diagnostics, process-group cleanup, no ntfy alerts.
+- Historical runtime-only recovery: `../runs/board_benchmark_20261008_130137/diagnostics/`; parity remained wrong. First-pixel hardware launch guard resolves it: U55C-02 **D_I 520/520**, **R_S 260/260**; D_I/D_N **5,280 benchmark calls passed** (`../runs/board_benchmark_u55c02_20261009_2345/`). Performance targets remain unmet above the two smallest tested sizes.
 
 ```bash
-python3 hls4ml/optimize/build_campaign/benchmark.py prepare INPUT_DIR --executable /absolute/path/to/opt_bench
+cmake -S hls4ml/optimize/build_campaign/runtime -B RUN_ROOT/software/runtime_build -DCOYOTE_SW=ABSOLUTE_COYOTE_SW_PATH -DCMAKE_BUILD_TYPE=Release
+cmake --build RUN_ROOT/software/runtime_build -j 4
 ```
 
-This writes eight inputs, hashes, and a deferred `run_later.sh` (20+200 calls/size).
-After a separately authorized board session, summarize with the verified clock:
+### Validation commands
 
 ```bash
-python3 hls4ml/optimize/build_campaign/benchmark.py summarize OUTPUT_DIR INPUT_DIR/trials_*.csv --clock-mhz 250 --manifest INPUT_DIR/inputs.json
+python3 -m unittest discover -s hls4ml/optimize/build_campaign/tests -p 'test_*.py'
+python3 hls4ml/optimize/build_campaign/tests/check_direct_top.py JOB_DIR GENERATED_LYNX_PKG
+python3 hls4ml/optimize/build_campaign/tests/check_direct_top.py D_G_JOB_DIR GENERATED_LYNX_PKG --gpu-path --output VALIDATION_DIR
 ```
 
-Use `--reference` for matching existing I/N CSVs and `--reference-provenance`
-for a JSON object keyed by variant ID (`"1"`, `"3"`). Each entry must contain
-`input_sha256` (byte-size strings to hashes), `clock_mhz`, and `same_ila` (boolean
-from comparing build-manifest ILA hashes). The analyzer rejects mismatched inputs,
-clocks, or incomplete grids. No board results exist for S_I yet.
+- Top elaboration uses actual Coyote interfaces and HLS port stubs; actual HLS behavior has a separate RTL gate.
+- GPU path simulation: maintained forwarding/control RTL, actual Coyote interfaces, stalled output, varying TIDs, FIFO wrap, three consecutive frames, verdict return and timestamp events.
+- Frozen production package and historical `runs/20261001_184524` remain reference-only.
+
+### High-memory build-host continuation
+
+- Runner: `resume_parallel.py`; D_I + R_S; **builds only**, no board handoffs.
+- Active run: `../runs/parallel_resume_20261009_1550`; host `hacc-build-02`.
+- Local SSD working trees: `config.json → local_root`; durable results: `jobs/`.
+- Reuse verified HLS exports; preserve hardware source hashes; regenerate Vivado projects through a separate `build_config/` path adapter.
+- Two workers; independent CPU groups; concurrent implementation. Synthesis starts with **2 processes/design × 4 threads**; subsequent processes raised to **8 threads** after measuring headroom.
+- R_S synthesis overlaps its repeated RTL check; `synth_stage.lock` prevents duplicate synthesis. RTL must pass before implementation.
+- `resume_progress.json`: live worker state; `progress.json`: completed result; sealed artifact manifest + bitstream hashes required for board admission.
+- Worker tmux: `coyote_parallel_resume_20261009_1550`; monitor: `watch_parallel_resume_20261009_1550`; socket `coyote-opt`.
+- Outcome-only ntfy; retries failed delivery; preserves notification state. No periodic notifications.
+- Bounded timing recovery; optional host-bound `parallel_implementation.json` permits two recovery jobs with **≥64 GiB** available RAM.
+- Original low-memory queue stays historical; the continuation uses independent workers and its own monitor.
+
+### Board host replay
+
+- Fresh board root; preserve prior host results and installed-image records.
+- `board_target.json`: explicit `hostname`; verified by direct admission, isolation parity and benchmark workers. Legacy runs default to `hacc-u55c-03.inf.ethz.ch`.
+- Current adapter: device **1**, PCIe **c4:00.0 Gen3 ×16**, CPU **2**, NUMA **0**. Verify these before selecting a different host.
+- Reuse hash-verified input/reference files and compatible native libraries; rerun board admission with the standard driver before benchmarking.
+
+### Production host comparison and report
+
+- `production_host_queue.py run BOARD OUTPUT`: R_O → R_S, fresh board/persistent parity → smoke/pilot/full, restore D_N. Run companion `monitor` in tmux for benchmark outcome notifications.
+- `--original`: frozen May 24 res256 image + production runtime built against current Coyote; image/runtime hashes checked.
+- `production_host_benchmark.py`: one persistent context; **20 + 200 calls/size**; exact logits; host flush/submission/predict-return/result-observation timestamps. No internal FPGA timing claim.
+- `report_board_comparison.py BOARD OUTPUT`: archive five-variant evidence; calibrated D_I event tables; PNG/PDF figures.
+- `write_board_report.py OUTPUT`: Markdown report and tables from saved report inputs.
+- Current report: `../reports/u55c02_20261009/REPORT.md`; raw runs remain preserved.

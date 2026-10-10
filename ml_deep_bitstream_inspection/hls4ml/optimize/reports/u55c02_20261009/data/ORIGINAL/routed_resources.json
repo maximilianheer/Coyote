@@ -1,0 +1,17 @@
+{
+  "wrapper": {
+    "LUT": 62674,
+    "FF": 80361,
+    "BRAM_tiles": 376.5,
+    "DSP": 1328,
+    "URAM": 11
+  },
+  "wrapper_percent": {
+    "LUT": 4.807468090328915,
+    "FF": 3.082083026509573,
+    "BRAM_tiles": 18.675595238095237,
+    "DSP": 14.71631205673759,
+    "URAM": 1.1458333333333333
+  },
+  "scope": "frozen production routed wrapper"
+}

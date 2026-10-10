@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "pid": 184843,
+  "started_at": 1791582796.0302093,
+  "jobs": [
+    {
+      "job": "R_O",
+      "status": "passed",
+      "stage": "complete",
+      "finished_at": 1791582884.6895478,
+      "calls": 2640
+    },
+    {
+      "job": "R_S",
+      "status": "passed",
+      "stage": "complete",
+      "finished_at": 1791582971.4038398,
+      "calls": 2640
+    }
+  ],
+  "stage": "complete",
+  "heartbeat": 1791583031.8094268,
+  "child_pid": 188369,
+  "sink_restored": true,
+  "finished_at": 1791583033.8600674
+}

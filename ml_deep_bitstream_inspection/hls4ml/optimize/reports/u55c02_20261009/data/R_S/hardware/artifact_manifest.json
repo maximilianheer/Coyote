@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "verified_at": 1791575187.2133486,
+  "source_manifest_sha256": "e5c1cbab226d2492a14b68c3c573e91eb3596d1d8501cfae0eabf9b016d8f5f5",
+  "hardware_validated": false,
+  "files": {
+    "recovery/route_03/bitstreams/cyt_top.bit": {
+      "bytes": 42171366,
+      "sha256": "ede35205e0fdb96c7ce0da84f15e92a6ffe15eb9b9ffdbc637508a166fe2827a"
+    },
+    "recovery/route_03/bitstreams/shell_top.bin": {
+      "bytes": 43340216,
+      "sha256": "e9f14d5cf0e2e5da2ce787316e9cd4627710fcc7732d4f2dca9829410a732a80"
+    },
+    "recovery/route_03/reports/shell_timing_summary.rpt": {
+      "bytes": 1536516,
+      "sha256": "32f5587a61db202db0c558e87e07662af8d2341bd1b6e5e3821b96fd9133098a"
+    },
+    "recovery/route_03/reports/shell_utilization.rpt": {
+      "bytes": 20950,
+      "sha256": "7fab0d57d3b71e1f88092e1c0dd69c48d1f1fe1ec5e468db5f5e4ae75eaf85b5"
+    },
+    "recovery/route_03/reports/shell_utilization_hierarchical.rpt": {
+      "bytes": 3163637,
+      "sha256": "2a3d8478cba6e560bb8dc34604694c1a828c9a25d8d6a967bda5b7a6d05e3594"
+    }
+  }
+}

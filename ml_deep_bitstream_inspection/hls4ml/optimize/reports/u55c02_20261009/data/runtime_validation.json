@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "library_sha256": "a6b7bbfb0cbaed7c0ab90bcb1558bb510e9f73089291fefdaa276f0fe5db111b",
+  "coyote_library_sha256": "95751b421d7cb683e93d56493b642be460d8cf0fa49291908ee8a37caa4892be",
+  "tolerances_sha256": "4164e79421e1ece9ad38ce1aca289fcaca09fe198664a3abe5a3d50de3370180",
+  "cases_sha256": "ddf035f2360a8421b18514b8c8bd92232c4dc2c963654244b27ea3d01a2b7dd9",
+  "diagnostic_inputs": 26,
+  "records": [
+    {
+      "csv": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/diagnostics/runtime_D_I_admission_01_sequential/observations.csv",
+      "sha256": "fc1a3c21e61de579a728ff881acf7cc1338df7446c8308ad267dee2785208815"
+    },
+    {
+      "csv": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/diagnostics/runtime_D_I_admission_01_alternating_a/observations.csv",
+      "sha256": "b2d223578bbc1666f0e63f46290a8b839b0d269eca3bdab88846268af8116659"
+    },
+    {
+      "csv": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/diagnostics/runtime_D_I_admission_01_alternating_b/observations.csv",
+      "sha256": "1cddee22c2857027bffbcd5e1301f2268c2bc30594fb9d32f7d168841877ceac"
+    }
+  ],
+  "failures": [],
+  "hardware_identity": {
+    "job": "D_I",
+    "bitstream_sha256": "3fc293ce1ee9c8027e86b877c0449b01d77ca8c357ccbe3ed1beafce92cde3b7",
+    "driver_sha256": "60eee8f48d29908ec7ed929762ac0aa9bf9063fc2848a9bcbe0802ee5929c463",
+    "source_manifest_sha256": "1b483602e3e6fe486b0e8b67cb8c5505cff8e2edc4292180b519d06cb02bf714"
+  }
+}
