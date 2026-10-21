@@ -1,0 +1,462 @@
+[
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1434,
+    "label": "Setup",
+    "start_ms": 0.0,
+    "end_ms": 0.02395,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1434,
+    "label": "Input ready",
+    "start_ms": 0.02395,
+    "end_ms": 0.360788,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1434,
+    "label": "Framework",
+    "start_ms": 0.360788,
+    "end_ms": 2.874882,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1434,
+    "label": "Sync/publication",
+    "start_ms": 2.874882,
+    "end_ms": 2.981152,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1434,
+    "label": "Host completion",
+    "start_ms": 2.981152,
+    "end_ms": 2.984972,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1434,
+    "label": "FPGA reception",
+    "start_ms": 0.0334021875,
+    "end_ms": 0.3725681484375,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1384,
+    "label": "Setup",
+    "start_ms": 0.0,
+    "end_ms": 0.02403,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1384,
+    "label": "Input ready",
+    "start_ms": 0.02403,
+    "end_ms": 1.07641,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1384,
+    "label": "Framework",
+    "start_ms": 1.07641,
+    "end_ms": 3.512817,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1384,
+    "label": "Sync/publication",
+    "start_ms": 3.512817,
+    "end_ms": 3.767964,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1384,
+    "label": "Host completion",
+    "start_ms": 3.767964,
+    "end_ms": 3.772164,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1384,
+    "label": "FPGA reception",
+    "start_ms": 0.027332875,
+    "end_ms": 1.0694269921875,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1384,
+    "label": "P2P forwarding",
+    "start_ms": 0.027328875,
+    "end_ms": 1.0694309921875,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1384,
+    "label": "Autonomous polling",
+    "start_ms": 1.0694389921875,
+    "end_ms": 3.72947378125,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2685,
+    "label": "Setup",
+    "start_ms": 0.0,
+    "end_ms": 0.03376,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2685,
+    "label": "Input ready",
+    "start_ms": 0.03376,
+    "end_ms": 4.786985,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2685,
+    "label": "Framework",
+    "start_ms": 4.786985,
+    "end_ms": 13.80798,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2685,
+    "label": "Sync/publication",
+    "start_ms": 13.80798,
+    "end_ms": 13.914109,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2685,
+    "label": "Host completion",
+    "start_ms": 13.914109,
+    "end_ms": 13.918159,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2685,
+    "label": "FPGA reception",
+    "start_ms": 0.04513015625,
+    "end_ms": 10.5307754609375,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_7_GPU_HOST/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2664,
+    "label": "Setup",
+    "start_ms": 0.0,
+    "end_ms": 0.030069,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2664,
+    "label": "Input ready",
+    "start_ms": 0.030069,
+    "end_ms": 32.760706,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2664,
+    "label": "Framework",
+    "start_ms": 32.760706,
+    "end_ms": 41.393283,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2664,
+    "label": "Sync/publication",
+    "start_ms": 41.393283,
+    "end_ms": 41.846869,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2664,
+    "label": "Host completion",
+    "start_ms": 41.846869,
+    "end_ms": 41.851769,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2664,
+    "label": "FPGA reception",
+    "start_ms": 0.03445340625,
+    "end_ms": 32.75314428125,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2664,
+    "label": "P2P forwarding",
+    "start_ms": 0.03445340625,
+    "end_ms": 32.75314828125,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2664,
+    "label": "Autonomous polling",
+    "start_ms": 32.75315628125,
+    "end_ms": 41.61601946875,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "132",
+    "label": "Reception",
+    "start_ms": 0.0015799844853201708,
+    "end_ms": 0.3292487669371119,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "132",
+    "label": "Pixel production",
+    "start_ms": 0.0019399809503298298,
+    "end_ms": 0.32933276611228085,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "132",
+    "label": "CNN interval",
+    "start_ms": 0.32934476599444784,
+    "end_ms": 1.4264499929542733,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "91",
+    "label": "Reception",
+    "start_ms": 0.0015639846512033031,
+    "end_ms": 0.3302127593233695,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_1_STREAMING/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "91",
+    "label": "Pixel production",
+    "start_ms": 0.0019239811182321963,
+    "end_ms": 0.33029675849900964,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_1_STREAMING/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "91",
+    "label": "CNN interval",
+    "start_ms": 0.001927981078976962,
+    "end_ms": 1.0990332141925083,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_1_STREAMING/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_4194304",
+    "trial": "136",
+    "label": "Reception",
+    "start_ms": 0.0015759853368253246,
+    "end_ms": 1.0579141570276616,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_04/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_4194304",
+    "trial": "136",
+    "label": "Pixel production",
+    "start_ms": 0.0019359819873691804,
+    "end_ms": 1.0582741536782054,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_04/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_4194304",
+    "trial": "136",
+    "label": "CNN interval",
+    "start_ms": 0.0019399819501530011,
+    "end_ms": 1.1153376227521905,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_04/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "143",
+    "label": "Reception",
+    "start_ms": 0.0025399749163575536,
+    "end_ms": 10.488180423478058,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "143",
+    "label": "Pixel production",
+    "start_ms": 0.002899971361195632,
+    "end_ms": 10.48826442264852,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "143",
+    "label": "CNN interval",
+    "start_ms": 10.488276422530015,
+    "end_ms": 11.585381588016052,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "24",
+    "label": "Reception",
+    "start_ms": 0.001559984688879429,
+    "end_ms": 10.487201068989737,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_1_STREAMING/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "24",
+    "label": "Pixel production",
+    "start_ms": 0.0019199811555439125,
+    "end_ms": 10.487285068165292,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_1_STREAMING/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "24",
+    "label": "CNN interval",
+    "start_ms": 0.0019239811162846288,
+    "end_ms": 10.511156833865888,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_1_STREAMING/attempt_02/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_134217664",
+    "trial": "214",
+    "label": "Reception",
+    "start_ms": 0.0015639854428916818,
+    "end_ms": 10.487210388185089,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_04/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_134217664",
+    "trial": "214",
+    "label": "Pixel production",
+    "start_ms": 0.0019239820921506366,
+    "end_ms": 10.487294387403248,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_04/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_134217664",
+    "trial": "214",
+    "label": "CNN interval",
+    "start_ms": 0.0019279820549201806,
+    "end_ms": 10.52745801357224,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_u55c_20261019/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_04/full/result.json"
+  }
+]

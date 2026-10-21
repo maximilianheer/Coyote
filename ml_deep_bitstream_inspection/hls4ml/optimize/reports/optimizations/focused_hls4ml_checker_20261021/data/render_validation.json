@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "pages": 13,
+  "main_pages": 10,
+  "appendix_pages": 3,
+  "all_pages_visually_reviewed": true,
+  "text_bounds_checked": true,
+  "timing_labels_checked": true,
+  "excluded_workloads_checked": true,
+  "artifact_hashes_verified": true,
+  "original_report_unchanged": true
+}

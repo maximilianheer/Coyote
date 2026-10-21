@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "pdf_pages": 18,
+  "all_pages_rendered_and_visually_reviewed": true,
+  "text_within_page_bounds": true,
+  "missing_glyph_squares": false,
+  "source_hashes_verified": 207,
+  "accepted_statistics_reconciled": true,
+  "notes": "Boundary-case reversal is shown in overview, direct comparison, validation panel, and full tables. Diagnostic profiles remain separate from primary E2E measurements."
+}
