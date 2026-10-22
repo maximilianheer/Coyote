@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
-from prepare import sha, verify_sources
+from prepare import REPO, sha, verify_sources
 from worker import validate_timing_report
 
 
@@ -136,8 +136,22 @@ def write_csv(path,rows):
             w=csv.DictWriter(f,fields);w.writeheader();w.writerows(rows)
 
 
+def report_output(config):
+    """Resolve moved report folders without modifying archived sweep configs."""
+    output = Path(config['results'])
+    migration_path = REPO / 'hls4ml/optimize/reports/report_path_migration_2026-10-22.json'
+    if migration_path.exists() and output.is_relative_to(REPO):
+        relative = str(output.relative_to(REPO))
+        destination = read(migration_path)['paths'].get(relative)
+        if destination is not None:
+            output = REPO / destination
+    return output
+
+
 def summarize(root):
-    config=read(root/'sweep.json');output=Path(config['results']);output.mkdir(parents=True,exist_ok=True)
+    config = read(root / 'sweep.json')
+    output = report_output(config)
+    output.mkdir(parents=True, exist_ok=True)
     rows=[];fifos=[];latencies=[];integrated=[]
     for item in config['points']:
         record=root/'points'/item['id'];state=read(record/'state.json') if (record/'state.json').exists() else {}

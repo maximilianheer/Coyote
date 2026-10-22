@@ -69,7 +69,7 @@ def initialize(root):
         save(p/'state.json',{'status':'pending','stage':'profile','job':point['job']})
     config={'schema':1,'points':points,'depths':DEPTHS,'implementation_lock':str(CAMPAIGN/'implementation.lock'),
             'external_jobs':[str(A),str(B2)],'max_hls_workers':2,'implementation_threads':4,
-            'results':str(HERE.parent/'reports/optimizations/fifo_sweep'/root.name),
+            'results':str(HERE.parent/'reports/optimizations'/f"{time.strftime('%Y-%m-%d')}_{root.name}"),
             'board_operations':False,'automatic_builds':True,'created_at':time.time(),
             'toolchain':'2024.2','samples':2}
     save(root/'sweep.json',config)

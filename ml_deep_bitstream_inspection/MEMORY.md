@@ -1,5 +1,31 @@
 # Optimization project memory
 
+## R06 report selection and dated report folders — 2026-10-22
+
+- User explicitly selected **R06 XLA + direct ConcreteFunction** for a new GPU
+  comparison report: `hls4ml/optimize/reports/optimizations/2026-10-22_gpu_opt_xla_concretefunction/`.
+  Earlier instructions excluding R06 still describe the preserved preprocessing-v2
+  reports, not this new report. Archived `report_eligible: false` fields remain
+  untouched; the new selection is recorded in the report's `data/report_selection.json`.
+- GPU measurements come from the accepted `hardware_xla_concrete` campaign;
+  FPGA OPT_0/1/6 results remain from the preprocessing-v2 campaign. The shared
+  OPT_1 resident host-completion control differs by at most **0.02723%** across
+  normal workloads. Main endpoint: prepared host invocation → FPGA result
+  acceptance **CSR14**, with reception and final completion shown separately.
+- At 4/16/64 MiB and 128 MiB−64 B, GPU_HOST medians are
+  **0.811/1.447/3.051/5.423 ms**; GPU_P2P **1.602/4.732/17.067/33.437 ms**;
+  OPT_6 **1.118/1.356/5.287/10.530 ms**. GPU_HOST wins three of four synthetic
+  sizes; OPT_6 is slightly faster at 16 MiB and faster than P2P at all four.
+- Report date is **22 October 2026**; accepted measurements are from October 21.
+  Joint compute diagnostics are R06-only and separate from board timings:
+  CPU0-7/NUMA0 versus CPU64/NUMA1. No split profiling of the fused graph.
+- Report directories now start with `YYYY-MM-DD`. The mapping and preserved
+  hashes are in `hls4ml/optimize/reports/report_path_migration_2026-10-22.json`;
+  the report index is `hls4ml/optimize/reports/README.md`. Historical PDFs,
+  plots and raw data are preserved; old path-bearing source/doc versions and
+  manifests are retained in `.before_date_prefix/` where needed. Old ZIP/tar
+  archives retain their original internal paths. Benchmark run roots are unchanged.
+
 ## Live P2P controls and DMA32 build — 2026-10-21
 
 - **Completion verified on October 22:** OPT_9 built successfully and the automated candidate/closing transport tests completed at **20:34:41 CEST October 21**. Completion ntfy delivery is recorded in `notification.json`; board restored to OPT_8. Original/candidate/closing matrices passed correctness checks. This is transport validation only, not full CNN benchmark admission.
@@ -28,7 +54,7 @@
 
 ## Verdict availability report — 2026-10-21
 
-- New focused PDF and titled PNG/SVG/PDF figures: `hls4ml/optimize/reports/optimizations/focused_verdict_availability_20261021_152753/`. Reanalyzes the existing preprocessing-v2 campaign; no FPGA builds or new board calls. Prior report folders remain unchanged.
+- New focused PDF and titled PNG/SVG/PDF figures: `hls4ml/optimize/reports/optimizations/2026-10-21_focused_verdict_availability/`. Reanalyzes the existing preprocessing-v2 campaign; no FPGA builds or new board calls. Prior report folders remain unchanged.
 - Headline latency/speedup now end at **CSR14: validated classification result accepted inside FPGA**, including P2P polling/retrieval. **CSR9** remains full-input arrival; **CSR15** is committed verdict/done; host observation is a separate later endpoint. CSR14 does not imply early public-register update or PR admission. Figure 4 includes all three implementations and separate reception lanes; appendix and optimization latency plots use CSR14 too.
 - GPU_HOST's previous multi-ms “Final verdict wait” mostly includes unfinished FPGA reception: at 128 MiB−64 B, mean result acceptance **7.520 ms**, last input **10.535 ms**, remaining reception **3.015 ms**. GPU_HOST input backpressure is zero in all 800 synthetic calls. Large-input GPU copy throughput is ~28.3 GB/s (Gen4 x16) versus FPGA reception ~12.8 GB/s (Gen3 x16).
 - New result-availability medians at 4 MiB: OPT_6 **1.117914 ms**, GPU_HOST **2.050338 ms**, GPU_P2P **2.844905 ms**; at 128 MiB−64 B: **10.530024 / 7.501984 / 35.478926 ms**. Do not mix these with older host-observed-completion medians. All 12,000 selected calls retain original completion timing and calibration bounds in exported data. Later GPU runtime experiments remain excluded.
@@ -39,7 +65,7 @@
 ## GPU preprocessing CPU fallback — confirmed 2026-10-21
 
 - **Preprocessing-v2 report refresh PASSED:** `hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038`. All five existing images plus the closing streaming repeat passed admission, timestamp and parity gates. **36,000 accepted measured calls**, including **30,000 primary**; **600 separate GPU profile calls**. Maximum closing-baseline drift **3.8363%**. Strict preprocessing pixel/device-placement validation passed **23 cases**; profiles confirm no CPU Gather fallback.
-- New PDFs: `hls4ml/optimize/reports/optimizations/final_benchmarks_gpu_preprocess_v2_20261021_030038/` (**19 pages**) and `focused_hls4ml_checker_gpu_preprocess_v2_20261021_030038/` (**13 pages**). All pages visually reviewed; evidence hashes and ZIP bundles verified. Previous report files are preserved byte-for-byte and folders carry `STALE.md`. These PDFs contain **only the FP32-before-gather fix**, no later graph/compiler/runtime experiments.
+- New PDFs: `hls4ml/optimize/reports/optimizations/2026-10-21_final_benchmarks_gpu_preprocess_v2/` (**19 pages**) and `focused_hls4ml_checker_gpu_preprocess_v2_20261021_030038/` (**13 pages**). All pages visually reviewed; evidence hashes and ZIP bundles verified. Previous report files are preserved byte-for-byte and folders carry `STALE.md`. These PDFs contain **only the FP32-before-gather fix**, no later graph/compiler/runtime experiments.
 - At 4 MiB, host-in-memory medians now: OPT_6 **1.119446 ms**, GPU_HOST **2.054427 ms**, GPU_P2P **2.893948 ms**. At 128 MiB−64 B: **10.531587 / 10.536548 / 35.571203 ms**. Relative to the historical GPU implementation, synthetic GPU_HOST latency falls **24–39%**, GPU_P2P **14–23%**. Historical timings still describe the old implementation; they were not fabricated or invalid measurements.
 - Later runtime work is isolated in `hls4ml/optimize/runs/gpu_runtime_investigation_20261021_030038/`; every candidate has source/model hashes, command, environment, parity checks, samples and a journal entry. `hardware_xla_concrete/` is a separate experimental hardware-path campaign. Do not import these results into preprocessing-v2 PDFs without a later explicit report choice. **No FPGA builds were initiated.**
 
@@ -82,7 +108,7 @@
 - [D_I / D_N / R_S checkpoint](hls4ml/reproducibility/direct_res256_D_I_D_N_20261010/README.md): self-contained sources, required U55C static platform, measured images and existing results. No new builds or benchmark replay during packaging; fresh package-local execution remains unverified. Active campaign files were preserved.
 - **R_S:** streaming reference with original production CNN firmware/weights (63 packaged firmware files verified byte-identical); no D_I conv0 specialization. Streaming wrapper + first-pixel launch guard; production result DMA; host timing only.
 - [Root AGENTS.md](AGENTS.md): D_N transport latency/resource floor; D_I optimized checker; exact build pointers.
-- [Saved comparison report](hls4ml/optimize/reports/u55c02_20261009/REPORT.md): five variants, timestamp breakdown, figures and archived evidence. Streaming hides most CNN work behind transport; D_I−D_N is not isolated compute time.
+- [Saved comparison report](hls4ml/optimize/reports/2026-10-09_u55c02/REPORT.md): five variants, timestamp breakdown, figures and archived evidence. Streaming hides most CNN work behind transport; D_I−D_N is not isolated compute time.
 
 ## GPU/U55C host — verified 2026-10-18
 

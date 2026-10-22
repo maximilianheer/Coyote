@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "review_date": "2026-10-22",
+  "report_sha256": "7d9f35570b044f0fbf0e14d2a4e92a6f2df52bf1215832f97b06d4ae4c3077fd",
+  "pages": 13,
+  "figures": 16,
+  "accepted_trials": 12000,
+  "verified_sources": 426,
+  "fpga_statistics_unchanged": true,
+  "gpu_rows_r06_only": true,
+  "gpu_host_faster_synthetic_cases": [
+    "synthetic_4194304",
+    "synthetic_67108864",
+    "synthetic_134217664"
+  ],
+  "fpga_faster_than_gpu_host_synthetic_cases": [
+    "synthetic_16777216"
+  ],
+  "fpga_faster_than_gpu_p2p_all_synthetic_cases": true,
+  "additive_phase_means_checked": true,
+  "diagnostics_kept_separate_from_board_measurements": true,
+  "standalone_titles_and_archive_verified": true,
+  "dated_folder_migration_verified": true,
+  "historical_output_files_preserved": 378,
+  "visual_review": "Separate manual inspection is recorded in REVIEW.md."
+}

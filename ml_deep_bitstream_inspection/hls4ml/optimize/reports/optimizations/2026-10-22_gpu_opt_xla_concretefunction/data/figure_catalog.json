@@ -1,0 +1,162 @@
+[
+  {
+    "name": "01_synthetic_latency",
+    "title": "Synthetic inputs: verdict availability inside the FPGA",
+    "note": "Prepared host input \u2192 FPGA result acceptance. Bars = median; ticks = p95. 200 calls per input/variant.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "02_synthetic_speedup",
+    "title": "Synthetic inputs: FPGA_HLS4ML speedup to verdict availability",
+    "note": "Speedup = GPU median / FPGA_HLS4ML median; above 1\u00d7 favors FPGA_HLS4ML. Endpoint: FPGA result acceptance.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "A1_real_latency",
+    "title": "Real bitstreams: verdict availability inside the FPGA",
+    "note": "Prepared host input \u2192 FPGA result acceptance. Bars = median; ticks = p95. 200 calls per file/variant.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "A2_real_speedup_bars",
+    "title": "Real bitstreams: FPGA_HLS4ML speedup to verdict availability",
+    "note": "Speedup = GPU median / FPGA_HLS4ML median; above 1\u00d7 favors FPGA_HLS4ML. Endpoint: FPGA result acceptance.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "A3_real_latency_scatter",
+    "title": "Real bitstreams: verdict-availability latency versus input size",
+    "note": "Prepared host input \u2192 FPGA result acceptance. Points = medians of 200 calls per file/variant.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "03_benchmark_setup",
+    "title": "Benchmark setup: input and classification-result paths",
+    "note": "",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "03_setup_FPGA_HLS4ML",
+    "title": "FPGA_HLS4ML: streaming preprocessing and inference",
+    "note": "",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "03_setup_GPU_HOST",
+    "title": "GPU_HOST: independent input copies and host result relay",
+    "note": "",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "03_setup_GPU_P2P",
+    "title": "GPU_P2P: FPGA forwarding and autonomous result polling",
+    "note": "",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "03_setup_connectivity",
+    "title": "Benchmark machine: host RAM, PCIe, FPGA and GPU",
+    "note": "",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "04_invocation_breakdown",
+    "title": "Verdict availability and full-input arrival at the FPGA",
+    "note": "Means of 200 calls; reception lanes overlap the stacked intervals. 128* = 128 MiB \u2212 64 B.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "05_execution_overlap",
+    "title": "Measured execution overlap and FPGA result availability",
+    "note": "Actual trials nearest median result availability. Parallel lanes overlap; do not add their durations.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "06_gpu_diagnostics",
+    "title": "R06: combined preprocessing and inference on the GPU",
+    "note": "Separate compute diagnostics; input already on GPU. Profiled: 20 calls; unprofiled: 1,000. Medians and p95 ticks.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "07_checker_optimization",
+    "title": "Checker optimization: latency to verdict availability",
+    "note": "Prepared host input \u2192 accepted FPGA result. Points = medians; short ticks = p95. 128* = 128 MiB \u2212 64 B.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "08_fpga_resources",
+    "title": "Checker optimization: FPGA wrapper resource utilization",
+    "note": "Routed user wrapper, including interfaces and ILA; percentages use total U55C capacity. Shell resources excluded.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  },
+  {
+    "name": "09_streaming_timelines",
+    "title": "How streaming overlaps reception, preprocessing and inference",
+    "note": "FPGA-clock intervals from arm. CNN interval includes stalls waiting for incoming pixels. Lanes overlap.",
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ]
+  }
+]

@@ -73,7 +73,7 @@ def collect():
             if p.get('profiling_depth'):data['profiles'].append({'id':ident,**p})
             data['sources'].append({'path':str(profile),'sha256':sha(profile)})
     # Historical measured reference: verify archived evidence and original routed reports.
-    historical=REPO/'hls4ml/optimize/reports/u55c02_20261009'
+    historical=REPO/'hls4ml/optimize/reports/2026-10-09_u55c02'
     sealed=read(historical/'file_manifest.json')
     for name in ['data/R_S/routed_resources.json','data/R_S/full.summary.csv','data/R_S/hardware/artifact_manifest.json']:
         source=historical/name

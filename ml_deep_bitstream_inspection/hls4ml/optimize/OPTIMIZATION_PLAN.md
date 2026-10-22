@@ -85,7 +85,7 @@
 - [x] Original frozen production checker: **260/260 fresh parity**, **2,640 benchmark calls**; non-streaming, original CNN.
 - [x] Five variants total: **13,200 main-sweep calls**, **12,000 measured + 1,200 warmups**; same 12 inputs.
 - [x] Save raw observations, event tables, source/artifact hashes; completion ntfy delivered; D_N restored.
-- [x] [Report with figures](reports/u55c02_20261009/REPORT.md): latency comparison, D_I pipeline timestamps, overlap/stalls, routed resources.
+- [x] [Report with figures](reports/2026-10-09_u55c02/REPORT.md): latency comparison, D_I pipeline timestamps, overlap/stalls, routed resources.
 - **4 MiB host medians:** original **1.434 ms**, R_O **0.631**, R_S **1.106**, D_I **0.357**, sink **0.335**.
 - **Near-128 MiB:** original **11.612 ms**, R_O **10.809**, R_S **10.537**, D_I **10.534**, sink **10.513**.
 - **D_I–sink ≈21–23 µs:** transport hides most CNN work; last pixel → verdict **21.33 µs**. Uninstrumented variants expose host timing only.

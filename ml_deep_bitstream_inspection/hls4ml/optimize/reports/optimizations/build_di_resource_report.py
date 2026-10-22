@@ -342,7 +342,7 @@ p('For large inputs much computation overlaps transport. A slower CNN may preser
 p('No retraining is needed in intent for options A–C. Exact numerical agreement is a testable requirement, not an assumption. If an option changes outputs, investigate before treating the historical 87.7% held-out accuracy or 88.5% F1 as applicable.')
 
 page('9 · Evidence index and reproduction')
-p('Paths below are repository-relative. J = hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/D_I. F = J/hw/src/hls/cnn_wrapper/firmware. R = hls4ml/optimize/reports/u55c02_20261009. Line references use the current archived text files.',True)
+p('Paths below are repository-relative. J = hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/D_I. F = J/hw/src/hls/cnn_wrapper/firmware. R = hls4ml/optimize/reports/2026-10-09_u55c02. Line references use the current archived text files.',True)
 refs=[
 ('E1 · Selected hardware and parity','hls4ml/optimize/runs/board_benchmark_u55c02_20261009_2345/hardware_selection.json; diagnostics/D_I_admission_01/status.json under that same run root. J/artifact_manifest.json and J/source_manifest.json. Manifest hardware_validated=false is a build-time field; later board evidence is separate.'),
 ('E2 · Routed attribution','J/recovery/route_01/reports/shell_utilization_hierarchical.rpt: full device line 25; wrapper 602; CNN 908; conv0–6 914, 959, 1186, 1402, 1746, 2170, 2754; dense 3338; internal FIFOs 3352–3436; external FIFO 3942; preprocessing 3943. No parent/child double-counting in the disjoint breakdown.'),

@@ -159,7 +159,7 @@ The sections below document the earlier D_I/R_S campaigns.
   recovery is attempted once and only if the existing boundary-placement checks pass.
 - ntfy monitor records minute-by-minute inspections during the first hour and continues monitoring
   termination afterward. Notification delivery is retried and deduplicated by point/stage/outcome.
-- CSVs and plots: `../reports/optimizations/fifo_sweep/native_fifo_sweep_20261011/`.
+- CSVs and plots: `../reports/optimizations/2026-10-11_native_fifo_sweep/`.
 
 ```bash
 python3 hls4ml/optimize/build_campaign/fifo_sweep.py status hls4ml/optimize/runs/native_fifo_sweep_20261011
@@ -389,7 +389,7 @@ python3 hls4ml/optimize/build_campaign/tests/check_direct_top.py D_G_JOB_DIR GEN
 - `production_host_benchmark.py`: one persistent context; **20 + 200 calls/size**; exact logits; host flush/submission/predict-return/result-observation timestamps. No internal FPGA timing claim.
 - `report_board_comparison.py BOARD OUTPUT`: archive five-variant evidence; calibrated D_I event tables; PNG/PDF figures.
 - `write_board_report.py OUTPUT`: Markdown report and tables from saved report inputs.
-- Current report: `../reports/u55c02_20261009/REPORT.md`; raw runs remain preserved.
+- Current report: `../reports/2026-10-09_u55c02/REPORT.md`; raw runs remain preserved.
 
 ## FP32 GPU host/P2P builds — 2026-10-18
 
