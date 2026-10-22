@@ -19,11 +19,12 @@ public:
     CoyoteInference(const CoyoteInference&) = delete;
     void set_raw_data(const uint8_t* bytes, unsigned raw_len);
     void flush();
+    void configure_pixel_fifo(unsigned depth);
     TrialMeasurement predict();
     void clock_sample(uint64_t* triple);
     float* get_predictions() { return dst_mem; }
 private:
-    unsigned backend, capacity, raw_len=0;
+    unsigned backend, capacity, raw_len=0, pixel_fifo_capacity=32;
     bool prepared=false;
     uint64_t tag=0, signature=0;
     coyote::cThread coyote_thread;
@@ -35,6 +36,8 @@ private:
 extern "C" {
 const char* campaign_last_error();
 void* campaign_init(unsigned backend, unsigned max_input_bytes, unsigned allocation);
+uint64_t campaign_now_ns();
+int campaign_configure_fifo(void* obj, unsigned depth);
 int campaign_prepare(void* obj, const uint8_t* bytes, unsigned raw_len);
 int campaign_predict(void* obj, TrialMeasurement* result);
 int campaign_clock(void* obj, uint64_t* triple);

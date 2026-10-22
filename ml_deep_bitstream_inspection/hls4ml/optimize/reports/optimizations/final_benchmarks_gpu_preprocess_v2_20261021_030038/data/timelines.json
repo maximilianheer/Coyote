@@ -1,0 +1,462 @@
+[
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1453,
+    "label": "Setup",
+    "start_ms": 0.0,
+    "end_ms": 0.02394,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1453,
+    "label": "Input ready",
+    "start_ms": 0.02394,
+    "end_ms": 0.356677,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1453,
+    "label": "Framework",
+    "start_ms": 0.356677,
+    "end_ms": 1.947192,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1453,
+    "label": "Sync/publication",
+    "start_ms": 1.947192,
+    "end_ms": 2.050511,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1453,
+    "label": "Host completion",
+    "start_ms": 2.050511,
+    "end_ms": 2.054161,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_4194304",
+    "trial": 1453,
+    "label": "FPGA reception",
+    "start_ms": 0.03319415625,
+    "end_ms": 0.374383,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1443,
+    "label": "Setup",
+    "start_ms": 0.0,
+    "end_ms": 0.022429,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1443,
+    "label": "Input ready",
+    "start_ms": 0.022429,
+    "end_ms": 1.04837,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1443,
+    "label": "Framework",
+    "start_ms": 1.04837,
+    "end_ms": 2.632535,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1443,
+    "label": "Sync/publication",
+    "start_ms": 2.632535,
+    "end_ms": 2.889782,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1443,
+    "label": "Host completion",
+    "start_ms": 2.889782,
+    "end_ms": 2.893712,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1443,
+    "label": "FPGA reception",
+    "start_ms": 0.025780328125,
+    "end_ms": 1.0404188125,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1443,
+    "label": "P2P forwarding",
+    "start_ms": 0.025776328125,
+    "end_ms": 1.0404228125,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "trial": 1443,
+    "label": "Autonomous polling",
+    "start_ms": 1.0404308125,
+    "end_ms": 2.848961875,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2814,
+    "label": "Setup",
+    "start_ms": 0.0,
+    "end_ms": 0.03625,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2814,
+    "label": "Input ready",
+    "start_ms": 0.03625,
+    "end_ms": 4.793666,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2814,
+    "label": "Framework",
+    "start_ms": 4.793666,
+    "end_ms": 7.457841,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2814,
+    "label": "Sync/publication",
+    "start_ms": 7.457841,
+    "end_ms": 7.57286,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2814,
+    "label": "Host completion",
+    "start_ms": 7.57286,
+    "end_ms": 10.536553,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_7_GPU_HOST",
+    "case_id": "synthetic_134217664",
+    "trial": 2814,
+    "label": "FPGA reception",
+    "start_ms": 0.0494841875,
+    "end_ms": 10.53513903125,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_7_GPU_HOST/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2785,
+    "label": "Setup",
+    "start_ms": 0.0,
+    "end_ms": 0.03126,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2785,
+    "label": "Input ready",
+    "start_ms": 0.03126,
+    "end_ms": 32.704704,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2785,
+    "label": "Framework",
+    "start_ms": 32.704704,
+    "end_ms": 35.26142,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2785,
+    "label": "Sync/publication",
+    "start_ms": 35.26142,
+    "end_ms": 35.566927,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2785,
+    "label": "Host completion",
+    "start_ms": 35.566927,
+    "end_ms": 35.571167,
+    "clock": "host",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2785,
+    "label": "FPGA reception",
+    "start_ms": 0.034609375,
+    "end_ms": 32.6961279375,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2785,
+    "label": "P2P forwarding",
+    "start_ms": 0.034609375,
+    "end_ms": 32.6961319375,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_8_GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "trial": 2785,
+    "label": "Autonomous polling",
+    "start_ms": 32.6961399375,
+    "end_ms": 35.47982990625,
+    "clock": "fpga",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_8_GPU_P2P/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "158",
+    "label": "Reception",
+    "start_ms": 0.0015959855264982936,
+    "end_ms": 0.3292450141782645,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "158",
+    "label": "Pixel production",
+    "start_ms": 0.0019559822617986606,
+    "end_ms": 0.3293290134165013,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "158",
+    "label": "CNN interval",
+    "start_ms": 0.32934101330767795,
+    "end_ms": 1.4264470639904485,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "37",
+    "label": "Reception",
+    "start_ms": 0.002495975561749092,
+    "end_ms": 0.33114475774122126,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_1_STREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "37",
+    "label": "Pixel production",
+    "start_ms": 0.0028559720370013647,
+    "end_ms": 0.3312287569187801,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_1_STREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_4194304",
+    "trial": "37",
+    "label": "CNN interval",
+    "start_ms": 0.002859971997837501,
+    "end_ms": 1.0999652301724836,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_1_STREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_4194304",
+    "trial": "40",
+    "label": "Reception",
+    "start_ms": 0.0015720147466953434,
+    "end_ms": 1.0579299241882556,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_4194304",
+    "trial": "40",
+    "label": "Pixel production",
+    "start_ms": 0.0019320181238011473,
+    "end_ms": 1.0582899275653614,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_4194304",
+    "trial": "40",
+    "label": "CNN interval",
+    "start_ms": 0.0019360181613245452,
+    "end_ms": 1.1153544628741547,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "70",
+    "label": "Reception",
+    "start_ms": 0.0015559858886041123,
+    "end_ms": 10.48720489046138,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "70",
+    "label": "Pixel production",
+    "start_ms": 0.0019159826237567347,
+    "end_ms": 10.487288889699583,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_0_NONSTREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "70",
+    "label": "CNN interval",
+    "start_ms": 10.487300889590754,
+    "end_ms": 11.584406939823266,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_0_NONSTREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "41",
+    "label": "Reception",
+    "start_ms": 0.0015599847574787023,
+    "end_ms": 10.487201530157325,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_1_STREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "41",
+    "label": "Pixel production",
+    "start_ms": 0.0019199812399737877,
+    "end_ms": 10.487285529336573,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_1_STREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_1_STREAMING",
+    "case_id": "synthetic_134217664",
+    "trial": "41",
+    "label": "CNN interval",
+    "start_ms": 0.0019239812008903995,
+    "end_ms": 10.511157296086914,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_1_STREAMING/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_134217664",
+    "trial": "76",
+    "label": "Reception",
+    "start_ms": 0.0015719846408162787,
+    "end_ms": 10.487213533961077,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_134217664",
+    "trial": "76",
+    "label": "Pixel production",
+    "start_ms": 0.001931981123445961,
+    "end_ms": 10.487297533140358,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_01/full/result.json"
+  },
+  {
+    "iteration": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "case_id": "synthetic_134217664",
+    "trial": "76",
+    "label": "CNN interval",
+    "start_ms": 0.0019359810843640685,
+    "end_ms": 10.527461140719076,
+    "clock": "fpga_relative_arm",
+    "evidence": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038/jobs/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/attempt_01/full/result.json"
+  }
+]

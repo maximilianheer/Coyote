@@ -29,8 +29,10 @@ def snapshot():
         cpu_policy={str(cpu):{name:read_optional(f'/sys/devices/system/cpu/cpu{cpu}/cpufreq/{name}')
                              for name in ('scaling_governor','scaling_cur_freq')}
                     for cpu in affinity},
-        pcie={name:read_optional('/sys/bus/pci/devices/0000:c4:00.0/'+name)
-              for name in ('current_link_width','current_link_speed')})
+        pcie={name:read_optional('/sys/bus/pci/devices/'+os.environ.get('COYOTE_BENCH_PCI_BDF','0000:c4:00.0')+'/'+name)
+              for name in ('current_link_width','current_link_speed')},
+        gpu={str(p):read_optional(p) for pattern in ('gpu_busy_percent','mem_info_vram_used','pp_dpm_sclk','hwmon/hwmon*/temp*_input')
+             for p in Path('/sys/bus/pci/devices/0000:03:00.0').glob(pattern)})
 
 
 def record(output,case_id,position):

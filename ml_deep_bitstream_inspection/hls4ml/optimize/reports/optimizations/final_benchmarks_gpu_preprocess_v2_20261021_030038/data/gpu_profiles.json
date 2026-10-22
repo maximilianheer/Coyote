@@ -1,0 +1,1266 @@
+{
+  "OPT_7_GPU_HOST": [
+    {
+      "case_id": "real_18876484",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.9772810000000001,
+        "p95": 3.2906511500000306
+      },
+      "kernel_sum_ms": {
+        "median": 0.15896,
+        "p95": 0.162952
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.7148085000000002,
+        "p95": 5.7287024500000525
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_18876484",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6336815,
+        "p95": 1.8319530000000002
+      },
+      "kernel_sum_ms": {
+        "median": 0.3188005,
+        "p95": 0.32764000000000004
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.5196259999999997,
+        "p95": 2.86381745
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "synthetic_16777216",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.955921,
+        "p95": 1.032041
+      },
+      "kernel_sum_ms": {
+        "median": 0.14704,
+        "p95": 0.14788895
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.60418,
+        "p95": 1.7915794500000002
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "synthetic_16777216",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6230414999999998,
+        "p95": 1.81617
+      },
+      "kernel_sum_ms": {
+        "median": 0.31736,
+        "p95": 0.31986405
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.468667,
+        "p95": 2.70037995
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_5540996",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.9223205000000001,
+        "p95": 1.0981690500000003
+      },
+      "kernel_sum_ms": {
+        "median": 0.07552,
+        "p95": 0.07649600000000001
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.5373155,
+        "p95": 1.7671738000000001
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_5540996",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.704802,
+        "p95": 1.9301380000000001
+      },
+      "kernel_sum_ms": {
+        "median": 0.3180005,
+        "p95": 0.3216081
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.513007,
+        "p95": 2.8340585
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "synthetic_4194304",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.922481,
+        "p95": 1.022393
+      },
+      "kernel_sum_ms": {
+        "median": 0.06967999999999999,
+        "p95": 0.070584
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.538771,
+        "p95": 1.6839139
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "synthetic_4194304",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.686721,
+        "p95": 1.7358740000000001
+      },
+      "kernel_sum_ms": {
+        "median": 0.31823999999999997,
+        "p95": 0.32167295
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.486416,
+        "p95": 2.6206874
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_41278872",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.1128010000000002,
+        "p95": 1.2324400500000001
+      },
+      "kernel_sum_ms": {
+        "median": 0.2956005,
+        "p95": 0.29870405000000005
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.841928,
+        "p95": 2.334136750000003
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_41278872",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.760882,
+        "p95": 2.144362
+      },
+      "kernel_sum_ms": {
+        "median": 0.3184005,
+        "p95": 0.32184
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.6265805,
+        "p95": 3.1952225
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_30323588",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.979201,
+        "p95": 1.11077705
+      },
+      "kernel_sum_ms": {
+        "median": 0.2292005,
+        "p95": 0.230489
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.6491795,
+        "p95": 1.8008059500000002
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_30323588",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6517620000000002,
+        "p95": 2.0650820500000004
+      },
+      "kernel_sum_ms": {
+        "median": 0.31808,
+        "p95": 0.32079199999999997
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.485042,
+        "p95": 3.5272198500000003
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "synthetic_134217664",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.698722,
+        "p95": 1.86306655
+      },
+      "kernel_sum_ms": {
+        "median": 0.8712,
+        "p95": 0.8757130000000001
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.457892,
+        "p95": 3.028371350000006
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "synthetic_134217664",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.695042,
+        "p95": 1.9970944000000002
+      },
+      "kernel_sum_ms": {
+        "median": 0.3170405,
+        "p95": 0.31984
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.573941,
+        "p95": 3.07901195
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_12004440",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.9436005,
+        "p95": 1.0969609999999999
+      },
+      "kernel_sum_ms": {
+        "median": 0.1149605,
+        "p95": 0.11664895
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.61269,
+        "p95": 1.8319055000000002
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_12004440",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.733282,
+        "p95": 2.04697715
+      },
+      "kernel_sum_ms": {
+        "median": 0.3174405,
+        "p95": 0.32001694999999997
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.5623815,
+        "p95": 3.02461695
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_34162708",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.0830410000000001,
+        "p95": 1.1874330000000002
+      },
+      "kernel_sum_ms": {
+        "median": 0.25224,
+        "p95": 0.25376
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.7751234999999999,
+        "p95": 2.0037594000000003
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_34162708",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.9355215000000001,
+        "p95": 2.5568394000000034
+      },
+      "kernel_sum_ms": {
+        "median": 0.318,
+        "p95": 0.327152
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.8345335,
+        "p95": 4.016526250000007
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_55676772",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.215601,
+        "p95": 1.3724730500000002
+      },
+      "kernel_sum_ms": {
+        "median": 0.3848805,
+        "p95": 0.38656894999999997
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.9206465000000001,
+        "p95": 2.1624582000000006
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_55676772",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.837122,
+        "p95": 2.20592295
+      },
+      "kernel_sum_ms": {
+        "median": 0.3177605,
+        "p95": 0.320625
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.676345,
+        "p95": 3.3098985499999998
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_48540364",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.123681,
+        "p95": 1.210162
+      },
+      "kernel_sum_ms": {
+        "median": 0.34112,
+        "p95": 0.342081
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.866127,
+        "p95": 2.0497604
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_48540364",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6897609999999998,
+        "p95": 1.984202
+      },
+      "kernel_sum_ms": {
+        "median": 0.3177605,
+        "p95": 0.31911295
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.5489865,
+        "p95": 3.1047891000000005
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "synthetic_67108864",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.3168815,
+        "p95": 1.388401
+      },
+      "kernel_sum_ms": {
+        "median": 0.4564005,
+        "p95": 0.459064
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.042911,
+        "p95": 2.1406067500000003
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "synthetic_67108864",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6952015,
+        "p95": 1.7660970500000002
+      },
+      "kernel_sum_ms": {
+        "median": 0.318161,
+        "p95": 0.32069605
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.5620209999999997,
+        "p95": 2.858566
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "smoke_4194240",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.9096805,
+        "p95": 1.040177
+      },
+      "kernel_sum_ms": {
+        "median": 0.07168,
+        "p95": 0.07345600000000001
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.5344055,
+        "p95": 1.7401695
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "smoke_4194240",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6068815,
+        "p95": 1.648073
+      },
+      "kernel_sum_ms": {
+        "median": 0.31728049999999997,
+        "p95": 0.320376
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.4326325,
+        "p95": 2.49548145
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "smoke_4194241",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.9138409999999999,
+        "p95": 0.931081
+      },
+      "kernel_sum_ms": {
+        "median": 0.07175999999999999,
+        "p95": 0.07248005
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.5268359999999999,
+        "p95": 1.6453944
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "smoke_4194241",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6109615000000002,
+        "p95": 1.642154
+      },
+      "kernel_sum_ms": {
+        "median": 0.31792,
+        "p95": 0.32174405
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.4208075,
+        "p95": 2.4830499500000003
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "smoke_4194242",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.9091210000000001,
+        "p95": 1.036873
+      },
+      "kernel_sum_ms": {
+        "median": 0.07175999999999999,
+        "p95": 0.07251200000000001
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.537131,
+        "p95": 1.7141790000000001
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "smoke_4194242",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6087215,
+        "p95": 1.82369
+      },
+      "kernel_sum_ms": {
+        "median": 0.31752,
+        "p95": 0.320552
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.4263325,
+        "p95": 2.7540905
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    }
+  ],
+  "OPT_8_GPU_P2P": [
+    {
+      "case_id": "real_18876484",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.931201,
+        "p95": 3.5658560500000336
+      },
+      "kernel_sum_ms": {
+        "median": 0.17552,
+        "p95": 0.176776
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.61003,
+        "p95": 5.561975950000054
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_18876484",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.617041,
+        "p95": 2.637932300000009
+      },
+      "kernel_sum_ms": {
+        "median": 0.32167999999999997,
+        "p95": 0.35716
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.5135915,
+        "p95": 3.6100432500000097
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "synthetic_16777216",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.925281,
+        "p95": 1.1048010000000001
+      },
+      "kernel_sum_ms": {
+        "median": 0.1636805,
+        "p95": 0.16516
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.6029195,
+        "p95": 1.85941045
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "synthetic_16777216",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.601922,
+        "p95": 1.82613
+      },
+      "kernel_sum_ms": {
+        "median": 0.32088,
+        "p95": 0.32275295
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.4448875,
+        "p95": 2.759357
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_5540996",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.894001,
+        "p95": 1.20303395
+      },
+      "kernel_sum_ms": {
+        "median": 0.0754405,
+        "p95": 0.07682494999999999
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.500886,
+        "p95": 1.7883724
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_5540996",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6538415,
+        "p95": 1.9413700000000003
+      },
+      "kernel_sum_ms": {
+        "median": 0.32055999999999996,
+        "p95": 0.323376
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.4678519999999997,
+        "p95": 2.8042348500000003
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "synthetic_4194304",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.8808805,
+        "p95": 1.107561
+      },
+      "kernel_sum_ms": {
+        "median": 0.07024,
+        "p95": 0.071857
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.5074805,
+        "p95": 1.7369625
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "synthetic_4194304",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.578881,
+        "p95": 1.59511305
+      },
+      "kernel_sum_ms": {
+        "median": 0.32224,
+        "p95": 0.32338495
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.3817725,
+        "p95": 2.424505
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_41278872",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.075121,
+        "p95": 1.181273
+      },
+      "kernel_sum_ms": {
+        "median": 0.3128805,
+        "p95": 0.31586400000000003
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.711849,
+        "p95": 2.063693500000003
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_41278872",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.729362,
+        "p95": 1.960594
+      },
+      "kernel_sum_ms": {
+        "median": 0.32072,
+        "p95": 0.32244
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.575601,
+        "p95": 2.82560445
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_30323588",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.9981610000000001,
+        "p95": 1.1573539
+      },
+      "kernel_sum_ms": {
+        "median": 0.24536,
+        "p95": 0.24656
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.62757,
+        "p95": 1.79683445
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_30323588",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6340015,
+        "p95": 1.911090050000001
+      },
+      "kernel_sum_ms": {
+        "median": 0.32008000000000003,
+        "p95": 0.32273605
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.5102415,
+        "p95": 3.5160003000000004
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "synthetic_134217664",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6850415,
+        "p95": 1.836698
+      },
+      "kernel_sum_ms": {
+        "median": 0.8862410000000001,
+        "p95": 0.892697
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.414657,
+        "p95": 3.0710271500000053
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "synthetic_134217664",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6556015,
+        "p95": 1.8919690500000002
+      },
+      "kernel_sum_ms": {
+        "median": 0.3194405,
+        "p95": 0.32368800000000003
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.550381,
+        "p95": 2.9575139000000004
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_12004440",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.952241,
+        "p95": 1.16335205
+      },
+      "kernel_sum_ms": {
+        "median": 0.11584,
+        "p95": 0.13244095
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.548616,
+        "p95": 1.8488545
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_12004440",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.728882,
+        "p95": 1.9756660000000001
+      },
+      "kernel_sum_ms": {
+        "median": 0.32104,
+        "p95": 0.32272894999999996
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.5309865,
+        "p95": 2.9273799000000005
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_34162708",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.085281,
+        "p95": 1.174161
+      },
+      "kernel_sum_ms": {
+        "median": 0.26839999999999997,
+        "p95": 0.27025695
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.7463335,
+        "p95": 2.03604695
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_34162708",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.764961,
+        "p95": 2.16273
+      },
+      "kernel_sum_ms": {
+        "median": 0.32032150000000004,
+        "p95": 0.32352905
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.6235505000000003,
+        "p95": 3.20738445
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_55676772",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.158481,
+        "p95": 1.3098649500000001
+      },
+      "kernel_sum_ms": {
+        "median": 0.40144,
+        "p95": 0.4053041
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.8234625,
+        "p95": 2.0271713
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_55676772",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.7736015,
+        "p95": 1.842034
+      },
+      "kernel_sum_ms": {
+        "median": 0.3206405,
+        "p95": 0.32403295
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.6680255,
+        "p95": 2.88699795
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "real_48540364",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.1904815,
+        "p95": 1.321041
+      },
+      "kernel_sum_ms": {
+        "median": 0.35728,
+        "p95": 0.35942494999999997
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.844158,
+        "p95": 2.1335724500000004
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "real_48540364",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.6516815,
+        "p95": 3.6955790000000004
+      },
+      "kernel_sum_ms": {
+        "median": 0.31944,
+        "p95": 0.321296
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.547516,
+        "p95": 4.5736507500000005
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "synthetic_67108864",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.290641,
+        "p95": 1.4963779500000007
+      },
+      "kernel_sum_ms": {
+        "median": 0.47376050000000003,
+        "p95": 0.476016
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.958117,
+        "p95": 2.5724199000000008
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "synthetic_67108864",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.664961,
+        "p95": 1.885074
+      },
+      "kernel_sum_ms": {
+        "median": 0.3196,
+        "p95": 0.32305695
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.5193465,
+        "p95": 2.82495945
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "smoke_4194240",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.901521,
+        "p95": 0.94061695
+      },
+      "kernel_sum_ms": {
+        "median": 0.072,
+        "p95": 0.072816
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.4861515,
+        "p95": 1.5137524500000001
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "smoke_4194240",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.589042,
+        "p95": 1.6598019500000003
+      },
+      "kernel_sum_ms": {
+        "median": 0.3219205,
+        "p95": 0.32337695
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.384133,
+        "p95": 2.5338193500000004
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "smoke_4194241",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.883761,
+        "p95": 0.9590569999999999
+      },
+      "kernel_sum_ms": {
+        "median": 0.07184,
+        "p95": 0.073136
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.473991,
+        "p95": 1.5428134000000002
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "smoke_4194241",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.5800815,
+        "p95": 1.60042595
+      },
+      "kernel_sum_ms": {
+        "median": 0.3216,
+        "p95": 0.324192
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.379843,
+        "p95": 2.3952675
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    },
+    {
+      "case_id": "smoke_4194242",
+      "phase": "gpu_preprocessing",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 0.898401,
+        "p95": 0.9450970000000001
+      },
+      "kernel_sum_ms": {
+        "median": 0.07248,
+        "p95": 0.073016
+      },
+      "host_synchronized_phase_ms": {
+        "median": 1.498466,
+        "p95": 1.6153819
+      },
+      "kernel_count_range": [
+        9,
+        9
+      ]
+    },
+    {
+      "case_id": "smoke_4194242",
+      "phase": "gpu_inference",
+      "trials": 20,
+      "device_span_ms": {
+        "median": 1.590081,
+        "p95": 1.61807765
+      },
+      "kernel_sum_ms": {
+        "median": 0.32088,
+        "p95": 0.322512
+      },
+      "host_synchronized_phase_ms": {
+        "median": 2.388682,
+        "p95": 2.42350895
+      },
+      "kernel_count_range": [
+        45,
+        45
+      ]
+    }
+  ]
+}

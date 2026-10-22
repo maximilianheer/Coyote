@@ -1,5 +1,26 @@
 # Latency and resource optimization plan
 
+## Current selection — configurable iterations
+
+- [x] Complete independent configs: `OPT_1_STREAMING`, `OPT_2_DSP_RESOURCES_B2`, `OPT_3_BRAM_FIFO_A`.
+- [x] Frozen model; regenerated standard hls4ml firmware; R_S preprocessing + D_I interface/timestamps.
+- [x] Exclude custom conv0 specialization. No `OPT_1_CONV0_LATENCY` iteration.
+- [x] Baseline regeneration: **146/146 exact production logits**.
+- [x] Campaign scheduler, source identity, per-attempt logs/status, ntfy outcomes, safe fresh retries.
+- [x] Baseline wrapped C simulation: **11/11**; controller/timestamp RTL; preprocessing HLS.
+- [x] Baseline CNN HLS and combined pipeline RTL: **11/11 exact frames**, second reset and CSR/timestamps.
+- [x] Launched A and B2 after baseline correctness; serialized full implementation.
+- [ ] B2: correctness passed; routed setup −0.297 ns on the known shell/static boundary. Same-source placement recovery `attempt_01/recovery/route_01` running.
+- [ ] A: stalled profiling attempt preserved. Batch diagnostic completed both frames and native post-check; attempt 3 reused the exact-source profile, passed **146/146** logits, and is validating the wrapped design.
+- [ ] Future selection: A+B3; board validation and benchmarks later.
+- Functional admission: correctness only. Resource/latency measurements have no pass/fail threshold;
+  routed timing and build completion are separate readiness checks.
+- [Implementation and commands](build_campaign/README.md#configurable-model-iterations--current-campaign).
+- Active root: `runs/configurable_streaming_20261010/`; existing evidence below is historical.
+
+## Historical campaigns
+
+
 - **Goal:** optimized [res256 checker](../reproducibility/prod_res256_coyote_accel_downsampler_hls4ml_e2e_20260524/MILESTONE_REPORT.md); host transfer → FPGA verdict.
 - **Current:** corrected **D_I 520/520**, **R_S 260/260**, exact board parity on U55C-02; first-pixel launch guard fixes the reset failure. D_I/D_N benchmarks complete; latency ceiling met at **2/12 sizes**, BRAM/DSP caps unmet.
 - **Production-style candidate:** R_S board parity → **R_SO_T**: single streaming IP + optimized CNN + passive timestamps → **260/260 board gate** → benchmarks. D_N retained; D_I diagnosis continues.

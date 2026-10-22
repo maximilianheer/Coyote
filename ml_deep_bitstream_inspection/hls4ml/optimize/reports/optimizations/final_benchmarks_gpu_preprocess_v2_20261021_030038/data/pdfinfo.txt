@@ -1,0 +1,22 @@
+Title:           FPGA/GPU inspection benchmarks
+Subject:         (unspecified)
+Keywords:        
+Author:          ML Deep Bitstream Inspection
+Creator:         (unspecified)
+Producer:        ReportLab PDF Library - www.reportlab.com
+CreationDate:    Wed Oct 21 05:30:08 2026 CEST
+ModDate:         Wed Oct 21 05:30:08 2026 CEST
+Custom Metadata: no
+Metadata Stream: no
+Tagged:          no
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           19
+Encrypted:       no
+Page size:       595.276 x 841.89 pts (A4)
+Page rot:        0
+File size:       2426106 bytes
+Optimized:       no
+PDF version:     1.4

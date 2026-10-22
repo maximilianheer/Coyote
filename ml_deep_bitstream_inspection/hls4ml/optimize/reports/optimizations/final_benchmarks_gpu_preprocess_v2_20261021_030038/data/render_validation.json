@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "pages": 19,
+  "all_pages_visually_reviewed": true,
+  "text_within_page_bounds": true,
+  "missing_square_glyphs": false,
+  "old_cohort_text_absent": true,
+  "scope_labels": "host in-memory and file-inclusive",
+  "experiment_data_included": false,
+  "pdf_sha256": "6a3a8e0c1b6c6cc5930fc50e26679c103ff29ccd4de737a734b4cb1ec5c8901d",
+  "checked_at": 1792546311.3781548,
+  "old_reports_preserved": {
+    "final_benchmarks_20261019": {
+      "verified_files": 48,
+      "pdf_sha256": {
+        "final_fpga_gpu_benchmark_report.pdf": "19953454b39d7eb3be04fdbd1ef0c06834140d4f5f0e4ddc4a0cc56f3f66a627"
+      }
+    },
+    "focused_hls4ml_checker_20261021": {
+      "verified_files": 59,
+      "pdf_sha256": {
+        "focused_hls4ml_checker_report.pdf": "965f5d7537179d53c0a0f00ed4af32967ab062bdff85b14eab334a2c65540ab8"
+      }
+    }
+  }
+}

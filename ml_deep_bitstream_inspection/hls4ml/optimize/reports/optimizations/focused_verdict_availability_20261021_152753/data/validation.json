@@ -1,0 +1,18 @@
+{
+  "selected_cells": 60,
+  "measured_trials": 12000,
+  "source_hashes": 129,
+  "original_host_statistics_reconciled": true,
+  "calibration_blocks_matched": true,
+  "max_alignment_half_width_ms": 0.0005575078124999688,
+  "status": "passed",
+  "excluded_warmups": true,
+  "additive_intervals_verified": true,
+  "figure_count": 16,
+  "all_figures_titled": true,
+  "primary_metric": "verdict_available_ms",
+  "endpoint": "CSR14",
+  "runtime_revision": "gpu_preprocess_v2",
+  "new_builds": 0,
+  "new_benchmark_calls": 0
+}

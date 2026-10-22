@@ -1,0 +1,10 @@
+{
+  "direct_expected.txt": {
+    "source": "hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/D_I/reference_simulation/direct_expected.txt",
+    "sha256": "efad5f1b74b9f3a72d061709ce151d281ce695b99090b1d991d759bafc77016b"
+  },
+  "production_hls_per_sample.csv": {
+    "source": "hls4ml/artifacts_production/cnn_small_hls_opt_img256/notebook_pruned_qat/20260521_185923_production_prod_res256_layers7_W8A8_P50_manualA_7edb988444eb/hls_sweeps/manualA_hls_b7029e47ee34/production/parity/hls_per_sample.csv",
+    "sha256": "2c8837023f3befdaf8aa99edb710cfa1e3cb1bf33f136fd05d77ff35754a48a0"
+  }
+}

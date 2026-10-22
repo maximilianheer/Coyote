@@ -1,0 +1,23 @@
+{
+  "D_I": {
+    "variant_id": 7,
+    "bitstream": "artifacts/D_I/cyt_top.bit",
+    "bitstream_sha256": "3fc293ce1ee9c8027e86b877c0449b01d77ca8c357ccbe3ed1beafce92cde3b7",
+    "source_manifest_sha256": "1b483602e3e6fe486b0e8b67cb8c5505cff8e2edc4292180b519d06cb02bf714",
+    "original_job": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/D_I"
+  },
+  "D_N": {
+    "variant_id": 8,
+    "bitstream": "artifacts/D_N/cyt_top.bit",
+    "bitstream_sha256": "903e517091069c3341b77852bb4bc6195d5bafde0a5ab14df6dd9e4c9606d222",
+    "source_manifest_sha256": "eda7bac1647493ac04a324575c17d1593775d97083e0fcd8ecbcfa7dfcfef200",
+    "original_job": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/direct_stream_20261008_002352/jobs/D_N"
+  },
+  "R_S": {
+    "variant_id": "R_S",
+    "bitstream": "artifacts/R_S/cyt_top.bit",
+    "bitstream_sha256": "ede35205e0fdb96c7ce0da84f15e92a6ffe15eb9b9ffdbc637508a166fe2827a",
+    "source_manifest_sha256": "e5c1cbab226d2492a14b68c3c573e91eb3596d1d8501cfae0eabf9b016d8f5f5",
+    "original_job": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/parallel_resume_20261009_1550/jobs/R_S"
+  }
+}

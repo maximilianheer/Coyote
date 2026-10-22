@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 // ABI v3. Absolute 64-bit aclk ticks; one armed frame at a time.
 // VARIANT: 7=direct checker, 8=sink, 9=GPU pass-through.
-module direct_control #(parameter ADDR_BITS=64, DATA_BITS=64, VARIANT=7)(
+module direct_control #(parameter ADDR_BITS=64, DATA_BITS=64, VARIANT=7, FIFO_COUNT_BITS=6)(
     input logic clk,rst_n,
     input logic [ADDR_BITS-1:0] awaddr,araddr,
     input logic awvalid,wvalid,bready,arvalid,rready,
@@ -12,7 +12,7 @@ module direct_control #(parameter ADDR_BITS=64, DATA_BITS=64, VARIANT=7)(
     input logic [63:0] in_keep,
     input logic out_valid,out_ready,
     input logic pp_valid,pp_ready,cnn_valid,cnn_ready,
-    input logic [5:0] fifo_occupancy,
+    input logic [FIFO_COUNT_BITS-1:0] fifo_occupancy,
     input logic read_complete,write_complete,
     input logic result_valid,input logic [31:0] result_bits,
     input logic [63:0] result_trial,input logic result_record_valid,

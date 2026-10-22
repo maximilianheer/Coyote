@@ -1,0 +1,2 @@
+# Replay input binaries stay local; retain the input manifests in Git.
+/hls4ml/reproducibility/direct_res256_D_I_D_N_20261010/inputs/files/

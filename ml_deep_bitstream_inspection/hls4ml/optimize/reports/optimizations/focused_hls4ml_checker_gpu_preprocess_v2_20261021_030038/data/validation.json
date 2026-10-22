@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "source_hashes": 129,
+  "selected_cells": 60,
+  "measured_trials": 12000,
+  "excluded_warmups": true,
+  "statistics_reconciled": true,
+  "additive_intervals_verified": true,
+  "figure_count": 16,
+  "timing_label": "host in-memory"
+}

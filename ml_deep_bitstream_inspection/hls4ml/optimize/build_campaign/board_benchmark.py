@@ -115,7 +115,9 @@ def clock_model(samples):
     return mapped,dict(ns_per_tick_min=4*min(a for a,b in poly),ns_per_tick_max=4*max(a for a,b in poly),
         model='affine within size block; feasible interval from all MMIO brackets')
 
-def components(row,case,mapped,tick_ns=4.0,tolerance=None):
+def components(row,case,mapped,tick_ns=4.0,tolerance=None,fifo_depth=32,pipeline_mode="streaming"):
+    if (pipeline_mode,fifo_depth) not in (("streaming",32),("nonstreaming",65536)):
+        raise ValueError("invalid pipeline interface")
     v=int(row['variant']);n=int(row['input_bytes']);r={i:int(row[f'csr_{i}']) for i in range(6,30)}
     if v not in (7,8) or n!=case['bytes'] or row['input_sha256']!=case['sha256']:
         raise ValueError('variant/input identity mismatch')
@@ -144,9 +146,11 @@ def components(row,case,mapped,tick_ns=4.0,tolerance=None):
         input_starve_cycles=r[22],input_backpressure_cycles=r[23],pixel_backpressure_cycles=r[24],cnn_starve_cycles=r[25],fifo_peak=r[29])
     if v==7:
         check_logit(r[26]&0xffffffff,(r[26]>>32)&1,case,tolerance)
-        if r[27]!=65536 or r[28]!=65536 or r[29]>32:raise ValueError('pixel/FIFO count')
+        if r[27]!=65536 or r[28]!=65536 or r[29]>fifo_depth:raise ValueError('pixel/FIFO count')
         if not (r[6]<=r[10]<=r[11]<=r[14]<=r[15] and r[10]<=r[12]<=r[13]<=r[14] and r[11]<=r[13]):
             raise ValueError('invalid pipeline event ordering')
+        if pipeline_mode=='nonstreaming' and (r[29]!=65536 or r[12]<=r[11] or (n and r[12]<=r[9])):
+            raise ValueError('non-streaming full-frame ordering/occupancy')
         d.update(preprocess_ms=(r[11]-(r[8] if n else r[6]))*tick_ms,pixel_span_ms=(r[11]-r[10])*tick_ms,
             inference_ms=(r[14]-r[12])*tick_ms,inference_tail_ms=(r[15]-r[11])*tick_ms,
             overlap_ms=max(0,min(r[11],r[14])-max(r[10],r[12]))*tick_ms,

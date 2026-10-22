@@ -1,0 +1,9 @@
+{
+  "hostname": "hacc-u55c-02.inf.ethz.ch",
+  "device": 1,
+  "bdf": "0000:c4:00.0",
+  "cpu": 2,
+  "numa_node": 0,
+  "standard_driver": true,
+  "board_lock": "/tmp/coyote-u55c-c4.lock"
+}

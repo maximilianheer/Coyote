@@ -63,6 +63,12 @@ void CoyoteInference::set_raw_data(const uint8_t* bytes,unsigned size) {
     prepared=true;
 }
 
+void CoyoteInference::configure_pixel_fifo(unsigned depth) {
+    if(depth!=32 && depth!=65536) throw std::runtime_error("unsupported pixel FIFO capacity");
+    if(coyote_thread.getCSR(direct::STATUS)&1) throw std::runtime_error("checker is busy");
+    pixel_fifo_capacity=depth;
+}
+
 void CoyoteInference::flush() {
     std::memset(dst_mem,0,sizeof(float));
     coyote_thread.clearCompleted();
@@ -104,7 +110,7 @@ TrialMeasurement CoyoteInference::predict() {
         std::memcpy(dst_mem,&bits,sizeof(bits));
         uint64_t verdict=!(bits>>31)||!(bits&0x7fffffff);
         if(!std::isfinite(*dst_mem) || ((reg(direct::RESULT)>>32)&1)!=verdict ||
-           reg(direct::PP_COUNT)!=65536 || reg(direct::CNN_COUNT)!=65536 || reg(direct::FIFO_MAX)>32)
+           reg(direct::PP_COUNT)!=65536 || reg(direct::CNN_COUNT)!=65536 || reg(direct::FIFO_MAX)>pixel_fifo_capacity)
             throw std::runtime_error("invalid verdict or pixel counts");
     } else *dst_mem=std::numeric_limits<float>::quiet_NaN();
     return result;
@@ -124,6 +130,8 @@ void* campaign_init(unsigned backend,unsigned capacity,unsigned allocation) {
     });
     return obj;
 }
+uint64_t campaign_now_ns(){return now_ns();}
+int campaign_configure_fifo(void* obj,unsigned depth){return checked([&]{instance(obj).configure_pixel_fifo(depth);});}
 int campaign_prepare(void* obj,const uint8_t* bytes,unsigned size){return checked([&]{instance(obj).set_raw_data(bytes,size);});}
 int campaign_predict(void* obj,TrialMeasurement* out){return checked([&]{if(!out)throw std::runtime_error("null result");*out=instance(obj).predict();});}
 int campaign_clock(void* obj,uint64_t* out){return checked([&]{if(!out)throw std::runtime_error("null clock buffer");instance(obj).clock_sample(out);});}

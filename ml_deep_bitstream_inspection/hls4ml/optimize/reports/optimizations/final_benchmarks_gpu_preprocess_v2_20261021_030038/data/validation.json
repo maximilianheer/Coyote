@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "verified_measurement_files": 129,
+  "accepted_cells": 180,
+  "trials_per_cell": 200,
+  "warmups_excluded": true,
+  "statistics_reconciled": true,
+  "additive_intervals_verified": true,
+  "scope": "offline report validation; existing campaign board admission retained"
+}

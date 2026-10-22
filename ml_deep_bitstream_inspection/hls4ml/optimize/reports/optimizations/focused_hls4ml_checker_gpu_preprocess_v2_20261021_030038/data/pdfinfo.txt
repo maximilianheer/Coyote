@@ -1,0 +1,22 @@
+Title:           Focused hls4ml-checker benchmarks
+Subject:         (unspecified)
+Keywords:        
+Author:          ML Deep Bitstream Inspection
+Creator:         (unspecified)
+Producer:        ReportLab PDF Library - www.reportlab.com
+CreationDate:    Wed Oct 21 05:20:54 2026 CEST
+ModDate:         Wed Oct 21 05:20:54 2026 CEST
+Custom Metadata: no
+Metadata Stream: no
+Tagged:          no
+UserProperties:  no
+Suspects:        no
+Form:            none
+JavaScript:      no
+Pages:           13
+Encrypted:       no
+Page size:       595.276 x 841.89 pts (A4)
+Page rot:        0
+File size:       2048626 bytes
+Optimized:       no
+PDF version:     1.4
