@@ -1,5 +1,35 @@
 # Optimization project memory
 
+## Presentation timing decomposition and file-latency investigation — 2026-10-22
+
+- Current presentation: `hls4ml/optimize/reports/optimizations/2026-10-22_gpu_opt_xla_concretefunction_presentation_input_timing/`.
+  GPU_HOST only; accepted October 21 R06 GPU and OPT_6 FPGA measurements. User
+  authorized overwriting this revision. Earlier reports remain preserved.
+- Figure 12 now uses paired horizontal stacked bars of actual mean elapsed time:
+  until full input is ready, then input-ready-to-verdict (CSR14). This replaces
+  the confusing signed waterfall at the user's request. FPGA readiness uses CSR9;
+  GPU readiness is host-observed after copy synchronization. Blue includes startup
+  and is not pure transfer duration; Figure 10 retains measured transfer intervals.
+  At 64 MiB FPGA is 5.247 + 0.040 = 5.287 ms, GPU 2.430 + 0.628 = 3.058 ms.
+  At 16 MiB FPGA finishes 0.099 ms earlier (means). Short FPGA tails reflect
+  inference overlapping reception; at 4 MiB reception includes CNN backpressure.
+- October 23 presentation revision: Figure 9 (streaming overlap) includes only
+  Buffering / OPT_0 and Streaming / OPT_1. Other figures keep their selections.
+- File-latency irregularities are largely before invocation. For OPT_6, moving
+  from 28.92 to 32.58 MiB raises mean file-to-verdict by about 9.18 ms, of which
+  about 8.88 ms is file reading/preparation. GPU_HOST has near-perfect odd/even
+  preparation alternation at 32.58, 39.37 and 46.29 MiB; 32.58 MiB groups take
+  about 1.50/5.16 ms preparing the same file. A pooled median can fall between modes.
+- Runtime code retains the preceding GPU NumPy input while allocating the next;
+  FPGA file trials release the local input when their helper returns. Allocation
+  and CPU-cache behavior are plausible explanations; buffer addresses and cache
+  counters were not recorded, so the exact mechanism is unproven. Diagnostics:
+  `data/file_timing_investigation.json`, `diagnostics/file_preparation_alternation.*`.
+  Future host-only control: same preallocated/readinto buffer and allocation
+  lifetime on both paths, logging addresses/page faults/cache counters on the
+  actual GPU host. No FPGA rebuild is needed for that control.
+- Offline investigation ran on the build host; no new benchmark calls or builds.
+
 ## R06 report selection and dated report folders — 2026-10-22
 
 - User explicitly selected **R06 XLA + direct ConcreteFunction** for a new GPU

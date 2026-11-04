@@ -1,0 +1,85 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\citation{rettkowski2019inspection}
+\citation{chaudhuri2022detection}
+\citation{chaudhuri2023criticality}
+\citation{chaudhuri2023detectionclassification}
+\citation{elnaggar2023learning}
+\citation{palumbo2022trojan}
+\citation{duarte2018fast}
+\citation{aarrestad2021fast}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}CNN Inspection Pipeline}{12}{chapter.4}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{ch:cnn-pipeline}{{4}{12}{CNN Inspection Pipeline}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Choice of CNNs}{12}{section.4.1}\protected@file@percent }
+\newlabel{sec:cnn-choice}{{4.1}{12}{Choice of CNNs}{section.4.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Model Input and Classification Task}{12}{section.4.2}\protected@file@percent }
+\newlabel{sec:model-input-task}{{4.2}{12}{Model Input and Classification Task}{section.4.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces CNN design-space dimensions.}}{13}{table.caption.9}\protected@file@percent }
+\newlabel{tab:cnn-design-space}{{4.1}{13}{CNN design-space dimensions}{table.caption.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Design Space}{13}{section.4.3}\protected@file@percent }
+\newlabel{sec:cnn-design-space}{{4.3}{13}{Design Space}{section.4.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Candidate Architecture and Training}{13}{section.4.4}\protected@file@percent }
+\newlabel{sec:cnn-architecture-training}{{4.4}{13}{Candidate Architecture and Training}{section.4.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Seven-stage QKeras CNN architecture used for the final candidates.}}{14}{table.caption.10}\protected@file@percent }
+\newlabel{tab:cnn-architecture}{{4.2}{14}{Seven-stage QKeras CNN architecture used for the final candidates}{table.caption.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Software Detection Results}{14}{section.4.5}\protected@file@percent }
+\newlabel{sec:software-detection-results}{{4.5}{14}{Software Detection Results}{section.4.5}{}}
+\citation{selvaraju2017gradcam}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces F1 score across input resolution and CNN depth. Higher resolution and deeper models improve software detection quality, but they also increase hardware cost.}}{15}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:f1-resolution-depth}{{4.1}{15}{F1 score across input resolution and CNN depth. Higher resolution and deeper models improve software detection quality, but they also increase hardware cost}{figure.caption.11}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.3}{\ignorespaces Representative pooled-validation software CNN results.}}{15}{table.caption.12}\protected@file@percent }
+\newlabel{tab:software-cnn-results}{{4.3}{15}{Representative pooled-validation software CNN results}{table.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Grad-CAM example for a correctly classified RO-malicious sample. The input, class activation map, and overlay show localized regions that contribute to the standalone prediction.}}{16}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:gradcam-example}{{4.2}{16}{Grad-CAM example for a correctly classified RO-malicious sample. The input, class activation map, and overlay show localized regions that contribute to the standalone prediction}{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Grad-CAM failure example for the 256$\times $7 fold 0 model. The RO-malicious \texttt  {it2\_S045} sample is predicted benign at the default threshold, and the heatmap concentrates on linear bitstream patterns.}}{16}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:gradcam-fold0-failure}{{4.3}{16}{Grad-CAM failure example for the 256$\times $7 fold 0 model. The RO-malicious \texttt {it2\_S045} sample is predicted benign at the default threshold, and the heatmap concentrates on linear bitstream patterns}{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Interpretability and Failure Modes}{16}{section.4.6}\protected@file@percent }
+\newlabel{sec-interpretability}{{4.6}{16}{Interpretability and Failure Modes}{section.4.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Training diagnostics for the 256$\times $7 W8A8 P50 run. Fold 0 shows slower improvement and a higher loss trajectory than the strongest folds, motivating additional checks beyond qualitative Grad-CAM inspection.}}{17}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:res256-training-curves}{{4.4}{17}{Training diagnostics for the 256$\times $7 W8A8 P50 run. Fold 0 shows slower improvement and a higher loss trajectory than the strongest folds, motivating additional checks beyond qualitative Grad-CAM inspection}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.7}Extended RO-Footprint Evaluation}{17}{section.4.7}\protected@file@percent }
+\newlabel{sec:ro-footprint-evaluation}{{4.7}{17}{Extended RO-Footprint Evaluation}{section.4.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Binned standalone detection rate versus estimated RO LUT share for W8A8 P50 256$\times $7 and 512$\times $7 models. The smallest RO-footprint bins contain most misses, while larger evaluated RO payloads are detected reliably.}}{18}{figure.caption.16}\protected@file@percent }
+\newlabel{fig:ro-footprint-detection}{{4.5}{18}{Binned standalone detection rate versus estimated RO LUT share for W8A8 P50 256$\times $7 and 512$\times $7 models. The smallest RO-footprint bins contain most misses, while larger evaluated RO payloads are detected reliably}{figure.caption.16}{}}
+\@setckpt{chapter4_cnn_pipeline}{
+\setcounter{page}{19}
+\setcounter{equation}{0}
+\setcounter{enumi}{4}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{0}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{4}
+\setcounter{section}{7}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{appendix}{0}
+\setcounter{figure}{5}
+\setcounter{table}{3}
+\setcounter{parentequation}{0}
+\setcounter{theorem}{0}
+\setcounter{section@level}{1}
+\setcounter{Item}{4}
+\setcounter{Hfootnote}{0}
+\setcounter{bookmark@seq@number}{23}
+\setcounter{@todonotes@numberoftodonotes}{0}
+\setcounter{caption@flags}{2}
+\setcounter{continuedfloat}{0}
+\setcounter{subfigure}{0}
+\setcounter{subtable}{0}
+\setcounter{float@type}{8}
+\setcounter{algorithm}{1}
+\setcounter{ALG@line}{13}
+\setcounter{ALG@rem}{0}
+\setcounter{ALG@nested}{0}
+\setcounter{ALG@Lnr}{2}
+\setcounter{ALG@blocknr}{10}
+\setcounter{ALG@storecount}{0}
+\setcounter{ALG@tmpcounter}{0}
+}

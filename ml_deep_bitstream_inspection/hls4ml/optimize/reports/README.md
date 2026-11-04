@@ -7,6 +7,8 @@ differ from report dates and remain documented inside each report.
 
 | Date | Report | Scope |
 | --- | --- | --- |
+| 2026-10-22 | [Presentation: input transport and file-to-verdict](optimizations/2026-10-22_gpu_opt_xla_concretefunction_presentation_input_timing/presentation_report.pdf) | R06; input duration/throughput, input-readiness/remaining-time stacks and warm-cache file-inclusive appendix |
+| 2026-10-22 | [Presentation: FPGA_HLS4ML versus GPU_HOST](optimizations/2026-10-22_gpu_opt_xla_concretefunction_presentation/presentation_report.pdf) | R06; two paths, centered speedup figures, streaming resource comparison |
 | 2026-10-22 | [GPU XLA + ConcreteFunction](optimizations/2026-10-22_gpu_opt_xla_concretefunction/gpu_opt_xla_concretefunction_report.pdf) | Current R06 GPU comparison; FPGA verdict availability |
 | 2026-10-21 | [Verdict availability, preprocessing-v2](optimizations/2026-10-21_focused_verdict_availability/focused_verdict_availability_report.pdf) | Earlier GPU runtime; same CSR14 endpoint |
 | 2026-10-21 | [Focused checker comparison, preprocessing-v2](optimizations/2026-10-21_focused_hls4ml_checker_gpu_preprocess_v2/focused_hls4ml_checker_report.pdf) | Host-completion endpoint |
