@@ -7,11 +7,29 @@ GPU_P2P. The primary metric remains **prepared host input → classification res
 accepted inside the FPGA (CSR14)**. Full-input arrival (CSR9), operation completion
 (CSR15), and host observation are shown separately.
 
+**The FPGA comparator labelled FPGA_HLS4ML is OPT_6:**
+`OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288`. This is the resource-optimized streaming
+checker used in the comparisons against GPU_HOST and GPU_P2P, including the
+latency and speedup plots.
+
 - [PDF report](gpu_opt_xla_concretefunction_report.pdf)
 - [Standalone figures](standalone_figures.zip): titled PNG, SVG, and PDF files.
 - [Synthetic results](data/synthetic_summary.csv)
 - [Validation and provenance](data/validation.json)
 - [Review findings](REVIEW.md) and [automated review](data/review.json)
+
+## FPGA variant labels
+
+| Figure label | Exact iteration | Role in this report |
+| --- | --- | --- |
+| FPGA_HLS4ML / Resource-optimized streaming | `OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288` | Main FPGA comparator against both GPU variants; streaming, FIFO optimization with profiling depth 1024, and aggressive B2 DSP reuse including RF72/RF288 |
+| Buffering | `OPT_0_NONSTREAMING` | Baseline in the FPGA optimization comparisons |
+| Streaming | `OPT_1_STREAMING` | Baseline in the FPGA optimization comparisons |
+
+FPGA_HLS4ML and Resource-optimized streaming are two labels for the same OPT_6
+iteration. Profiling depth 1024 does not mean every FIFO has depth 1024.
+The mapping is explicit in [build_report.py](build_report.py): `IDS[2]` is OPT_6,
+and `DISPLAY = {**N, IDS[2]: "FPGA_HLS4ML"}` assigns its GPU-comparison label.
 
 ## Selected measurements
 

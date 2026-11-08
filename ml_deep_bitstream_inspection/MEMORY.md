@@ -1,5 +1,153 @@
 # Optimization project memory
 
+## First build results and diagnostic recovery — 2026-11-08
+
+- OPT_11_HBM_GPU_P2P_R06 attempt_01 passed routing/timing and bitgen. Artifact
+  hashes independently rechecked; terminal ntfy delivery verified. Board admission
+  and external GPU DMA visibility still require the benchmark host.
+- OPT_10 attempt_01 finished routing with WNS +0.015 ns, WHS +0.007 ns and no
+  timing violations; bitgen in progress at this entry. Read live status for finish.
+- NET_DIAG_HBM attempt_01 final timing FAILED: WNS -0.367 ns, TNS -830.413 ns,
+  in the 450 MHz HBM width-converter first_word_reg → register-slice payload CE
+  path (fanout576). Do not use its images even if bitgen produces files.
+- NET_DIAG_HBM attempt_02 is a fresh physical recovery from its own routed DCP:
+  AggressiveFanoutOpt, NoTimingRelaxation, unchanged RTL and clock constraints.
+  Started epoch1794097761; tmux hbm_network_diag_recover_02; same five-slot limit.
+  Diagnosis/provenance are in the campaign. Five-minute restart watch required.
+- Completion monitor now recognizes deployment_recover.py via explicit process
+  markers; monitor session refreshed, previous ntfy delivery receipts preserved.
+
+## HBM/network build campaign launched — 2026-11-07
+
+- Build host hacc-build-03; campaign [hbm_network_20261107](hls4ml/optimize/runs/hbm_network_20261107/README.md).
+  NET_DIAG_HBM and OPT_10/11/12/13 workers launched. Read per-attempt status.json
+  for current stage; launch does not imply routing or board admission success.
+- User authorized all five builds concurrently, including speculative network
+  builds before physical-link validation, ten-minute initial monitoring, and
+  diagnosis/repair/restart with five-minute monitoring after each failure.
+- Opt-in five shared implementation slots, four Vivado threads per job. Tested
+  sixth-job waiting and slot release on worker death. Historical lane defaults
+  remain for older campaigns. No board programming from this build campaign.
+- Sealed snapshots contain pinned Coyote/network sources; each CNN snapshot
+  contains full configuration and verified cached stock OPT_6 compiler output,
+  weights identity and FIFO evidence. No repeat profiling/custom conv0 kernel.
+- New deployment ABI5 and event/counter meanings: `hls4ml/optimize/build_campaign/deployment_abi.json`;
+  old ABI3/4 collectors must reject these images. GPU inference readiness is
+  defined there, separately from final verdict/drain status.
+- Independent tmux `hbm_network_monitor` sends terminal events to ntfy and records
+  delivery. Active-session event waiter `wait_deployment_event.py` returns on
+  completion/failure/lost worker for assistant diagnosis; it does not by itself
+  schedule a new model turn if the active session is terminated.
+- Networking fork owns live QSFP/RDMA/HBM and GPU visibility validation. Component
+  tests and wiring elaboration passed; full combined RTL/board admission remains.
+
+## Option 2 additional host validation — 2026-11-07
+
+- [Validation log and reproduction commands](hls4ml/optimize/runs/option2_host_validation_20261107/README.md)
+  and machine-readable summary.json in the same folder. No FPGA programming/builds.
+- ConnectX-5 local two-RC-QP probe: **108/108 exact-byte transfers**, boundary
+  sizes through 128MiB−64B, one/four outstanding chunks, changing patterns and
+  intact tail guards. This can loop within the NIC; not physical fabric validation.
+- Actual Coyote address-helper test passed. Integer-sampling model: 17 cases;
+  abstract two-consumer credit model: 100 randomized schedules. These do not
+  validate new receiver RTL or a completed production NIC→Coyote sender.
+- Accepted R06 runtime on GPU0: 15 sizes, 45 calls, exact selected-byte parity and
+  CPU score/verdict agreement; max absolute score error 1.52587890625e-05.
+  Normal TensorFlow host→GPU allocation; external FPGA DMA visibility untested.
+- Archived OPT_8 variant11 polling/forwarding RTL regression passed outside the
+  sandbox (initial sandbox xsim Tcl exception preserved). Includes stale replies,
+  CQ ordering, backpressure, invalid trial, timeout/drain, reset/consecutive frames.
+- All eight real report inputs have expected sizes and newly recorded hashes.
+  Remaining gate: NET_DIAG_HBM live QSFP/ARP/RDMA→HBM validation and new receiver
+  RTL/ABI tests; subsequent full FPGA/GPU admission remains required.
+
+## Option 2 concrete build handoff — 2026-11-07
+
+- Authoritative next implementation plan: [Option 2 build handoff](hls4ml/optimize/plans/2026-11-07_option2_build_handoff.md);
+  [plan index](hls4ml/optimize/plans/README.md). Diagnostic NET_DIAG_HBM first,
+  then OPT_12_NET_STREAMING and OPT_13_NET_GPU_P2P_R06 after link/byte-test gate.
+  Option 1 remains assigned to the other build-host agent; this investigation
+  did not start builds or program hardware.
+- Coyote HEAD inspected: 502a94af61107e7b9a54d5b669ca60d2dbc47753; network submodule
+  pinned at 37b59d3828b003d2d6f7dd9748824a0e39d99167 is empty locally. Restore
+  the pinned source in the isolated build checkout before RDMA IP generation.
+- **NIC interoperability traps confirmed:** writeQpContext's argument sets the
+  remote UDP destination. Use 4791 for ConnectX-5, not initRDMA's default control
+  port18488. Pinned stack listens on 4791. Coyote IPv4 extraction uses bits127:96;
+  use its repeated-IPv4 internal format, while NIC AH uses standard IPv4-mapped
+  GID. Do not blindly copy the NIC GID into Coyote registers.
+- Concrete MVP defaults: local NIC sender, device2 QSFP0 .114 receiver, GPU0;
+  64KiB chunks, four-bank 256KiB ingress ring, one-credit admission then four-credit
+  main runs. Credits follow both branches' consumption, not NIC acknowledgements.
+  Separate HBM commit, GPU DMA completion and verdict timing. No PR eligibility
+  until complete stored bytes, no errors and a benign decision.
+- Confirmed current Coyote restricts builds to one QSFP and rejects networking
+  on Versal. EN_MEM plus EN_RDMA derives an additional network memory client;
+  validate generated HBM mapping rather than reusing Option 1 addresses blindly.
+- Live NIC/RDMA and XRT statuses were rechecked; FPGA QSFP connectivity and actual
+  NIC→Coyote interoperability still require the diagnostic image. No throughput
+  result or cabling confirmation is implied by this plan.
+
+## Option 2 benchmark host preflight — 2026-11-07
+
+- Live host: `hacc-gpu-u55c-01.inf.ethz.ch`. Read-only inspection; no programming,
+  driver/network changes or benchmark traffic. Some device/netlink queries need
+  execution outside the sandbox; missing sandbox device nodes do not imply
+  absent host hardware.
+- Preferred sender is this host's ConnectX-5 Ex: PCI `0000:61:00.0`, `data1`,
+  `mlx5_0` port 1, `10.253.74.110/24`, MTU 9000, live 100000 Mb/s Ethernet.
+  RDMA is ACTIVE, active RDMA MTU 4096; IPv4 RoCE v2 GID index 3. NUMA0,
+  PCIe Gen4×16. `libibverbs`, `ib_write_bw` and accessible uverbs nodes exist.
+  `data2` / `mlx5_1` is down and ethtool reports no cable. data1 FEC is off;
+  global RX/TX pause is on, which is not proof of PFC or switch configuration.
+- Receiver remains hdev device2 / `0000:81:00.0` / `XFL13BA4HVZYA`, U55C,
+  NUMA1 Gen3×16. Site CMDB assigns ports `10.253.74.114/.115`, MACs
+  `00:0A:35:0F:52:18/00:0A:35:0F:52:1C`. Route to .114 uses data1.
+  These are assigned identities, not proof of physical QSFP link/reachability.
+- **Current firmware supersedes older installed-image notes:** both U55Cs are
+  XRT-ready on `xilinx_u55c_gen3x16_xdma_base_3`; xocl/xclmgmt loaded, no Coyote
+  driver. Device1 at `a1:00.0` / `XFL1BE3ESRZ4A` is also XRT-ready, with assigned
+  `.112/.113`; this does not prove Coyote programming/network readiness.
+  Two VCK5000 cards also enumerate, but are unnecessary for the MVP.
+- MI210 GPUs remain at `03:00.0` and `25:00.0`, NUMA0 Gen4×16. Thus FPGA→GPU
+  still crosses the NUMA topology; no new P2P throughput was measured.
+- Proposed physical path: NUMA0 host buffer → local ConnectX-5 → external
+  Ethernet fabric → U55C device2 QSFP → HBM plus streaming checker/GPU forwarder.
+  No second server needed if the fabric connects these ports. Cable/switch/VLAN
+  and receiver link remain unverified until a network-capable image is loaded.
+- Coyote example09's client is Coyote-specific, not a stock NIC verbs client.
+  Implement a small libibverbs sender and compatible QPN/PSN/GID/rkey/address
+  exchange; match Coyote's compiled MTU. Do not assume ib_write_bw speaks the
+  example's setup protocol. Stock Coyote documents ConnectX-5 interoperability.
+- Preflight next step: known-compatible RDMA diagnostic image and driver, then
+  verify CMAC link, ARP/QP setup, exact-byte transfers and paced throughput.
+  Installed site images found: Coyote hello-world and OpenNIC, not a ready
+  example09 image. No FPGA QSFP carrier test or RDMA transfer was performed.
+  Queue details: [Option 2 plan](hls4ml/optimize/plans/2026-11-07_network_streaming_mvp.md).
+
+## HBM and network inspection plans — 2026-11-07
+
+- Saved Option 1 plan: [HBM-resident inspection](hls4ml/optimize/plans/2026-11-07_hbm_resident_inspection.md).
+  Planned OPT_10 gather + OPT_6 CNN and OPT_11 HBM → GPU P2P + R06;
+  host emulates embedded CPU placement outside the measured interval.
+  Primary interval: FPGA-local start acceptance → FPGA verdict acceptance.
+  This is a saved plan, not a build launch or benchmark result.
+- **Small-input preprocessing fix required:** production template
+  `hls4ml/pipeline/coyote_accelerator/templates/zero_in_raw_downsample.hpp.in`
+  scans every raw byte for `65,536 < N < 4,194,241` (approximately 4 MiB).
+  Implement equivalent sample-driven processing in the new FPGA path, iterating
+  over 65,536 pixels and caching aligned 64-byte input words. Existing
+  `hls4ml/optimize/build_campaign/hardware/common/direct_preprocess.hpp`
+  supplies a small-input reference. Preserve exact integer indices, inversion,
+  normalization, fixed-point conversion, short-input padding and launch guard.
+  Validate cutoff ±1 and 1/2 MiB cases; do not overwrite archived implementations.
+  Existing eight real workloads exceed this cutoff, so do not attribute their
+  projected HBM gains to this fix. Finding confirmed from source; new fix pending.
+- Option 2 (RoCE receive → streaming inspection, retaining raw bytes in HBM)
+  is queued in [the network MVP proposal](hls4ml/optimize/plans/2026-11-07_network_streaming_mvp.md).
+  Do not treat this note as authorization to launch
+  additional builds. Reuse Option 1 components, with separate network builds.
+
 ## Presentation timing decomposition and file-latency investigation — 2026-10-22
 
 - Current presentation: `hls4ml/optimize/reports/optimizations/2026-10-22_gpu_opt_xla_concretefunction_presentation_input_timing/`.

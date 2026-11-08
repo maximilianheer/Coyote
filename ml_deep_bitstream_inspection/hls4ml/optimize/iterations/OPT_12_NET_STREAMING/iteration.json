@@ -1,0 +1,203 @@
+{
+  "id": "OPT_12_NET_STREAMING",
+  "variant": 12,
+  "abi": 5,
+  "threads": 4,
+  "hbm_enabled": true,
+  "rdma_enabled": true,
+  "N_OUTSTANDING": 32,
+  "N_TLB_ACTV": 64,
+  "PMTU_BYTES": 4096,
+  "clock_hz": 250000000,
+  "max_raw_bytes": 134217664,
+  "hardware_validated": false,
+  "cnn_configuration": {
+    "schema_version": 1,
+    "id": "OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288",
+    "derived_from": "OPT_5_DSP_B2_RF72_RF288",
+    "model": {
+      "architecture": "model_config.json",
+      "architecture_sha256": "daf37e59295492b5ac14bb9e186f528ced1fcb763186366128932d937f1d5e23",
+      "weights": "models/res256/pruned_qat/final_weights.weights.h5",
+      "weights_sha256": "8693fe8efed10f2996c0bc5fe32e68b466fbce097ef75c0f60941f399899ca53",
+      "threshold": 0.0
+    },
+    "hls": {
+      "version": "1.3.0",
+      "backend": "Vitis",
+      "part": "xcu55c-fsvh2892-2L-e",
+      "clock_period": 4,
+      "clock_uncertainty": "27%",
+      "io_type": "io_stream",
+      "Model": {
+        "Precision": "ap_fixed<16,6>",
+        "ReuseFactor": 1,
+        "Strategy": "Latency",
+        "BramFactor": 1000000000,
+        "TraceOutput": false
+      },
+      "LayerName": {
+        "conv0": {
+          "Strategy": "Latency",
+          "ReuseFactor": 1,
+          "Precision": {
+            "accum": "ap_fixed<30,13>",
+            "result": "ap_fixed<30,13>",
+            "weight": "ap_fixed<8,1>",
+            "bias": "ap_fixed<8,1>"
+          }
+        },
+        "conv1": {
+          "Strategy": "Latency",
+          "ReuseFactor": 1,
+          "Precision": {
+            "accum": "ap_fixed<24,11>",
+            "result": "ap_fixed<24,11>",
+            "weight": "ap_fixed<8,1>",
+            "bias": "ap_fixed<8,1>"
+          }
+        },
+        "conv2": {
+          "Strategy": "Resource",
+          "ReuseFactor": 36,
+          "Precision": {
+            "accum": "ap_fixed<25,12>",
+            "result": "ap_fixed<25,12>",
+            "weight": "ap_fixed<8,1>",
+            "bias": "ap_fixed<8,1>"
+          }
+        },
+        "conv3": {
+          "Strategy": "Resource",
+          "ReuseFactor": 72,
+          "Precision": {
+            "accum": "ap_fixed<25,13>",
+            "result": "ap_fixed<25,13>",
+            "weight": "ap_fixed<8,1>",
+            "bias": "ap_fixed<8,1>"
+          }
+        },
+        "conv4": {
+          "Strategy": "Resource",
+          "ReuseFactor": 72,
+          "Precision": {
+            "accum": "ap_fixed<25,14>",
+            "result": "ap_fixed<25,14>",
+            "weight": "ap_fixed<8,1>",
+            "bias": "ap_fixed<8,1>"
+          }
+        },
+        "conv5": {
+          "Strategy": "Resource",
+          "ReuseFactor": 288,
+          "Precision": {
+            "accum": "ap_fixed<26,16>",
+            "result": "ap_fixed<26,16>",
+            "weight": "ap_fixed<8,1>",
+            "bias": "ap_fixed<8,1>"
+          }
+        },
+        "conv6": {
+          "Strategy": "Resource",
+          "ReuseFactor": 288,
+          "Precision": {
+            "accum": "ap_fixed<26,16>",
+            "result": "ap_fixed<26,16>",
+            "weight": "ap_fixed<8,1>",
+            "bias": "ap_fixed<8,1>"
+          }
+        },
+        "gap": {
+          "Precision": {
+            "accum": "ap_ufixed<8,5>"
+          }
+        },
+        "output_dense": {
+          "Strategy": "Latency",
+          "ReuseFactor": 1,
+          "Precision": {
+            "accum": "ap_fixed<22,12>",
+            "result": "ap_fixed<22,12>",
+            "weight": "ap_fixed<8,1>",
+            "bias": "ap_fixed<8,1>"
+          }
+        },
+        "bitstream_input": {
+          "Precision": {
+            "result": "ap_fixed<16,6>"
+          }
+        },
+        "conv0_linear": {
+          "Precision": {
+            "result": "ap_fixed<30,13>"
+          }
+        },
+        "conv1_linear": {
+          "Precision": {
+            "result": "ap_fixed<24,11>"
+          }
+        },
+        "conv2_linear": {
+          "Precision": {
+            "result": "ap_fixed<25,12>"
+          }
+        },
+        "conv3_linear": {
+          "Precision": {
+            "result": "ap_fixed<25,13>"
+          }
+        },
+        "conv4_linear": {
+          "Precision": {
+            "result": "ap_fixed<25,14>"
+          }
+        },
+        "conv5_linear": {
+          "Precision": {
+            "result": "ap_fixed<26,16>"
+          }
+        },
+        "conv6_linear": {
+          "Precision": {
+            "result": "ap_fixed<26,16>"
+          }
+        },
+        "output_dense_linear": {
+          "Precision": {
+            "result": "ap_fixed<22,12>"
+          }
+        }
+      },
+      "fifo_depth_optimization": true,
+      "profiling_depth": 1024,
+      "profiling_samples": 2
+    },
+    "interface": {
+      "abi_version": 3,
+      "variant": 7,
+      "external_fifo_depth": 32,
+      "preprocessing": "R_S",
+      "first_pixel_guard": true
+    },
+    "build": {
+      "routed": true,
+      "threads": 4
+    },
+    "validation": {
+      "exact_logits": true,
+      "startup_idle_cycles": 20000,
+      "driver_resets": 1,
+      "performance_admission": false
+    },
+    "provenance": {
+      "combined_with": "OPT_FIFO_A_P1024",
+      "relationship": "Informational only; complete local configuration regenerates firmware from the pinned model.",
+      "fifo_profile": "Fresh native two-frame profile for the combined reuse configuration; prior standalone FIFO profile has different firmware."
+    }
+  },
+  "cnn_cache_fingerprint": "632183c6b03600968a51da876aec7e80814e5b4d43ddc8042a653a3a6c0d5f1e",
+  "kernels": [
+    "cnn_wrapper",
+    "network_preprocess"
+  ]
+}

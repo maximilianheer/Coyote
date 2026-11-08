@@ -1,0 +1,63 @@
+{
+  "assumptions": {
+    "created": "2026-11-07",
+    "measurement_date": "2026-10-21",
+    "status": "predictions, not new measurements",
+    "fpga": "OPT_6, unchanged CNN; new selective HBM reader for option 1",
+    "gpu": "MI210, R06 XLA + ConcreteFunction FP32; full raw input forwarded",
+    "endpoint": "verdict accepted by FPGA, equivalent to CSR14",
+    "option_1_start": "local start command with raw bitstream already in HBM",
+    "option_2_start": "first payload arriving at receiving FPGA; connection pre-established",
+    "excluded": [
+      "file reading",
+      "initial HBM placement",
+      "connection establishment",
+      "sender scheduling and network flight before first payload",
+      "GPU compilation/cold start",
+      "partial reconfiguration",
+      "porting GPU runtime or Coyote control plane to a hostless system"
+    ],
+    "p2p_gbps": [
+      4.1,
+      15.75
+    ],
+    "p2p_fast_caveat": "optimistic encoded-link ceiling; payload cannot sustain this after PCIe overhead",
+    "hbm_gpu_feed": "assume sufficient sequential HBM bandwidth to sustain each selected P2P rate",
+    "network_gbps": 11.5,
+    "network_sensitivity_gbps": [
+      10.0,
+      12.0
+    ],
+    "gather_gbps": 4.0,
+    "gather_sensitivity_gbps": [
+      2.0,
+      8.0
+    ],
+    "gather_requests": 65536,
+    "gather_bytes_per_request": 64,
+    "gather_condition": "ordered pixels; multiple outstanding reads; adequate buffering",
+    "fpga_floor_ms": 1.12,
+    "fpga_transport_tail_and_start_ms": 0.05,
+    "gpu_start_ms": 0.02,
+    "gpu_tail": "per-case median of (CSR14 - CSR19) at 4 ns, 200 measured resident calls",
+    "gpu_overlap": "network reception and FPGA-to-GPU forwarding overlap; inference follows full input",
+    "concurrency": "alternatives measured separately; no competing deployment or shared-memory traffic",
+    "sensitivity_note": "bands vary assumed bandwidth only; not confidence intervals or guaranteed bounds",
+    "formulas": {
+      "fpga_hbm": "max(1.12, 65536 * 64 / (gather_GBps * 1e6) + 0.05)",
+      "fpga_network": "max(1.12, input_bytes / (network_GBps * 1e6) + 0.05)",
+      "gpu_hbm": "input_bytes / (P2P_GBps * 1e6) + measured_gpu_tail_ms + 0.02",
+      "gpu_network": "input_bytes / (min(network_GBps, P2P_GBps) * 1e6) + measured_gpu_tail_ms + 0.02",
+      "gpu_network_store_then_forward": "network_scan_ms + gpu_hbm_ms"
+    }
+  },
+  "sources": {
+    "hls4ml/optimize/reports/optimizations/2026-10-22_gpu_opt_xla_concretefunction/data/real_inputs.json": "10f7c00bdac7e6d041a55e9f8312aa0468a44d81bff889f5ed57e6622c10926f",
+    "hls4ml/optimize/reports/optimizations/2026-10-22_gpu_opt_xla_concretefunction/data/latency_statistics.csv": "928a01da2bb85c7488dc617052a0c0600f92d52ae74029da660383a422b48427",
+    "hls4ml/optimize/runs/gpu_runtime_investigation_20261021_030038/hardware_xla_concrete/jobs/OPT_8_GPU_P2P/attempt_01/full/observations.jsonl": "50fa80814abd1d7e6d73a1493f951df512f955ebe9386578bdfc07a73f209333"
+  },
+  "references": [
+    "https://xilinx.github.io/Vitis-Tutorials/2022-1/build/html/docs/Hardware_Acceleration/Feature_Tutorials/07-using-hbm/3_BW_Explorations.html",
+    "https://fpgasystems.github.io/Coyote/system/dynamic.html"
+  ]
+}

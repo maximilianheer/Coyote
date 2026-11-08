@@ -14,6 +14,15 @@ def alive(pid, marker):
 
 
 def available_slots(root, lane):
+    config = root / 'capacity.json'
+    if config.exists():
+        capacity = json.loads(config.read_text())
+        if capacity.get('policy') != 'shared':
+            raise ValueError('Unknown implementation capacity policy')
+        count = capacity.get('slots')
+        if type(count) is not int or not 1 <= count <= 5:
+            raise ValueError('Shared implementation capacity must be 1..5')
+        return list(range(count))
     if lane not in ('primary','nonstreaming'):raise ValueError('Unknown implementation lane')
     slots=[0,1,2] if lane=='primary' else [3]
     legacy=root/'legacy.json'

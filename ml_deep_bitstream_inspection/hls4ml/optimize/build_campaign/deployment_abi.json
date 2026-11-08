@@ -1,0 +1,50 @@
+{
+  "version": 5,
+  "signature_prefix": "0x4342595400050000",
+  "clock_hz": 250000000,
+  "variants": {"10": "HBM_FPGA", "11": "HBM_GPU", "12": "NETWORK_FPGA", "13": "NETWORK_GPU"},
+  "registers": {
+    "0": "status_read_arm_write",
+    "1": "raw_bytes",
+    "2": "trial_id",
+    "3": "coyote_context",
+    "4": "signature",
+    "5": "absolute_tick",
+    "6": "accepted_arm_tick",
+    "7": "event_valid_bits",
+    "8": "hbm_virtual_base",
+    "9": "gpu_allocation_base_including_64B_header",
+    "10": "gpu_ready_word_address",
+    "11": "gpu_payload_address",
+    "12": "timeout_ticks",
+    "13": "poll_gap_ticks",
+    "15": "network_credit_window",
+    "40": "score_bits_and_malicious_decision"
+  },
+  "status_bits": {"0": "busy", "1": "complete_and_drained", "2": "invalid_or_error", "3": "verdict_available"},
+  "event_register_base": 16,
+  "event_pairs": {
+    "HBM_FPGA": ["hbm_request", "hbm_return", "pixel", "cnn_input", "verdict", "hbm_completion"],
+    "HBM_GPU": ["hbm_request", "hbm_return", "unused", "unused", "verdict", "hbm_completion", "gpu_forward", "gpu_write_completion", "poll_request"],
+    "NETWORK_FPGA": ["network_presented", "network_accepted", "pixel", "cnn_input", "verdict", "hbm_write_payload", "unused", "unused", "unused", "hbm_completion", "network_request"],
+    "NETWORK_GPU": ["network_presented", "network_accepted", "unused", "unused", "verdict", "hbm_write_payload", "gpu_forward", "gpu_write_completion", "poll_request", "hbm_completion", "network_request"]
+  },
+  "event_pair_semantics": "first_tick at even slot, latest_tick at odd slot; event-valid bits required",
+  "counter_register_base": 48,
+  "counter_names": {
+    "HBM_FPGA": ["reads_issued", "words_received", "reads_completed", "pixel_count", "pixel_fifo_current_occupancy"],
+    "HBM_GPU": ["bytes_forwarded", "chunks_completed", "unused", "unused", "poll_first_tick", "poll_last_not_ready_tick", "poll_ready_tick", "poll_payload_tick", "poll_requests", "poll_bytes", "poll_request_stalls", "poll_error", "poll_state"],
+    "NETWORK_FPGA": ["bytes_received", "bytes_requested", "hbm_last_requests", "hbm_completions", "unused", "unused", "unused", "freed_chunks", "ring_peak_words", "network_stalls", "hbm_branch_stalls", "inspection_branch_stalls", "frame_error"],
+    "NETWORK_GPU": ["bytes_received", "bytes_requested", "hbm_last_requests", "hbm_completions", "gpu_words", "gpu_requests", "gpu_completions", "freed_chunks", "ring_peak_words", "network_stalls", "hbm_branch_stalls", "inspection_branch_stalls", "frame_error", "poll_requests", "poll_ready_tick", "poll_payload_tick"]
+  },
+  "notes": [
+    "Input HBM base is a mapped Coyote virtual address, not a raw physical HBM address.",
+    "Initialize the GPU header, mailbox and mapping before arm. Match raw length to the GPU header.",
+    "An invalid trial requires controlled DMA drain/reset before reuse; result availability alone does not prove successful storage.",
+    "HBM GPU inference readiness: bytes_forwarded equals raw_bytes and chunks_completed equals ceil(raw_bytes/65536).",
+    "Network GPU inference readiness: gpu_words equals ceil(raw_bytes/64), gpu_requests equals ceil(raw_bytes/65536), and gpu_completions equals gpu_requests.",
+    "Perform external-DMA visibility validation after readiness and before R06 inference.",
+    "Network sender credits follow freed_chunks, not NIC acknowledgements.",
+    "Main latency origins differ: accepted arm for HBM; first accepted application payload for network."
+  ]
+}
