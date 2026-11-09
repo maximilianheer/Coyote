@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1460" viewBox="0 0 1440 1460"><defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#4a607a"/></marker></defs><rect width="100%" height="100%" fill="#f6f8fc"/><g font-family="DejaVu Sans, sans-serif">
+<text x="55" y="57" font-size="36" font-weight="bold" fill="#203047">We use Coyote’s HBM interface</text>
+<text x="55" y="96" font-size="24" font-weight="normal" fill="#203047">Clock and width adapters are already inside Coyote’s generated memory path.</text>
+<rect x="65" y="130" width="770" height="130" rx="12" fill="#e7f3e9" stroke="#6caa7b" stroke-width="2"/>
+<text x="90" y="164" font-size="19" font-weight="bold" fill="#347244">OUR APPLICATION</text>
+<text x="90" y="202" font-size="27" font-weight="bold" fill="#203047">Bitstream storage branch</text>
+<text x="90" y="236" font-size="21" font-weight="normal" fill="#203047">Supplies destination address, length and payload bytes</text>
+<path d="M450 260 V337" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<text x="480" y="293" font-size="20" font-weight="bold" fill="#203047">Coyote card-memory interface</text>
+<text x="480" y="322" font-size="19" font-weight="normal" fill="#203047">Requests + 512-bit payload stream</text>
+<rect x="65" y="345" width="770" height="885" rx="12" fill="#e8f1fb" stroke="#6d99c8" stroke-width="2"/>
+<path d="M450 385 V405" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<text x="90" y="378" font-size="20" font-weight="bold" fill="#245d97">COYOTE SHELL — generated infrastructure</text>
+<rect x="105" y="405" width="690" height="75" rx="12" fill="#ffffff" stroke="#b3cce0" stroke-width="2"/>
+<text x="125" y="435" font-size="24" font-weight="bold" fill="#203047">DMA and address handling</text>
+<text x="125" y="463" font-size="20" font-weight="normal" fill="#203047">Turns requests and bytes into AXI memory transactions</text>
+<path d="M450 480 V505" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<rect x="105" y="505" width="690" height="75" rx="12" fill="#ffffff" stroke="#b3cce0" stroke-width="2"/>
+<text x="125" y="535" font-size="24" font-weight="bold" fill="#203047">Register slice</text>
+<text x="125" y="563" font-size="20" font-weight="normal" fill="#203047">Pipelines the 512-bit application-side interface</text>
+<path d="M450 580 V605" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<rect x="105" y="605" width="690" height="75" rx="12" fill="#ffffff" stroke="#b3cce0" stroke-width="2"/>
+<text x="125" y="635" font-size="24" font-weight="bold" fill="#203047">Clock converter</text>
+<text x="125" y="663" font-size="20" font-weight="normal" fill="#203047">Safely bridges the application and HBM AXI clocks</text>
+<path d="M450 680 V705" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<rect x="105" y="705" width="690" height="75" rx="12" fill="#ffffff" stroke="#b3cce0" stroke-width="2"/>
+<text x="125" y="735" font-size="24" font-weight="bold" fill="#203047">Register slice</text>
+<text x="125" y="763" font-size="20" font-weight="normal" fill="#203047">Pipelines the 512-bit HBM-clock-side interface</text>
+<path d="M450 780 V805" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<rect x="105" y="805" width="690" height="75" rx="12" fill="#fff1dc" stroke="#d8993e" stroke-width="2"/>
+<text x="125" y="835" font-size="24" font-weight="bold" fill="#203047">Width converter: 512 → 256 bits</text>
+<text x="125" y="863" font-size="20" font-weight="normal" fill="#203047">One 64-byte write beat becomes two 32-byte beats</text>
+<path d="M450 880 V905" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<rect x="105" y="905" width="690" height="75" rx="12" fill="#ffffff" stroke="#b3cce0" stroke-width="2"/>
+<text x="125" y="935" font-size="24" font-weight="bold" fill="#203047">Register slice / physical crossing</text>
+<text x="125" y="963" font-size="20" font-weight="normal" fill="#203047">Adds pipeline stages along the route toward HBM</text>
+<path d="M450 980 V1005" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<rect x="105" y="1005" width="690" height="75" rx="12" fill="#ffffff" stroke="#b3cce0" stroke-width="2"/>
+<text x="125" y="1035" font-size="24" font-weight="bold" fill="#203047">RAMA memory access adapter</text>
+<text x="125" y="1063" font-size="20" font-weight="normal" fill="#203047">Manages and reorders memory accesses</text>
+<path d="M450 1080 V1105" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<rect x="105" y="1105" width="690" height="75" rx="12" fill="#ffffff" stroke="#b3cce0" stroke-width="2"/>
+<text x="125" y="1135" font-size="24" font-weight="bold" fill="#203047">AMD HBM controller</text>
+<text x="125" y="1163" font-size="20" font-weight="normal" fill="#203047">Schedules transactions on the physical HBM memory</text>
+<rect x="875" y="145" width="510" height="175" rx="12" fill="#ffffff" stroke="#cad5e2" stroke-width="2"/>
+<text x="900" y="183" font-size="25" font-weight="bold" fill="#203047">What we implement</text>
+<text x="900" y="224" font-size="22" font-weight="normal" fill="#203047">Receive bytes into our ring buffer.</text>
+<text x="900" y="258" font-size="22" font-weight="normal" fill="#203047">Send a copy to Coyote for storage.</text>
+<text x="900" y="292" font-size="22" font-weight="normal" fill="#203047">Inspect or forward the other copy.</text>
+<rect x="875" y="375" width="510" height="190" rx="12" fill="#ffffff" stroke="#cad5e2" stroke-width="2"/>
+<text x="900" y="415" font-size="25" font-weight="bold" fill="#203047">What Coyote provides</text>
+<text x="900" y="457" font-size="22" font-weight="normal" fill="#203047">Memory requests, DMA and adapters.</text>
+<text x="900" y="491" font-size="22" font-weight="normal" fill="#203047">Integrates AMD memory and AXI IP.</text>
+<text x="900" y="535" font-size="22" font-weight="bold" fill="#245d97">We do not add a separate converter.</text>
+<rect x="875" y="605" width="510" height="165" rx="12" fill="#ffffff" stroke="#cad5e2" stroke-width="2"/>
+<text x="900" y="645" font-size="25" font-weight="bold" fill="#203047">Why adapt the interface?</text>
+<text x="900" y="687" font-size="22" font-weight="normal" fill="#203047">Different clocks: 250 → 450 MHz.*</text>
+<text x="900" y="721" font-size="22" font-weight="normal" fill="#203047">Different data widths: 512 → 256 bits.</text>
+<text x="900" y="751" font-size="19" font-weight="normal" fill="#203047">Register stages help long routes meet timing.</text>
+<rect x="875" y="805" width="510" height="200" rx="12" fill="#fff1dc" stroke="#d8993e" stroke-width="2"/>
+<text x="900" y="845" font-size="25" font-weight="bold" fill="#203047">Where timing has failed</text>
+<text x="900" y="887" font-size="21" font-weight="normal" fill="#203047">Converter control → register-slice enable.</text>
+<text x="900" y="922" font-size="22" font-weight="normal" fill="#203047">This is inside Coyote’s memory path.</text>
+<text x="900" y="960" font-size="20" font-weight="normal" fill="#203047">Networking changes placement and routes;</text>
+<text x="900" y="989" font-size="20" font-weight="normal" fill="#203047">the same IP can then miss its clock deadline.</text>
+<rect x="875" y="1045" width="510" height="185" rx="12" fill="#ffffff" stroke="#cad5e2" stroke-width="2"/>
+<text x="900" y="1085" font-size="25" font-weight="bold" fill="#203047">Present in BOTH designs</text>
+<text x="900" y="1127" font-size="21" font-weight="normal" fill="#203047">HBM-resident builds use these adapters.</text>
+<text x="900" y="1162" font-size="21" font-weight="normal" fill="#203047">Network builds use these adapters too.</text>
+<text x="900" y="1204" font-size="20" font-weight="normal" fill="#203047">* Fallback builds use 200 → 350 MHz.</text>
+<path d="M450 1180 V1280" stroke="#4a607a" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+<rect x="105" y="1280" width="690" height="85" rx="12" fill="#e4e9f0" stroke="#8293a8" stroke-width="2"/>
+<text x="130" y="1318" font-size="25" font-weight="bold" fill="#203047">PHYSICAL HBM</text>
+<text x="130" y="1350" font-size="22" font-weight="normal" fill="#203047">Stores the bitstream bytes for later use</text>
+<text x="55" y="1410" font-size="19" font-weight="normal" fill="#203047">Write-data path simplified; AXI responses and backpressure run in the reverse direction. Not a placement map.</text>
+<text x="55" y="1440" font-size="18" font-weight="normal" fill="#203047">2026-11-08 · Source: Coyote cr_hbm.tcl and our network_base.svh. The highlighted box is existing infrastructure.</text>
+</g></svg>

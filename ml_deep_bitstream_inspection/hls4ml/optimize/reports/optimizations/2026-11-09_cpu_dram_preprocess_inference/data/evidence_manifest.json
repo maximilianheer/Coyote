@@ -1,0 +1,786 @@
+[
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_134217664_total_selected_lines_warm_environment.json",
+    "sha256": "80b60110317a8a4a1ff3f79f83c24f97d92947b224e92ac6e730d695bd57d9ee"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_12004440_inference_only_input_cold_environment.json",
+    "sha256": "0d4c34824478f3e860310db88935dc3394d7c288e36a7438afee0b7da9c1a796"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_18876484_preprocessing_only_input_cold_environment.json",
+    "sha256": "7e03261d325c4423e75c11c9d8a97b131579bae4d89068a320c08efbef893e5d"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_67108864_inference_only_input_cold_environment.json",
+    "sha256": "6d64f65c68681c9ce52b6fb6448ab91ff941819e21749ecf3e1ccfc9b56d10cc"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_48540364_total_selected_lines_warm_environment.json",
+    "sha256": "55f5e10dc79b60ebafbf42b890205e59ea2e6d788256d851bc23f2da7b6c2c39"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_55676772_total_selected_lines_warm_environment.json",
+    "sha256": "3ccdcc65492091a710ab50e899b801dbbb0cee1cec792efcc7e4f82e685525d8"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_4194304_preprocessing_only_input_cold_environment.json",
+    "sha256": "67e6f42bcb16c2deca16bff24e58886ff570e0db2edafae704a7abb866a2311a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_18876484_total_selected_lines_warm_environment.json",
+    "sha256": "f88540f65f9f1531af25ecc54e0ee41252ab222395aa1942a53a0b30b7005a82"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/runtime.json",
+    "sha256": "e9f9bdc46a7b6ebb97f9d161736f0f2a0e24bb68e279c1563618861ab3ce27ad"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_30323588_preprocessing_only_input_cold_environment.json",
+    "sha256": "18056688c1f32ec5e558ed02f46e9a16998a65c26ee8968a72a677022b93fb8d"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_12004440_preprocessing_only_input_cold_environment.json",
+    "sha256": "5c748419c0f7b050fa239780d0ceb05bfac617c68be265314abab56fc0d06c71"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/trials.jsonl",
+    "sha256": "880ff0f8cb1714c59df9bc3396d18623e5ba1a5eef60a30a134794540f90da41"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_55676772_preprocessing_only_input_cold_environment.json",
+    "sha256": "4009ed78fc5c8238159bdd16f87b9b7d4f7a70d73339bca4c471982b0065a6de"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_5540996_inference_only_input_cold_environment.json",
+    "sha256": "d5e582de9a3c44b99be56ae9a129589c63e897eb7bdeba088fc74da1a4c3b7e2"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_4194304_inference_only_input_cold_environment.json",
+    "sha256": "008df8e4e29c95438036a743e5c81531baf0ea3ad30eaf162e06484b1f1be53c"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/arena_mapping.json",
+    "sha256": "05ba392cf4d1b52c367d998e67b6e52cffc880c427049f2ab600649fa9c13127"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_34162708_total_input_cold_environment.json",
+    "sha256": "ab526da5134fc9f55e9caa4df22e90914491e05b2af390ee8284a8f504889c35"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_16777216_inference_only_input_cold_environment.json",
+    "sha256": "5383574e5f86d09c6edfa914a5a96d6b8747a2a19197bf8c0fe2e8bc1ee3c9da"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_5540996_total_input_cold_environment.json",
+    "sha256": "8e1d5b326be768b88ecf100f45ca92b295f06ac475f62ba211a0a4836441a197"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_30323588_total_selected_lines_warm_environment.json",
+    "sha256": "84cb3e7c3dbd10a3946111f63c1d9451595fc69f2d9c17ae0322f565a0996738"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_48540364_total_input_cold_environment.json",
+    "sha256": "3f60a65eb3953ffcb668d3fe559d02bb7185e3e54bfb4660b40ad50128e250f5"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_41278872_preprocessing_only_input_cold_environment.json",
+    "sha256": "74d3c4ebb1146c093257534fc0cb8c8281001be59d60e350ac947e52ef04d7e0"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/environment_before.json",
+    "sha256": "e3e82fbcb36a49224001b974c85aa08cf124bef67ee151b59f31ce8548088e54"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_41278872_total_input_cold_environment.json",
+    "sha256": "9b1508412ef9963fa2c4f82402b53b0e6cd33d24e91af59a74e8721ed1332fb2"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_41278872_inference_only_input_cold_environment.json",
+    "sha256": "f945812e1af5038a76e489ccb65b394df60b237d39723a12e9e173bfe0576dd9"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_34162708_total_selected_lines_warm_environment.json",
+    "sha256": "ed061291e7c3a7b5a001386f97133bde4be87c7d02f03099121571c697136f36"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_55676772_total_input_cold_environment.json",
+    "sha256": "96c1ebb1943fa47de232a27c79c4fc483e7ac29ec786d1b8783703319f98c848"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_18876484_total_input_cold_environment.json",
+    "sha256": "1aa3f73cd05c39273ad73e5fe97ffa9dceff7e33f6bb2cd993c1ffa4e7a1426b"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_48540364_preprocessing_only_input_cold_environment.json",
+    "sha256": "d39c773e2cdbdda05d02a0ec97ec548102330910b69469624673334a54e41bc2"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/status.json",
+    "sha256": "0dc35894ca7104b02465bc7c4e319c2b38fb10d15bfe235def1a537a917764f9"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_34162708_inference_only_input_cold_environment.json",
+    "sha256": "9699f45066e1f197219c3f800e84322f9609786f87f2d04cd05349cf7a2cb258"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_12004440_total_input_cold_environment.json",
+    "sha256": "768824fac49fef26ac16a4ad1bfc2e8798c43967e66f3554cdabceb4a7e177ec"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_67108864_total_input_cold_environment.json",
+    "sha256": "26d059d160aa47d27e958164f4ada10386c6d508547343d523f6bbb457cad352"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_16777216_preprocessing_only_input_cold_environment.json",
+    "sha256": "8dc7a9bf6685b1433927af9b5ea7147a562e10ab3fb06ac94f30976dc66a1c9b"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_4194304_total_input_cold_environment.json",
+    "sha256": "5d5a80c4130c06f77f1dee90fdcef0edde0fe82d4e888e7f6ddd514f62f5a192"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_41278872_total_selected_lines_warm_environment.json",
+    "sha256": "7f926534c73dcf6925c614c0867506e7420958916f8fc71d260b504a36608ed4"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_67108864_preprocessing_only_input_cold_environment.json",
+    "sha256": "d2b49d6f48aafeeac3cbfea714cff5efc569246e698b39662c5df247f271361f"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_5540996_total_selected_lines_warm_environment.json",
+    "sha256": "772c48b4f3b298c20279570e50d71aa7559e2dabb99673ce535f758fb02d8e71"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_134217664_preprocessing_only_input_cold_environment.json",
+    "sha256": "6477a7f60277dfd885d3d2318f7506ade4baf2fe1dc0ea4fa0ce333feca6fbd1"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_4194304_total_selected_lines_warm_environment.json",
+    "sha256": "fae00124bc3a7157786dc3e24657e546190ba8c6f10f28b495832c5f4c831c1e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_5540996_preprocessing_only_input_cold_environment.json",
+    "sha256": "119c285ffd12c0763b42ae473fcc9d0ea84df01e760cf2e3e40b25e58bf8f8b0"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_30323588_total_input_cold_environment.json",
+    "sha256": "d18038fc8401abd0a2ccba6527440fa88c36bdc4241e3941250fb7709468fa5f"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_30323588_inference_only_input_cold_environment.json",
+    "sha256": "afbf21e864d6b459e8944455e93365a565c1c01248d72186919a4c798c879791"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_16777216_total_selected_lines_warm_environment.json",
+    "sha256": "106b87e7ad6929fe779264daf89fe374b64b3a99b34b72cb6a00c6d344896965"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_55676772_inference_only_input_cold_environment.json",
+    "sha256": "446c31405e61090d0eb9f422375ca914e87ed761b7f1b122996255491b04e0c5"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/environment_after.json",
+    "sha256": "b20ab58b32415536fb7e2ca21774bb1e258a1cb27328eb222481fb4a9e4bc8d9"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_18876484_inference_only_input_cold_environment.json",
+    "sha256": "de81a67c383cf7eb510c8076a04b3f8b38fa639af722433ca4c4ce14ce86b759"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_67108864_total_selected_lines_warm_environment.json",
+    "sha256": "12146b5e08fac4d5c7244dc5f3ba25b902a73cc38242218696549f55cf263c15"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_48540364_inference_only_input_cold_environment.json",
+    "sha256": "e27b863b1e1928419c80007a300aa082f1b4309f4202dde9fb8457a16ff1095e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_34162708_preprocessing_only_input_cold_environment.json",
+    "sha256": "43a7b8847d5ce452ef036f3afa55ee96270d369ed824d9f9bd91e08d3a550e7a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_16777216_total_input_cold_environment.json",
+    "sha256": "ed22b3035a55ce8471b1e8c933a9c4e5b32708aa1bb66dcc130fd2c7e8a56263"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_134217664_total_input_cold_environment.json",
+    "sha256": "0ccccc6ec1bfe5c8f9fa25452c0544a779af9d4d154ef1f8480007b38768a6b2"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/synthetic_134217664_inference_only_input_cold_environment.json",
+    "sha256": "04984bca151b9e90ed5aea9480779ae36339043563fb1c70c145c4b8ad847cd2"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/manifest.json",
+    "sha256": "0e6ccf23e8ccc6bb00d8e8b5912f16be0e977e722598a6cda582eb090543a6bf"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/FP32/real_12004440_total_selected_lines_warm_environment.json",
+    "sha256": "b5759328dff03397b40f58f79c170a7a14634161d0e8367eca6e0090c2e2a641"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_12004440_total_selected_lines_warm_environment.json",
+    "sha256": "8eca15478c801512bbeca691dc6936cb5bfd026bbb5fecc148b81235923df47e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_5540996_inference_only_input_cold_environment.json",
+    "sha256": "5d652b3c38ca2779332801115877f84a11a289423e41b3bccd20c9b99ce88d0a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_48540364_inference_only_input_cold_environment.json",
+    "sha256": "f663f5cdc1ab3e0b903b7594ed17db68982507ebfa2d96370738e5e7183f19fd"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_4194304_total_input_cold_environment.json",
+    "sha256": "bb2f27d9c6c357c8d22c32b98b501f28ac745446a299dd4a7dd9556d1cee154c"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_55676772_inference_only_input_cold_environment.json",
+    "sha256": "8160c33db45939269bfcc022bd4ad58c9e6aaf2043a5a109b841056e7d0d757a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_18876484_inference_only_input_cold_environment.json",
+    "sha256": "37edafcd8e1491f5e224c4bb7f48002c29ea70b360f054ac85c1669e50cf824f"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/arena_mapping.json",
+    "sha256": "ef04c92d8cf4ca15ee7b5fda63eb200510b035e1483cfd3e97be0c7d6a69823d"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_16777216_inference_only_input_cold_environment.json",
+    "sha256": "768c0bd1d1389ed9e41d151065797cde72e0f1b05ca5b4c7ec632542015f3077"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_4194304_total_selected_lines_warm_environment.json",
+    "sha256": "4f2ac1115202c5212988f6a9f4c80c9f30375b9b31311788b0a40a10941cc1cc"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_41278872_total_input_cold_environment.json",
+    "sha256": "bfd73f910ae041a66a2d2b04c101cb713219b7b566ec1d6d136033cf35438c4d"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_134217664_total_selected_lines_warm_environment.json",
+    "sha256": "b04ead5b166cac75541f3fa3f3e788abd1f4c8bbbc1ddb67210780ec23d50a50"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_5540996_total_input_cold_environment.json",
+    "sha256": "4c7edc7e3b73ed885c3bf0893ea64cf124098bed3f8f69d0f4d22059662fce58"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_67108864_inference_only_input_cold_environment.json",
+    "sha256": "9aaa4a8a78577f161747cfc819555dd6cbded91301c9e97ff2db6047c6a4bc33"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_48540364_total_input_cold_environment.json",
+    "sha256": "fe14890da3265f156f44954a553dee72c79bf31afe3a215194d2b35b21a5dee9"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_134217664_total_input_cold_environment.json",
+    "sha256": "44304555c4529d5c5fb960488a3ea570a7a4e15ab03769024d35c3132282678b"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_18876484_total_input_cold_environment.json",
+    "sha256": "3ad115c3a8b7c8da3954080eac263f579ee72dde761912c920f13a641b2d2d86"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_55676772_total_input_cold_environment.json",
+    "sha256": "f2ce5dcc1e057afeb9e35c62f0507b419f26e3cb714bbb31b8e14ee214a8b05c"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_30323588_inference_only_input_cold_environment.json",
+    "sha256": "0435d515d12470cdca91cfd18944e6d61c6cf30b862aba1246f1d5934862e3f5"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_34162708_total_input_cold_environment.json",
+    "sha256": "1929ccae5bb6b65316effd3ad58b70afcb92e6746042925b1d6f5dcd57deab1e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/environment_before.json",
+    "sha256": "d6cbfbf770cd38b5c4fccf6eafa492e8f1021940fe057f0ee561795e44adea33"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_41278872_total_selected_lines_warm_environment.json",
+    "sha256": "aad25353ef25bbd759a7d7d65a0c74879f81fe6b93f87d26add72bf9a133621d"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_34162708_inference_only_input_cold_environment.json",
+    "sha256": "4a74b0b30a07b2b8d68863f804599426aaaab2553d403e08000daa81892dcdbd"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_30323588_total_input_cold_environment.json",
+    "sha256": "41c6aeda970f3a81cb4ebae11519185829aa6198e96a020ff0f971e2efdbf16d"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/trials.jsonl",
+    "sha256": "2ff7846eb47662e7c2d58e088dfa9b4f834e1beeb9770dc0f9f68299cfd0ac67"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/runtime.json",
+    "sha256": "aeceba64d74cc59fb720f5bf29d2d9e3230fdfa7c9eee6faf878e2e957483dd9"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_34162708_total_selected_lines_warm_environment.json",
+    "sha256": "3cfef4080e9d8c013b03504ea3a12c8f62e8235a06eea579d3cfc8a4c725b28f"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_41278872_inference_only_input_cold_environment.json",
+    "sha256": "58ad0cacf187f4112dc23e2b832a2bdd6f85e15e85b333872be65a75afef34ac"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_134217664_inference_only_input_cold_environment.json",
+    "sha256": "01969c5017602f69c0838b570d24d3df68c68b93fcc8d7d9e7ac56230effde7c"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_67108864_total_selected_lines_warm_environment.json",
+    "sha256": "2a7b5c1335df45c84bd2ec75e1882ad165674da4864d5f252164e888b8e6b545"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_30323588_total_selected_lines_warm_environment.json",
+    "sha256": "b2e156c495b74a93fda1071ef1a9204c4e9a7f8304c1ce7df4776bdec31b875d"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/manifest.json",
+    "sha256": "0e6ccf23e8ccc6bb00d8e8b5912f16be0e977e722598a6cda582eb090543a6bf"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_67108864_total_input_cold_environment.json",
+    "sha256": "d3ebb1f6d83e44a285156bf9af3df3a90ddd47e3976f362bf709bbf5a996ea67"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_12004440_total_input_cold_environment.json",
+    "sha256": "1f7c720884704d4b20706c8a15616ebb0afead2f2c9724a9e02257374030ca7e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_55676772_total_selected_lines_warm_environment.json",
+    "sha256": "66711953b9542d4eb3335225c706ce528dea5a0a82189fe4f2c71842e6435e9f"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_18876484_total_selected_lines_warm_environment.json",
+    "sha256": "951b12fcb31c28d477ccbfce11be858005ff284f92c177f0fb9301fe58f05039"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_48540364_total_selected_lines_warm_environment.json",
+    "sha256": "eecd94074b1190c8fd6073e2e1ed4a378df5fd9605a0d57983c5c724a72cde71"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/environment_after.json",
+    "sha256": "e22deb94cbb3c5dd4e4632f529fddf96164f2fdbf6f85ba87f686cbbb7057ff9"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_4194304_inference_only_input_cold_environment.json",
+    "sha256": "495ed087b0bf86ee01fc2aba5a9f027b3a4525b92c0edf1a92eec6bd90ade650"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_16777216_total_selected_lines_warm_environment.json",
+    "sha256": "1c6fb45b86d54c75c123d11745c8ab1fb24f6c1160329dc8d79d4320245bba65"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_12004440_inference_only_input_cold_environment.json",
+    "sha256": "d1319fd7c9f41215d0013ea7d57fa54c5f9925454b92e9adaba7543b070656ed"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/real_5540996_total_selected_lines_warm_environment.json",
+    "sha256": "1e11e1628acea780b4042734fe890da90dc3736c98106a9eeb05eca0165d14d7"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/synthetic_16777216_total_input_cold_environment.json",
+    "sha256": "03e2af80bc02938b65861c147bf41eaa7e150bbffafa16b50e8bac89cfefa0cd"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/A/QKERAS_W8A8/status.json",
+    "sha256": "8ea997f04d1bc787c71ec1bc6051b07c7226b04184197f572cbc1d5c29356fb3"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_4194304_total_selected_lines_warm_environment.json",
+    "sha256": "aa231b8803b0aef067ec6afac5c9967dbe6fe8333a990d00e4628e2904bfe1c3"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_134217664_total_input_cold_environment.json",
+    "sha256": "7f1d83dd96f3ff0bcde8ba3ffd6e6cd583daf1ad6b5afdbe913df73a06ac8dc7"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_41278872_inference_only_input_cold_environment.json",
+    "sha256": "c6200933a65afc9cc60d076758e1c7fc68560f1f03b4a386d81742c7ccc66215"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_67108864_total_selected_lines_warm_environment.json",
+    "sha256": "c08b19ace099ce21e1dc4d5eddb3e59d84e52265ba58835512f2ec5fca083521"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_34162708_total_selected_lines_warm_environment.json",
+    "sha256": "42b6b49cd7e88a0386025bfa75078d9ab7b3941274c94434a6462f0827fb3d6c"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_134217664_inference_only_input_cold_environment.json",
+    "sha256": "397da21c33bb09fd80cf7cb5a9f883649bd6ef14e7ad2280e229fa2e12ef4281"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_30323588_total_selected_lines_warm_environment.json",
+    "sha256": "af3e7a3570daaa8478340cc763af5c35e9e9c89743311198fa1eeb859df0256a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_5540996_total_selected_lines_warm_environment.json",
+    "sha256": "78f9136685b6405ae3ff06d400d1b1f302744c7d4f90d8ea73839aacad5f366c"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/environment_after.json",
+    "sha256": "263dee2d00d1e1dcc2a9acf5623475945de926d6712a4af55826ff905674e42b"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_12004440_total_input_cold_environment.json",
+    "sha256": "17efb45548ff2860831ca4a4f100ccfcbd8bfacc370c2cc0e5b2ebfa012e38c6"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/status.json",
+    "sha256": "d34b0a594a04e5ad2f5ee4f6111f0520e6596b93cee5137a57038eaec7865aee"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_48540364_total_selected_lines_warm_environment.json",
+    "sha256": "21b00d3164208eccd830427b9a16f27c9c0baaa20bbd7dd4f6bbb06e91376884"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_18876484_total_selected_lines_warm_environment.json",
+    "sha256": "08159405c287205fa71427e028c8920155f01b50b65023a304785e7f6d7279a5"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_55676772_total_selected_lines_warm_environment.json",
+    "sha256": "0ad7d0ed992a26a7641bd69593422d5e34d4123ba275e52c25c75827066ebed6"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_12004440_inference_only_input_cold_environment.json",
+    "sha256": "72815b733d0ab0eb656cb33858b0a2fe2e7622883c8c597107d7a2634fecbec6"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_16777216_total_selected_lines_warm_environment.json",
+    "sha256": "73c0bc65209df393d039f2752d312c424f16f6ddb67cf3590da66cc9d9355972"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_34162708_preprocessing_only_input_cold_environment.json",
+    "sha256": "bc9d97dd4647d129fd18a8bc78e922bd06dd908a9f658232617b750b4e931840"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_30323588_total_input_cold_environment.json",
+    "sha256": "27a68445b5bc8b420f3fbe1de33de0524f43a722201348cd1d968efede299b11"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_16777216_preprocessing_only_input_cold_environment.json",
+    "sha256": "b1498c137aca13b8c6bd78c0e2c3ff2678cf66ec77441992b760ad456eb0b5cc"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_67108864_total_input_cold_environment.json",
+    "sha256": "5b74dbe09b2544e1466bd092b8f1e9504fd33a3af3f9b908e9411efb6fbe282c"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_12004440_total_selected_lines_warm_environment.json",
+    "sha256": "19ac1be09242ac40bf47692759413daf14fcfea0c84f27b1cafcd6ce0f88ebac"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_30323588_preprocessing_only_input_cold_environment.json",
+    "sha256": "8ad1afc227c3b43fdbc174ad0bef985e5210f3eb1028911c8676b900cae9eb58"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_12004440_preprocessing_only_input_cold_environment.json",
+    "sha256": "cb254140c8abf0e15902d6b223529fbc5cc1a06578b8b24bff501c2e27870a05"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_16777216_inference_only_input_cold_environment.json",
+    "sha256": "4674415e5aeac5a83e8ae16a413bd513f83b687ca88740eac06571f0e40ff686"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_34162708_total_input_cold_environment.json",
+    "sha256": "b28c986d1b472ce3919e6e6a5b2e128aa1fe764764c9d204b77b6a3f10adab54"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_4194304_total_input_cold_environment.json",
+    "sha256": "40883826f9d329d3611937a6f98857ad21bb81acf2a4ee7e7c741691e7291c7c"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_55676772_total_input_cold_environment.json",
+    "sha256": "d4c63c6881839304fdcbb67408c7ea8c8e299424d52c9a135cd6cec090c2f869"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_5540996_preprocessing_only_input_cold_environment.json",
+    "sha256": "21bf8ec30ed496a81fea2261367e67a3e862d836ac679994bd17014178c82cf2"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_18876484_total_input_cold_environment.json",
+    "sha256": "042bcaf39140760b24711927542061ae4c1aec34b0e92cd9769e9c27ca00398b"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_48540364_total_input_cold_environment.json",
+    "sha256": "d3b14d411121204f3606fd938406250adf47c37dfc836aa2e1472a96104bab22"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_4194304_preprocessing_only_input_cold_environment.json",
+    "sha256": "3f24b992bc30a58ad08a4e59cabd046e8d0d19a648328c94b62ce1f51e449137"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_18876484_inference_only_input_cold_environment.json",
+    "sha256": "3f4058db350ff46d9f065ec105825d9c11807329942b149eb791806212dbac8d"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/trials.jsonl",
+    "sha256": "764bed894fec74c01411c42e47c0a7dd5a07e0731be9fe0de80624b2b1740c4b"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_55676772_inference_only_input_cold_environment.json",
+    "sha256": "4d800e2a05f13f218ca479cf886f19c750b3c47722965f462911895f7a5c5ee3"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_67108864_preprocessing_only_input_cold_environment.json",
+    "sha256": "797ffb31a1ee3e4478da28d0393b329031f4aefbcee352d1b78d09d64eecf49a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_5540996_total_input_cold_environment.json",
+    "sha256": "29d5427dbf01d112256b1d559a80ac4e325a704d13109f8643413a431f4a7002"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_48540364_inference_only_input_cold_environment.json",
+    "sha256": "364385e064a0184f747060e11251e4d5782ac68ebd87284b5f8817ce25085ab5"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_134217664_preprocessing_only_input_cold_environment.json",
+    "sha256": "fa62638d00b6c6bfa9e1c70134919a665716dc3c6bfc982d55d0cad80d842c2a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_18876484_preprocessing_only_input_cold_environment.json",
+    "sha256": "4164613b2269530e8b966ab306b66d7f379494c1433479c96d69c68b7a343140"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_41278872_total_input_cold_environment.json",
+    "sha256": "76f09f7d029b8bf17288082e3d4f0ae464a671ee42de172bdd1f5002ba21f740"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/runtime.json",
+    "sha256": "e9f9bdc46a7b6ebb97f9d161736f0f2a0e24bb68e279c1563618861ab3ce27ad"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_41278872_preprocessing_only_input_cold_environment.json",
+    "sha256": "fbca6667faf0da3089d61371a980943ff71740e8ea076bb754e6be009c809170"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_16777216_total_input_cold_environment.json",
+    "sha256": "32ef8adae68a966dbf394088fae5baabe4be057a9fafe34ccb1734a8c55a8500"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_30323588_inference_only_input_cold_environment.json",
+    "sha256": "95c9da53b08bddcf4d82871c01e0c79e4972f844a19ce02b0d3cd9eb6d6ffa4f"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_134217664_total_selected_lines_warm_environment.json",
+    "sha256": "f000d15ed419066c92995169774fc5e44bc92442bf3c5e9ec2ed46ebc2a5a6c9"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_5540996_inference_only_input_cold_environment.json",
+    "sha256": "e9480cbca4c6b856ce24cdef97a9a8a027fe4dd58fc2f615da8fa54888c90fdd"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/arena_mapping.json",
+    "sha256": "d07784de49415f693af90464d9a9dde4c7d92058238d567911b4bfd2a809b3c1"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/manifest.json",
+    "sha256": "b338b0abf58feddfe6aabbadc4535d5f5db12516bf144b7262552bc7b4703ad8"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_48540364_preprocessing_only_input_cold_environment.json",
+    "sha256": "17659d18e6471192870babbbd16829ab5cf022ef3ad6ac2f447729814ffca78a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_55676772_preprocessing_only_input_cold_environment.json",
+    "sha256": "db9de0b3dbd90b31e99633cf0cbff1f9109b17c298778493aeb1c03e0d0b0c45"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_34162708_inference_only_input_cold_environment.json",
+    "sha256": "ba5de8eb039218092be3bb1077a7a74644e640e4536bd323e9b254ca27529966"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/environment_before.json",
+    "sha256": "baf6121ff7c1fd656263f9a8fd47205fbe40026d629fce847887cb666aae4839"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_4194304_inference_only_input_cold_environment.json",
+    "sha256": "fd71c9ecc656606004115de8f1a1fbf628896fef9424f9fa352a2ac716e527f2"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/real_41278872_total_selected_lines_warm_environment.json",
+    "sha256": "ff6143005e96a44c10a129f53c901ccd294f1bc330ee3fe8cf77d9c9ba915ed2"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/FP32/synthetic_67108864_inference_only_input_cold_environment.json",
+    "sha256": "f28ff651504b9480fcea7b862befa98e99ec0e90d9ec8c85ffa4d83c4db33ac0"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_67108864_inference_only_input_cold_environment.json",
+    "sha256": "10ddcd310a16957e0ebb389ec2e01879c59b400a019b06485211ee8a5834e2a0"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_67108864_total_input_cold_environment.json",
+    "sha256": "142c38b204d95dd92ce6b6bc76505aa6a32afd79fddf28cf9c13aa56a2329b07"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_12004440_inference_only_input_cold_environment.json",
+    "sha256": "24eceb60d12744601e00b65e3fe063d821dad9fae11163cc364ec43cfd582550"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_5540996_total_input_cold_environment.json",
+    "sha256": "40aa54a11f7920459028019a036e1896a94b57a1566db15ad80cf7a4e225ed03"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_48540364_total_selected_lines_warm_environment.json",
+    "sha256": "bdb8564438ec6ca4df1bcfb0a56c489975b07c1047efba9cdea577ac2b7793cd"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_134217664_total_selected_lines_warm_environment.json",
+    "sha256": "9657f964a0bddf5e8b7f0e63afbdc0995370ef81727fc6b618fe10570f0738d0"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_18876484_total_selected_lines_warm_environment.json",
+    "sha256": "d06b9e20eeb0f1437fdf0c73b272aca50adf658e92d05e71406af335d378fa1e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_55676772_total_selected_lines_warm_environment.json",
+    "sha256": "96e27c9c80629808d8193a15da0358fbbebcbac39eaf92805f86fae318c1b31a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/arena_mapping.json",
+    "sha256": "3e3c7275d7fe91acdd152f3c48835485a2b510458b52903f46b73d6020dd815b"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/runtime.json",
+    "sha256": "aeceba64d74cc59fb720f5bf29d2d9e3230fdfa7c9eee6faf878e2e957483dd9"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_5540996_inference_only_input_cold_environment.json",
+    "sha256": "64969f0622eb2cf856c0933de7d037b29ab929ecc3eb67b76e0799de472d52e7"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/trials.jsonl",
+    "sha256": "b2017e335e2fae170fd87313820a222ab8714fe10f2e57ec10b310771ebba2ae"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_4194304_inference_only_input_cold_environment.json",
+    "sha256": "3e929b52e84e5354b65c45931cf49ef1ad3d3f96cc090a1aecfb7d40ffe8c174"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_34162708_total_input_cold_environment.json",
+    "sha256": "9e678d40fade7f28aee6699b0106d4f4db3d729ddf0ffe85b8cbac7bbaec48c3"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_16777216_total_input_cold_environment.json",
+    "sha256": "3a0a8bd47fdd453882423447ac4eac857256d4058fd2fbc38b632c11d066ebc5"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_30323588_total_selected_lines_warm_environment.json",
+    "sha256": "d7c2cb9cf11c8ae6edaecc0a299275882f60682372d6553bc8a1ed6a26a433d0"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_18876484_total_input_cold_environment.json",
+    "sha256": "e5c1113a58849d222b37e13e76b41973e12aff1e78acba94f87185fd9b10a49e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_55676772_total_input_cold_environment.json",
+    "sha256": "70a4e2fa427ab3941fab81c951b3b091bc0e73a07a2e7fcf0591fce8ce00ad2c"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_41278872_inference_only_input_cold_environment.json",
+    "sha256": "34956d5e37d762f2777737dcdb6a54e869d5cff7947d3df8cd1b4dbb4894f975"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_41278872_total_input_cold_environment.json",
+    "sha256": "fb07b48052ddf3140394a06753d178a84e23e4d799e374035a3a906b0bd2cf61"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_34162708_total_selected_lines_warm_environment.json",
+    "sha256": "e469a94b7b99a51f8de21e5115c9598935755ff06a3e4ab58a6887c8a891032f"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_16777216_inference_only_input_cold_environment.json",
+    "sha256": "5837492a876e3f489f069e9ebe4723803aaf1d008ac442ea7626d09134343ace"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_48540364_total_input_cold_environment.json",
+    "sha256": "57c8a6c2749abc9307557fe98be0f0a3a297c2ff9347ed8f6ee4922bf78a6ff4"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_134217664_total_input_cold_environment.json",
+    "sha256": "a215aee22e5818272750fea357eb0dc1faa21e1a46beccc22a4781c44f6ee6e1"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_12004440_total_input_cold_environment.json",
+    "sha256": "7f8e32fc81189b5b9a22c58ea09ab4640b8db836094e290f6b2f18372d94de7a"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_16777216_total_selected_lines_warm_environment.json",
+    "sha256": "6ca1bdbb48c8287f797ee621eee2ef0382951cf73265da6f0a81d14e9ccd88c1"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_34162708_inference_only_input_cold_environment.json",
+    "sha256": "8ef6cd8e57edaa480b08c7bc6157a3bb4c3645c656a391ab4f26b6a866f36d86"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_41278872_total_selected_lines_warm_environment.json",
+    "sha256": "7754b7aed89d1e9d17137396dafffeb7253926965e41112354f16c2f06d45536"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_4194304_total_selected_lines_warm_environment.json",
+    "sha256": "e566426934e36049a0126c0e93d5223c28273f79256dcc6657163fde6663f027"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_4194304_total_input_cold_environment.json",
+    "sha256": "f3c72c156e19a3f1c38d4b93d25b341b8e32b8de8dc8a03981250cf173b6513e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_5540996_total_selected_lines_warm_environment.json",
+    "sha256": "b37a276c7802649533b5bc528d5698b74fa11e2b9a22674f8ce549c1f273ae70"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/manifest.json",
+    "sha256": "b338b0abf58feddfe6aabbadc4535d5f5db12516bf144b7262552bc7b4703ad8"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_30323588_total_input_cold_environment.json",
+    "sha256": "18fafe4f886dccd43ed76d1083e59e8fb411c391f005fc0897e502b24baf8e9e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_30323588_inference_only_input_cold_environment.json",
+    "sha256": "9ba1f9ca43cd7d8827930ad96151adc52006552521438f2265a134510d449a69"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/status.json",
+    "sha256": "7dab16d7d6253616525b27becee7bd731da19e5cdc008cf00d926aa9c5d9d1f3"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_18876484_inference_only_input_cold_environment.json",
+    "sha256": "7cab5686483d6be5f78ce99ef43ad45cf94140319ef42daf0b153790d241b33f"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_55676772_inference_only_input_cold_environment.json",
+    "sha256": "9d4e2f356f259b65d18b0bf3e329a90423f321dce8743b1aa76b8ef9bd944601"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_48540364_inference_only_input_cold_environment.json",
+    "sha256": "18b952df2e12a80a56deacde3dbc4a1a35b86340de0a88ecbb47d44d5f04a228"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_134217664_inference_only_input_cold_environment.json",
+    "sha256": "0cfded7c0a28f3e07c9b86d44e6292fb741e513653368fd5b3fa2cca0f843858"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/synthetic_67108864_total_selected_lines_warm_environment.json",
+    "sha256": "58de359c0a22e7ca6c296d6e7684ccb530b4994a4cbceacf613d5f12ff89350e"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/environment_after.json",
+    "sha256": "e45a617841fc641e344b80f9bb36512a598fe45d130ec567c440302962488ce1"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/real_12004440_total_selected_lines_warm_environment.json",
+    "sha256": "bc1c0ae03132499431c6e8f1331314ec75f0db5cc57e41c84a2273ecbd42af26"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/cpu_dram_20261109_031305/measurements/B/QKERAS_W8A8/environment_before.json",
+    "sha256": "6a017610738faca41fdb66d876b58cbb936a65dcd722d093c11fb258e977484b"
+  }
+]

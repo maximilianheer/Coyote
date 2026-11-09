@@ -1,6 +1,9 @@
-"""Process-owned implementation permits: three primary plus one non-streaming.
-Legacy workers keep their original shared lock and temporarily reserve primary-0.
-Preparation, synthesis of HLS kernels and RTL validation do not take permits.
+"""Process-owned implementation permits, with configurable shared capacity.
+
+The legacy default is three primary plus one non-streaming slot. Shared
+campaigns can explicitly select up to six slots. Legacy workers keep their
+original shared lock and temporarily reserve primary-0. Preparation,
+synthesis of HLS kernels and RTL validation do not take permits.
 """
 import contextlib, fcntl, json, os, time
 from pathlib import Path
@@ -20,8 +23,8 @@ def available_slots(root, lane):
         if capacity.get('policy') != 'shared':
             raise ValueError('Unknown implementation capacity policy')
         count = capacity.get('slots')
-        if type(count) is not int or not 1 <= count <= 5:
-            raise ValueError('Shared implementation capacity must be 1..5')
+        if type(count) is not int or not 1 <= count <= 6:
+            raise ValueError('Shared implementation capacity must be 1..6')
         return list(range(count))
     if lane not in ('primary','nonstreaming'):raise ValueError('Unknown implementation lane')
     slots=[0,1,2] if lane=='primary' else [3]

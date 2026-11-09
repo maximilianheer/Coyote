@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "measured_calls": 33600,
+  "primary_calls": 19200,
+  "samples_per_cell": 400,
+  "samples_per_session": 200,
+  "models": 2,
+  "rounds": 2,
+  "native_int8_disposition": "diagnostic only, not included in primary timing",
+  "figures": 8,
+  "cold_gather_median_cache_misses": 65649.0,
+  "warm_gather_median_cache_misses": 0.0,
+  "visual_review": "Required separately; numerical checks do not establish layout quality"
+}

@@ -4,13 +4,18 @@ import argparse
 import fcntl
 import json
 import os
+import signal
 from pathlib import Path
 import subprocess
 import time
 
 from implementation_permits import permit
 from prepare import sha
-from worker import collect_artifacts, save
+from worker import collect_artifacts, final_timing_reports, save
+from hbm_clock import (verify_generated_hbm_clock, verify_hbm_clock_sources,
+                       verify_report_application_clock, verify_report_hbm_clock)
+from network_timing import (install_ethernet_control_replication,
+                            verify_generated_control_clocks, verify_report_user_clock)
 
 
 def run(job):
@@ -36,10 +41,22 @@ def run(job):
     def command(stage, arguments, directory):
         progress(stage=stage, stage_started_at=time.time())
         with (job / (stage + '.log')).open('w') as log:
-            result = subprocess.run(arguments, cwd=directory, env=environment,
-                                    stdout=log, stderr=subprocess.STDOUT)
-        if result.returncode:
-            raise RuntimeError(f'{stage} exited {result.returncode}; see {stage}.log')
+            child = subprocess.Popen(arguments, cwd=directory, env=environment,
+                                     stdout=log, stderr=subprocess.STDOUT,
+                                     start_new_session=True)
+            progress(child_pid=child.pid)
+            try:
+                code = child.wait(timeout=86400)
+            except subprocess.TimeoutExpired:
+                os.killpg(child.pid, signal.SIGTERM)
+                try:
+                    child.wait(timeout=30)
+                except subprocess.TimeoutExpired:
+                    os.killpg(child.pid, signal.SIGKILL)
+                    child.wait()
+                raise RuntimeError(f'{stage} exceeded 24-hour watchdog')
+        if code:
+            raise RuntimeError(f'{stage} exited {code}; see {stage}.log')
 
     try:
         if config.get('variant'):
@@ -58,9 +75,34 @@ def run(job):
             '-DVIVADO_ROOT_DIR=/tools/Xilinx/Vivado/2024.2',
             '-DVITIS_HLS_ROOT_DIR=/tools/Xilinx/Vitis_HLS/2024.2',
         ], job)
+        if config.get('replicate_ethernet_padding_control'):
+            install_ethernet_control_replication(job)
+        if config.get('hls_ip_cache_manifest_sha256'):
+            from deployment_ip_cache import install_cache
+            install_cache(job, config)
         command('project', ['make', '-j1', 'project'], job / 'build')
+        if config.get('user_clock_hz'):
+            save(job / 'generated_control_clock_verification.json',
+                 verify_generated_control_clocks(job / 'build', config['clock_hz'] / 1e6,
+                                                 config['user_clock_hz'] / 1e6))
+        hbm_mhz = config.get('hbm_axi_mhz', 450)
+        if hbm_mhz != 450:
+            verify_hbm_clock_sources(job)
+            save(job / 'generated_hbm_clock_verification.json', {
+                'mhz': hbm_mhz,
+                'files': verify_generated_hbm_clock(job / 'build', hbm_mhz),
+            })
         with permit(progress):
             for stage in ['synth', 'link', 'shell', 'bitgen']:
+                if stage == 'bitgen':
+                    # A timing-invalid image cannot be admitted for benchmarks.
+                    # Reject it before spending time generating its bitstream.
+                    final_timing_reports(job / 'build', config['id'])
+                    report = job / 'build/reports/shell_timing_summary.rpt'
+                    verify_report_application_clock(report, config.get('clock_hz', 250000000) / 1e6)
+                    verify_report_hbm_clock(report, hbm_mhz)
+                    if config.get('user_clock_hz'):
+                        verify_report_user_clock(report, config['user_clock_hz'] / 1e6)
                 command(stage, ['make', '-j1', stage], job / 'build')
         artifacts = collect_artifacts(job / 'build', config['id'])
         save(job / 'artifacts.json', {

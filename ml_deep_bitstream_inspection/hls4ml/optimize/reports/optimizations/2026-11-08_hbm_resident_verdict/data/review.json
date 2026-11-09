@@ -1,0 +1,10 @@
+{
+  "status": "passed_with_disclosed_cross_program_variation",
+  "primary_measured_calls": 4800,
+  "real_primary_calls": 3200,
+  "figures": 13,
+  "standalone_files": 39,
+  "maximum_control_drift": 0.09825359146036516,
+  "previous_report_preserved": true,
+  "visual_review": "Separate visual inspection required; not asserted by this script"
+}

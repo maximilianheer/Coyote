@@ -2,6 +2,7 @@
   "version": 5,
   "signature_prefix": "0x4342595400050000",
   "clock_hz": 250000000,
+  "clock_hz_semantics": "Default for the original attempts. Convert raw ticks using the selected image's config.json clock_hz; explicitly labelled clock-fallback builds can differ.",
   "variants": {"10": "HBM_FPGA", "11": "HBM_GPU", "12": "NETWORK_FPGA", "13": "NETWORK_GPU"},
   "registers": {
     "0": "status_read_arm_write",
@@ -38,6 +39,7 @@
     "NETWORK_GPU": ["bytes_received", "bytes_requested", "hbm_last_requests", "hbm_completions", "gpu_words", "gpu_requests", "gpu_completions", "freed_chunks", "ring_peak_words", "network_stalls", "hbm_branch_stalls", "inspection_branch_stalls", "frame_error", "poll_requests", "poll_ready_tick", "poll_payload_tick"]
   },
   "notes": [
+    "Use the exact selected attempt's verified application clock when converting ticks; fallback images must not be reported as 250 MHz.",
     "Input HBM base is a mapped Coyote virtual address, not a raw physical HBM address.",
     "Initialize the GPU header, mailbox and mapping before arm. Match raw length to the GPU header.",
     "An invalid trial requires controlled DMA drain/reset before reuse; result availability alone does not prove successful storage.",

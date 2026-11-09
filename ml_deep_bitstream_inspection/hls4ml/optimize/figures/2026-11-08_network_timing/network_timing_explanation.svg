@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1110" viewBox="0 0 1500 1110">
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#52647a"/></marker></defs>
+<rect width="1500" height="1110" fill="#f4f7fb"/>
+<g font-family="DejaVu Sans, sans-serif" fill="#172b46">
+<text x="40" y="55" font-size="36" font-weight="bold" fill="#172b46" text-anchor="start">Why the network builds are harder to time</text>
+<text x="40" y="91" font-size="23" font-weight="normal" fill="#172b46" text-anchor="start">Adding RoCE changes the hardware and its placement—not just where the bytes enter.</text>
+<rect x="40" y="120" width="700" height="310" rx="14" fill="#ffffff" stroke="#d7e0eb" stroke-width="2"/>
+<rect x="760" y="120" width="700" height="310" rx="14" fill="#ffffff" stroke="#d7e0eb" stroke-width="2"/>
+<text x="65" y="160" font-size="27" font-weight="bold" fill="#1269a3" text-anchor="start">HBM-resident cases</text>
+<text x="785" y="160" font-size="27" font-weight="bold" fill="#b35a13" text-anchor="start">Network cases</text>
+<text x="65" y="195" font-size="20" font-weight="normal" fill="#172b46" text-anchor="start">The input is already stored when the trial starts.</text>
+<text x="785" y="195" font-size="20" font-weight="normal" fill="#172b46" text-anchor="start">The FPGA must receive, store and inspect/forward.</text>
+<rect x="70" y="230" width="165" height="83" rx="14" fill="#e5f2fc" stroke="#9cc5e1" stroke-width="2"/>
+<text x="152.5" y="264" font-size="22" font-weight="normal" fill="#172b46" text-anchor="middle">HBM</text>
+<text x="152.5" y="292" font-size="22" font-weight="normal" fill="#172b46" text-anchor="middle">ready bytes</text>
+<rect x="280" y="230" width="195" height="83" rx="14" fill="#e5f2fc" stroke="#9cc5e1" stroke-width="2"/>
+<text x="377.5" y="264" font-size="22" font-weight="normal" fill="#172b46" text-anchor="middle">Read / gather</text>
+<text x="377.5" y="292" font-size="22" font-weight="normal" fill="#172b46" text-anchor="middle">or forward</text>
+<rect x="520" y="230" width="185" height="83" rx="14" fill="#e5f2fc" stroke="#9cc5e1" stroke-width="2"/>
+<text x="612.5" y="264" font-size="22" font-weight="normal" fill="#172b46" text-anchor="middle">Checker</text>
+<text x="612.5" y="292" font-size="22" font-weight="normal" fill="#172b46" text-anchor="middle">or GPU</text>
+<path d="M238 271 L274 271" fill="none" stroke="#52647a" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M478 271 L514 271" fill="none" stroke="#52647a" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="65" y="359" font-size="24" font-weight="bold" fill="#172b46" text-anchor="start">2 Coyote HBM interface paths</text>
+<text x="65" y="394" font-size="20" font-weight="normal" fill="#172b46" text-anchor="start">PCIe shell + 512-to-256-bit HBM converters.</text>
+<rect x="785" y="230" width="125" height="100" rx="14" fill="#fff0dc" stroke="#e5b67b" stroke-width="2"/>
+<text x="847.5" y="270" font-size="19" font-weight="normal" fill="#172b46" text-anchor="middle">100GbE</text>
+<text x="847.5" y="296" font-size="19" font-weight="normal" fill="#172b46" text-anchor="middle">input</text>
+<rect x="945" y="230" width="250" height="100" rx="14" fill="#fff0dc" stroke="#e5b67b" stroke-width="2"/>
+<text x="1070.0" y="270" font-size="19" font-weight="normal" fill="#172b46" text-anchor="middle">Ethernet / IP / UDP</text>
+<text x="1070.0" y="296" font-size="19" font-weight="normal" fill="#172b46" text-anchor="middle">RoCE + CRC + DMA</text>
+<rect x="1230" y="230" width="205" height="100" rx="14" fill="#fff0dc" stroke="#e5b67b" stroke-width="2"/>
+<text x="1332.5" y="261" font-size="19" font-weight="normal" fill="#172b46" text-anchor="middle">HBM storage</text>
+<text x="1332.5" y="287" font-size="19" font-weight="normal" fill="#172b46" text-anchor="middle">+ inspection /</text>
+<text x="1332.5" y="313" font-size="19" font-weight="normal" fill="#172b46" text-anchor="middle">GPU forwarding</text>
+<path d="M913 280 L939 280" fill="none" stroke="#52647a" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1198 280 L1224 280" fill="none" stroke="#52647a" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="785" y="367" font-size="23" font-weight="bold" fill="#172b46" text-anchor="start">3 Coyote HBM interface paths + packet buffers</text>
+<text x="785" y="402" font-size="20" font-weight="normal" fill="#172b46" text-anchor="start">Same converters; added HBM path and network logic.</text>
+<rect x="40" y="450" width="1420" height="310" rx="14" fill="#ffffff" stroke="#d7e0eb" stroke-width="2"/>
+<text x="65" y="492" font-size="27" font-weight="bold" fill="#172b46" text-anchor="start">The critical detail: one control signal must reach hundreds of registers</text>
+<rect x="80" y="563" width="270" height="95" rx="14" fill="#e5f2fc" stroke="#9cc5e1" stroke-width="2"/>
+<text x="215" y="601" font-size="22" font-weight="normal" fill="#172b46" text-anchor="middle">HBM width converter</text>
+<text x="215" y="634" font-size="22" font-weight="bold" fill="#172b46" text-anchor="middle">control register</text>
+<path d="M353 610 L440 610" fill="none" stroke="#c65b30" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M445 545 L445 695" fill="none" stroke="#c65b30" stroke-width="4"/>
+<path d="M445 545 L650 545" fill="none" stroke="#c65b30" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="660" y="533" width="310" height="25" rx="5" fill="#fff0dc" stroke="#e5b67b" stroke-width="2"/>
+<text x="815" y="551" font-size="16" font-weight="normal" fill="#172b46" text-anchor="middle">Payload-register enables</text>
+<path d="M445 575 L650 575" fill="none" stroke="#c65b30" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="660" y="563" width="310" height="25" rx="5" fill="#fff0dc" stroke="#e5b67b" stroke-width="2"/>
+<text x="815" y="581" font-size="16" font-weight="normal" fill="#172b46" text-anchor="middle">Payload-register enables</text>
+<path d="M445 605 L650 605" fill="none" stroke="#c65b30" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="660" y="593" width="310" height="25" rx="5" fill="#fff0dc" stroke="#e5b67b" stroke-width="2"/>
+<text x="815" y="611" font-size="16" font-weight="normal" fill="#172b46" text-anchor="middle">Payload-register enables</text>
+<path d="M445 635 L650 635" fill="none" stroke="#c65b30" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="660" y="623" width="310" height="25" rx="5" fill="#fff0dc" stroke="#e5b67b" stroke-width="2"/>
+<text x="815" y="641" font-size="16" font-weight="normal" fill="#172b46" text-anchor="middle">Payload-register enables</text>
+<path d="M445 665 L650 665" fill="none" stroke="#c65b30" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="660" y="653" width="310" height="25" rx="5" fill="#fff0dc" stroke="#e5b67b" stroke-width="2"/>
+<text x="815" y="671" font-size="16" font-weight="normal" fill="#172b46" text-anchor="middle">Payload-register enables</text>
+<path d="M445 695 L650 695" fill="none" stroke="#c65b30" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="660" y="683" width="310" height="25" rx="5" fill="#fff0dc" stroke="#e5b67b" stroke-width="2"/>
+<text x="815" y="701" font-size="16" font-weight="normal" fill="#172b46" text-anchor="middle">Payload-register enables</text>
+<text x="485" y="723" font-size="18" font-weight="normal" fill="#8e471f" text-anchor="start">Fanout + wire length + placement constraints</text>
+<text x="1010" y="553" font-size="19" font-weight="bold" fill="#172b46" text-anchor="start">Each registered hop has a deadline</text>
+<text x="1010" y="593" font-size="25" font-weight="bold" fill="#1269a3" text-anchor="start">450 MHz HBM → 2.22 ns</text>
+<text x="1010" y="634" font-size="24" font-weight="bold" fill="#b73838" text-anchor="start">Measured miss: 0.529 ns</text>
+<text x="1010" y="671" font-size="18" font-weight="normal" fill="#172b46" text-anchor="start">NET_DIAG attempt_06, HBM path_2</text>
+<text x="1010" y="700" font-size="18" font-weight="normal" fill="#172b46" text-anchor="start">Path indices shift with RoCE enabled.</text>
+<text x="65" y="744" font-size="19" font-weight="normal" fill="#172b46" text-anchor="start">Every hop is checked separately; the entire packet does not have to cross the pipeline in one cycle.</text>
+<rect x="40" y="780" width="700" height="260" rx="14" fill="#ffffff" stroke="#d7e0eb" stroke-width="2"/>
+<rect x="760" y="780" width="700" height="260" rx="14" fill="#ffffff" stroke="#d7e0eb" stroke-width="2"/>
+<text x="65" y="819" font-size="25" font-weight="bold" fill="#172b46" text-anchor="start">More hardware to place and connect</text>
+<text x="65" y="851" font-size="18" font-weight="normal" fill="#172b46" text-anchor="start">Routed GPU variants; network attempt failed timing</text>
+<text x="320" y="887" font-size="20" font-weight="bold" fill="#172b46" text-anchor="start">HBM → GPU</text>
+<text x="520" y="887" font-size="20" font-weight="bold" fill="#172b46" text-anchor="start">Network → GPU</text>
+<text x="65" y="924" font-size="22" font-weight="normal" fill="#172b46" text-anchor="start">LUTs</text>
+<text x="320" y="924" font-size="22" font-weight="normal" fill="#1269a3" text-anchor="start">182k</text>
+<text x="520" y="924" font-size="22" font-weight="bold" fill="#b35a13" text-anchor="start">330k  (1.8×)</text>
+<text x="65" y="961" font-size="22" font-weight="normal" fill="#172b46" text-anchor="start">Registers</text>
+<text x="320" y="961" font-size="22" font-weight="normal" fill="#1269a3" text-anchor="start">282k</text>
+<text x="520" y="961" font-size="22" font-weight="bold" fill="#b35a13" text-anchor="start">610k  (2.2×)</text>
+<text x="65" y="998" font-size="22" font-weight="normal" fill="#172b46" text-anchor="start">BRAM tiles</text>
+<text x="320" y="998" font-size="22" font-weight="normal" fill="#1269a3" text-anchor="start">179.5</text>
+<text x="520" y="998" font-size="22" font-weight="bold" fill="#b35a13" text-anchor="start">467  (2.6×)</text>
+<text x="785" y="819" font-size="25" font-weight="bold" fill="#172b46" text-anchor="start">How the current fallback adds margin</text>
+<text x="785" y="862" font-size="22" font-weight="bold" fill="#172b46" text-anchor="start">HBM interface</text>
+<text x="785" y="897" font-size="22" font-weight="normal" fill="#172b46" text-anchor="start">450 MHz: 2.22 ns</text>
+<path d="M1015 889 L1072 889" fill="none" stroke="#52647a" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1090" y="897" font-size="22" font-weight="bold" fill="#20734e" text-anchor="start">350 MHz: 2.86 ns</text>
+<text x="785" y="942" font-size="22" font-weight="bold" fill="#172b46" text-anchor="start">Application logic</text>
+<text x="785" y="977" font-size="22" font-weight="normal" fill="#172b46" text-anchor="start">250 MHz: 4.00 ns</text>
+<path d="M1015 969 L1072 969" fill="none" stroke="#52647a" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1090" y="977" font-size="22" font-weight="bold" fill="#20734e" text-anchor="start">200 MHz: 5.00 ns</text>
+<text x="785" y="1018" font-size="19" font-weight="normal" fill="#172b46" text-anchor="start">Lower clocks can affect speed; routed timing must pass.</text>
+<text x="40" y="1072" font-size="17" font-weight="normal" fill="#172b46" text-anchor="start">Schematic, not a placement map. Slack includes data-path and clock effects. Resource evidence: OPT_11 attempt_01 vs OPT_13 attempt_06.</text>
+<text x="40" y="1098" font-size="17" font-weight="normal" fill="#172b46" text-anchor="start">Created 2026-11-08. HBM “paths” are Coyote interfaces, not the physical count of HBM banks.</text>
+</g></svg>

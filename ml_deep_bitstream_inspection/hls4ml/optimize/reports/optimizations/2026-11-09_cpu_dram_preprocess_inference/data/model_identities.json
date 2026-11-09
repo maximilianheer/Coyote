@@ -1,0 +1,8 @@
+{
+  "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/models/res256/pruned_qat/final_weights.weights.h5": "8693fe8efed10f2996c0bc5fe32e68b466fbce097ef75c0f60941f399899ca53",
+  "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/iterations/OPT_6_BRAM_FIFO1024_DSP_B2_RF72_RF288/model_config.json": "daf37e59295492b5ac14bb9e186f528ced1fcb763186366128932d937f1d5e23",
+  "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/gpu_runtime_investigation_20261021_030038/hardware_xla_concrete/software/gpu_runtime/model_reference.json": "9a4196e5b1ef31ab20df7d2b665faf12ca4e9fcc7700da0c3f6ad9b0033f69fc",
+  "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/gpu_runtime_investigation_20261021_030038/hardware_xla_concrete/software/gpu_runtime/fp32_model.py": "ee89f83386a5195a7c3d9f24fd760d04f9b7839d1d5dda8bef48d7489ec2e68c",
+  "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/artifacts_layer7_ext/cnn_small_hls_opt_img256/notebook_float/res256_layers7_WfloatAfloat_P0_RFbase_929720764c5b/fold_0/final_weights.weights.h5": "86451b282cb358dc4217e46bd762f9b760446f5721bf72b5a6a73ca20c9379b9",
+  "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/gpu_runtime_investigation_20261021_030038/hardware_xla_concrete/software/gpu_runtime/model_config.json": "2359b41a617c6be45e15dc1cc6574d2c7111cae5d6778e9d2286870cdc976a92"
+}

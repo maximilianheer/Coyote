@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1810" viewBox="0 0 1800 1810"><defs><marker id="payload" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#27649a"/></marker><marker id="verdict" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#8056a5"/></marker></defs><rect width="100%" height="100%" fill="#f6f8fc"/><g font-family="DejaVu Sans, sans-serif">
+<text x="55" y="58" font-size="37" font-weight="bold" fill="#203047">Where the bitstream goes in our networking builds</text>
+<text x="55" y="101" font-size="25" font-weight="normal" fill="#203047">Two alternative FPGA images: both store the arriving bytes in HBM while checking or forwarding them.</text>
+<rect x="490" y="140" width="820" height="95" rx="12" fill="#e7ebf1" stroke="#cad5e2" stroke-width="2"/>
+<text x="510" y="176" font-size="25" font-weight="bold" fill="#203047">Remote sender / RDMA NIC</text>
+<text x="510" y="212" font-size="20" font-weight="normal" fill="#203047">Sends the raw bitstream over 100GbE using RoCEv2</text>
+<path d="M900,235 L900,265" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<rect x="490" y="265" width="820" height="95" rx="12" fill="#e8f1fb" stroke="#cad5e2" stroke-width="2"/>
+<text x="510" y="301" font-size="25" font-weight="bold" fill="#203047">FPGA: Ethernet MAC → IPv4 / UDP → RoCE</text>
+<text x="510" y="337" font-size="20" font-weight="normal" fill="#203047">Receives packets, handles the protocol and extracts payload bytes</text>
+<path d="M900,360 L900,390" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<rect x="490" y="390" width="820" height="95" rx="12" fill="#e8f1fb" stroke="#cad5e2" stroke-width="2"/>
+<text x="510" y="426" font-size="25" font-weight="bold" fill="#203047">Coyote receive interface</text>
+<text x="510" y="462" font-size="20" font-weight="normal" fill="#203047">Delivers write requests and a 512-bit payload stream to our logic</text>
+<rect x="50" y="540" width="825" height="965" rx="12" fill="#ffffff" stroke="#b3cce0" stroke-width="2"/>
+<rect x="925" y="540" width="825" height="965" rx="12" fill="#ffffff" stroke="#b3cce0" stroke-width="2"/>
+<text x="75" y="581" font-size="29" font-weight="bold" fill="#203047">OPT_12 · Network → FPGA checker</text>
+<text x="950" y="581" font-size="29" font-weight="bold" fill="#203047">OPT_13 · Network → GPU over P2P</text>
+<path d="M900,485 L900,510 L462,510 L462,532" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<path d="M900,485 L900,510 L1337,510 L1337,532" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<path d="M462,600 L462,625" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<path d="M1337,600 L1337,625" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<rect x="220" y="625" width="485" height="95" rx="12" fill="#e7f3e9" stroke="#cad5e2" stroke-width="2"/>
+<text x="240" y="661" font-size="25" font-weight="bold" fill="#203047">Our dual-reader ring</text>
+<text x="240" y="697" font-size="20" font-weight="normal" fill="#203047">Holds bytes for both consumers</text>
+<rect x="1095" y="625" width="485" height="95" rx="12" fill="#e7f3e9" stroke="#cad5e2" stroke-width="2"/>
+<text x="1115" y="661" font-size="25" font-weight="bold" fill="#203047">Our dual-reader ring</text>
+<text x="1115" y="697" font-size="20" font-weight="normal" fill="#203047">Holds bytes for both consumers</text>
+<path d="M462,720 L462,750 L257,750 L257,795" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<path d="M462,720 L462,750 L672,750 L672,795" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<path d="M1337,720 L1337,750 L1132,750 L1132,795" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<path d="M1337,720 L1337,750 L1547,750 L1547,795" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<rect x="80" y="795" width="355" height="95" rx="12" fill="#e8f1fb" stroke="#cad5e2" stroke-width="2"/>
+<text x="100" y="831" font-size="23.80952380952381" font-weight="bold" fill="#203047">Coyote HBM write path</text>
+<text x="100" y="867" font-size="20" font-weight="normal" fill="#203047">DMA + clock / width adapters</text>
+<path d="M257,890 L257,950" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<rect x="80" y="950" width="355" height="95" rx="12" fill="#e7ebf1" stroke="#cad5e2" stroke-width="2"/>
+<text x="100" y="986" font-size="25" font-weight="bold" fill="#203047">HBM: raw bitstream</text>
+<text x="100" y="1022" font-size="20" font-weight="normal" fill="#203047">Stored for later use / PR</text>
+<text x="90" y="1080" font-size="20" font-weight="normal" fill="#203047">Storage completes separately</text>
+<text x="90" y="1110" font-size="20" font-weight="normal" fill="#203047">from verdict availability.</text>
+<rect x="955" y="795" width="355" height="95" rx="12" fill="#e8f1fb" stroke="#cad5e2" stroke-width="2"/>
+<text x="975" y="831" font-size="23.80952380952381" font-weight="bold" fill="#203047">Coyote HBM write path</text>
+<text x="975" y="867" font-size="20" font-weight="normal" fill="#203047">DMA + clock / width adapters</text>
+<path d="M1132,890 L1132,950" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<rect x="955" y="950" width="355" height="95" rx="12" fill="#e7ebf1" stroke="#cad5e2" stroke-width="2"/>
+<text x="975" y="986" font-size="25" font-weight="bold" fill="#203047">HBM: raw bitstream</text>
+<text x="975" y="1022" font-size="20" font-weight="normal" fill="#203047">Stored for later use / PR</text>
+<text x="965" y="1080" font-size="20" font-weight="normal" fill="#203047">Storage completes separately</text>
+<text x="965" y="1110" font-size="20" font-weight="normal" fill="#203047">from verdict availability.</text>
+<rect x="490" y="795" width="355" height="95" rx="12" fill="#e7f3e9" stroke="#cad5e2" stroke-width="2"/>
+<text x="510" y="831" font-size="25" font-weight="bold" fill="#203047">Our preprocessor</text>
+<text x="510" y="867" font-size="20" font-weight="normal" fill="#203047">Samples bytes → valid pixels</text>
+<path d="M672,890 L672,950" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<rect x="490" y="950" width="355" height="95" rx="12" fill="#e7f3e9" stroke="#cad5e2" stroke-width="2"/>
+<text x="510" y="986" font-size="25" font-weight="bold" fill="#203047">hls4ml CNN</text>
+<text x="510" y="1022" font-size="20" font-weight="normal" fill="#203047">Inference runs on the FPGA</text>
+<path d="M672,1045 L672,1135" fill="none" stroke="#8056a5" stroke-width="4" stroke-dasharray="10 7" marker-end="url(#verdict)"/>
+<rect x="490" y="1135" width="355" height="95" rx="12" fill="#eee6f6" stroke="#cad5e2" stroke-width="2"/>
+<text x="510" y="1171" font-size="25" font-weight="bold" fill="#203047">FPGA verdict</text>
+<text x="510" y="1207" font-size="20" font-weight="normal" fill="#203047">Score + decision timestamp</text>
+<rect x="80" y="1280" width="765" height="180" rx="12" fill="#f0f7f1" stroke="#9dbba3" stroke-width="2"/>
+<text x="100" y="1320" font-size="25" font-weight="bold" fill="#203047">All processing stays on the FPGA</text>
+<text x="100" y="1360" font-size="21" font-weight="normal" fill="#203047">The CNN consumes pixels before the entire bitstream arrives.</text>
+<text x="100" y="1396" font-size="21" font-weight="normal" fill="#203047">The checker consumes the ring’s copy directly.</text>
+<text x="100" y="1432" font-size="21" font-weight="bold" fill="#203047">There is no HBM reread on this inspection path.</text>
+<rect x="1365" y="795" width="355" height="95" rx="12" fill="#e8f1fb" stroke="#cad5e2" stroke-width="2"/>
+<text x="1385" y="831" font-size="25" font-weight="bold" fill="#203047">Coyote PCIe P2P DMA</text>
+<text x="1385" y="867" font-size="20" font-weight="normal" fill="#203047">Forwards raw bytes to GPU</text>
+<path d="M1547,890 L1547,955" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<rect x="1345" y="945" width="395" height="450" rx="12" fill="#fff8ed" stroke="#d9b580" stroke-width="2"/>
+<rect x="1365" y="965" width="355" height="95" rx="12" fill="#fff0db" stroke="#cad5e2" stroke-width="2"/>
+<text x="1385" y="1001" font-size="25" font-weight="bold" fill="#203047">GPU memory</text>
+<text x="1385" y="1037" font-size="18.145161290322577" font-weight="normal" fill="#203047">Receives raw bytes via PCIe P2P</text>
+<path d="M1547,1060 L1547,1105" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<rect x="1365" y="1105" width="355" height="95" rx="12" fill="#fff0db" stroke="#cad5e2" stroke-width="2"/>
+<text x="1385" y="1141" font-size="21.73913043478261" font-weight="bold" fill="#203047">GPU preprocessing + CNN</text>
+<text x="1385" y="1177" font-size="17.045454545454547" font-weight="normal" fill="#203047">R06: FP32, XLA + ConcreteFunction</text>
+<path d="M1547,1200 L1547,1265" fill="none" stroke="#8056a5" stroke-width="4" stroke-dasharray="10 7" marker-end="url(#verdict)"/>
+<rect x="1365" y="1265" width="355" height="95" rx="12" fill="#eee6f6" stroke="#cad5e2" stroke-width="2"/>
+<text x="1385" y="1301" font-size="25" font-weight="bold" fill="#203047">GPU verdict mailbox</text>
+<text x="1385" y="1337" font-size="19.39655172413793" font-weight="normal" fill="#203047">Ready flag + score / decision</text>
+<rect x="955" y="1265" width="355" height="95" rx="12" fill="#eee6f6" stroke="#cad5e2" stroke-width="2"/>
+<text x="975" y="1301" font-size="25" font-weight="bold" fill="#203047">FPGA verdict poller</text>
+<text x="975" y="1337" font-size="18.75" font-weight="normal" fill="#203047">Autonomously reads GPU mailbox</text>
+<path d="M1365,1312 L1310,1312" fill="none" stroke="#8056a5" stroke-width="4" stroke-dasharray="10 7" marker-end="url(#verdict)"/>
+<text x="975" y="1223" font-size="20" font-weight="bold" fill="#8056a5">Verdict returns over PCIe P2P</text>
+<text x="950" y="1429" font-size="21" font-weight="normal" fill="#203047">Polling starts after HBM storage and GPU writes complete.</text>
+<text x="950" y="1464" font-size="21" font-weight="normal" fill="#203047">GPU execution still uses software coordination.</text>
+<rect x="50" y="1535" width="1700" height="110" rx="12" fill="#ffffff" stroke="#cad5e2" stroke-width="2"/>
+<text x="75" y="1574" font-size="25" font-weight="bold" fill="#203047">NET_DIAG_HBM · Transport diagnostic</text>
+<text x="75" y="1613" font-size="23" font-weight="normal" fill="#203047">Same network front end → Coyote storage path → HBM (or host-memory sink). No CNN or GPU inference.</text>
+<path d="M65,1680 L140,1680" fill="none" stroke="#27649a" stroke-width="4" marker-end="url(#payload)"/>
+<text x="158" y="1688" font-size="21" font-weight="normal" fill="#203047">Raw bytes / pixels</text>
+<path d="M475,1680 L550,1680" fill="none" stroke="#8056a5" stroke-width="4" stroke-dasharray="10 7" marker-end="url(#verdict)"/>
+<text x="568" y="1688" font-size="21" font-weight="normal" fill="#203047">Verdict path</text>
+<text x="900" y="1688" font-size="20" font-weight="normal" fill="#203047">Blue: Coyote   ·   Green: application logic   ·   Orange: GPU</text>
+<text x="55" y="1730" font-size="23" font-weight="bold" fill="#203047">Ring space is released only after BOTH consumers accept the bytes; the slower branch can throttle reception.</text>
+<text x="55" y="1767" font-size="20" font-weight="normal" fill="#203047">Payload paths shown. RoCE acknowledgements, retransmission buffers and setup/control traffic are omitted for clarity.</text>
+<text x="55" y="1796" font-size="18" font-weight="normal" fill="#203047">2026-11-08 · Source: network_base.svh, net_diag.svh and deployment_abi.json. Build architecture; board validation remains pending.</text>
+</g></svg>

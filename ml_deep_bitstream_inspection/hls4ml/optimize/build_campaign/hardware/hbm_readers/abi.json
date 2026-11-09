@@ -1,0 +1,160 @@
+{
+  "version": 6,
+  "signature_prefix": "0x4342595400060000",
+  "clock_hz": 250000000,
+  "variants": {
+    "14": "HBM_SCAN",
+    "15": "HBM_COALESCED",
+    "16": "HBM_WINDOW128"
+  },
+  "registers": {
+    "0": "status_read_arm_write",
+    "1": "raw_bytes",
+    "2": "trial_id",
+    "3": "coyote_context",
+    "4": "signature",
+    "5": "absolute_tick",
+    "6": "accepted_arm_tick",
+    "7": "event_valid_bits",
+    "8": "hbm_virtual_base",
+    "9": "gpu_allocation_base_including_64B_header",
+    "10": "gpu_ready_word_address",
+    "11": "gpu_payload_address",
+    "12": "timeout_ticks",
+    "13": "poll_gap_ticks",
+    "15": "network_credit_window",
+    "40": "score_bits_and_malicious_decision",
+    "14": "requested_reader_setting",
+    "41": "latched_effective_reader_setting"
+  },
+  "status_bits": {
+    "0": "busy",
+    "1": "complete_and_drained",
+    "2": "invalid_or_error",
+    "3": "verdict_available"
+  },
+  "event_register_base": 16,
+  "event_pairs": {
+    "HBM_SCAN": [
+      "hbm_request",
+      "hbm_return",
+      "pixel",
+      "cnn_input",
+      "verdict",
+      "hbm_completion"
+    ],
+    "HBM_COALESCED": [
+      "hbm_request",
+      "hbm_return",
+      "pixel",
+      "cnn_input",
+      "verdict",
+      "hbm_completion"
+    ],
+    "HBM_WINDOW128": [
+      "hbm_request",
+      "hbm_return",
+      "pixel",
+      "cnn_input",
+      "verdict",
+      "hbm_completion"
+    ]
+  },
+  "event_pair_semantics": "first_tick at even slot, latest_tick at odd slot; event-valid bits required",
+  "counter_register_base": 48,
+  "counter_names": {
+    "HBM_SCAN": [
+      "reads_issued",
+      "words_received",
+      "reads_completed",
+      "pixel_count",
+      "pixel_fifo_current_occupancy",
+      "requested_bytes",
+      "peak_outstanding",
+      "request_stalls",
+      "credit_stalls",
+      "response_backpressure",
+      "cnn_starvation",
+      "cnn_backpressure",
+      "pixel_fifo_peak",
+      "active_cycles",
+      "pixel_producer_backpressure",
+      "response_requests_retired"
+    ],
+    "HBM_COALESCED": [
+      "reads_issued",
+      "words_received",
+      "reads_completed",
+      "pixel_count",
+      "pixel_fifo_current_occupancy",
+      "requested_bytes",
+      "peak_outstanding",
+      "request_stalls",
+      "credit_stalls",
+      "response_backpressure",
+      "cnn_starvation",
+      "cnn_backpressure",
+      "pixel_fifo_peak",
+      "active_cycles",
+      "pixel_producer_backpressure",
+      "response_requests_retired"
+    ],
+    "HBM_WINDOW128": [
+      "reads_issued",
+      "words_received",
+      "reads_completed",
+      "pixel_count",
+      "pixel_fifo_current_occupancy",
+      "requested_bytes",
+      "peak_outstanding",
+      "request_stalls",
+      "credit_stalls",
+      "response_backpressure",
+      "cnn_starvation",
+      "cnn_backpressure",
+      "pixel_fifo_peak",
+      "active_cycles",
+      "pixel_producer_backpressure",
+      "response_requests_retired"
+    ]
+  },
+  "notes": [
+    "ABI5 OPT_10/11 remain supported by the version-aware collector; other signatures are rejected.",
+    "Event slots and counter slots48\u201352 retain ABI5 HBM_FPGA meanings.",
+    "Reader stalls/peak: reset at accepted frame start and accumulate while busy; credits retire after both data and CQ.",
+    "CNN starvation counts cnn_ready&&!cnn_valid while busy and before65536 CNN inputs; CNN backpressure counts cnn_valid&&!cnn_ready.",
+    "active_cycles spans accepted-frame activity through successful drain/result; overlapping stall counters are not additive.",
+    "Requested bytes are descriptor payload, not physical HBM-wire traffic; scan final descriptor can be partial.",
+    "CSR14 is immutable while active; CSR41 returns the effective latched setting."
+  ],
+  "settings": {
+    "14": {
+      "valid": [
+        0
+      ],
+      "default": 0,
+      "window": 4
+    },
+    "15": {
+      "valid": [
+        0,
+        1,
+        2,
+        4,
+        8
+      ],
+      "default": 4,
+      "window": 32
+    },
+    "16": {
+      "valid": [
+        0,
+        32,
+        64,
+        128
+      ],
+      "default": 32,
+      "tracking": 128
+    }
+  }
+}

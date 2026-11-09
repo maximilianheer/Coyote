@@ -1,0 +1,77 @@
+[
+  {
+    "case_id": "real_18876484",
+    "fractional_drift": -2.858944387806872e-05,
+    "passed": true
+  },
+  {
+    "case_id": "synthetic_16777216",
+    "fractional_drift": 1.702314845908326e-05,
+    "passed": true
+  },
+  {
+    "case_id": "real_5540996",
+    "fractional_drift": 8.149610223462389e-05,
+    "passed": true
+  },
+  {
+    "case_id": "synthetic_4194304",
+    "fractional_drift": 1.2288804023263822e-05,
+    "passed": true
+  },
+  {
+    "case_id": "real_41278872",
+    "fractional_drift": 8.605083646373579e-05,
+    "passed": true
+  },
+  {
+    "case_id": "real_30323588",
+    "fractional_drift": -0.00075639455618981,
+    "passed": true
+  },
+  {
+    "case_id": "synthetic_134217664",
+    "fractional_drift": -5.392345598353998e-05,
+    "passed": true
+  },
+  {
+    "case_id": "real_12004440",
+    "fractional_drift": -4.138801186992502e-06,
+    "passed": true
+  },
+  {
+    "case_id": "real_34162708",
+    "fractional_drift": -4.997703430886791e-05,
+    "passed": true
+  },
+  {
+    "case_id": "real_55676772",
+    "fractional_drift": -5.261858630278837e-05,
+    "passed": true
+  },
+  {
+    "case_id": "real_48540364",
+    "fractional_drift": -4.969259341236487e-06,
+    "passed": true
+  },
+  {
+    "case_id": "synthetic_67108864",
+    "fractional_drift": -5.51404581580206e-05,
+    "passed": true
+  },
+  {
+    "case_id": "smoke_4194240",
+    "fractional_drift": -2.1330875132008487e-05,
+    "passed": true
+  },
+  {
+    "case_id": "smoke_4194241",
+    "fractional_drift": 2.468156833801416e-06,
+    "passed": true
+  },
+  {
+    "case_id": "smoke_4194242",
+    "fractional_drift": -1.0667650491069658e-05,
+    "passed": true
+  }
+]

@@ -1,0 +1,233 @@
+[
+  {
+    "case_id": "real_30323588",
+    "samples": [
+      {
+        "kernel_sum_ms": 0.1872,
+        "device_span_ms": 0.1992,
+        "host_profiled_ms": 0.631224,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.18592,
+        "device_span_ms": 0.18976,
+        "host_profiled_ms": 0.478175,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.18592,
+        "device_span_ms": 0.18976,
+        "host_profiled_ms": 0.546195,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.18496,
+        "device_span_ms": 0.18832,
+        "host_profiled_ms": 0.553415,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.18544,
+        "device_span_ms": 0.1888,
+        "host_profiled_ms": 0.475135,
+        "kernels": 23
+      }
+    ],
+    "copy_events": [
+      {
+        "name": "CopyDeviceToHost",
+        "start": 1040292.0,
+        "end": 1045252.0
+      },
+      {
+        "name": "CopyDeviceToHost",
+        "start": 1621572.0,
+        "end": 1626532.0
+      },
+      {
+        "name": "CopyDeviceToHost",
+        "start": 2108613.0,
+        "end": 2113733.0
+      },
+      {
+        "name": "CopyDeviceToHost",
+        "start": 2736613.0,
+        "end": 2741573.0
+      }
+    ],
+    "kernel_names": [
+      "input_reduce_fusion",
+      "input_transpose_fusion",
+      "loop_add_fusion",
+      "loop_multiply_fusion",
+      "loop_reduce_window_fusion",
+      "loop_reduce_window_fusion_1",
+      "loop_reduce_window_fusion_2",
+      "loop_reduce_window_fusion_3",
+      "loop_reduce_window_fusion_4",
+      "loop_reduce_window_fusion_5",
+      "loop_transpose_fusion",
+      "loop_transpose_fusion_1",
+      "loop_transpose_fusion_2",
+      "loop_transpose_fusion_3",
+      "loop_transpose_fusion_4",
+      "loop_transpose_fusion_5",
+      "miopenSp3AsmConv_v30_3_1_gfx9_fp32_f2x3_stride1",
+      "miopenSp3AsmConv_v30_3_1_gfx9_fp32_f2x3_stride2"
+    ]
+  },
+  {
+    "case_id": "real_5540996",
+    "samples": [
+      {
+        "kernel_sum_ms": 0.18432,
+        "device_span_ms": 0.19792,
+        "host_profiled_ms": 0.604935,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.184481,
+        "device_span_ms": 0.190561,
+        "host_profiled_ms": 0.561994,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.18416,
+        "device_span_ms": 0.18992,
+        "host_profiled_ms": 0.482776,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.1848,
+        "device_span_ms": 0.18928,
+        "host_profiled_ms": 0.484936,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.18496,
+        "device_span_ms": 0.18944,
+        "host_profiled_ms": 0.528735,
+        "kernels": 23
+      }
+    ],
+    "copy_events": [
+      {
+        "name": "CopyDeviceToHost",
+        "start": 1056070.0,
+        "end": 1061190.0
+      },
+      {
+        "name": "CopyDeviceToHost",
+        "start": 1703431.0,
+        "end": 1708391.0
+      },
+      {
+        "name": "CopyDeviceToHost",
+        "start": 2199111.0,
+        "end": 2203751.0
+      },
+      {
+        "name": "CopyDeviceToHost",
+        "start": 2696392.0,
+        "end": 2701352.0
+      }
+    ],
+    "kernel_names": [
+      "input_reduce_fusion",
+      "input_transpose_fusion",
+      "loop_add_fusion",
+      "loop_multiply_fusion",
+      "loop_reduce_window_fusion",
+      "loop_reduce_window_fusion_1",
+      "loop_reduce_window_fusion_2",
+      "loop_reduce_window_fusion_3",
+      "loop_reduce_window_fusion_4",
+      "loop_reduce_window_fusion_5",
+      "loop_transpose_fusion",
+      "loop_transpose_fusion_1",
+      "loop_transpose_fusion_2",
+      "loop_transpose_fusion_3",
+      "loop_transpose_fusion_4",
+      "loop_transpose_fusion_5",
+      "miopenSp3AsmConv_v30_3_1_gfx9_fp32_f2x3_stride1",
+      "miopenSp3AsmConv_v30_3_1_gfx9_fp32_f2x3_stride2"
+    ]
+  },
+  {
+    "case_id": "real_55676772",
+    "samples": [
+      {
+        "kernel_sum_ms": 0.18592,
+        "device_span_ms": 0.1984,
+        "host_profiled_ms": 0.613604,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.18576,
+        "device_span_ms": 0.18944,
+        "host_profiled_ms": 0.542375,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.18608,
+        "device_span_ms": 0.1896,
+        "host_profiled_ms": 0.478415,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.18624,
+        "device_span_ms": 0.18976,
+        "host_profiled_ms": 0.472896,
+        "kernels": 23
+      },
+      {
+        "kernel_sum_ms": 0.1856,
+        "device_span_ms": 0.18896,
+        "host_profiled_ms": 0.724804,
+        "kernels": 23
+      }
+    ],
+    "copy_events": [
+      {
+        "name": "CopyDeviceToHost",
+        "start": 1015897.0,
+        "end": 1020857.0
+      },
+      {
+        "name": "CopyDeviceToHost",
+        "start": 1657338.0,
+        "end": 1661978.0
+      },
+      {
+        "name": "CopyDeviceToHost",
+        "start": 2146778.0,
+        "end": 2151578.0
+      },
+      {
+        "name": "CopyDeviceToHost",
+        "start": 2631899.0,
+        "end": 2636219.0
+      }
+    ],
+    "kernel_names": [
+      "input_reduce_fusion",
+      "input_transpose_fusion",
+      "loop_add_fusion",
+      "loop_multiply_fusion",
+      "loop_reduce_window_fusion",
+      "loop_reduce_window_fusion_1",
+      "loop_reduce_window_fusion_2",
+      "loop_reduce_window_fusion_3",
+      "loop_reduce_window_fusion_4",
+      "loop_reduce_window_fusion_5",
+      "loop_transpose_fusion",
+      "loop_transpose_fusion_1",
+      "loop_transpose_fusion_2",
+      "loop_transpose_fusion_3",
+      "loop_transpose_fusion_4",
+      "loop_transpose_fusion_5",
+      "miopenSp3AsmConv_v30_3_1_gfx9_fp32_f2x3_stride1",
+      "miopenSp3AsmConv_v30_3_1_gfx9_fp32_f2x3_stride2"
+    ]
+  }
+]

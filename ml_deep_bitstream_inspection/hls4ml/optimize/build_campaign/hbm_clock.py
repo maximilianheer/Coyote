@@ -35,15 +35,29 @@ def verify_report_hbm_clock(report, mhz):
     raise RuntimeError('Missing HBM clock in final routed timing report')
 
 
+def verify_report_application_clock(report, mhz):
+    clock_name = 'clk_out1_design_ctrl_clk_wiz_0_0'
+    for line in report.read_text().splitlines():
+        values = line.split()
+        if len(values) == 5 and values[0] == clock_name and values[1].startswith('{'):
+            if abs(float(values[3]) - 1000 / mhz) > 0.001:
+                raise RuntimeError('Routed application clock period mismatch')
+            if abs(float(values[4]) - mhz) > 0.001:
+                raise RuntimeError('Routed application clock frequency mismatch')
+            return
+    raise RuntimeError('Missing application clock in final routed timing report')
+
+
 def configure_hbm_clock(jobdir, mhz):
-    if mhz != 400:
-        raise ValueError('Only the 400 MHz fallback is supported')
+    if mhz not in (350, 400):
+        raise ValueError('Supported HBM AXI fallbacks are 350 and 400 MHz')
     coyote = jobdir/'coyote'
     cmake = coyote/'cmake/FindCoyoteHW.cmake'
     text = cmake.read_text()
     start = text.index('if(FDEV_NAME STREQUAL "u55c")')
     position = text.index('set(HCLK_F 450)', start)
-    text = text[:position] + text[position:].replace('set(HCLK_F 450)', 'set(HCLK_F 400)', 1)
+    text = text[:position] + text[position:].replace(
+        'set(HCLK_F 450)', f'set(HCLK_F {mhz})', 1)
     cmake.write_text(text)
     bd = coyote/'hw/bd/ultrascale_plus/cr_hbm.tcl'
     text, count = re.subn(
@@ -55,8 +69,11 @@ def configure_hbm_clock(jobdir, mhz):
     bd.write_text(text)
     # The HBM IP USER_AXI_CLK{,1}_FREQ and BD port metadata already consume
     # cnfg(hclk_f). Removing fixed MMCM ratios lets Clocking Wizard derive them.
+    configuration = json.loads((jobdir / 'config.json').read_text())
+    checker_clock_hz = configuration.get('clock_hz', 250000000)
     evidence = dict(hbm_axi_mhz=mhz, previous_hbm_axi_mhz=450,
-        checker_clock_changed=False,
+        checker_clock_changed=checker_clock_hz != 250000000,
+        checker_clock_hz=checker_clock_hz,
         files={str(p.relative_to(jobdir)):hashlib.sha256(p.read_bytes()).hexdigest()
                for p in [cmake, bd]})
     (jobdir/'hw/hbm_clock.json').write_text(json.dumps(evidence, indent=2))

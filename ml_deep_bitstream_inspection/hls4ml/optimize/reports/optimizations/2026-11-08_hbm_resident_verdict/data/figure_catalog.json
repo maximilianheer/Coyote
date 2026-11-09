@@ -1,0 +1,67 @@
+[
+  {
+    "id": "01_real_latency",
+    "title": "1 \u00b7 Verdict latency with the bitstream already in HBM",
+    "caption": "Bars: medians; black ticks: p95; 200 measured trials per workload after 20 warmups. The origin is accepted FPGA start, and the endpoint is the FPGA verdict event. FPGA bars use the initial program; hollow circles/diamonds show medians after two further identical-image programming cycles (200 and 20 trials). The initial-to-closing 5% stability gate failed for several workloads; this initialization sensitivity is retained and investigated in Appendix A5. HBM preload, file access, GPU compilation and partial reconfiguration are excluded. FPGA_HLS4ML is OPT_10 (quantized OPT_6 CNN); GPU_P2P is OPT_11 with R06 XLA compilation + ConcreteFunction FP32."
+  },
+  {
+    "id": "02_real_speedup",
+    "title": "2 \u00b7 FPGA speedup and the small-input crossover",
+    "caption": "Above 1\u00d7: FPGA_HLS4ML is faster. Below 1\u00d7: GPU_P2P is faster. The FPGA requests only the words containing selected pixels, but those small reads have substantial overhead. The GPU forwards all bytes; its latency increases with input size. Thin vertical ranges show the speedup across three programmed FPGA states, not confidence intervals. Bar labels use the initial state."
+  },
+  {
+    "id": "03_topology",
+    "title": "3 \u00b7 HBM-resident benchmark topology",
+    "caption": "The host places the raw bitstream in HBM before measurement, emulating an integrated or soft CPU. The experiment does not implement an embedded CPU, PR, or fully hostless GPU execution. GPU inference remains CPU-dispatched. P2P is between devices attached to different NUMA nodes; the drawing shows the logical route, not a verified PCIe-switch diagram. U55C serial: XFL13BA4HVZYA."
+  },
+  {
+    "id": "04_timelines",
+    "title": "4 \u00b7 Memory delivery, streaming and GPU work overlap",
+    "caption": "Each panel is one measured trial nearest its workload median; panels use their own x-axis limits. HBM, pixel and CNN spans overlap and must not be added. The CNN lane shows first-to-last input consumption, not compute-only latency. Its output tail ends at the dashed verdict line. GPU framework call includes dispatch, fused preprocessing/inference and synchronization; it is not a pure kernel span. GPU host-clock events use the affine MMIO calibration; FPGA events share the local counter. Polling overlaps waiting for GPU work, rather than adding the entire polling window after it."
+  },
+  {
+    "id": "05_traffic",
+    "title": "5 \u00b7 Selective reads save traffic but have lower request efficiency",
+    "caption": "All eight real inputs use 65,536 distinct aligned 64-byte requests for FPGA_HLS4ML: 4 MiB requested for 64 KiB useful sampled bytes. GPU_P2P requests and forwards the complete raw input. The plotted rates include gaps within the first-to-last return interval and are not peak HBM bandwidth. Requested/interface payload is distinct from physical HBM-wire traffic, which is not measured. PCIe payload for OPT_10 is zero during checking; OPT_11 additionally sends all raw bytes to the GPU plus mailbox reads."
+  },
+  {
+    "id": "06_archived_comparison",
+    "title": "6 \u00b7 Deployment comparison: host-fed versus HBM-resident input",
+    "caption": "Archived measurements: 2026-10-21 R06 report; new measurements: 2026-11-08. Both use FPGA-local accepted start to verdict, but they begin with different input residency and use different transport wrappers. This is a deployment comparison, not an isolated causal estimate of HBM acceleration. The gather implementation can be slower than the old streaming checker at small sizes; the new GPU forwarding path benefits from direct HBM sourcing. Host/file-to-verdict scopes are deliberately excluded."
+  },
+  {
+    "id": "07_prediction_scenarios",
+    "title": "7 \u00b7 Measured results and hypothetical P2P scenarios",
+    "caption": "Scenario curves replace the complete-input transfer with raw bytes / assumed rate, then add the new measured per-case tail from final GPU-write completion to FPGA verdict. They assume negligible startup and enough HBM supply bandwidth. Rates 4.1, 8.5 and 15.75 GB/s are scenarios, not achieved rates; 15.75 GB/s is especially optimistic because protocol overhead prevents sustaining the encoded-link ceiling. These curves are neither confidence intervals nor guarantees. The earlier 1.12 ms FPGA prediction was too optimistic for this gather implementation; the measured selective-read delivery time explains the difference."
+  },
+  {
+    "id": "08_resources",
+    "title": "8 \u00b7 Routed resource costs: application and full design",
+    "caption": "Top: inst_user_wrapper_0 including checker/transport logic. Bottom: complete routed design including the shell. Counts at left; U55C capacity utilization at right. BRAM tiles = RAMB36 + 0.5 \u00d7 RAMB18. OPT_6 is the archived PCIe-streaming checker; OPT_10/11 enable HBM and contain different shell logic. Wrapper attribution is reported directly; no unmatched no-op baseline is subtracted. The GPU model uses external MI210 resources, which are not counted as FPGA area."
+  },
+  {
+    "id": "A1_synthetic",
+    "title": "A1 \u00b7 Established synthetic latency and FPGA speedup",
+    "caption": "Same measurement scope as the real-input figures. The largest case remains 128 MiB \u2212 64 B to retain the established GPU transport allocation convention. The 16 MiB point is shown without substituting a different test pattern. No old file-to-verdict result is mixed into this HBM-resident experiment."
+  },
+  {
+    "id": "A2_distributions",
+    "title": "A2 \u00b7 All measured real-input trials and latency distributions",
+    "caption": "Each size contributes 200 unprofiled trials per variant. ECDFs are separate workload distributions, not pooled confidence intervals. Blue: FPGA_HLS4ML; orange: GPU_P2P."
+  },
+  {
+    "id": "A3_small_input",
+    "title": "A3 \u00b7 Boundary and small-input preprocessing checks",
+    "caption": "Panel A: 20 measured calls per case after two warmups. These cases use newly pinned deterministic random patterns and exact hls4ml CPU references; they are separate from the primary input set. Panel B: 200 measured calls after 20 warmups for each existing cutoff pattern; every call verifies parity. The new gather function generates 65,536 sampled/padded pixels directly rather than scanning every raw byte below the former cutoff. No matched old HLS-cycle rerun was available in this board campaign, so no isolated small-input speedup is claimed."
+  },
+  {
+    "id": "A4_gpu_compute",
+    "title": "A4 \u00b7 Fused GPU compute: kernels, device span and framework call",
+    "caption": "Kernel sum adds recorded kernel durations; device span runs from first kernel start to last kernel end, including intervening device gaps. Both are medians of five separate profiled calls. The synchronized framework call is a median of 200 unprofiled hardware-path calls and additionally includes dispatch and synchronization overhead. These are different scopes and trial sets. XLA fuses preprocessing with model operations, so no artificial preprocessing/inference split is shown. Transport, mailbox publication and FPGA polling are outside the compute marker. Profiling starts after one validated P2P delivery and drained operation; it does not call the HIP mailbox adapter while tracing. This isolates a ROCm profiler/publication interoperability failure encountered in the first diagnostic attempt, which is retained in the campaign logs and excluded from reported measurements."
+  },
+  {
+    "id": "A5_repeatability",
+    "title": "A5 \u00b7 Initialization sensitivity versus within-program repeatability",
+    "caption": "Three programming cycles use the identical OPT_10 image and driver. Program 1 and 2 each contain 200 measured calls after 20 warmups per workload; program 3 contains 20 measured calls after two warmups. A second 200-call run in program 2 remains stable. The older transport adapter gives the program-2 result too, ruling out the added start-acceptance guard. The shift occurs in the first-to-last HBM return interval; the CNN tail and exact outputs remain stable. Physical placement logs were captured, but clock/PHY initialization sensitivity remains a hypothesis. This limitation must be retained when citing a single median from the main plots."
+  }
+]

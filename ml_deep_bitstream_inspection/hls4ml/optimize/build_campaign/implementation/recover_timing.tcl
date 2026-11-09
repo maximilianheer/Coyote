@@ -18,6 +18,56 @@ if {[catch {
         phys_opt_design -directive AggressiveFanoutOpt
         route_design -directive NoTimingRelaxation
         phys_opt_design -directive AggressiveExplore
+    } elseif {$strategy == 6} {
+        # The launching word-counter FF has low fanout. The measured 512-load
+        # net is driven by a later LUT that gates the wide read-data registers.
+        # Select that data-control cone, excluding clock/reset infrastructure.
+        set nets [get_nets -hier -filter {NAME =~ inst_shell/inst_int_hbm/path_*/axi_dwidth_converter_0/* && NAME =~ *USE_READ.* && NAME =~ *S_AXI_RDATA_II*}]
+        set targets {}
+        set evidence [open "$rprt_dir/hbm_read_control_replication.txt" w]
+        foreach net [lsort -unique $nets] {
+            set drivers [get_cells -of_objects [get_pins -leaf -of_objects $net -filter {DIRECTION == OUT}]]
+            if {[llength $drivers] != 1} {continue}
+            set ref [get_property REF_NAME [lindex $drivers 0]]
+            if {![string match {FD*} $ref] && ![string match {LUT*} $ref]} {continue}
+            set loads [get_pins -leaf -of_objects $net -filter {DIRECTION == IN}]
+            if {[llength $loads] >= 64} {
+                lappend targets $net
+                puts $evidence [list $net fanout [llength $loads]]
+            }
+        }
+        close $evidence
+        if {[llength $targets] == 0} {error "Measured HBM read control nets missing"}
+        phys_opt_design -force_replication_on_nets $targets
+        route_design -directive NoTimingRelaxation
+        phys_opt_design -directive AggressiveExplore
+    } elseif {$strategy == 5} {
+        # Target the measured wide-bus control paths explicitly. Automatic
+        # fanout optimization can leave critical register-slice drivers alone.
+        set state_cells [get_cells -hier -filter {NAME =~ inst_shell/* && NAME =~ *state_reg* && REF_NAME =~ FD*}]
+        set candidates [get_nets -of_objects [get_pins -of_objects $state_cells -filter {REF_PIN_NAME == Q}]]
+        set candidates [concat $candidates [get_nets -hier -regexp {inst_shell/inst_int_hbm/path_[0-9]+/slice_1/inst/w\.w_pipe/.*}]]
+        set selected {}
+        set evidence [open "$rprt_dir/forced_replication_nets.txt" w]
+        foreach net [lsort -unique $candidates] {
+            # Never request replication of clock/reset infrastructure. The HBM
+            # hierarchy also contains aclk, driven by a clock buffer/MMCM.
+            set driver_pins [get_pins -leaf -of_objects $net -filter {DIRECTION == OUT}]
+            set driver_cells [get_cells -of_objects $driver_pins]
+            if {[llength $driver_cells] != 1} {continue}
+            set ref [get_property REF_NAME [lindex $driver_cells 0]]
+            if {![string match {FD*} $ref] && ![string match {LUT*} $ref]} {continue}
+            set loads [get_pins -leaf -of_objects $net -filter {DIRECTION == IN}]
+            if {[llength $loads] >= 64} {
+                lappend selected $net
+                puts $evidence [list $net fanout [llength $loads]]
+            }
+        }
+        close $evidence
+        if {[llength $selected] == 0} {error "No measured high-fanout driver candidates found"}
+        phys_opt_design -force_replication_on_nets $selected
+        route_design -directive NoTimingRelaxation
+        phys_opt_design -directive AggressiveExplore
     } elseif {$strategy == 1} {
         phys_opt_design -directive AggressiveFanoutOpt
         route_design -directive NoTimingRelaxation

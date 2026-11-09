@@ -1,0 +1,17 @@
+{
+  "measured_calls": 33600,
+  "primary_calls": 19200,
+  "models": [
+    "FP32",
+    "QKERAS_W8A8"
+  ],
+  "sessions": [
+    "A",
+    "B"
+  ],
+  "measurement_dates": [
+    "2026-11-09"
+  ],
+  "scope": "One logical CPU, local DRAM raw input to materialized verdict; model/code warmed",
+  "maximum_absolute_primary_session_change": 0.14068490885030716
+}

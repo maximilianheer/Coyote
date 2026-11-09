@@ -1,0 +1,30 @@
+[
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/hbm_benchmark_20261108/opt10_main/trials.jsonl",
+    "sha256": "ac9e6b0d4b5de0a7f05ad53a458620ac6df4635a13c506b0d742d223689520aa"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/hbm_benchmark_20261108/opt11_main_02/trials.jsonl",
+    "sha256": "cea532ab8ab0d5146019eb44a22ac5c154e1234b76f29281accaab263ef0d48d"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/hbm_benchmark_20261108/opt10_closing/trials.jsonl",
+    "sha256": "6c46c689aadd353c252d62282ef941e6eb302805924dd73e941d8eef0d331948"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/hbm_benchmark_20261108/opt10_repeat_02/trials.jsonl",
+    "sha256": "99939e9b508be18545b8b0d2fd637c132966e7f63770bd04bb317d9b7f141e81"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/hbm_benchmark_20261108/opt10_program_03/trials.jsonl",
+    "sha256": "bc28fe920263bb217c41e6f6d5d4d1d8523f1f07cf7602d0d243209b66faf4c8"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/hbm_benchmark_20261108/opt10_diagnostics/trials.jsonl",
+    "sha256": "7d36edf740f7cf589556b33af44a53a7dd783ad9212efa8afa5a4e2937701cd0"
+  },
+  {
+    "path": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/hbm_benchmark_20261108/opt11_diagnostics/trials.jsonl",
+    "sha256": "34fb3b68817fd7565f573c7d920d2852ebff04921b4035ad2b6971d1f020f7e1"
+  }
+]

@@ -1,0 +1,758 @@
+[
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.7643915000000003,
+    "round_b_ms": 2.7563345000000004,
+    "fractional_change": -0.002914565465853891
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.3552815000000002,
+    "round_b_ms": 2.357686,
+    "fractional_change": 0.001020897077482985
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.075817,
+    "round_b_ms": 2.1053195000000002,
+    "fractional_change": 0.014212476340641045
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.9036735,
+    "round_b_ms": 0.88061,
+    "fractional_change": -0.025521939063168242
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.7447935,
+    "round_b_ms": 2.7652574999999997,
+    "fractional_change": 0.007455569972750098
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.3887549999999997,
+    "round_b_ms": 2.3760525,
+    "fractional_change": -0.005317623615649025
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_16777216",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.0791655,
+    "round_b_ms": 2.1139115,
+    "fractional_change": 0.016711512383213334
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_16777216",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.897794,
+    "round_b_ms": 0.8989865,
+    "fractional_change": 0.0013282557023104324
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.525708,
+    "round_b_ms": 2.57762,
+    "fractional_change": 0.02055344481626542
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.2889255,
+    "round_b_ms": 2.3457585,
+    "fractional_change": 0.0248295543039736
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.05607,
+    "round_b_ms": 2.119591,
+    "fractional_change": 0.030894376164235515
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.6652750000000001,
+    "round_b_ms": 0.677676,
+    "fractional_change": 0.018640411859757178
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.420017,
+    "round_b_ms": 2.464737,
+    "fractional_change": 0.01847920903034983
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.2691935,
+    "round_b_ms": 2.319126,
+    "fractional_change": 0.022004513938542303
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_4194304",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.075994,
+    "round_b_ms": 2.1164745,
+    "fractional_change": 0.019499333813103314
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_4194304",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.5591885,
+    "round_b_ms": 0.5718435,
+    "fractional_change": 0.022631009042567873
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.722038,
+    "round_b_ms": 2.755692,
+    "fractional_change": 0.012363530560557834
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.2649355,
+    "round_b_ms": 2.321902,
+    "fractional_change": 0.02515148886138263
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.0488515,
+    "round_b_ms": 2.1153139999999997,
+    "fractional_change": 0.03243890540627259
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.8686419999999999,
+    "round_b_ms": 0.8724084999999999,
+    "fractional_change": 0.004336078614665118
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.715138,
+    "round_b_ms": 2.741991,
+    "fractional_change": 0.009890105033335317
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.273612,
+    "round_b_ms": 2.3179965,
+    "fractional_change": 0.01952158063908893
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.050574,
+    "round_b_ms": 2.1062814999999997,
+    "fractional_change": 0.027166783544509743
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.855867,
+    "round_b_ms": 0.8364590000000001,
+    "fractional_change": -0.02267642051860863
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.6657085,
+    "round_b_ms": 2.699165,
+    "fractional_change": 0.012550697122359677
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.3048135,
+    "round_b_ms": 2.352188,
+    "fractional_change": 0.020554591510332676
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_134217664",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.075023,
+    "round_b_ms": 2.124658,
+    "fractional_change": 0.023920216787958637
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_134217664",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.8233005,
+    "round_b_ms": 0.824514,
+    "fractional_change": 0.0014739454184711231
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 3.0376875,
+    "round_b_ms": 2.7745275,
+    "fractional_change": -0.08663168940188881
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.6706085,
+    "round_b_ms": 2.35081,
+    "fractional_change": -0.11974742834825847
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.4146145,
+    "round_b_ms": 2.143436,
+    "fractional_change": -0.1123071612466503
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.8587155,
+    "round_b_ms": 0.8593155,
+    "fractional_change": 0.000698718027099865
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.999127,
+    "round_b_ms": 2.725552,
+    "fractional_change": -0.09121821116611606
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.644432,
+    "round_b_ms": 2.3478855,
+    "fractional_change": -0.11213996049057051
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.4264585,
+    "round_b_ms": 2.115942,
+    "fractional_change": -0.12797107389225892
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.8139890000000001,
+    "round_b_ms": 0.8151364999999999,
+    "fractional_change": 0.0014097242100321594
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 3.115579,
+    "round_b_ms": 2.8301585,
+    "fractional_change": -0.09161074073230047
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.670999,
+    "round_b_ms": 2.3677025,
+    "fractional_change": -0.11355170855548802
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.4251785,
+    "round_b_ms": 2.1462675,
+    "fractional_change": -0.11500637994275464
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.9198500000000001,
+    "round_b_ms": 0.9185989999999999,
+    "fractional_change": -0.0013600043485352264
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 3.0541454999999997,
+    "round_b_ms": 2.773817,
+    "fractional_change": -0.09178622956895788
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.662422,
+    "round_b_ms": 2.367001,
+    "fractional_change": -0.11095949477580924
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.4273499999999997,
+    "round_b_ms": 2.1531684999999996,
+    "fractional_change": -0.11295507446392161
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.8571285,
+    "round_b_ms": 0.8553445,
+    "fractional_change": -0.002081368196250599
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.9637279999999997,
+    "round_b_ms": 2.676699,
+    "fractional_change": -0.09684728153190836
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.6677985,
+    "round_b_ms": 2.3337275,
+    "fractional_change": -0.12522347546113388
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_67108864",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.4225149999999998,
+    "round_b_ms": 2.113557,
+    "fractional_change": -0.1275360524083441
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_67108864",
+    "mode": "preprocessing_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 0.7845340000000001,
+    "round_b_ms": 0.7893805,
+    "fractional_change": 0.0061775525343708
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 3.1464784999999997,
+    "round_b_ms": 2.7816625,
+    "fractional_change": -0.11594422145264927
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.7461405,
+    "round_b_ms": 2.3378185,
+    "fractional_change": -0.14868940609557302
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.464468,
+    "round_b_ms": 2.1199019999999997,
+    "fractional_change": -0.13981354190843642
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 3.1294560000000002,
+    "round_b_ms": 2.7844445,
+    "fractional_change": -0.11024647734302706
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.7505034999999998,
+    "round_b_ms": 2.3594524999999997,
+    "fractional_change": -0.14217433280852032
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_16777216",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.4465570000000003,
+    "round_b_ms": 2.1342115,
+    "fractional_change": -0.1276673709216667
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.9535755000000004,
+    "round_b_ms": 2.538052,
+    "fractional_change": -0.14068490885030716
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.70564,
+    "round_b_ms": 2.3220685000000003,
+    "fractional_change": -0.14176738220901508
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.4584985,
+    "round_b_ms": 2.0885499999999997,
+    "fractional_change": -0.15047741538178705
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.8150805,
+    "round_b_ms": 2.4843954999999998,
+    "fractional_change": -0.11746910967554935
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.6882015,
+    "round_b_ms": 2.297796,
+    "fractional_change": -0.14522925457782832
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_4194304",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.45159,
+    "round_b_ms": 2.123209,
+    "fractional_change": -0.13394613291782065
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 3.1174315,
+    "round_b_ms": 2.7671335,
+    "fractional_change": -0.11236750510797111
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.6881595000000003,
+    "round_b_ms": 2.293647,
+    "fractional_change": -0.14675933477905612
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.449335,
+    "round_b_ms": 2.0943265,
+    "fractional_change": -0.14494076963747293
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.764247,
+    "round_b_ms": 2.8416115,
+    "fractional_change": 0.027987549593071703
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.3056085,
+    "round_b_ms": 2.337276,
+    "fractional_change": 0.013734985796591381
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.0787375,
+    "round_b_ms": 2.0883190000000003,
+    "fractional_change": 0.004609288089525654
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.7490265,
+    "round_b_ms": 2.738746,
+    "fractional_change": -0.0037396874857335005
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.347051,
+    "round_b_ms": 2.3401845000000003,
+    "fractional_change": -0.0029255861930566063
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_134217664",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.0892350000000004,
+    "round_b_ms": 2.081797,
+    "fractional_change": -0.0035601547935012468
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.7636190000000003,
+    "round_b_ms": 2.757715,
+    "fractional_change": -0.002136329211805288
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.3627325,
+    "round_b_ms": 2.3381855,
+    "fractional_change": -0.010389242116913389
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.0790655,
+    "round_b_ms": 2.095713,
+    "fractional_change": 0.008007203236261695
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.6974365000000002,
+    "round_b_ms": 2.6878015,
+    "fractional_change": -0.0035719098484803258
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.3094795,
+    "round_b_ms": 2.3044235,
+    "fractional_change": -0.002189237878058692
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.0879035000000004,
+    "round_b_ms": 2.1044704999999997,
+    "fractional_change": 0.007934753689526008
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.8195405,
+    "round_b_ms": 2.8110815000000002,
+    "fractional_change": -0.0030001342417318444
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.332776,
+    "round_b_ms": 2.3267205,
+    "fractional_change": -0.002595834319283119
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.0764705,
+    "round_b_ms": 2.1009515,
+    "fractional_change": 0.01178971721486044
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.7647465,
+    "round_b_ms": 2.7574275,
+    "fractional_change": -0.0026472589801633806
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.3232109999999997,
+    "round_b_ms": 2.3190385,
+    "fractional_change": -0.0017960056146426595
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.083093,
+    "round_b_ms": 2.0812910000000002,
+    "fractional_change": -0.0008650597932975401
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.67244,
+    "round_b_ms": 2.6733255,
+    "fractional_change": 0.00033134513777666186
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache_scope": "selected_lines_warm",
+    "round_a_ms": 2.376373,
+    "round_b_ms": 2.3534829999999998,
+    "fractional_change": -0.009632326238347422
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_67108864",
+    "mode": "inference_only",
+    "cache_scope": "input_cold",
+    "round_a_ms": 2.0891345,
+    "round_b_ms": 2.1053435,
+    "fractional_change": 0.007758715391469551
+  }
+]

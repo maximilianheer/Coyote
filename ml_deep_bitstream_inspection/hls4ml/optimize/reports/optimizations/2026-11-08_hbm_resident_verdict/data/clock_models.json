@@ -1,0 +1,597 @@
+[
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "real_18876484",
+    "ns_per_tick_min": 3.9999548306101365,
+    "ns_per_tick_max": 3.9999658724420546,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "synthetic_16777216",
+    "ns_per_tick_min": 3.999954906116351,
+    "ns_per_tick_max": 3.9999659663297726,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "real_5540996",
+    "ns_per_tick_min": 3.999954616814611,
+    "ns_per_tick_max": 3.9999662197846453,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "synthetic_4194304",
+    "ns_per_tick_min": 3.9999548650503565,
+    "ns_per_tick_max": 3.99996602154375,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "real_41278872",
+    "ns_per_tick_min": 3.9999546723419392,
+    "ns_per_tick_max": 3.9999660921398688,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "real_30323588",
+    "ns_per_tick_min": 3.999954959048465,
+    "ns_per_tick_max": 3.999965931407502,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "synthetic_134217664",
+    "ns_per_tick_min": 3.9999540099478366,
+    "ns_per_tick_max": 3.9999668695527464,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "real_12004440",
+    "ns_per_tick_min": 3.999955222445854,
+    "ns_per_tick_max": 3.9999656800761665,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "real_34162708",
+    "ns_per_tick_min": 3.9999551042962906,
+    "ns_per_tick_max": 3.999965836242925,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "real_55676772",
+    "ns_per_tick_min": 3.9999547719462205,
+    "ns_per_tick_max": 3.9999663255603237,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "real_48540364",
+    "ns_per_tick_min": 3.999954487952439,
+    "ns_per_tick_max": 3.9999662272009826,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "synthetic_67108864",
+    "ns_per_tick_min": 3.9999545044070914,
+    "ns_per_tick_max": 3.99996639734444,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "smoke_4194240",
+    "ns_per_tick_min": 3.999954676003971,
+    "ns_per_tick_max": 3.9999662313908932,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "smoke_4194241",
+    "ns_per_tick_min": 3.9999547131835738,
+    "ns_per_tick_max": 3.9999663376662378,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA_HLS4ML",
+    "case_id": "smoke_4194242",
+    "ns_per_tick_min": 3.999954543717494,
+    "ns_per_tick_max": 3.999966498452989,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "real_18876484",
+    "ns_per_tick_min": 3.9999582413720707,
+    "ns_per_tick_max": 3.999966710425137,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "synthetic_16777216",
+    "ns_per_tick_min": 3.9999573523608665,
+    "ns_per_tick_max": 3.999967599420478,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "real_5540996",
+    "ns_per_tick_min": 3.9999535930314236,
+    "ns_per_tick_max": 3.99997135761638,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "synthetic_4194304",
+    "ns_per_tick_min": 3.999952522042659,
+    "ns_per_tick_max": 3.999972485415892,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "real_41278872",
+    "ns_per_tick_min": 3.9999598927687194,
+    "ns_per_tick_max": 3.9999650501902324,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "real_30323588",
+    "ns_per_tick_min": 3.999959080954698,
+    "ns_per_tick_max": 3.9999658363347135,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "synthetic_134217664",
+    "ns_per_tick_min": 3.9999615619575932,
+    "ns_per_tick_max": 3.9999633849808998,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "real_12004440",
+    "ns_per_tick_min": 3.9999562790511503,
+    "ns_per_tick_max": 3.9999686870737046,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "real_34162708",
+    "ns_per_tick_min": 3.999959483462863,
+    "ns_per_tick_max": 3.999965469503872,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "real_55676772",
+    "ns_per_tick_min": 3.9999604705809757,
+    "ns_per_tick_max": 3.9999644736684914,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "real_48540364",
+    "ns_per_tick_min": 3.9999602116530166,
+    "ns_per_tick_max": 3.999964760941466,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "synthetic_67108864",
+    "ns_per_tick_min": 3.9999607992051707,
+    "ns_per_tick_max": 3.9999641024417962,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "smoke_4194240",
+    "ns_per_tick_min": 3.9999525513737937,
+    "ns_per_tick_max": 3.9999723545129666,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "smoke_4194241",
+    "ns_per_tick_min": 3.999952511489176,
+    "ns_per_tick_max": 3.999972399337628,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU_P2P",
+    "case_id": "smoke_4194242",
+    "ns_per_tick_min": 3.9999526061801753,
+    "ns_per_tick_max": 3.99997239099073,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "real_18876484",
+    "ns_per_tick_min": 3.9999578980572355,
+    "ns_per_tick_max": 3.9999669921674696,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "synthetic_16777216",
+    "ns_per_tick_min": 3.9999577132613022,
+    "ns_per_tick_max": 3.9999670625155175,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "real_5540996",
+    "ns_per_tick_min": 3.999957365725058,
+    "ns_per_tick_max": 3.999967436911433,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "synthetic_4194304",
+    "ns_per_tick_min": 3.9999573070524836,
+    "ns_per_tick_max": 3.9999675728397155,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "real_41278872",
+    "ns_per_tick_min": 3.999957370824859,
+    "ns_per_tick_max": 3.99996738564244,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "real_30323588",
+    "ns_per_tick_min": 3.9999577706783787,
+    "ns_per_tick_max": 3.9999670082385776,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "synthetic_134217664",
+    "ns_per_tick_min": 3.999957593155379,
+    "ns_per_tick_max": 3.9999672146001672,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "real_12004440",
+    "ns_per_tick_min": 3.999957867972781,
+    "ns_per_tick_max": 3.999967012681099,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "real_34162708",
+    "ns_per_tick_min": 3.999957708930829,
+    "ns_per_tick_max": 3.9999670449859197,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "real_55676772",
+    "ns_per_tick_min": 3.9999577550044645,
+    "ns_per_tick_max": 3.9999669892705847,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "real_48540364",
+    "ns_per_tick_min": 3.999957820340558,
+    "ns_per_tick_max": 3.999966993989933,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "synthetic_67108864",
+    "ns_per_tick_min": 3.999957454127499,
+    "ns_per_tick_max": 3.999967314238367,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "smoke_4194240",
+    "ns_per_tick_min": 3.9999574003057137,
+    "ns_per_tick_max": 3.999967336460841,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "smoke_4194241",
+    "ns_per_tick_min": 3.9999574841784424,
+    "ns_per_tick_max": 3.9999673310477415,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA closing",
+    "case_id": "smoke_4194242",
+    "ns_per_tick_min": 3.9999573004011353,
+    "ns_per_tick_max": 3.9999675845950082,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "real_18876484",
+    "ns_per_tick_min": 3.9999579564920262,
+    "ns_per_tick_max": 3.9999667939613675,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "synthetic_16777216",
+    "ns_per_tick_min": 3.9999576305221183,
+    "ns_per_tick_max": 3.999967302168007,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "real_5540996",
+    "ns_per_tick_min": 3.999957357868486,
+    "ns_per_tick_max": 3.9999675119419544,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "synthetic_4194304",
+    "ns_per_tick_min": 3.9999573953188925,
+    "ns_per_tick_max": 3.999967343163819,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "real_41278872",
+    "ns_per_tick_min": 3.999957402110273,
+    "ns_per_tick_max": 3.9999675053441823,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "real_30323588",
+    "ns_per_tick_min": 3.9999576672769064,
+    "ns_per_tick_max": 3.9999671218581105,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "synthetic_134217664",
+    "ns_per_tick_min": 3.999957503234769,
+    "ns_per_tick_max": 3.999967289732237,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "real_12004440",
+    "ns_per_tick_min": 3.9999578266294935,
+    "ns_per_tick_max": 3.9999670610409677,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "real_34162708",
+    "ns_per_tick_min": 3.999957666684933,
+    "ns_per_tick_max": 3.9999672083250104,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "real_55676772",
+    "ns_per_tick_min": 3.9999576401464605,
+    "ns_per_tick_max": 3.9999672560965647,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "real_48540364",
+    "ns_per_tick_min": 3.9999577894018556,
+    "ns_per_tick_max": 3.999966977394421,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "synthetic_67108864",
+    "ns_per_tick_min": 3.999957410118643,
+    "ns_per_tick_max": 3.9999674611325178,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "smoke_4194240",
+    "ns_per_tick_min": 3.999957361120305,
+    "ns_per_tick_max": 3.9999673783694374,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "smoke_4194241",
+    "ns_per_tick_min": 3.999957347497809,
+    "ns_per_tick_max": 3.999967522839605,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA repeat",
+    "case_id": "smoke_4194242",
+    "ns_per_tick_min": 3.999957252269179,
+    "ns_per_tick_max": 3.9999676163151188,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "real_18876484",
+    "ns_per_tick_min": 3.999923339538375,
+    "ns_per_tick_max": 3.9999668018463956,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "synthetic_16777216",
+    "ns_per_tick_min": 3.999922246997146,
+    "ns_per_tick_max": 3.999968378876903,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "real_5540996",
+    "ns_per_tick_min": 3.9999213428060605,
+    "ns_per_tick_max": 3.9999692843900507,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "synthetic_4194304",
+    "ns_per_tick_min": 3.9999213867276078,
+    "ns_per_tick_max": 3.9999692144313896,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "real_41278872",
+    "ns_per_tick_min": 3.999922801091237,
+    "ns_per_tick_max": 3.999967827414432,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "real_30323588",
+    "ns_per_tick_min": 3.9999228619426237,
+    "ns_per_tick_max": 3.999967725644657,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "synthetic_134217664",
+    "ns_per_tick_min": 3.999923564220049,
+    "ns_per_tick_max": 3.9999664331276987,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "real_12004440",
+    "ns_per_tick_min": 3.999922654357592,
+    "ns_per_tick_max": 3.9999681006934744,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "real_34162708",
+    "ns_per_tick_min": 3.999922750831908,
+    "ns_per_tick_max": 3.999967915520199,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "real_55676772",
+    "ns_per_tick_min": 3.9999226142489537,
+    "ns_per_tick_max": 3.9999682423089102,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "real_48540364",
+    "ns_per_tick_min": 3.999923133887875,
+    "ns_per_tick_max": 3.9999671309041007,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "synthetic_67108864",
+    "ns_per_tick_min": 3.9999222331473283,
+    "ns_per_tick_max": 3.999968546715875,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "smoke_4194240",
+    "ns_per_tick_min": 3.999921787001131,
+    "ns_per_tick_max": 3.999968156339967,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "smoke_4194241",
+    "ns_per_tick_min": 3.9999216680701135,
+    "ns_per_tick_max": 3.999968463567833,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA program 3",
+    "case_id": "smoke_4194242",
+    "ns_per_tick_min": 3.999921626232082,
+    "ns_per_tick_max": 3.9999684297911315,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA diagnostic",
+    "case_id": "boundary_4095",
+    "ns_per_tick_min": 3.9999381247521257,
+    "ns_per_tick_max": 3.9999969873579584,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA diagnostic",
+    "case_id": "boundary_4096",
+    "ns_per_tick_min": 3.999938259023403,
+    "ns_per_tick_max": 3.999996713907549,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA diagnostic",
+    "case_id": "boundary_4097",
+    "ns_per_tick_min": 3.9999391407503126,
+    "ns_per_tick_max": 3.999995879665474,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA diagnostic",
+    "case_id": "boundary_1048576",
+    "ns_per_tick_min": 3.9999385313722775,
+    "ns_per_tick_max": 3.9999964447157677,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "FPGA diagnostic",
+    "case_id": "boundary_2097152",
+    "ns_per_tick_min": 3.9999404318387795,
+    "ns_per_tick_max": 3.999995676148781,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU diagnostic",
+    "case_id": "boundary_4095",
+    "ns_per_tick_min": 3.999942923931166,
+    "ns_per_tick_max": 3.9999821958271005,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU diagnostic",
+    "case_id": "boundary_4096",
+    "ns_per_tick_min": 3.999932819778477,
+    "ns_per_tick_max": 3.999991243896243,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU diagnostic",
+    "case_id": "boundary_4097",
+    "ns_per_tick_min": 3.9999322825786976,
+    "ns_per_tick_max": 3.9999926267336083,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU diagnostic",
+    "case_id": "boundary_1048576",
+    "ns_per_tick_min": 3.9999364588045507,
+    "ns_per_tick_max": 3.9999886430801777,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  },
+  {
+    "variant": "GPU diagnostic",
+    "case_id": "boundary_2097152",
+    "ns_per_tick_min": 3.999935553428754,
+    "ns_per_tick_max": 3.9999893963992994,
+    "model": "affine within size block; feasible interval from all MMIO brackets"
+  }
+]

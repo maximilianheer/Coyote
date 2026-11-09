@@ -1,0 +1,42 @@
+[
+  {
+    "name": "01_real_verdict_latency",
+    "title": "1 \u00b7 Single-core CPU verdict latency: cold raw input",
+    "caption": "Raw input is explicitly flushed from CPU data caches before each call; model/code are warmed. Bars are pooled medians, black ticks p95, white circles round A medians and diamonds round B medians. Each workload/model contributes 400 measured calls, equally split across rounds after 20 warmups. Both use CPU XLA + cached ConcreteFunction; QKeras W8A8 uses quantized values with floating CPU operators, not native INT8 kernels."
+  },
+  {
+    "name": "02_cache_control",
+    "title": "2 \u00b7 Cache-state control: cold versus warmed selected input lines",
+    "caption": "The warm control touches only the source bytes selected by preprocessing. Above the sampling cutoff these occupy approximately 4 MiB of cache lines, which fits the socket's 24.75 MiB L3; the full 128 MiB buffer does not. Cache preparation is untimed. The cold condition invalidates the actual aliased input storage. Natural cache fills and prefetching during execution remain enabled; this is not cache-bypassing inference."
+  },
+  {
+    "name": "03_synthetic_latency",
+    "title": "3 \u00b7 Established synthetic workloads: cold-input verdict latency",
+    "caption": "Pinned synthetic byte identities match the previous HBM campaign. Each bar uses 400 measured calls. Input lengths affect which bytes are gathered, memory locality and compiled graph shape. Sampling touches 65,536 byte positions rather than casting or scanning the complete raw file into floating point."
+  },
+  {
+    "name": "04_stage_diagnostics",
+    "title": "4 \u00b7 Separate preprocessing and inference diagnostics",
+    "caption": "These are independent completed-call timings, not an additive breakdown of the fused end-to-end graph. Preprocessing-only returns/materializes a 256 KiB float32 tensor; fused inference does not expose that intermediate to Python. Inference-only starts from the prepared tensor flushed from data caches. Preprocessing is shared by the two primary models: integer sampling/padding followed by an exact 256-entry float32 normalization lookup. Boundary validation caught and rejected a prior rounding-sensitive arithmetic implementation."
+  },
+  {
+    "name": "05_distributions",
+    "title": "5 \u00b7 Latency distributions retain independent process sessions",
+    "caption": "Two independently launched, model-warmed rounds use reversed model, workload and cache-scope order. All accepted calls remain present; latency variation alone does not trigger selective reruns. This is a shared build host: affinity limits our worker to one logical CPU, while another process could still contend for the core, SMT sibling or shared resources. Environment/load and process CPU-time evidence are retained."
+  },
+  {
+    "name": "06_cache_evidence",
+    "title": "6 \u00b7 Cache eviction evidence from isolated CPU diagnostics",
+    "caption": "Left: 512 randomized line probes per cache state; fences and timestamp-counter overhead are included. Timestamp-counter ticks are not actual variable-frequency core cycles. Right, when available: per-thread hardware cache-miss counters enabled only around a native gather on a 128 MiB\u221264 B arena, after untimed cache preparation. This diagnostic is separate from TensorFlow/model timings. CLFLUSHOPT + fences invalidate input lines before a call; they do not prevent normal cache use during the call."
+  },
+  {
+    "name": "07_session_variation",
+    "title": "7 \u00b7 Independent process sessions: cold-input median changes",
+    "caption": "Round B reverses model, workload and cache-scope order. Session changes are retained rather than rerun away; separate absolute values appear in the appendix. CPU frequency snapshots vary and this is a shared host. No single physical cause for these differences is established. Equal 200-call sessions contribute to each pooled 400-call primary cell."
+  },
+  {
+    "name": "A1_historical_context",
+    "title": "Appendix \u00b7 CPU versus historical HBM paths: different hosts",
+    "caption": "CPU: Xeon Gold 6234, hacc-build-03, one logical CPU, local DRAM, measurements 2026-11-09. FPGA/GPU: original HBM report, measured 2026-11-08 on hacc-gpu-u55c-01 with EPYC host, U55C device2 and MI210 GPU0. Accelerator values are FPGA accepted-arm\u2192verdict events; CPU uses completed host wall time. These are different-machine deployment-path observations, not a controlled same-host speedup claim. Historical OPT_10 changed by up to 9.825% after identical-image reprogramming; this plot uses the report's initial-program medians. QKeras CPU and hls4ml FPGA also differ in fixed-point accumulator/input arithmetic; FP32 uses the same pinned float checkpoint as GPU."
+  }
+]

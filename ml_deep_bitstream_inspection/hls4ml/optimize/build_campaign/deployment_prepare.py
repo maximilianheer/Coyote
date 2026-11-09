@@ -8,6 +8,7 @@ import subprocess
 
 from prepare import HERE, HARDWARE, copy_coyote, sha
 from worker import save
+from hbm_clock import configure_hbm_clock
 
 NETWORK_REVISION = '37b59d3828b003d2d6f7dd9748824a0e39d99167'
 REPO = HERE.parents[2]
@@ -20,12 +21,13 @@ FINAL_VARIANTS = {
 }
 
 
-def prepare_final(root, network, variant):
+def prepare_final(root, network, variant, attempt='attempt_01', clock_mhz=250,
+                  hbm_clock_mhz=450):
     ident, wrapper = FINAL_VARIANTS[variant]
     source_template = HARDWARE / 'deployment' / wrapper
     if not source_template.exists():
         raise RuntimeError('Wrapper implementation is not ready: ' + wrapper)
-    job = root / ident / 'attempt_01'
+    job = root / ident / attempt
     job.mkdir(parents=True, exist_ok=False)
     network_enabled = variant >= 12
     cnn_enabled = variant in (10, 12)
@@ -33,7 +35,9 @@ def prepare_final(root, network, variant):
         'id': ident, 'variant': variant, 'abi': 5, 'threads': 4,
         'hbm_enabled': True, 'rdma_enabled': network_enabled,
         'N_OUTSTANDING': 32, 'N_TLB_ACTV': 64, 'PMTU_BYTES': 4096,
-        'clock_hz': 250000000, 'max_raw_bytes': 134217664,
+        'clock_hz': clock_mhz * 1000000, 'hbm_axi_mhz': hbm_clock_mhz,
+        'user_clock_hz': clock_mhz * 1000000,
+        'max_raw_bytes': 134217664,
         'hardware_validated': False,
     }
     if cnn_enabled:
@@ -119,11 +123,14 @@ set(PMTU_BYTES 4096)
 set(HBM_SPLIT 0)
 set(COMP_CORES 4)
 set(BUILD_OPT 1)
-set(ACLK_F 250)
+set(ACLK_F {clock_mhz})
+set(UCLK_F {clock_mhz})
 validation_checks_hw()
 load_apps(VFPGA_C0_0 "src")
 create_hw()
 ''')
+    if hbm_clock_mhz != 450:
+        configure_hbm_clock(job, hbm_clock_mhz)
     seal_sources(job)
     save(job / 'status.json', {'id': ident, 'status': 'prepared', 'validation': 'pending'})
     return job
@@ -137,12 +144,13 @@ def seal_sources(job):
     })
 
 
-def prepare_diagnostic(root, network):
+def prepare_diagnostic(root, network, attempt='attempt_01', clock_mhz=250,
+                       hbm_clock_mhz=450):
     revision = subprocess.check_output(
         ['git', '-C', str(network), 'rev-parse', 'HEAD'], text=True).strip()
     if revision != NETWORK_REVISION:
         raise RuntimeError('Network dependency differs from pinned revision')
-    job = root / 'NET_DIAG_HBM' / 'attempt_01'
+    job = root / 'NET_DIAG_HBM' / attempt
     job.mkdir(parents=True, exist_ok=False)
     config = {
         'id': 'NET_DIAG_HBM', 'role': 'diagnostic', 'abi': 'NETD/1',
@@ -150,6 +158,8 @@ def prepare_diagnostic(root, network):
         'hbm_enabled': True, 'rdma_enabled': True, 'qsfp': 0,
         'N_OUTSTANDING': 32, 'N_TLB_ACTV': 64, 'PMTU_BYTES': 4096,
         'benchmark_eligible': False,
+        'clock_hz': clock_mhz * 1000000, 'hbm_axi_mhz': hbm_clock_mhz,
+        'user_clock_hz': clock_mhz * 1000000,
     }
     save(job / 'config.json', config)
     copy_coyote(job / 'coyote')
@@ -188,15 +198,15 @@ set(PMTU_BYTES 4096)
 set(HBM_SPLIT 0)
 set(COMP_CORES 4)
 set(BUILD_OPT 1)
+set(ACLK_F {clock_mhz})
+set(UCLK_F {clock_mhz})
 validation_checks_hw()
 load_apps(VFPGA_C0_0 "src")
 create_hw()
 ''')
-    save(job / 'source_hashes.json', {
-        str(path.relative_to(job)): sha(path)
-        for folder in ['hw', 'coyote']
-        for path in (job / folder).rglob('*') if path.is_file()
-    })
+    if hbm_clock_mhz != 450:
+        configure_hbm_clock(job, hbm_clock_mhz)
+    seal_sources(job)
     save(job / 'status.json', {'id': 'NET_DIAG_HBM', 'status': 'prepared'})
     return job
 
@@ -206,8 +216,13 @@ if __name__ == '__main__':
     parser.add_argument('root', type=Path)
     parser.add_argument('--network', required=True, type=Path)
     parser.add_argument('--variant', type=int, choices=FINAL_VARIANTS)
+    parser.add_argument('--attempt', default='attempt_01')
+    parser.add_argument('--clock-mhz', type=int, choices=[200, 250], default=250)
+    parser.add_argument('--hbm-clock-mhz', type=int, choices=[350, 400, 450], default=450)
     arguments = parser.parse_args()
     if arguments.variant:
-        print(prepare_final(arguments.root.resolve(), arguments.network.resolve(), arguments.variant))
+        print(prepare_final(arguments.root.resolve(), arguments.network.resolve(), arguments.variant,
+                            arguments.attempt, arguments.clock_mhz, arguments.hbm_clock_mhz))
     else:
-        print(prepare_diagnostic(arguments.root.resolve(), arguments.network.resolve()))
+        print(prepare_diagnostic(arguments.root.resolve(), arguments.network.resolve(),
+                                 arguments.attempt, arguments.clock_mhz, arguments.hbm_clock_mhz))

@@ -1,0 +1,54 @@
+{
+  "OPT_6 (archived)": {
+    "wrapper": {
+      "LUT": 61141,
+      "FF": 87141,
+      "BRAM_tiles": 54.5,
+      "DSP": 648,
+      "URAM": 0
+    },
+    "full": {
+      "LUT": 181886.0,
+      "FF": 259143.0,
+      "BRAM_tiles": 196.5,
+      "URAM": 0.0,
+      "DSP": 648.0
+    }
+  },
+  "OPT_10 (HBM FPGA)": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/hbm_network_20261107/OPT_10_HBM_GATHER_DSP_B2_RF72_RF288/attempt_01/build/reports/shell_utilization_hierarchical.rpt",
+    "sha256": "b0cc6285e9a957a1a6bd2d0f2208329651337fa5c9d8bc1fa9d9cb70d336e9f9",
+    "full": {
+      "LUT": 228638,
+      "FF": 345777,
+      "BRAM_tiles": 208.0,
+      "URAM": 34,
+      "DSP": 664
+    },
+    "wrapper": {
+      "LUT": 64595,
+      "FF": 100800,
+      "BRAM_tiles": 29.0,
+      "URAM": 34,
+      "DSP": 664
+    }
+  },
+  "OPT_11 (HBM GPU)": {
+    "source": "/pub/scratch/sdeheredia/Coyote/ml_deep_bitstream_inspection/hls4ml/optimize/runs/hbm_network_20261107/OPT_11_HBM_GPU_P2P_R06/attempt_01/build/reports/shell_utilization_hierarchical.rpt",
+    "sha256": "a76ac24680334eae31002d145281425e011782f92105170c9faa673e5199f09b",
+    "full": {
+      "LUT": 182013,
+      "FF": 281970,
+      "BRAM_tiles": 179.5,
+      "URAM": 38,
+      "DSP": 0
+    },
+    "wrapper": {
+      "LUT": 15543,
+      "FF": 30347,
+      "BRAM_tiles": 0.5,
+      "URAM": 38,
+      "DSP": 0
+    }
+  }
+}

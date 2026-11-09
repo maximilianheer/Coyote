@@ -1,0 +1,3530 @@
+[
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.5470800000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.80939
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.0163675000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7610455
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7633419999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.1313305
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7220355
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.8035170000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.9806725
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.6942965
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7390565000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.09627
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.0413645000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7622575
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.1025080000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.815398
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.5470800000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.0163675000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7633419999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7220355
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.9806725
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7390565000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.0413645000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.1025080000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.6881285499999996
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.0508859999999998
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8649887499999998
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8409436
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.01363605
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8606531
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.0732122
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.12483255
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.525708
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.0376875
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7643915000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.715138
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.999127
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.722038
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.0541454999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.115579
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.57762
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7745275
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7563345000000004
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.741991
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.725552
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.755692
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.773817
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8301585
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.80939
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7610455
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.1313305
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.8035170000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.6942965
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.09627
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7622575
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.815398
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.9749738499999996
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8651408
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.1675324
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.004437
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.82645355
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.2339823
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8712837
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.9604072
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.9535755000000004
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7636190000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.1464784999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.764247
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.6974365000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.1174315
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7647465
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.8195405
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.538052
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.757715
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7816625
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8416115
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.6878015
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7671335
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7574275
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8110815000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.5470800000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.0163675000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7633419999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7220355
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.9806725
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7390565000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.0413645000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.1025080000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.6881285499999996
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.0508859999999998
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8649887499999998
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8409436
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.01363605
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8606531
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.0732122
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.12483255
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.525708
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.0376875
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7643915000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.715138
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.999127
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.722038
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.0541454999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.115579
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.57762
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7745275
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7563345000000004
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.741991
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.725552
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.755692
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.773817
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8301585
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.80939
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7610455
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.1313305
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.8035170000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.6942965
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.09627
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7622575
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.815398
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.9749738499999996
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8651408
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.1675324
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.004437
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.82645355
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.2339823
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8712837
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.9604072
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.9535755000000004
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7636190000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.1464784999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.764247
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.6974365000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.1174315
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7647465
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.8195405
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.538052
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.757715
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7816625
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8416115
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.6878015
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7671335
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7574275
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8110815000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.3097374999999998
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.591858
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.3561639999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.300424
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.5986335
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.2907155
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.646675
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.6063905
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.4191525
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.68387595
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.4559104499999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.39864425
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.6581806
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.4185011499999995
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.67568265
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.6822767499999998
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.2889255
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.6706085
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.3552815000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.273612
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.644432
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.2649355
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.662422
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.670999
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3457585
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.35081
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.357686
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3179965
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3478855
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.321902
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.367001
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3677025
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.6237909999999998
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.353059
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.6864280000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.3130295
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.3077555
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.5964834999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.3223125
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.3307975
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.71650825
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.50522725
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.7684595499999998
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.508355
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.41769555
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.6999272999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.4397262
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.4454325
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.70564
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.3627325
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7461405
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.3056085
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.3094795
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.6881595000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.3232109999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.332776
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3220685000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3381855
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3378185
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.337276
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3044235
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.293647
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3190385
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "selected_lines_warm",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.3267205
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.447314
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.754824
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.9462289999999998
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.6750835
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.5896032999999994
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.91281265
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.9743157
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8223329999999995
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.420017
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7447935
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.9637279999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.6657085
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.464737
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7652574999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.676699
+  },
+  {
+    "model": "FP32",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.699165
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7661955000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.071406
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.6726289999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.746575
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.8252416499999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 3.1428596
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.7923333999999995
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.90717305
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.8150805
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.1294560000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.67244
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7490265
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_4194304",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.4843954999999998
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_16777216",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7844445
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_67108864",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.6733255
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "synthetic_134217664",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.738746
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "preprocessing_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 0.6726045
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "preprocessing_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 0.858986
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "preprocessing_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 0.8997765
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "preprocessing_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 0.848924
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "preprocessing_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 0.8144425
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "preprocessing_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 0.871016
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "preprocessing_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 0.8563594999999999
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "preprocessing_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 0.9193295
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.093978
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.3990815000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.0940075
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.079015
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.3886495
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.081108
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.4152135
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.401517
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.2263536499999996
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.4342819999999996
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.2575567999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.1972308
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.4376525499999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.19389545
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.43927565
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.43510235
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.05607
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.4146145
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.075817
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.050574
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.4264585
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.0488515
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.4273499999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.4251785
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.119591
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.143436
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.1053195000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.1062814999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.115942
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.1153139999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.1531684999999996
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.1462675
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.426201
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.090248
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.4313045
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.0856585
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.0914585
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.40775
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.081932
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.0918075
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.4709780500000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.2073245
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.4736517499999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.20583185
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.2321964499999996
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.46038815
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.2902937999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "p95_ms",
+    "value": 2.20615495
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.4584985
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.0790655
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.464468
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.0787375
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.0879035000000004
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.449335
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.083093
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.0764705
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.0885499999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.095713
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.1199019999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.0883190000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.1044704999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.0943265
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.0812910000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "inference_only",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.1009515
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.57762
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.525708
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7745275
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.0376875
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7563345000000004
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7643915000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.741991
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.715138
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.725552
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.999127
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.755692
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.722038
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.773817
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.0541454999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8301585
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.115579
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.538052
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.9535755000000004
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.757715
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7636190000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7816625
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.1464784999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8416115
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.764247
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.6878015
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.6974365000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7671335
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.1174315
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7574275
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7647465
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8110815000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.8195405
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.5470800000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.0163675000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7633419999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7220355
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.9806725
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7390565000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.0413645000000002
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.1025080000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.80939
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7610455
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.1313305
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.8035170000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.6942965
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 3.09627
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.7622575
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "pooled",
+    "metric": "median_ms",
+    "value": 2.815398
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.525708
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.57762
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.0376875
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7745275
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7643915000000003
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7563345000000004
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.715138
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.741991
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.999127
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.725552
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.722038
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.755692
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.0541454999999997
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.773817
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.115579
+  },
+  {
+    "model": "FP32",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8301585
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.9535755000000004
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_5540996",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.538052
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7636190000000003
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_12004440",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.757715
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.1464784999999997
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_18876484",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7816625
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.764247
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_30323588",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8416115
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.6974365000000002
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_34162708",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.6878015
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 3.1174315
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_41278872",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7671335
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.7647465
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_48540364",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.7574275
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "A",
+    "metric": "median_ms",
+    "value": 2.8195405
+  },
+  {
+    "model": "QKERAS_W8A8",
+    "case_id": "real_55676772",
+    "mode": "total",
+    "cache": "input_cold",
+    "session": "B",
+    "metric": "median_ms",
+    "value": 2.8110815000000002
+  }
+]

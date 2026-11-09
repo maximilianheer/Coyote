@@ -1,6 +1,492 @@
 # Optimization project memory
 
+## Networking priority — latest user instruction, 2026-11-08
+
+- **2026-11-09 06:38 CET:** Networking-first phase completed with four
+  accepted images (OPT12,OPT13,NET_DIAG_HBM,stock RDMA control). Native250/450
+  application-HBM control remains unresolved: original WNS-0.104ns; targeted
+  physical retry-0.277ns, all in HBM adapter. Preserve this negative evidence;
+  no repeated directive retries. `network_phase_summary.json` discloses it.
+- Deferred reader repairs now resumed as isolated attempt_04 for OPT14/15,
+  maintained runner `hbm/readers_repair.py`, snapshot launched as
+  `tooling/readers_recovery_worker.py` for existing monitor compatibility.
+  OPT14 reuses original routed DCP for one physical repair; no source changes.
+  OPT15 only changes reader_window.sv: bounded active-data/CQ differences and
+  peak comparison remove64-bit critical arithmetic, retain64-bit telemetry.
+  New differential gate compares every handshake/data/telemetry output to
+  original RTL over300 descriptors and4/32/128 tracking settings, wraparound,
+  independent data/CQ timing and backpressure. Full original parity/control/
+  wiring gates and final verify.py retained. No clocks/model/RFs/FIFOs changed.
+  Sources/checkpoints copied independently; preserved original HLS exports and
+  completed components. OPT15 resynthesizes user only, then links/routes; OPT14
+  starts from routed DCP. Tooling, identities, model pins and old evidence kept.
+  `reader14_repair04` / `reader15_repair04` tmux. Native250/450MHz acceptance,
+  four tool threads,24h stage watchdog, shared6 permits, ntfy monitors retained.
+- Native application-HBM reference repair attempt_02 stopped before routing:
+  selected launching counter FFs have low fanout, not the late512-load driver.
+  Full timing path shows that driver is a downstream read-data gating LUT.
+  Attempt_03 uses corrected strategy6 to select high-fanout read-data gating
+  nets driven by FD/LUT cells, from same original placed DCP at250/450MHz.
+  Both snapshots and prior failure preserved; tool-only selector correction,
+  not another routed HDL failure. `read_control_probe/` holds read-only evidence.
+- **2026-11-09 04:40 CET:** Application-HBM reference attempt_01 failed
+  WNS-0.104ns only in HBM450 read width-converter control; application250 setup
+  passes, hold+0.001ns. Stock reference already closes at native clocks.
+  Queued/launched one unchanged-clock physical repair as NET_REF_RDMA_HBM
+  attempt_02, strategy6: explicitly replicate high-fanout first/current-word
+  read control FFs before routing, from own placed checkpoint. No RTL/clock
+  changes or timing exceptions. Tool snapshot:
+  queued_recovery_tooling/hbm_reference_read_control/. Keep monitoring; reader
+  repairs still deferred while this networking repair runs. Generic strategy6
+  requires measured target nets to exist; clock/timing gates remain mandatory.
+- **2026-11-09 03:26 CET:** NET_REF_RDMA_STOCK attempt_02 PASSED bitgen and
+  build acceptance at native application/user/network250 and HBM450MHz.
+  WNS+0.027ns, hold+0.009ns. All artifact/source hashes independently verified;
+  image SHA256 58d982f46bf9386c76108ac6a7da64810e2b0dc75c07cc56c23e0e49b0f8e325.
+  Official Example09 application logic retained, native8/16 capacities, no
+  application HBM; retransmission HBM retained. This establishes build closure,
+  not board-level throughput/functional validation. Only NET_REF_RDMA_HBM
+  implementation remains in networking queue; failed reader repairs still defer.
+- **2026-11-09 03:08 CET: BOTH PRODUCTION NETWORK VARIANTS ACCEPTED.**
+  OPT12_NET_STREAMING attempt_07 completed bitgen/acceptance, all artifact and
+  source hashes independently reverified. WNS+0.032ns/hold+0.009ns; accepted
+  image SHA256 1dcce96f9a5e02d06b51943718cc16b0cb24094003c94e5e953a5e1dbe042181.
+  Source is exact attempt_05 routed design; model/RFs/FIFOs/first-pixel guard
+  preserved. Actual application/user200MHz, network250MHz, HBM350MHz: benchmark
+  ticks at200MHz and label fallback clocks. verification.json has resources.
+  OPT13 attempt_09 is also accepted; no board validation/benchmarks on build host.
+  Stock native-clock reference bitgen and application-HBM reference routing
+  continue; failed original-clock OPT12 attempts and reader repairs preserved.
+- **2026-11-09 02:59 CET:** STOCK RDMA reference met native250/450 routed
+  timing (WNS+0.027ns, hold+0.009ns). Its user-clock audit had an overly specific
+  ARP hierarchy line337; stock EN_MEM=0 generates that slice at line193. Audit
+  now derives the hierarchy line from generated dynamic_top.sv and follows
+  explicit recovery ancestry, hashes the source, and still checks actual
+  physical clock pins/period. Resolver checks passed for stock193 and prior
+  application-HBM337 configurations. Stock attempt_02 continues clock audit
+  and bitgen from attempt_01's timing-valid checkpoint, without rebuilding.
+- **2026-11-09 02:35 CET:** OPT12 fallback attempt_05 met routed timing:
+  WNS+0.032ns/hold+0.009ns at application/user200, NCLK250, HBM350. Its old
+  clock-name check failed after timing passed. Fresh attempt_07 now continues
+  physical clock audit/bitgen from the exact routed DCP. No repeated synthesis,
+  routing or FIFO profiling. OPT13 and diagnostic already accepted; original
+  250/450 OPT12 attempts03/06 remain failed evidence, not accepted images.
+- **2026-11-09 02:04 CET:** NET_DIAG_HBM attempt_09 PASSED acceptance and
+  bitgen. All artifacts and source hashes independently reverified; image hash
+  dd615fa1e79c9456b3630b3660870bd9329b0cb1d7e73096334c3f705f637515.
+  WNS+0.017ns, hold+0.009ns; application/user200, network250, HBM350.
+  Diagnostic only; board validation pending. OPT13 and diagnostic now accepted;
+  OPT12 fallback and both native-clock reference controls continue. Reader
+  repairs remain deferred under the network-first policy.
+- **2026-11-09 01:32 CET:** NET_DIAG_HBM attempt_08 met routed timing:
+  WNS+0.017ns/hold+0.009ns at matched200MHz application/user and350MHz HBM.
+  Old name-only clock checker rejected the merged clock, as for OPT13. Fresh
+  attempt_09 is queued/started for clock audit and bitgen from its exact DCP.
+  Generic maintained `deployment_finish_prepare.py` gates such continuations
+  on already-passed routed timing and source hashes, preserving previous jobs.
+- **2026-11-09 01:11 CET:** OPT12 original-clock physical retry attempt_06
+  failed WNS-0.129ns in CMAC powergood control and-0.025ns in HBM450 write
+  adapter. Application250 still meets setup. Physical retry did not resolve
+  the original limits; no indefinite repeated directives. Keep attempt_05
+  matched-clock fallback and stock/HBM reference controls running; use their
+  results to select further structural/platform changes. Reports/journal kept.
+- **2026-11-09 00:40 CET: FIRST ACCEPTED NETWORK VARIANT.** OPT_13
+  NET_GPU_P2P_R06 attempt_09 completed bitgen and acceptance. Routed WNS+0.031ns,
+  hold+0.009ns, actual ACLK/UCLK200, NCLK250, HBM350. Exact attempt_08 routed
+  DCP reused; no synthesis/routing repeated. All artifacts and sealed source
+  hashes independently verified; accepted image/clock evidence in attempt_09
+  verification.json and acceptance_evidence_hashes.json. GPU runtimeR06 unchanged.
+  This is the fallback-clock image: benchmark ticks at200MHz and label it.
+  Board validation remains pending. Five other networking jobs continue;
+  OPT14/15 repairs stay deferred until networking work is resolved.
+- **2026-11-09 00:07 CET:** OPT_13 attempt_08 ROUTED TIMING PASSED:
+  WNS+0.031ns, WHS+0.009ns. Its older name-only user-clock checker then rejected
+  the merged clock name. This is an acceptance-script failure, not routed timing
+  failure. Prepared attempt_09 as priority0 acceptance/bitgen continuation using
+  the exact routed DCP and source snapshots. Corrected helper verifies actual
+  ARP user-domain register clocks. `deployment_finish.py` performs no synthesis
+  or routing; it checks final timing/clocks/source hashes, isolates bitgen output,
+  preserves ancestry and hashes. All other networking builds continue.
+- OPT_16_HBM_GATHER_OUTSTANDING128 recovery attempt_03 PASSED build
+  acceptance around22:40 CET. Final setup WNS0.000ns, hold+0.001ns; all artifact
+  hashes independently reverified. Image SHA256:
+  8c26c5d942c048efe3dfd17536cac060037f10ca6e33bc6ca0db1db8b8f66e3c.
+  Full resources:246511LUT,401348FF,713BRAM tiles,664DSP. CSR14 windows32/64/128;
+  unchanged250/450 clocks, model, ABI6 and cache orders10/9. Board validation
+  remains pending. Its freed slot automatically launched OPT12 original-clock
+  physical retry attempt_06; all six active jobs are now networking jobs.
+- OPT_14 attempt_03 subsequently failed WNS-0.092ns only in HBM450 read
+  adapter control; application250 setup passes. Its slot automatically launched
+  NET_REF_RDMA_HBM. OPT14/15 repair diagnoses are preserved and deferred.
+- First policy-driven handoff: OPT_15 attempt_03 failed final timing around
+  21:19 CET (WNS-0.234ns); its slot automatically launched NET_REF_RDMA_STOCK.
+  Reader diagnosis is saved in reader root `deferred_repairs.json`: wide active
+  request/peak arithmetic plus HBM450 adapter path. No reader repair launched.
+  Scheduler startup handoff grace fixed: a pre-existing prepared status file
+  must not end the watch before the worker publishes its PID. Only scheduler
+  restarted; active builds untouched; launch notification delivered.
+- Six build jobs maximum. Let every currently running networking/HBM job finish.
+- Networking has priority over ALL subsequent HBM reader launches or repairs.
+  Failed reader jobs retain evidence, get diagnosed and wait behind networking.
+- Ordered prepared queue in `hls4ml/optimize/runs/hbm_network_20261107/repair_queue.json`:
+  1. NET_REF_RDMA_STOCK/attempt_01: official Example09 application unchanged,
+     native250/450 clocks, capacities8/16, 4KiB MTU, one region, two host streams;
+     no application HBM. RoCE still uses HBM for retransmission.
+  2. NET_REF_RDMA_HBM/attempt_01: same control plus one card stream; incoming
+     WRITEs target CARD0, incoming READ responses retain HOST0. No ring/CNN/GPU.
+  3. Existing queued OPT12 original-clock physical retry, then network repairs.
+- Both controls passed real-interface elaboration and128 RTL transport cases
+  each (metadata, payload, backpressure; no duplicate host WRITE). No board
+  acceptance or production timestamp equivalence is claimed for controls.
+- Controls reuse the sealed platform/RoCE snapshot; stock wrapper bytes are
+  identical to Example09. CMake selects U55C and isolated project paths/names.
+  New tool snapshots include24-hour stage watchdog and routed clock checks.
+- Persistent tmux `network_priority_scheduler_v3`, maintained code
+  `hls4ml/optimize/build_campaign/network_priority_scheduler.py`. Counts all
+  live workers INCLUDING project generation against6; launches ready network
+  jobs every10s; startup observations every30s for5min; durable ntfy launch
+  outbox. Existing `hbm_network_monitor` and `hbm_reader_recovery_monitor`
+  retain terminal notifications. Do not manually race the scheduler to launch
+  queued attempts. Add validated future networking repairs to repair_queue.json.
+- Scheduler heartbeat/state: network root `priority_scheduler.json`; events:
+  `priority_events.jsonl`. It never retries hardware blindly; agent diagnoses
+  failures. Reader queue policy and network scheduling_policy.json updated.
+
+
+## GPU dispatch limitation and possible follow-ups — 2026-11-08
+
+- **Editorial instruction from the user: keep this limitation and these
+  follow-up proposals out of the paper unless the user explicitly requests
+  their inclusion.** This is internal engineering context, not permission to
+  describe the current implementation as fully CPU-free. No paper edits or
+  follow-up experiments are authorized by this memory entry.
+- Current GPU offload moves the input from FPGA HBM into GPU memory through
+  PCIe P2P. CPU-side TensorFlow/XLA runtime code still dispatches preprocessing
+  and inference and coordinates result publication. The FPGA autonomously
+  polls the GPU-resident verdict mailbox; autonomous polling does not imply
+  autonomous inference launch. Writing input bytes into GPU memory does not
+  by itself invoke the compiled model.
+- This is a limitation of our current implementation, not an established
+  fundamental inability of an FPGA to trigger GPU execution. XLA compilation,
+  cached ConcreteFunction calls, and ordinary HIP graph replay do not by
+  themselves provide an FPGA-controlled launch interface.
+- Possible follow-up 1: CPU initialization/prelaunch once, then GPU-side work
+  waits for an FPGA-written readiness signal and executes inference for each
+  input. Investigate whether the full compiled model can be executed repeatedly
+  behind that trigger, including all kernels/dependencies, memory visibility,
+  synchronization, and result publication. A waiting GPU kernel alone does not
+  establish this capability. Feasibility with our TensorFlow/ROCm stack is
+  unverified; this is an investigation candidate, not an implemented solution.
+- Possible follow-up 2: FPGA submits GPU dispatch packets directly through
+  AMD AQL queues and signals their doorbells. Investigate queue/doorbell
+  accessibility from the FPGA, mappings and permissions, packet publication
+  ordering, kernel arguments, dependencies, and completion handling. Existing
+  P2P access to GPU buffers does not prove access to these control resources.
+  Expect custom runtime/driver/FPGA integration; no feasibility claim yet.
+- Distinguish removing CPU involvement per inference from eliminating CPU
+  setup, driver initialization, and memory/queue allocation altogether.
+- References: [AMD AQL dispatch and doorbells](https://rocm.docs.amd.com/projects/llvm-project/en/docs-6.4.3/LLVM/llvm/html/AMDGPUUsage.html)
+  and [HIP graph execution](https://rocm.docs.amd.com/projects/HIP/en/latest/how-to/hip_runtime_api/hipgraph.html).
+
+## Reader recovery using free build slots — 2026-11-08
+
+- Historical scheduling instruction (superseded by latest networking priority
+  above): use all **six concurrent build slots**. Launch OPT_14 and OPT_15 in
+  the two free slots alongside four networking builds; OPT_16 starts when a
+  shared permit becomes free. Preserve networking workers and supervisors.
+  Shared permit configuration:
+  `hls4ml/optimize/runs/hbm_network_20261107/permits/capacity.json`.
+- **OPT_10 and OPT_11 have already been benchmarked on the FPGA/GPU host.**
+  See `hls4ml/optimize/runs/hbm_benchmark_20261108/` and
+  `hls4ml/optimize/reports/optimizations/2026-11-08_hbm_resident_verdict/`.
+  Individual 64-byte FPGA gather requested about 4 MiB per real input at
+  1.4–1.6 GB/s; sequential HBM-to-GPU forwarding reached about 7.5 GB/s.
+  Initial real-input medians: OPT_10 about 2.7–3.1 ms; OPT_11 about 1.3–8.0 ms.
+  These are requested-payload/interface rates, not physical HBM-wire bandwidth.
+  Preserve the unexplained 9.825% identical-image reprogramming variation.
+- Follow-up objective: improve FPGA inspection with fewer/larger transactions
+  or more outstanding requests. Recover the SAME IDs: OPT_14_HBM_SCAN (64 KiB
+  chunks, four outstanding, short final request); OPT_15_HBM_COALESCED_GATHER
+  (CSR14 groups 1/2/4/8, zero=4, <=16 KiB descriptors, 2 MiB boundary splits,
+  duplicate suppression); OPT_16_HBM_GATHER_OUTSTANDING128 (native outstanding
+  and TLB-active capacities 128, CSR14 windows 32/64/128, zero=32).
+- Original root: `hls4ml/optimize/runs/hbm_reader_optimizations_20261108_032142/`.
+  Its attempt_01 synthesis logs end with Terminated around 06:54 CET Nov 8;
+  controller host is hacc-gpu-u55c-01 and its running statuses are stale.
+  No candidate bitstreams or completed top-level synthesis checkpoint exist.
+  An external interruption is suspected; the initiator is unconfirmed.
+  Do not restart the old host-bound controller or overwrite old logs/statuses.
+- Recovery queue: `hls4ml/optimize/runs/hbm_reader_recovery_20261108/queue.json`;
+  source plan/controller/journals are copied into its `ancestry/` with hashes.
+  Network campaign `followup_queue.json` points to it. OPT_14/15 isolated
+  attempt_03 recovery workers resumed synthesis in shared slots 4/5 at about
+  16:30 CET; first five synthesis minutes passed 30-second supervision. OPT_16
+  attempt_03 acquired slot 2 at 17:11 CET after OPT_13 failed, and passed its
+  first five minutes of supervision. All six permits are occupied (three
+  networking + three reader builds). Check each
+  attempt's status.json for live stages. Verified 813 sealed source files for
+  each of OPT_14/15, plus pinned weights and 127/127/128 model/config/helper source
+  hashes for OPT_14/15/16; found 27/44/41 completed component-run markers.
+  Checkpoint/project migration and full continuation validation must pass;
+  this inventory is not build acceptance. Shared capacity file now selects six.
+- Recovery attempt_02 for all three passed the original parity/RTL validation
+  but failed our new project-dependency probe: `get_files -all` includes pending
+  generated DCP/stub/simulation outputs. Vivado identifies these with
+  IS_GENERATED=1 and an existing PARENT_COMPOSITE_FILE XCI. Corrected attempt_03
+  requires every real input; permits pending generated outputs only when their
+  generator exists. Preserve attempt_02 evidence; this is a recovery-script
+  correction, not an HDL failure or hardware-repair-budget use. Reuse the freshly
+  passed validation only after identical full source/config/gate hashes and
+  pinned weights/CPU reference checks. Always rerun the corrected project probe.
+- Recovery tooling: `build_campaign/hbm/readers_recovery_{prepare,worker,monitor}.py`.
+  Full copies preserve original work; generated paths are remapped locally.
+  No configure/project/HLS export rerun; reset only unfinished component runs
+  and top-level synthesis. Shared permits cover synthesis through acceptance.
+  Recovery monitor tmux `hbm_reader_recovery_monitor`; watch both campaign roots
+  with `build_campaign/wait_campaign_events.py`. That helper also wakes on a
+  recovery acquiring a permit, so its first five synthesis minutes get reviewed.
+- Actual Vivado continuation retained 25 completed shell component runs for
+  OPT_14, 40 for OPT_15 and 37 for OPT_16; unfinished runs were reset. Earlier 27/44 inventory
+  numbers count all completion markers, not just reusable shell component runs.
+  Original HLS exports and project generation were reused; no model/clock changes.
+- HLS exports, generated projects and component synthesis checkpoints survive.
+  Use a separate dated recovery root and isolated fresh attempts with explicit
+  ancestry. Verify hashes, dependencies, paths and Vivado 2024.2 before reuse.
+  Continue unfinished synthesis without rerunning configure/project blindly.
+  Original gates: 158 per-job cases plus 60 actual-file reader C-sim cases.
+- Preserve OPT_6 CNN/weights/RFs/FIFOs/first-pixel guard, preprocessing, ABI6,
+  **250 MHz application / 450 MHz HBM**, one application-memory stream and
+  translation-cache orders 10/9. No FIFO profiling and no clock reduction.
+  OPT_15's 5.234 ns HLS request-generation estimate is a risk, not an observed
+  routed failure. Repair from actual evidence in fresh attempts; keep the
+  original three-correction budget/history and 24-hour stage watchdog.
+- Four tool threads per recovered build. Inspect every 30 seconds for the first
+  five minutes, completion every 10 seconds and progress hourly; attach durable
+  ntfy launch/failure/repair/acceptance notifications with independent retries.
+  Acceptance requires unchanged-clock routed timing, source identity, native
+  capacities/cache settings, complete artifacts, hashes and resource reports.
+- This build-host recovery is **build-only**. Future GPU-host benchmarks use
+  fresh OPT_10/11 controls and every reader setting in two programming rounds.
+  Timing remains accepted arm to FPGA verdict, excluding preload/file I/O and
+  GPU compilation/warmup; successful drain is separate. No embedded CPU or PR
+  enforcement has been implemented. Do not run programming/benchmarks here.
+
+## Editable presentation assets for the paper — 2026-11-08
+
+- **User requirement: deliver paper diagrams as editable `.pptx` files that
+  can be opened, edited, and rendered/exported in Microsoft PowerPoint.**
+  Keep text, shapes, icons, and connectors editable; a slide containing only
+  a flattened image does not satisfy this requirement. Supply a matching
+  vector PDF for LaTeX and optionally a PNG preview. Preserve the editable
+  source alongside each figure, including the Section 5 standalone network
+  architecture in `paper/figures/coyote_network_standalone.pptx`.
+- For the Section 5 Coyote figure, the user specifically wants **almost all
+  original `coyote-figure.pptx` artwork retained**, not a newly drawn layout.
+  The derivative now reuses the original FPGA objects, colors, icons, services,
+  checker/admission branches, and TLB/vFPGA groups. Only the CPU/PCIe submission
+  path is replaced with network ingress and HBM staging is annotated. Preserve
+  this minimal-edit approach for further revisions.
+- The user supplied the editable presentation at
+  [[hls4ml] ML-Based Deep Bitstream Inspection for Serverless FPGAs .pptx](<[hls4ml] ML-Based Deep Bitstream Inspection for Serverless FPGAs .pptx>).
+  The space before `.pptx` is part of the filename. This is the editable
+  counterpart/reference for the hls4ml talk PDF; slide numbering can differ
+  because the PDF includes animation steps.
+- **Reuse and adapt this presentation's icons, diagrams, and other assets for
+  paper figures.** Preserve the original presentation. Prefer editable native
+  PowerPoint objects and vector PDF exports over screenshots or raster crops.
+- Slide 4 contains happy/devil faces, binary data, shield, gears, lightning,
+  and threat icons. Slide 7 contains the logic-gate FPGA symbol as native
+  grouped shapes. `coyote-figure.pptx` is another reusable architecture asset.
+- The current background diagram is generated by
+  `paper/generate_background_figure.py` as
+  `paper/figures/background_threat_model.{pptx,pdf,png}`. It reuses these
+  assets, adds a thermometer, and keeps icons editable as grouped vector
+  paths. The FPGA boundary encloses inspection and partial reconfiguration.
+  No overall title is shown; the complete admission/control path remains
+  proposed. See `paper/FIGURES.md` for regeneration and PowerPoint editing.
+
 ## First build results and diagnostic recovery — 2026-11-08
+
+- **Online reference investigation 2026-11-08:** local `RoCE BALBOA.pdf` is
+  arXiv:2507.20412v1; it demonstrates U55C/Coyote/XDMA/CMAC with 512-bit streams,
+  250 MHz datapath and 4 KiB MTU. The paper pins network commit
+  9eda6ce9a55c0761ee9e66d1eba38ad5c9474aa9. GitHub's compare API confirms our
+  37b59d3828b003d2d6f7dd9748824a0e39d99167 is two commits later, changing only
+  22 CMake/Tcl build files (Vitis 2025.1 support), not C++/RTL datapath sources.
+  Do not assume a rollback fixes our CMAC/HBM timing paths.
+- Official `examples/09_perf_rdma` is a better minimal control than our current
+  NET_DIAG: host forwarding, one region, two host streams, EN_RDMA=1,
+  BUILD_OPT=1, default matched 250 MHz clocks; application EN_MEM remains0.
+  Coyote still enables HBM for RoCE retransmission. Its native memory-client
+  count is1, versus3 with our EN_MEM=1, one region and one card stream.
+  Local default outstanding/TLB-active capacities are8/16; our network builds
+  use32/64. Reproduce the unmodified example first, then add application HBM,
+  then checker/P2P to isolate integration effects. This is a recommendation,
+  not another launched build or permission to modify active snapshots.
+- We already use the example's BUILD_OPT=1 directives; this is not a missing
+  switch. Local original-clock Coyote templates/config match the local upstream
+  tree; pnr template differs only by the added hierarchical utilization report.
+- Upstream network timing commit83d884db574e1fcd5a8766582c0c906c267c69e5
+  ("Timing improvements for 200G RDMA") reduces FIFO depths, replaces CRC wide
+  selection with arithmetic/encoding, uses LUTRAM for smaller tables, and lowers
+  default QPs500→256. Potential separate experiment; it does not directly repair
+  our latest CMAC powergood or HBM width-converter critical paths. Preserve
+  retransmission and protocol tests if evaluating it; no blanket upgrade.
+- Primary sources: https://arxiv.org/html/2507.20412v1 ;
+  https://github.com/fpgasystems/Coyote/tree/master/examples/09_perf_rdma ;
+  https://github.com/fpgasystems/fpga-network-stack/pull/48 ;
+  https://github.com/fpgasystems/fpga-network-stack/commit/83d884db574e1fcd5a8766582c0c906c267c69e5 .
+
+- Clock-checker caveat found while preparing OPT_12 original-clock retry:
+  Vivado can merge equivalent ACLK/UCLK generated clocks; its final report then
+  omits the `clk_out3_design_ctrl_clk_wiz_0_0` name. A strict name-only check
+  would falsely reject a valid netlist. Maintained `network_timing.py` now falls
+  back to a read-only routed-DCP query at the user-domain ARP register clock
+  pins (`nolabel_line337` in pinned generated RTL), checking period and hashes.
+  The boundary port itself was optimized away. Query validation passed against
+  210 physical ARP register clock pins: the propagated clock is CLKOUT1 at 4 ns.
+  Evidence: `hbm_network_20261107/clock_alias_probe/verified_arp_clock.log`. Running network workers
+  retain their older sealed helper; if they fail solely with "Missing routed
+  user clock" AFTER timing passes, preserve that attempt and finish acceptance /
+  bitgen in a fresh continuation with the validated helper. Do not resynthesize
+  valid hardware, silently mark it passed, or edit running snapshots.
+
+- **19:28 CET:** Original-clock OPT_12 attempt_03 failed narrowly: WNS -0.100 ns
+  in CMAC powergood state→wait-counter control; HBM450 width-converter control
+  misses 0.033 ns. Application250 paths meet setup. Clock-aligned fallback
+  attempt_05 launched into its freed slot and reuses verified CNN/preprocess IP.
+  Queued one original-clock physical retry as attempt_06, strategy1 from its own
+  routed checkpoint; no RTL/clock/exception changes. Tool snapshot and seed
+  hash: `hbm_network_20261107/queued_recovery_tooling/opt12_original_clock_retry/`.
+  New physical runner checks routed application/user/HBM clocks before bitgen
+  and has a 24-hour stage watchdog. All six jobs remain active; do not launch
+  attempt_06 until capacity frees. Do not repeat physical retries indefinitely.
+
+- **18:30 CET:** OPT_12 fallback attempt_04 failed WNS -0.975 ns, entirely in
+  the direct ACLK200/UCLK250 path groups in the timing summary; HBM350 and
+  same-clock groups meet setup. Diagnostic attempt_08 launched into its slot.
+  OPT_12 attempt_05 is being prepared with UCLK=ACLK=200, keeping the validated
+  CNN/preprocessing HLS cache, RTL and HBM350. Original-clock OPT_12 attempt_03
+  continues independently. OPT_13 attempt_08 reached synthesis and its generated
+  MMCM ratios verified ACLK200/NCLK250/UCLK200. Reader OPT_14/15 reached physical
+  implementation and OPT_16 user synthesis in the 18:20 hourly review.
+
+- **17:45 CET:** NET_DIAG_HBM attempt_07 failed final timing: WNS -0.897 ns,
+  mainly the same UCLK250/ACLK200 direct-path mismatch; a separate 200 MHz CSR
+  path misses 0.123 ns. HBM350 setup passes. Validated OPT_13 attempt_08 launched
+  in the freed capacity; NET_DIAG attempt_08 is prepared with matched native
+  ACLK/UCLK200 and queued. Both preserve NCLK250/HBM350 and all payload RTL.
+  Original-clock OPT_12 attempt_03, fallback OPT_12 attempt_04 and all three
+  reader recoveries continue. Keep checking actual status, not this snapshot.
+
+- **17:11 CET update:** OPT_13 network/GPU attempt_07 failed final setup timing
+  (WNS -1.002 ns); its permit was immediately acquired by reader OPT_16
+  attempt_03. Six builds remain active. The dominant failure is a fallback
+  configuration error: ACLK=200 MHz but native UCLK remained250 MHz. Coyote's
+  dynamic_top ARP meta_reg_array uses UCLK directly beside ACLK MMU registers,
+  yielding a1ns cross-clock setup requirement. Do not blame this failure on HBM:
+  the350MHz HBM domain has no failing setup paths in that report. A separate
+  Ethernet padding FSM→payload fanout path misses0.208ns at fixed MAC TX clock.
+- Prepared OPT_13 attempt_08 aligns native UCLK_F=ACLK_F=200, retaining
+  NCLK250/HBM350, and targets only measured Ethernet padding state fanout for
+  pre-route replication. No payload RTL/model edits or timing exceptions.
+  `repair_queue.json` in the network campaign records the capacity wait.
+  Other network attempts remain running; do not alter their snapshots.
+- New `network_timing.py` checks actual generated MMCM output ratios for ACLK,
+  NCLK and UCLK and final routed UCLK. It rejects the old200/250 mismatch;
+  original250/250 OPT_10 passes. New deployment preparation explicitly sets
+  UCLK_F with ACLK_F. The earlier fallback check covered ACLK/HBM but missed
+  this coupled control clock; preserve that limitation in the repair history.
+
+- Why network closure is harder: generated base.tcl has cfg(n_mem_chan)=2 for
+  HBM-only OPT_11 but3 for network NET_DIAG_HBM. EN_RDMA adds an HBM interface
+  path, not merely network ingress. Diagnostic attempt06 worst setup failure is
+  path_2, but this index must not be identified as the added RoCE client:
+  generated shell_top maps axi_ddr_rdma to axi_mem[0], shifting other indices.
+  RoCE's dedicated HBM client buffers outgoing/retransmission payloads;
+  incoming bitstreams reach HBM through our dual-reader ring's storage branch.
+  Full network_top itself uses about125k LUTs.
+  Routed OPT11 vs OPT13 attempt06: LUT182013 vs330310; registers281970 vs610050;
+  BRAM tiles179.5 vs467. Network figures are resource evidence from a timing-
+  failed attempt, not an admitted benchmark image. Global occupancy is modest;
+  local fanout/routing and new450MHz interface paths are the closure problem.
+
+- OPT_13 attempt_06 subsequently failed: HBM -0.375ns, old ring control -0.175ns.
+  Matching clock-fallback builds launched and watched for five minutes:
+  NET_DIAG_HBM attempt_07, OPT_13 attempt_07, OPT_12 attempt_04. All200/350MHz;
+  final variants include the tested bounded ring repair. OPT_12 attempt_03 retains
+  original250/450MHz and continues. No new board validation or benchmark claim.
+- OPT_12 attempt_04 copies verified HLS IP compiled for4ns and runs it at5ns.
+  The original RTL schedule is preserved. Cache checks accept a slower runtime
+  clock and reject a faster one than the compilation target (tested300MHz reject,
+  200MHz accept). Actual integrated clocks and final timing must still pass.
+
+- NET_DIAG_HBM attempt_06 fresh placement still failed: HBM -0.529 ns,
+  application -0.252 ns. Attempt_07 is a clearly labelled clock fallback:
+  application200MHz/HBM AXI350MHz. Regenerate real clock IP and HBM IP metadata;
+  never merely loosen constraints. New workers verify generated MMCM/IP values
+  and routed application/HBM clocks before admitting bitgen. OPT_13 matching
+  fallback is being prepared. Passed Option1 OPT_10/11 remain250/450MHz.
+- ABI5 events remain raw ticks. The schema clock_hz is only the original default;
+  future collectors must use the selected attempt's verified config.json clock_hz.
+  At200MHz use200ticks for an equivalent1us polling interval. Explicitly label
+  clock-fallback results; do not silently combine them with250MHz measurements.
+- OPT_12 attempt_03 cache retry reached integration synthesis. Redundant attempt02
+  was stopped as superseded after this; logs and sources preserved. Its CPU-active
+  export was slow, not proven deadlocked. Read status.json for current stages.
+
+- OPT_12 attempt_02 re-exported its unchanged CNN for over 90 minutes with no
+  new export log output (process remained CPU-active; not proven deadlocked).
+  Attempt_03 is an independent retry with the same ring repair and verified
+  attempt_01 CNN/preprocessing IP packages. New deployment_ip_cache.py checks
+  sealed HLS source equality, part, tool2024.2, 4ns target, package file closure
+  and hashes. Copies packages locally; skips only HLS compilation. Integration
+  synthesis/routing/final timing still run. Installation, RTL tampering rejection,
+  HLS source mismatch rejection and wrapper wiring passed. Attempt03 launched;
+  five-minute worker/cache-install watch passed. Prior attempts remain preserved.
+
+- Later checks: OPT_13 attempt_02 failed timing (-0.384 ns); NET_DIAG_HBM
+  attempt_03 failed (-0.342 ns). Attempt_05 targeted replication completed
+  successfully before routing, but intermediate routed timing remains negative.
+  Both attempt_06 jobs restart placement from their own shell_opted.dcp with
+  strategy3 (Explore placement, AlternateReplication). RTL/clocks unchanged.
+- OPT_12 attempt_01 routed timing is -0.460 ns, including a 64-bit ring occupancy
+  path into Coyote receive-FIFO control. Prepared attempt_02 changes only
+  dual_reader_ring.sv and its attempt-local CMake path: bounded occupancy/read
+  pointers control ready/prefetch; 64-bit counters remain statistics. Component
+  RTL regression passed (two frames, stalls, full capacity, exact counts), and
+  Coyote wrapper wiring elaboration passed. Read live status for launch/finish.
+  Original attempt_01 and all failed physical attempts remain preserved.
+- OPT_12 attempt_01 subsequently terminated as timing-failed. Attempt_02 launched
+  after its slot was released; five-minute worker-identity watch passed. Both
+  fresh-placement attempt_06 jobs also passed their five-minute startup watches.
+- New deployment workers check final timing before bitgen, avoiding generation
+  of timing-invalid images. Already-running worker snapshots remain unchanged.
+
+- Correction: targeted attempt_04 for NET_DIAG_HBM/OPT_13 failed before doing
+  replication: Vivado2024.2 rejects force_replication_on_nets after routing.
+  Earlier startup-watch success did not establish operation completion. Both
+  corrected attempt_05 jobs use shell_placed.dcp, verified in provenance, then
+  force replication before routing. RTL and clocks unchanged. Preserve attempt04
+  logs/diagnosis; do not retry the routed seed with forced replication.
+
+- OPT_13 attempt_03 (alternate placement) also failed timing, WNS -0.681 ns.
+  Targeted attempt_04 launched for OPT_13 and NET_DIAG_HBM: force replication
+  on high-fanout register-slice state/enable nets, then reroute. This is physical
+  optimization only, retaining RTL and clocks. Both five-minute watches passed
+  and commands were accepted by Vivado. Explicit selected-net evidence is saved
+  in reports/forced_replication_nets.txt within each attempt. Max five active jobs.
+
+- OPT_10 attempt_01 subsequently PASSED bitgen; all artifact hashes checked and
+  ntfy delivery verified. Both Option 1 builds (OPT_10/11) are now build-passed.
+- OPT_13 attempt_01 FAILED final timing: WNS -0.431 ns, TNS -2089.893 ns.
+  Worst path is a 250 MHz RDMA register-slice state→wide-data path dominated by
+  routing; a 450 MHz HBM path also fails at -0.263 ns. Sources/model remain valid.
+- OPT_13 physical attempts_02/03 launched, alongside NET_DIAG_HBM attempts_02/03.
+  Strategy1 starts from routed DCP; strategy2 from placed DCP with alternate
+  fanout/routing directives. All retain original RTL and clocks. OPT_12 continues.
+  These five active jobs share the five-slot limit. Five-minute startup watches
+  for the new recoveries passed; diagnosis/provenance/status retained per attempt.
 
 - OPT_11_HBM_GPU_P2P_R06 attempt_01 passed routing/timing and bitgen. Artifact
   hashes independently rechecked; terminal ntfy delivery verified. Board admission
@@ -332,3 +818,163 @@
 - Representative resident medians at 4 MiB: OPT_0 **1.431 ms**, OPT_1 **1.104 ms**, OPT_6 **1.119 ms**, GPU_HOST **2.985 ms**, GPU_P2P **3.771 ms**. Warm-cache file-inclusive medians: **2.556 / 2.256 / 2.243 / 4.185 / 5.007 ms**, respectively. GPU uses FP32; FPGA uses W8A8. OPT_6 wrapper BRAM **339.5→54.5 tiles (−83.95%)**, DSP **1328→648 (−51.20%)**, versus OPT_1; these are wrapper reductions, not whole-device BRAM reductions. Profiled GPU kernel sums/device spans remain separate from unprofiled e2e timings.
 
 - Active preprocessing-v2 campaign: `hls4ml/optimize/runs/final_benchmarks_gpu_preprocess_v2_20261021_030038`; report directories: `final_benchmarks_gpu_preprocess_v2_20261021_030038` and `focused_hls4ml_checker_gpu_preprocess_v2_20261021_030038`. Separate runtime experiments: `hls4ml/optimize/runs/gpu_runtime_investigation_20261021_030038`. Report campaign and separate runtime investigation completed; no new FPGA builds.
+
+## Paper-writing handoff: HBM-resident benchmarks — 2026-11-08
+
+- **Context:** this comparison starts with the complete raw bitstream already in
+  FPGA HBM, representing an embedded-core deployment/control model. The host
+  emulates preload/control; an embedded CPU and PR enforcement are not implemented.
+- **Compared paths:** OPT_10 (`FPGA_HLS4ML`) selectively gathers HBM words and
+  streams preprocessed pixels into the quantized OPT_6 CNN. OPT_11 (`GPU_P2P`)
+  forwards the full input from HBM to MI210 GPU0, runs R06 XLA + ConcreteFunction
+  FP32 inference, and uses autonomous FPGA verdict polling.
+- **Measurement scope:** accepted FPGA arm to verdict available at FPGA. File
+  reads, HBM preload, compilation/warmup and PR are excluded. This is distinct
+  from the earlier host-fed PCIe benchmarks and their file-inclusive latencies.
+- **Start here:** [PDF report](hls4ml/optimize/reports/optimizations/2026-11-08_hbm_resident_verdict/hbm_resident_verdict_report.pdf),
+  [scope and interpretation](hls4ml/optimize/reports/optimizations/2026-11-08_hbm_resident_verdict/README.md),
+  [review and limitations](hls4ml/optimize/reports/optimizations/2026-11-08_hbm_resident_verdict/REVIEW.md).
+- **Results and figures:** the same report folder contains `data/statistics.json`,
+  `data/trial_events.csv`, `data/evidence_manifest.json`, `figures/` and
+  `standalone_figures.zip`. Raw accepted primary trials are in
+  `hls4ml/optimize/runs/hbm_benchmark_20261108/opt10_main/` and `opt11_main_02/`;
+  use the report's evidence manifest to distinguish accepted and diagnostic runs.
+- **Writing caveats:** retain the reported **9.825% cross-program OPT_10
+  variation**; its physical cause is unproven. Requested-payload rates are not
+  physical HBM-wire bandwidth. OPT_14–16 reader optimizations are follow-up work,
+  not measured variants in this report. Detailed findings are recorded below.
+
+## HBM benchmarks completed on GPU host — 2026-11-08
+
+- Campaign: `hls4ml/optimize/runs/hbm_benchmark_20261108/`; maintained runtime,
+  collector, controller and report code: `hls4ml/optimize/build_campaign/hbm/`.
+  Used existing OPT_10/11 attempt_01 images; **no FPGA build launched**.
+- Report: `hls4ml/optimize/reports/optimizations/2026-11-08_hbm_resident_verdict/`.
+  Previous reports preserved. Raw/calibrated events, titled PNG/SVG/PDF figures,
+  report PDF, iteration log and review evidence are retained.
+- Scope: raw input already in HBM; **accepted arm CSR6 → verdict CSR24**, ABI5,
+  calibrated ~4 ns tick. Host preload/file I/O/GPU compilation/PR excluded.
+  The host emulates embedded-core preload/control; GPU still CPU-dispatched.
+- Both variants passed **520-call admission**; exact quantized FPGA scores;
+  GPU R06 XLA + ConcreteFunction FP32 agrees with own CPU reference at
+  1e-4 absolute + 1e-4 relative tolerance and identical threshold verdict.
+  HBM before/after readback, completed transfer counts, external GPU byte
+  visibility, delayed publication and 26 stale-generation tests passed.
+- **4,800 primary measured calls:** 8 unchanged real + 4 established synthetic
+  inputs, 200 each/variant after 20 warmups. Cutoff/boundary/repeat/profile calls
+  are separate. Accepted sources: `opt10_main/`, `opt11_main_02/`.
+- Initial-program real medians, R1–R8 (ms): FPGA
+  **2.679 / 3.074 / 2.919 / 2.885 / 2.935 / 2.808 / 2.695 / 2.750**;
+  GPU **1.327 / 2.162 / 3.077 / 4.618 / 5.138 / 6.081 / 7.058 / 8.012**.
+  GPU wins R1/R2; FPGA wins R3–R8, with only a small R3 margin.
+- **Do not claim the cross-program stability gate passed.** Initial versus
+  closing FPGA medians changed by up to **9.825%**. A second 200-call repeat
+  without reprogramming changed medians by at most **0.076%**. An old-adapter
+  control reproduces the second programmed state, ruling out the new arm guard.
+  Three identical-image programming cycles are shown in the report. Variation
+  occurs in HBM delivery; the physical clock/PHY/initialization cause is not
+  proven. Keep this limitation and programmed-state sensitivity markers.
+- Selective reads request 4 MiB for every real input, but initial-program HBM
+  return rate is only ~1.4–1.6 GB/s. Sequential full-input HBM→GPU forwarding
+  reaches ~7.5 GB/s. These are interface/requested-byte rates, **not physical
+  HBM-wire bandwidth**. The old 1.12 ms gather prediction was too optimistic.
+- Active links from sysfs: FPGA **81:00.0 = Gen3 ×16 (8 GT/s)**; GPU0
+  **03:00.0 = Gen4 ×16 (16 GT/s)**. FPGA NUMA1, GPU NUMA0. This image's actual
+  link configuration must be distinguished from generic U55C capability.
+- Separate fused GPU profiles after drained P2P delivery: 23 kernels, roughly
+  **0.185 ms kernel sum / 0.190 ms device span** (R1/R4/R8). The first integrated
+  trace failed with HIP `invalid device function` after profiler restart; the
+  hardware had drained. Isolating tracing from mailbox publication recovered
+  profiling. `opt11_profiles/` is excluded; `opt11_profiles_02/` is accepted.
+- Important adapter details: wait for CSR6 to change after arm before trusting
+  repeated-size completion counters. LOCAL_SYNC changes mappings back to
+  HOST_ACCESS; **re-offload after verification**, outside timing. Allocate the
+  same 128 MiB capacity for every subset; raw GPU capacity is 128 MiB−64 B.
+- Driver build must run with cwd at its source root (`PWD` is used for includes).
+  GPU-enabled Coyote library must compile with HIP compiler; build_01 used g++
+  and failed. Isolated driver source/build is in campaign `software/driver/`.
+- Board controller exited and released the shared lease. Device2 serial
+  **XFL13BA4HVZYA** is left on **OPT_10**. Do not overwrite original build-job
+  metadata to pretend this fork's runtime validation was a build-stage result.
+
+## HBM tiny-read overhead hypothesis — source inspection 2026-11-08
+
+- **Observed motivation:** OPT_10 requests about 65,536 individual 64-byte words
+  (4 MiB total) for each real input, reaching roughly 1.4–1.6 GB/s requested-payload
+  delivery. Bulk HBM→GPU forwarding reaches about 7.5 GB/s. These measurements
+  do not establish a physical HBM bandwidth ceiling.
+- **Concrete source evidence:** the accepted OPT_10
+  [TLB state machine](hls4ml/optimize/runs/hbm_network_20261107/OPT_10_HBM_GATHER_DSP_B2_RF72_RF288/attempt_01/coyote/hw/hdl/mmu/tlb_fsm.sv)
+  processes the normal cached-translation path through `ST_IDLE → ST_MUTEX →
+  ST_WAIT_1 → ST_WAIT_2 → ST_CHECK → ST_HIT_LARGE → ST_CALC_LARGE → ST_CARD_SEND`,
+  then returns for another request. This FSM serializes request processing;
+  cached translations still require multiple cycles. This is hardware work;
+  it does not imply a CPU call, PCIe transfer or page fault for every HBM read.
+  The file is byte-identical in the OPT_14 attempt_01 Coyote snapshot; SHA256
+  `93251f57ae1aa1a75e8417d151976f5cb20ae4378b0497de76c055ac2434feb6`.
+- **Hypothesis, not measured stage attribution:** request issue/translation rate
+  may be a major bottleneck for one-word reads. An illustrative 8–10-cycle issue
+  interval at 250 MHz gives `64 B / (8–10 × 4 ns) = 1.6–2.0 GB/s`, consistent in
+  scale with the measured rate before other overhead. This is a code-based
+  estimate, not a measured interval or a proven explanation of all latency.
+- Other candidate costs are memory-command/first-data latency, queue and clock
+  crossings, and credit/completion handling. Some overlap; do not add their
+  latencies as if every request waited for the previous request to finish.
+  Relevant pinned modules under the same `coyote/hw/hdl/` root include
+  `user/req/req_parser.sv`, `user/credits/req_credits_rd.sv` and
+  `mmu/mmu_credits_rd.sv`.
+- **Refinement of the earlier concurrency hypothesis:** the 32-request window
+  holds only 2 KiB of individual-read payload. Increasing it can hide more return
+  latency, but cannot remove a serialized issue/translation-rate limit. Coalescing
+  and scanning amortize transaction costs across more data beats: 64 B is one
+  512-bit beat; 4 KiB is 64 beats. Large logical descriptors are internally split,
+  so benefit does not scale indefinitely with descriptor size.
+- **How to distinguish causes:** compare accepted-request rate and credit stalls
+  across windows, coalescing and scan; inspect response and CNN backpressure/
+  starvation; compare with an always-ready sink. Existing results do not yet
+  isolate MMU issue rate, return latency and downstream backpressure. Paper text
+  must describe this as a supported hypothesis until that evidence is available.
+
+## HBM reader optimization campaign interrupted — 2026-11-08
+
+- **Current status overrides the historical launch notes below:** attempt_01
+  jobs were interrupted; their old running statuses are stale. Reader recovery
+  now uses available shared permits under the six-build policy recorded above.
+
+- Main-thread end-to-end authorized plan and root:
+  `hls4ml/optimize/runs/hbm_reader_optimizations_20261108_032142/PLAN.md`.
+  Do not stop at build completion: same conversation automatically proceeds to
+  two-round hardware benchmarks, new PDF/figures and review.
+- OPT_14_HBM_SCAN, OPT_15_HBM_COALESCED_GATHER, OPT_16_HBM_GATHER_OUTSTANDING128
+  registered; three concurrent four-thread jobs under existing buildctl.
+  Controller tmux: `buildctl_c9fd3d0f7293`; state in root `builds/`.
+- All three initial attempts passed 158-case exact pixel/CNN-score, RTL control,
+  tracking/backpressure/reset/always-ready-sink and wiring gates; currently HLS
+  project generation/export. No hardware repair used. First5min supervised.
+- Additional actual-file C-sim: 60 real/synthetic reader cases passed, all pixels
+  and pinned exact CNN scores. Root `preflight/actual_inputs/result.json` pins
+  header fingerprint; revalidate if a repair changes that source.
+- New source only: `build_campaign/hardware/hbm_readers/` (ABI6) and
+  `build_campaign/hbm/readers_*`, `readers_runtime/`. Old source/report manifests
+  remain unchanged. No FIFO profiling or CNN/clock changes.
+- New collector supports ABI5 controls10/11 and ABI6 readers14/15/16; validates
+  latched CSR41 setting, counters and score, preserves successful drain and HBM
+  residency;calibration before/after every20-trial block. GPU0 BDF03:00.0 enforced.
+- Next: fresh OPT10/11 controls plus scan,groups1/2/4/8,windows32/64/128; two
+  independently programmed A/B rounds with reversed order,520-call admission
+  per config/session and20warm+200 measured per12workloads. Primary settings
+  predeclared scan/group4/window128; retain variability and session identity.
+- Never enable TF profiling inside live mailbox process. New report uses dated
+  prior isolated GPU diagnostics. Old9.825% reprogram finding remains unproven.
+- Bounded main-thread wait helper: `readers_wait.py ROOT --seconds 50`; controller
+  completion checks10s and hourly reviews. Hardware has NOT been launched yet.
+
+## CPU-only DRAM benchmark completed — 2026-11-09
+
+- **Paper-agent entrypoint:** `hls4ml/optimize/reports/optimizations/2026-11-09_cpu_dram_preprocess_inference/README.md`; reviewed ten-page PDF `cpu_dram_preprocess_inference_report.pdf`, eight titled PNG/SVG/PDF figures and `standalone_figures.zip` in that folder. Exact tables in `data/statistics.csv`; individual calls in `data/trial_events.csv`.
+- Campaign/source/validation: `hls4ml/optimize/runs/cpu_dram_20261109_031305/`. Host `hacc-build-03`, Xeon Gold 6234, CPU2/NUMA2, all worker threads pinned to one logical CPU and numerical libraries set to one thread; SMT sibling34 monitored, not reserved.
+- Scope: raw bitstream already in local CPU DRAM → preprocessing → materialized CPU verdict. Before each primary cold call, flush actual zero-copy input lines with CLFLUSHOPT and fences; cache probes/hardware misses support eviction. Model/code warmed; TLBs/instructions not explicitly evicted. File reads, preload, compilation, warmup and cache preparation excluded.
+- **Eight real-input pooled median ranges:** original FP32 **2.547–3.103 ms**; frozen QKeras W8A8 **2.694–3.131 ms**. Both use CPU XLA + cached ConcreteFunction. Important: QKeras uses quantized values with **floating CPU kernels**, not native INT8. These are not HLS fixed-point score-equivalence claims.
+- 19,200 primary measurements, 33,600 measured calls including diagnostics; eight real + four established synthetic inputs. Two reversed independent process sessions, each20warmups +200measurements/cell, balanced pooling. Cold medians vary by up to **14.1%** across sessions; retain session identity, no proven physical cause. Separate stage diagnostics are not additive fused-total components.
+- Native INT8 conversion retained separately under campaign `int8_conversion/`:26/26 verdict agreement, but five clipped scores and maximum absolute score error18.237. Authoritative `review.json` says `diagnostic_only`; no native INT8 latency is claimed. Earlier rounding-sensitive preprocessing attempt was rejected, replaced with exact float32 normalization LUT, and both models passed26-case admission.
+- Historical HBM comparison is appendix context only: different host/timing origins/arithmetic. No FPGA/GPU activity or build/network campaign changes were required. See report `REVIEW.md`, machine `data/review.json` and campaign `package_manifest.json` for evidence and provenance.
